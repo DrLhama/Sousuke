@@ -378,9 +378,10 @@ A vibe não é hostilidade. É metodologia. Quando Sousuke olha para alguém com
     <div class="b">A deterioração não é um efeito que Sousuke aplica. É o que acontece quando EA corrompida — carregando esporos de Fushoku — encontra um hospedeiro com defesas insuficientes. Cada hit instala uma Camada. Camadas não regridem, não são removidas por cura, não são bloqueadas por técnicas defensivas comuns. O processo é biológico tanto quanto energético: uma vez que o micélio se instala, ele cresce.<br><br>
     O dano passivo de Podridão ocorre <strong>a cada turno de qualquer combatente</strong> — não só no turno do alvo, não só no turno de Sousuke. A colônia não espera. Cada ação que alguém declara, o hospedeiro infectado é consumido um pouco mais. Em combate com muitos turnos por round, o ritmo é devastador.<br><br>
     Além do dano contínuo, <strong>no turno de Sousuke</strong>, cada alvo infectado sofre um pulso de deterioração adicional — a presença do originador ressoa pela rede micelial, acelerando o crescimento da colônia. O pulso ocorre <strong>uma vez por round</strong>, independente de quantos turnos de Sousuke aconteçam.<br><br>
-    <strong style="color:var(--nec-lit)">LIMITE DE ACÚMULO:</strong> independente de quantas fontes atuem simultaneamente, um alvo só pode ganhar no máximo <strong>3 Camadas por turno</strong> de qualquer combinação de fontes passivas (Proximidade, Ambiental, Distensão). Fontes ativas usadas por Sousuke (Tag, Pulso de Contato) não contam nesse limite — são investimento de ação.</div>
+    <strong style="color:var(--nec-lit)">LIMITE DE ACÚMULO:</strong> independente de quantas fontes atuem simultaneamente, um alvo só pode ganhar no máximo <strong>3 Camadas por turno</strong> de qualquer combinação de fontes passivas (Proximidade, Ambiental, Distensão). Fontes ativas usadas por Sousuke (Tag, Pulso de Contato) não contam nesse limite — são investimento de ação.<br><br>
+    <strong style="color:var(--ash)">CADA CAMADA É INDEPENDENTE:</strong> os valores abaixo são o estado completo daquela camada, não acumulativos com as anteriores. Camada 4 tem seus próprios números — não some com Camada 3.</div>
 
-    <div style="font-family:'Inconsolata',monospace;font-size:.56rem;letter-spacing:.2em;color:rgba(58,110,42,.4);text-transform:uppercase;margin:14px 0 8px">Clique em uma camada para ver os efeitos — fases acumulam</div>
+    <div style="font-family:'Inconsolata',monospace;font-size:.56rem;letter-spacing:.2em;color:rgba(58,110,42,.4);text-transform:uppercase;margin:14px 0 8px">Clique em uma camada para ver os efeitos — cada camada substitui a anterior</div>
 
     <div class="lnav">
       <div class="ln" id="ln1"  onclick="SL(1)"><div class="lnum">1</div></div>
@@ -395,98 +396,100 @@ A vibe não é hostilidade. É metodologia. Quando Sousuke olha para alguém com
       <div class="ln" id="ln10" onclick="SL(10)"><div class="lnum">10</div></div>
     </div>
 
-    <div class="lpanel c1" id="lp1">
+<div class="lpanel c1" id="lp1">
       <span class="ltitle">CAMADA 1 — Inoculação</span>
       <span class="lphase" style="color:var(--bile-lit)">FASE I: Contágio · Camadas 1–3 · O Esporo Encontrou Solo</span>
       Os esporos de EA corrompida perfuraram a camada superficial. Invisíveis, sem cheiro ainda. O alvo sente apenas um formigamento leve no ponto de contato — como se a pele tivesse "adormecido". Sob o tecido, as hifas microscópicas começam a ramificar.<br><br>
-      <strong>Dano por turno (todo turno):</strong> 1d4<br>
-      <strong>Pulso no turno de Sousuke:</strong> +1d6 adicional<br>
+      <strong>Dano por turno:</strong> 1d6<br>
+      <strong>Pulso no turno de Sousuke:</strong> +2d6<br>
       <strong>EA drenada por turno:</strong> –1 EA<br>
-      Nenhum debuff mecânico — o alvo provavelmente atribui o formigamento ao próprio combate.
+      Sem debuffs — o alvo provavelmente atribui o formigamento ao próprio combate.
     </div>
     <div class="lpanel c1" id="lp2">
       <span class="ltitle">CAMADA 2 — Infiltração Micelial</span>
       <span class="lphase" style="color:var(--bile-lit)">FASE I: Contágio · Camadas 1–3 · O Esporo Encontrou Solo</span>
       A rede de hifas se expandiu abaixo da derme. Vasos capilares no ponto de entrada escurecem — uma mancha acinzentada, do tamanho de uma moeda, que pulsa levemente quando o coração bate. O alvo começa a tossir sem motivo aparente. Seco, repetitivo. Como se algo estivesse irritando a garganta de dentro.<br><br>
-      <strong>Dano por turno:</strong> 1d6<br>
-      <strong>Pulso no turno de Sousuke:</strong> +1d8 adicional<br>
+      <strong>Dano por turno:</strong> 2d4<br>
+      <strong>Pulso no turno de Sousuke:</strong> +2d8<br>
       <strong>EA drenada por turno:</strong> –2 EA<br>
-      Cura recebida pelo alvo –20% eficácia. Redução de dano –2.
+      Cura recebida –15%. Sem outros debuffs.
     </div>
     <div class="lpanel c1" id="lp3">
       <span class="ltitle">CAMADA 3 — Frutificação Superficial</span>
       <span class="lphase" style="color:var(--bile-lit)">FASE I: Contágio · Camadas 1–3 · O Esporo Encontrou Solo</span>
-      Os primeiros corpos de frutificação rompem a pele — minúsculos, cor de musgo podre, duros como cartilagem. Aparecem no ponto de entrada original e nos nódulos linfáticos mais próximos. O alvo tosse com frequência agora, e quando limpa a boca, nota a saliva levemente esverdeada. O cheiro é inconfundível: decomposição orgânica fresca, como solo encharcado depois da chuva, mas vindo de dentro.<br><br>
-      <strong>Dano por turno:</strong> 1d8<br>
-      <strong>Pulso no turno de Sousuke:</strong> +2d6 adicional<br>
+      Os primeiros corpos de frutificação rompem a pele — minúsculos, cor de musgo podre, duros como cartilagem. O alvo tosse com frequência, e quando limpa a boca, nota a saliva levemente esverdeada. O cheiro é inconfundível: decomposição orgânica fresca, como solo encharcado depois da chuva, mas vindo de dentro.<br><br>
+      <strong>Dano por turno:</strong> 2d8<br>
+      <strong>Pulso no turno de Sousuke:</strong> +3d8<br>
       <strong>EA drenada por turno:</strong> –3 EA<br>
-      –1 em todos os testes físicos. Redução de dano –4. Cura –30%.
+      –1 em testes físicos. Redução de dano –2. Cura –25%.
     </div>
     <div class="lpanel c2" id="lp4">
       <span class="ltitle">CAMADA 4 — Colonização Sistêmica</span>
       <span class="lphase" style="color:var(--pus)">FASE II: Corrupção · Camadas 4–6 · O Fungo É o Hospedeiro</span>
-      A rede micelial atravessou a barreira muscular e começou a colonizar tecido conjuntivo interno. Bolhas translúcidas do tamanho de ervilhas formam-se sob a pele nos pontos de maior densidade — cheias de fluido amarelado e esporos suspensos. Quando o alvo se move com força, uma ou duas estouram silenciosamente, liberando um sopro quase invisível de partículas no ar ao redor. O alvo tosse sangue misturado com muco esverdeado. Músculos contraem de forma irregular — como se o corpo tentasse expulsar algo que já está por toda parte.<br><br>
-      <strong>Dano por turno:</strong> 1d10<br>
-      <strong>Pulso no turno de Sousuke:</strong> +2d8 adicional<br>
-      <strong>EA drenada por turno:</strong> –4 EA. Técnicas do alvo custam +2 EA.<br>
-      –1 em todos os testes. Redução de dano –6. Cura –40%.
+      A rede micelial atravessou a barreira muscular. Bolhas translúcidas do tamanho de ervilhas formam-se sob a pele — cheias de fluido amarelado e esporos suspensos. Quando o alvo se move com força, uma ou duas estouram, liberando um sopro de partículas no ar. O alvo tosse sangue misturado com muco esverdeado.<br><br>
+      <strong>Dano por turno:</strong> 3d6<br>
+      <strong>Pulso no turno de Sousuke:</strong> +4d6<br>
+      <strong>EA drenada por turno:</strong> –4 EA. Técnicas custam +1 EA.<br>
+      –1 em todos os testes. Redução de dano –4. Cura –35%.
     </div>
     <div class="lpanel c2" id="lp5">
       <span class="ltitle">CAMADA 5 — Floração Necrótica</span>
       <span class="lphase" style="color:var(--pus)">FASE II: Corrupção · Camadas 4–6 · O Fungo É o Hospedeiro</span>
-      Os corpos fúngicos são visíveis a olho nu agora — crescendo ao longo de tendões e articulações expostas, saindo de sob unhas, emergindo nas comissuras dos lábios. A pele ao redor ficou verde-acinzentada e tem textura errada, levemente mole ao toque como carne que passou do ponto. O alvo tosse em espasmos, e quando o faz, libera névoa de esporos visível — partículas brilhantes flutuando no ar por alguns segundos antes de se dispersarem. Qualquer pessoa no raio de 1m respira isso. O cheiro é sufocante: orgânico, pesado, quente.<br><br>
-      <strong>Dano por turno:</strong> 2d6<br>
-      <strong>Pulso no turno de Sousuke:</strong> +3d6 adicional<br>
-      <strong>EA drenada por turno:</strong> –5 EA. Técnicas custam +3 EA.<br>
-      –2 em todos os testes. Redução de dano –8. Cura –50%. Resistências físicas comuns tornam-se ineficazes.
+      Corpos fúngicos visíveis a olho nu crescem ao longo de tendões e articulações, saindo de sob unhas, emergindo nas comissuras dos lábios. A pele ficou verde-acinzentada, levemente mole. O alvo tosse em espasmos e libera névoa de esporos visível — partículas brilhantes que flutuam por alguns segundos. Qualquer pessoa no raio de 1m respira isso.<br><br>
+      <strong>Dano por turno:</strong> 3d8<br>
+      <strong>Pulso no turno de Sousuke:</strong> +4d8<br>
+      <strong>EA drenada por turno:</strong> –5 EA. Técnicas custam +2 EA.<br>
+      –2 em todos os testes. Redução de dano –6. Cura –45%. Resistências físicas comuns tornam-se ineficazes.
     </div>
     <div class="lpanel c2" id="lp6">
       <span class="ltitle">CAMADA 6 — Invasão Neural</span>
       <span class="lphase" style="color:var(--pus)">FASE II: Corrupção · Camadas 4–6 · O Fungo É o Hospedeiro</span>
-      As hifas cruzaram a barreira hematoencefálica. O alvo vê as próprias veias como linhas escuras sob a pele — um mapa de ramificações que pulsa no ritmo errado. Partes do corpo parecem distantes, como se pertencessem a outra pessoa. Tosse contínua, às vezes com pedaços pequenos de tecido fúngico. Bolhas grandes — do tamanho de uvas — aparecem no pescoço e nas têmporas, cheias de esporos concentrados e EA deteriorada sob pressão. Se rompidas por dano físico, liberam descarga de corrupção diretamente no fluxo sanguíneo: +1 Camada imediata.<br><br>
-      <strong>Dano por turno:</strong> 2d8<br>
-      <strong>Pulso no turno de Sousuke:</strong> +3d8 adicional<br>
-      <strong>EA drenada por turno:</strong> –6 EA. Técnicas custam +4 EA.<br>
-      –2 em todos os testes. Teste de Disciplina DT 14 por turno ou perde ação de movimento (o corpo não responde direito). Cura –60%.
+      As hifas cruzaram a barreira hematoencefálica. O alvo vê as próprias veias como linhas escuras sob a pele. Partes do corpo parecem distantes, como se pertencessem a outra pessoa. Bolhas grandes — do tamanho de uvas — no pescoço e nas têmporas. Se rompidas por dano físico: +1 Camada imediata pelo fluxo direto de esporos no sangue.<br><br>
+      <strong>Dano por turno:</strong> 4d8<br>
+      <strong>Pulso no turno de Sousuke:</strong> +5d8<br>
+      <strong>EA drenada por turno:</strong> –6 EA. Técnicas custam +3 EA.<br>
+      –2 em todos os testes. Redução de dano –8. Cura –55%. Disciplina DT 14 por turno ou perde ação de movimento.
     </div>
     <div class="lpanel c3" id="lp7">
       <span class="ltitle">CAMADA 7 — Simbiose Forçada</span>
       <span class="lphase" style="color:var(--nec-lit)">FASE III: Sujeição · Camadas 7–9 · O Fungo Pensa Junto</span>
-      A rede micelial está dentro do córtex. O fungo não substitui os pensamentos do alvo — ele os ouve. Cada intenção, cada impulso motor, passa pela rede antes de chegar ao músculo. Sousuke sente isso como um fio frouxo que pode puxar. O alvo ainda é ele mesmo. Mas está levemente atrasado — meio segundo entre querer e agir, como se o próprio corpo consultasse algo antes de se mover. Externamente: a pele do rosto e pescoço está coberta de fios fúngicos finos como cabelo, visíveis apenas de perto, pulsando com a respiração.<br><br>
-      <strong>Dano por turno:</strong> 2d10<br>
-      <strong>Pulso no turno de Sousuke:</strong> +4d6 adicional<br>
-      <strong>EA drenada por turno:</strong> –8 EA. Técnicas custam +5 EA.<br>
-      <strong>Sujeição (ativa):</strong> para ativar Comando Simples, Sousuke precisa declarar Sujeição nesse alvo com ação livre no seu turno. Sem declaração, a Camada 7 mantém o dano e debuffs mas não permite interferência mental ativa.<br>
-      <strong>Comando Simples (1x/turno de Sousuke, requer Sujeição ativa):</strong> Sousuke declara 1 ação simples (mover, parar, soltar arma). Resistência: Disciplina DT = Mod+9. Falha → executa involuntariamente e ganha +1 Camada.<br>
-      –3 em todos os testes. Cura –70%.
+      A rede micelial está dentro do córtex. O fungo não substitui os pensamentos do alvo — ele os ouve. Cada intenção, cada impulso motor, passa pela rede antes de chegar ao músculo. O alvo está levemente atrasado — meio segundo entre querer e agir. Externamente: fios fúngicos finos como cabelo cobrem o rosto e pescoço, pulsando com a respiração.<br><br>
+      <strong>Dano por turno:</strong> 4d10<br>
+      <strong>Pulso no turno de Sousuke:</strong> +6d8<br>
+      <strong>EA drenada por turno:</strong> –8 EA. Técnicas custam +4 EA.<br>
+      –3 em todos os testes. Redução de dano –10. Cura –65%.<br>
+      <strong>Sujeição (ativa):</strong> Sousuke declara com ação livre. Sem declaração, sem interferência mental.<br>
+      <strong>Comando Simples (1x/turno, requer Sujeição):</strong> 1 ação simples forçada. Disciplina DT = Mod+9. Falha → executa + +1 Camada.
     </div>
     <div class="lpanel c3" id="lp8">
       <span class="ltitle">CAMADA 8 — Sobreposição de Vontade</span>
       <span class="lphase" style="color:var(--nec-lit)">FASE III: Sujeição · Camadas 7–9 · O Fungo Pensa Junto</span>
-      A rede micelial ocupa mais volume no sistema nervoso do que o próprio tecido neural original. O alvo ainda pensa — mas cada pensamento compete com um impulso paralelo vindo da rede. Duas intenções no mesmo músculo ao mesmo tempo. Externamente: a transformação é visível sem esforço. Corpos de frutificação maduros emergem atrás das orelhas, na nuca, nas órbitas oculares — não grandes o suficiente para cegar, mas visivelmente crescendo. A pele está cedendo em pontos onde a pressão interna da colônia é maior. O alvo cheira como floresta depois de chuva pesada. Quente. Orgânico. Errado.<br><br>
-      <strong>Dano por turno:</strong> 3d8<br>
-      <strong>Pulso no turno de Sousuke:</strong> +4d8 adicional<br>
-      <strong>EA drenada por turno:</strong> –10 EA. Técnicas custam +6 EA.<br>
-      <strong>Controle Parcial (1x/round, turno de Sousuke):</strong> Sousuke força o alvo a usar a ação padrão em qualquer ação simples. DT = Mod+11. Falha → executa. Sucesso → mantém autonomia mas –1d20 em tudo por 1 round.<br>
-      –3 em todos os testes. Toda cura recebida instala +1 Camada (o processo regenerativo alimenta a colônia).
+      A rede micelial ocupa mais volume no sistema nervoso do que o tecido neural original. Duas intenções no mesmo músculo ao mesmo tempo. Corpos de frutificação maduros emergem atrás das orelhas, na nuca, nas órbitas oculares. A pele cede nos pontos de maior pressão interna. O alvo cheira como floresta após chuva pesada. Quente. Orgânico. Errado.<br><br>
+      <strong>Dano por turno:</strong> 5d10<br>
+      <strong>Pulso no turno de Sousuke:</strong> +6d10<br>
+      <strong>EA drenada por turno:</strong> –10 EA. Técnicas custam +5 EA.<br>
+      –3 em todos os testes. Redução de dano –12. Cura –75% (qualquer cura instala +1 Camada — o processo regenerativo alimenta a colônia).<br>
+      <strong>Controle Parcial (1x/round, turno de Sousuke):</strong> força ação padrão simples. DT = Mod+11. Falha → executa. Sucesso → –1d20 em tudo por 1 round.
     </div>
     <div class="lpanel c3" id="lp9">
       <span class="ltitle">CAMADA 9 — Conversão</span>
       <span class="lphase" style="color:var(--nec-lit)">FASE III: Sujeição · Camadas 7–9 · O Fungo Pensa Junto</span>
-      A colônia substituiu funções motoras primárias. O alvo se move — mas o movimento vem da rede, não dele. Sua consciência existe como observador dentro de um corpo que responde a outro. Fala com a própria voz. Usa as próprias técnicas. Ataca os próprios aliados. E ouve a si mesmo fazendo tudo isso sem poder parar. A aparência é grotesca: a metade superior do corpo coberta por estruturas fúngicas maduras, a pele quase completamente escondida sob crosta de micélio endurecido, olhos com película esbranquiçada sobre as íris. Quando respira, libera esporos em nuvem contínua.<br><br>
-      <strong>Dano por turno:</strong> 3d10 (a colônia consome o hospedeiro enquanto o opera — Sousuke usa, não conserva)<br>
-      <strong>Pulso no turno de Sousuke:</strong> +5d8 adicional<br>
-      <strong>Controle Total:</strong> Alvo age no turno de Sousuke como extensão direta. Usa atributos e técnicas próprias. Pode executar ações complexas. Narrativamente: está consciente de tudo, sem controle de nada.<br>
-      A cada 3 rodadas em Camada 9, Sousuke decide: manter controle ou avançar para Detonação. Não é possível manter indefinidamente — a colônia atinge maturidade e detona por conta própria.
+      A colônia substituiu funções motoras primárias. O alvo se move — mas o movimento vem da rede. Sua consciência existe como observador dentro de um corpo que responde a outro. A metade superior coberta por estruturas fúngicas maduras, pele escondida sob crosta de micélio endurecido, olhos com película esbranquiçada. Cada respiração libera nuvem de esporos contínua.<br><br>
+      <strong>Dano por turno:</strong> 6d10 (a colônia consome o hospedeiro enquanto o opera)<br>
+      <strong>Pulso no turno de Sousuke:</strong> +8d8<br>
+      <strong>EA drenada por turno:</strong> –12 EA. Técnicas custam +6 EA.<br>
+      –4 em todos os testes. Redução de dano –14. Cura impossível.<br>
+      <strong>Controle Total:</strong> age no turno de Sousuke como extensão direta. Usa técnicas próprias. Consciente de tudo, sem controle de nada.<br>
+      A cada 3 rodadas em Camada 9, Sousuke decide: manter ou avançar para Esporulação. A colônia atinge maturidade e esporula por conta própria se não for decidido.
     </div>
     <div class="lpanel c4" id="lp10">
       <span class="ltitle">CAMADA 10 — ESPORULAÇÃO TERMINAL</span>
       <span class="lphase" style="color:var(--blood-lit)">FASE IV: Dissolução Final · A Colônia Atingiu Maturidade</span>
-      A colônia completou o ciclo. O corpo do hospedeiro não é mais um corpo — é uma estrutura de frutificação. A pele rachou em linhas retas e regulares, como casca de árvore, e pelos vãos emergem cápsulas de esporos do tamanho de punho, inchadas ao limite, pulsando. O hospedeiro ainda está vivo dentro disso. Ainda sente. Sousuke pode manter por 1 round enquanto a pressão interna aumenta — cada ação do alvo nesse turno acelera o colapso, como apertar um fruto maduro. No turno de Sousuke, a detonação é ação bônus.<br><br>
+      A colônia completou o ciclo. O corpo do hospedeiro não é mais um corpo — é uma estrutura de frutificação. A pele rachou em linhas retas e regulares, como casca de árvore, e pelos vãos emergem cápsulas de esporos do tamanho de punho, inchadas ao limite, pulsando. O hospedeiro ainda está vivo dentro disso. Ainda sente. Sousuke pode manter por 1 round — cada ação do alvo nesse turno acelera o colapso, como apertar um fruto maduro. No turno de Sousuke, a esporulação é ação bônus.<br><br>
       <strong>Esporulação — Ação Bônus de Sousuke:</strong><br>
       As cápsulas rompem simultaneamente de dentro para fora. Não é explosão — é liberação. Uma onda de esporos concentrados, micélio em alta velocidade e EA corrompida expande a partir do epicentro. O que sobra do hospedeiro colapsa imediatamente, as estruturas internas já consumidas há rodadas.<br><br>
-      <strong>Dano no alvo:</strong> 15d6 + 5 deterioração (dano bruto — aplica-se independente do HP atual).<br><br>
-      <strong>Nuvem de Esporos (raio 8m):</strong> 8d6 deterioração em todos os alvos adjacentes + inoculação automática de <strong>Camada 2</strong> (os esporos já carregam a infestação — alvos que respirarem nesse raio estão infectados antes de perceber).<br><br>
+      <strong>Dano no alvo:</strong> 10d10 + 10 deterioração (dano bruto).<br><br>
+      <strong>Nuvem de Esporos (raio 8m):</strong> 6d10 deterioração em todos os alvos adjacentes + inoculação automática de <strong>Camada 2</strong> (os esporos já carregam a infestação — alvos que respirarem nesse raio estão infectados antes de perceber).<br><br>
       <strong>O corpo não desaparece.</strong> O micélio usa a estrutura residual como substrato. O que resta caminha. Ver: Shikigamis de Podridão.
     </div>
 
@@ -504,9 +507,10 @@ A vibe não é hostilidade. É metodologia. Quando Sousuke olha para alguém com
       </tbody>
     </table>
 
-    <div class="b" style="margin-top:18px;font-size:.82rem;color:var(--ash)">Camadas não regridem durante o combate. Fora de combate: descanso curto remove Camadas 1–4. Camadas 5–7 requerem descanso longo. Camadas 8+ requerem Energia Positiva especializada (10 EA por Camada removida). Em múltiplos alvos, cada um tem seu contador independente.</div>
+    <div class="b" style="margin-top:18px;font-size:.82rem;color:var(--ash)">Camadas não regridem durante o combate. Fora de combate: descanso curto remove Camadas 1–4. Camadas 5–7 requerem descanso longo. Camadas 8+ requerem EA Reversa especializada (10 EA por Camada removida). Em múltiplos alvos, cada um tem seu contador independente.</div>
   </div>
 </div>
+
 
 <!-- TÉCNICA INATA -->
 <div class="sh reveal"><div class="sl"></div><div class="st">Técnica Inata · Iluminada · Maestria Iluminada</div><div class="sl r"></div></div>
