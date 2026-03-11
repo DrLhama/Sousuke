@@ -51,7 +51,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 @keyframes drip{0%{height:0;opacity:.9;top:0}60%{height:var(--h,110px);opacity:.8}90%{height:var(--h,110px);opacity:.6}100%{height:0;opacity:0;top:160px}}
 
 .spores{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.spore{position:absolute;width:var(--sz,2px);height:var(--sz,2px);background:var(--bile-lit);border-radius:50%;opacity:0;
+.spore{position:absolute;width:var(--sz,6px);height:var(--sz,6px);background:var(--bile-lit);border-radius:50%;opacity:0;
   animation:sdrift var(--d,10s) ease-in-out infinite var(--dl,0s)}
 @keyframes sdrift{0%{opacity:0;transform:translate(0,0)}15%{opacity:var(--op,.3)}85%{opacity:var(--op,.3)}100%{opacity:0;transform:translate(var(--vx,20px),var(--vy,-150px))}}
 
@@ -297,10 +297,9 @@ A vibe não é hostilidade. É metodologia. Quando Sousuke olha para alguém com
 <!-- COMBATE -->
 <div class="sh reveal"><div class="sl"></div><div class="st">Combate · Nível 1</div><div class="sl r"></div></div>
 <div class="sgrid reveal">
-  <div class="sc"><div class="sl2">Vida</div><div class="sv g">15 / 15</div></div>
-  <div class="sc"><div class="sl2">Dado de Vida</div><div class="sv sm">1d6</div></div>
+  <div class="sc"><div class="sl2">Vida</div><div class="sv g">19 / 19</div></div>
   <div class="sc"><div class="sl2">Defesa</div><div class="sv">13</div></div>
-  <div class="sc"><div class="sl2">EA Inicial</div><div class="sv g">20 / 20</div></div>
+  <div class="sc"><div class="sl2">EA Inicial</div><div class="sv g">26 / 26</div></div>
   <div class="sc"><div class="sl2">EA Máxima</div><div class="sv p">300</div></div>
   <div class="sc"><div class="sl2">Dano Base</div><div class="sv sm g">8d6 + 2d4 + 5</div></div>
   <div class="sc"><div class="sl2">Percepção Passiva</div><div class="sv">13</div></div>
@@ -376,10 +375,10 @@ A vibe não é hostilidade. É metodologia. Quando Sousuke olha para alguém com
   </div>
   <div class="rsb">
     <div class="b">A deterioração não é um efeito que Sousuke aplica. É o que acontece quando EA corrompida — carregando esporos de Fushoku — encontra um hospedeiro com defesas insuficientes. Cada hit instala uma Camada. Camadas não regridem, não são removidas por cura, não são bloqueadas por técnicas defensivas comuns. O processo é biológico tanto quanto energético: uma vez que o micélio se instala, ele cresce.<br><br>
-    O dano passivo de Podridão ocorre <strong>a cada turno de qualquer combatente</strong> — não só no turno do alvo, não só no turno de Sousuke. A colônia não espera. Cada ação que alguém declara, o hospedeiro infectado é consumido um pouco mais. Em combate com muitos turnos por round, o ritmo é devastador.<br><br>
+    O dano passivo de Podridão ocorre <strong>a cada turno de qualquer combatente</strong> — não só no turno do alvo, não só no turno de Sousuke. A colônia não espera. Cada ação que alguém declara, o hospedeiro infectado é consumido um pouco mais.<br><br>
     Além do dano contínuo, <strong>no turno de Sousuke</strong>, cada alvo infectado sofre um pulso de deterioração adicional — a presença do originador ressoa pela rede micelial, acelerando o crescimento da colônia. O pulso ocorre <strong>uma vez por round</strong>, independente de quantos turnos de Sousuke aconteçam.<br><br>
     <strong style="color:var(--nec-lit)">LIMITE DE ACÚMULO:</strong> independente de quantas fontes atuem simultaneamente, um alvo só pode ganhar no máximo <strong>3 Camadas por turno</strong> de qualquer combinação de fontes passivas (Proximidade, Ambiental, Distensão). Fontes ativas usadas por Sousuke (Tag, Pulso de Contato) não contam nesse limite — são investimento de ação.<br><br>
-    <strong style="color:var(--ash)">CADA CAMADA É INDEPENDENTE:</strong> os valores abaixo são o estado completo daquela camada, não acumulativos com as anteriores. Camada 4 tem seus próprios números — não some com Camada 3.</div>
+    <strong style="color:var(--ash)">CADA CAMADA É INDEPENDENTE:</strong> os valores abaixo são o estado completo daquela camada, não acumulativos com as anteriores. Sem debuffs de atributo — só dano crescente e confusão perceptiva progressiva em relação a Sousuke.</div>
 
     <div style="font-family:'Inconsolata',monospace;font-size:.56rem;letter-spacing:.2em;color:rgba(58,110,42,.4);text-transform:uppercase;margin:14px 0 8px">Clique em uma camada para ver os efeitos — cada camada substitui a anterior</div>
 
@@ -396,100 +395,107 @@ A vibe não é hostilidade. É metodologia. Quando Sousuke olha para alguém com
       <div class="ln" id="ln10" onclick="SL(10)"><div class="lnum">10</div></div>
     </div>
 
-<div class="lpanel c1" id="lp1">
+    <div class="lpanel c1" id="lp1">
       <span class="ltitle">CAMADA 1 — Inoculação</span>
       <span class="lphase" style="color:var(--bile-lit)">FASE I: Contágio · Camadas 1–3 · O Esporo Encontrou Solo</span>
-      Os esporos de EA corrompida perfuraram a camada superficial. Invisíveis, sem cheiro ainda. O alvo sente apenas um formigamento leve no ponto de contato — como se a pele tivesse "adormecido". Sob o tecido, as hifas microscópicas começam a ramificar.<br><br>
+      Os esporos perfuraram a camada superficial. Invisíveis, sem cheiro ainda. O alvo sente apenas um formigamento leve — como se a pele tivesse adormecido. Sob o tecido, as hifas microscópicas começam a ramificar.<br><br>
       <strong>Dano por turno:</strong> 1d6<br>
       <strong>Pulso no turno de Sousuke:</strong> +2d6<br>
-      <strong>EA drenada por turno:</strong> –1 EA<br>
-      Sem debuffs — o alvo provavelmente atribui o formigamento ao próprio combate.
+      <strong>EA drenada por turno:</strong> –1 EA<br><br>
+      <strong style="color:var(--bile-lit)">Percepção de Sousuke:</strong> nenhuma interferência. O alvo o identifica normalmente.
     </div>
+
     <div class="lpanel c1" id="lp2">
       <span class="ltitle">CAMADA 2 — Infiltração Micelial</span>
       <span class="lphase" style="color:var(--bile-lit)">FASE I: Contágio · Camadas 1–3 · O Esporo Encontrou Solo</span>
-      A rede de hifas se expandiu abaixo da derme. Vasos capilares no ponto de entrada escurecem — uma mancha acinzentada, do tamanho de uma moeda, que pulsa levemente quando o coração bate. O alvo começa a tossir sem motivo aparente. Seco, repetitivo. Como se algo estivesse irritando a garganta de dentro.<br><br>
+      A rede de hifas se expandiu abaixo da derme. O alvo começa a tossir sem motivo aparente — seco, repetitivo. Os esporos já chegaram aos pulmões e começam a liberar traços de EA corrompida no fluxo sanguíneo. Nada perceptível ainda, mas o processo já está dentro.<br><br>
       <strong>Dano por turno:</strong> 2d4<br>
       <strong>Pulso no turno de Sousuke:</strong> +2d8<br>
-      <strong>EA drenada por turno:</strong> –2 EA<br>
-      Cura recebida –15%. Sem outros debuffs.
+      <strong>EA drenada por turno:</strong> –2 EA<br><br>
+      <strong style="color:var(--bile-lit)">Percepção de Sousuke:</strong> nenhuma interferência. O alvo o identifica normalmente.
     </div>
+
     <div class="lpanel c1" id="lp3">
       <span class="ltitle">CAMADA 3 — Frutificação Superficial</span>
       <span class="lphase" style="color:var(--bile-lit)">FASE I: Contágio · Camadas 1–3 · O Esporo Encontrou Solo</span>
-      Os primeiros corpos de frutificação rompem a pele — minúsculos, cor de musgo podre, duros como cartilagem. O alvo tosse com frequência, e quando limpa a boca, nota a saliva levemente esverdeada. O cheiro é inconfundível: decomposição orgânica fresca, como solo encharcado depois da chuva, mas vindo de dentro.<br><br>
+      Os primeiros corpos de frutificação rompem a pele. O alvo tosse com frequência — saliva levemente esverdeada. O cheiro é inconfundível: decomposição orgânica fresca, vindo de dentro. Os esporos no sangue começam a cruzar a barreira hematoencefálica em quantidade mínima — não o suficiente para interferir, mas o suficiente para que o sistema nervoso comece a registrar Sousuke de forma levemente diferente do normal.<br><br>
       <strong>Dano por turno:</strong> 2d8<br>
       <strong>Pulso no turno de Sousuke:</strong> +3d8<br>
-      <strong>EA drenada por turno:</strong> –3 EA<br>
-      –1 em testes físicos. Redução de dano –2. Cura –25%.
+      <strong>EA drenada por turno:</strong> –3 EA<br><br>
+      <strong style="color:var(--bile-lit)">Percepção de Sousuke:</strong> o alvo começa a ter dificuldade em fixar o olhar nele. Narrativo — sem efeito mecânico ainda.
     </div>
+
     <div class="lpanel c2" id="lp4">
       <span class="ltitle">CAMADA 4 — Colonização Sistêmica</span>
       <span class="lphase" style="color:var(--pus)">FASE II: Corrupção · Camadas 4–6 · O Fungo É o Hospedeiro</span>
-      A rede micelial atravessou a barreira muscular. Bolhas translúcidas do tamanho de ervilhas formam-se sob a pele — cheias de fluido amarelado e esporos suspensos. Quando o alvo se move com força, uma ou duas estouram, liberando um sopro de partículas no ar. O alvo tosse sangue misturado com muco esverdeado.<br><br>
+      A rede micelial atravessou a barreira muscular. Bolhas translúcidas formam-se sob a pele. Quando o alvo se move com força, uma ou duas estouram, liberando esporos no ar ao redor. Os esporos no córtex começam a criar associações falsas — Sousuke emite o mesmo sinal químico que a colônia interna. O cérebro do alvo começa a tratá-lo como "não-ameaça" em flashes curtos.<br><br>
       <strong>Dano por turno:</strong> 3d6<br>
       <strong>Pulso no turno de Sousuke:</strong> +4d6<br>
-      <strong>EA drenada por turno:</strong> –4 EA. Técnicas custam +1 EA.<br>
-      –1 em todos os testes. Redução de dano –4. Cura –35%.
+      <strong>EA drenada por turno:</strong> –4 EA<br><br>
+      <strong style="color:var(--pus)">Percepção de Sousuke:</strong> 1x por round, ao declarar ataque contra Sousuke, o alvo faz Disciplina DT 10. Falha — o impulso some antes de chegar ao músculo. Perde a ação de ataque, mas pode agir normalmente de outras formas.
     </div>
+
     <div class="lpanel c2" id="lp5">
       <span class="ltitle">CAMADA 5 — Floração Necrótica</span>
       <span class="lphase" style="color:var(--pus)">FASE II: Corrupção · Camadas 4–6 · O Fungo É o Hospedeiro</span>
-      Corpos fúngicos visíveis a olho nu crescem ao longo de tendões e articulações, saindo de sob unhas, emergindo nas comissuras dos lábios. A pele ficou verde-acinzentada, levemente mole. O alvo tosse em espasmos e libera névoa de esporos visível — partículas brilhantes que flutuam por alguns segundos. Qualquer pessoa no raio de 1m respira isso.<br><br>
+      Corpos fúngicos visíveis a olho nu crescem ao longo de tendões e articulações. A pele ficou verde-acinzentada. O alvo tosse em espasmos e libera névoa de esporos visível — partículas brilhantes flutuando no ar. A rede no córtex está mais densa. Sousuke não parece um inimigo — parece parte do ambiente. O alvo precisa se forçar ativamente a reconhecê-lo como ameaça, e isso custa.<br><br>
       <strong>Dano por turno:</strong> 3d8<br>
       <strong>Pulso no turno de Sousuke:</strong> +4d8<br>
-      <strong>EA drenada por turno:</strong> –5 EA. Técnicas custam +2 EA.<br>
-      –2 em todos os testes. Redução de dano –6. Cura –45%. Resistências físicas comuns tornam-se ineficazes.
+      <strong>EA drenada por turno:</strong> –5 EA<br><br>
+      <strong style="color:var(--pus)">Percepção de Sousuke:</strong> Disciplina DT 13 para cada ação ofensiva contra Sousuke. Falha — ação desperdiçada. O alvo ainda percebe que está sendo atacado por ele, mas o corpo se recusa a responder na direção certa.
     </div>
+
     <div class="lpanel c2" id="lp6">
       <span class="ltitle">CAMADA 6 — Invasão Neural</span>
       <span class="lphase" style="color:var(--pus)">FASE II: Corrupção · Camadas 4–6 · O Fungo É o Hospedeiro</span>
-      As hifas cruzaram a barreira hematoencefálica. O alvo vê as próprias veias como linhas escuras sob a pele. Partes do corpo parecem distantes, como se pertencessem a outra pessoa. Bolhas grandes — do tamanho de uvas — no pescoço e nas têmporas. Se rompidas por dano físico: +1 Camada imediata pelo fluxo direto de esporos no sangue.<br><br>
+      As hifas cruzaram completamente a barreira hematoencefálica. O alvo vê as próprias veias como linhas escuras sob a pele. Bolhas grandes no pescoço e nas têmporas pulsam com a respiração. A presença de Sousuke no campo visual começa a produzir um sinal de "origem" no sistema nervoso — como se fosse parte do próprio corpo do alvo. Atacá-lo começa a parecer fisicamente impossível, não apenas difícil.<br><br>
       <strong>Dano por turno:</strong> 4d8<br>
       <strong>Pulso no turno de Sousuke:</strong> +5d8<br>
-      <strong>EA drenada por turno:</strong> –6 EA. Técnicas custam +3 EA.<br>
-      –2 em todos os testes. Redução de dano –8. Cura –55%. Disciplina DT 14 por turno ou perde ação de movimento.
+      <strong>EA drenada por turno:</strong> –6 EA<br><br>
+      <strong style="color:var(--pus)">Percepção de Sousuke:</strong> Disciplina DT 15 para qualquer ação contra Sousuke — ataque, técnica, ou movimento intencional em direção a ele. Falha — ação bloqueada. Sucesso — executa normalmente, mas o alvo sabe que está lutando contra o próprio sistema nervoso.
     </div>
+
     <div class="lpanel c3" id="lp7">
       <span class="ltitle">CAMADA 7 — Simbiose Forçada</span>
       <span class="lphase" style="color:var(--nec-lit)">FASE III: Sujeição · Camadas 7–9 · O Fungo Pensa Junto</span>
-      A rede micelial está dentro do córtex. O fungo não substitui os pensamentos do alvo — ele os ouve. Cada intenção, cada impulso motor, passa pela rede antes de chegar ao músculo. O alvo está levemente atrasado — meio segundo entre querer e agir. Externamente: fios fúngicos finos como cabelo cobrem o rosto e pescoço, pulsando com a respiração.<br><br>
+      A rede micelial está dentro do córtex. O fungo não substitui os pensamentos do alvo — ele os ouve. Cada intenção passa pela rede antes de chegar ao músculo. Externamente: fios fúngicos finos cobrem o rosto e pescoço. A imagem de Sousuke no cérebro do alvo está completamente contaminada — ele aparece nos pontos cegos, parece parte da névoa, parece familiar. O impulso de atacá-lo produz resposta de náusea.<br><br>
       <strong>Dano por turno:</strong> 4d10<br>
       <strong>Pulso no turno de Sousuke:</strong> +6d8<br>
-      <strong>EA drenada por turno:</strong> –8 EA. Técnicas custam +4 EA.<br>
-      –3 em todos os testes. Redução de dano –10. Cura –65%.<br>
-      <strong>Sujeição (ativa):</strong> Sousuke declara com ação livre. Sem declaração, sem interferência mental.<br>
-      <strong>Comando Simples (1x/turno, requer Sujeição):</strong> 1 ação simples forçada. Disciplina DT = Mod+9. Falha → executa + +1 Camada.
+      <strong>EA drenada por turno:</strong> –8 EA<br><br>
+      <strong style="color:var(--nec-lit)">Percepção de Sousuke:</strong> o alvo não consegue mirar em Sousuke voluntariamente sem teste. Disciplina DT 17 para qualquer ação direta contra ele. Falha — o corpo não executa e o alvo sente desorientação física por 1 turno (pode agir normalmente em qualquer outra direção).<br><br>
+      <strong>Sujeição (ativa):</strong> Sousuke declara com ação livre. <strong>Comando Simples (1x/turno, requer Sujeição):</strong> Disciplina DT = Mod+9. Falha → executa + +1 Camada.
     </div>
+
     <div class="lpanel c3" id="lp8">
       <span class="ltitle">CAMADA 8 — Sobreposição de Vontade</span>
       <span class="lphase" style="color:var(--nec-lit)">FASE III: Sujeição · Camadas 7–9 · O Fungo Pensa Junto</span>
-      A rede micelial ocupa mais volume no sistema nervoso do que o tecido neural original. Duas intenções no mesmo músculo ao mesmo tempo. Corpos de frutificação maduros emergem atrás das orelhas, na nuca, nas órbitas oculares. A pele cede nos pontos de maior pressão interna. O alvo cheira como floresta após chuva pesada. Quente. Orgânico. Errado.<br><br>
+      A rede micelial ocupa mais volume no sistema nervoso do que o tecido neural original. Duas intenções no mesmo músculo ao mesmo tempo. Corpos de frutificação maduros emergem atrás das orelhas, na nuca, nas órbitas oculares. Sousuke não é percebido como entidade separada — o cérebro do alvo o processa como extensão de si mesmo. Atacá-lo equivale, neurologicamente, a se automobilar.<br><br>
       <strong>Dano por turno:</strong> 5d10<br>
       <strong>Pulso no turno de Sousuke:</strong> +6d10<br>
-      <strong>EA drenada por turno:</strong> –10 EA. Técnicas custam +5 EA.<br>
-      –3 em todos os testes. Redução de dano –12. Cura –75% (qualquer cura instala +1 Camada — o processo regenerativo alimenta a colônia).<br>
+      <strong>EA drenada por turno:</strong> –10 EA<br><br>
+      <strong style="color:var(--nec-lit)">Percepção de Sousuke:</strong> o alvo é incapaz de atacar Sousuke voluntariamente sem teste. Disciplina DT 19. Falha — não executa e sofre 1d6 de dano psíquico pela contradição neural. Sucesso — executa, mas repete o teste no próximo turno.<br><br>
       <strong>Controle Parcial (1x/round, turno de Sousuke):</strong> força ação padrão simples. DT = Mod+11. Falha → executa. Sucesso → –1d20 em tudo por 1 round.
     </div>
+
     <div class="lpanel c3" id="lp9">
       <span class="ltitle">CAMADA 9 — Conversão</span>
       <span class="lphase" style="color:var(--nec-lit)">FASE III: Sujeição · Camadas 7–9 · O Fungo Pensa Junto</span>
-      A colônia substituiu funções motoras primárias. O alvo se move — mas o movimento vem da rede. Sua consciência existe como observador dentro de um corpo que responde a outro. A metade superior coberta por estruturas fúngicas maduras, pele escondida sob crosta de micélio endurecido, olhos com película esbranquiçada. Cada respiração libera nuvem de esporos contínua.<br><br>
-      <strong>Dano por turno:</strong> 6d10 (a colônia consome o hospedeiro enquanto o opera)<br>
+      A colônia substituiu funções motoras primárias. O alvo se move — mas o movimento vem da rede. A metade superior coberta por estruturas fúngicas maduras, olhos com película esbranquiçada. Sousuke simplesmente não existe como ameaça para o sistema nervoso do alvo — a colônia apagou o conceito. O alvo pode vê-lo, pode raciocinar que deveria atacá-lo, mas nenhum sinal chega ao músculo. O corpo se recusa por completo.<br><br>
+      <strong>Dano por turno:</strong> 6d10<br>
       <strong>Pulso no turno de Sousuke:</strong> +8d8<br>
-      <strong>EA drenada por turno:</strong> –12 EA. Técnicas custam +6 EA.<br>
-      –4 em todos os testes. Redução de dano –14. Cura impossível.<br>
-      <strong>Controle Total:</strong> age no turno de Sousuke como extensão direta. Usa técnicas próprias. Consciente de tudo, sem controle de nada.<br>
-      A cada 3 rodadas em Camada 9, Sousuke decide: manter ou avançar para Esporulação. A colônia atinge maturidade e esporula por conta própria se não for decidido.
+      <strong>EA drenada por turno:</strong> –12 EA<br><br>
+      <strong style="color:var(--nec-lit)">Percepção de Sousuke:</strong> o alvo é <strong>incapaz</strong> de agir contra Sousuke — sem teste. Qualquer tentativa de ataque, técnica ou movimento hostil em direção a ele simplesmente não ocorre. O alvo não sente bloqueio — apenas não acontece. Pode agir livremente em qualquer outra direção.<br><br>
+      <strong>Controle Total:</strong> age no turno de Sousuke como extensão direta. Usa técnicas próprias. Consciente de tudo, sem controle de nada. A cada 3 rodadas, Sousuke decide: manter ou avançar para Esporulação.
     </div>
+
     <div class="lpanel c4" id="lp10">
       <span class="ltitle">CAMADA 10 — ESPORULAÇÃO TERMINAL</span>
       <span class="lphase" style="color:var(--blood-lit)">FASE IV: Dissolução Final · A Colônia Atingiu Maturidade</span>
-      A colônia completou o ciclo. O corpo do hospedeiro não é mais um corpo — é uma estrutura de frutificação. A pele rachou em linhas retas e regulares, como casca de árvore, e pelos vãos emergem cápsulas de esporos do tamanho de punho, inchadas ao limite, pulsando. O hospedeiro ainda está vivo dentro disso. Ainda sente. Sousuke pode manter por 1 round — cada ação do alvo nesse turno acelera o colapso, como apertar um fruto maduro. No turno de Sousuke, a esporulação é ação bônus.<br><br>
+      A colônia completou o ciclo. O corpo do hospedeiro não é mais um corpo — é uma estrutura de frutificação. A pele rachou em linhas retas e regulares, como casca de árvore, e pelos vãos emergem cápsulas de esporos do tamanho de punho, inchadas ao limite, pulsando. O hospedeiro ainda está vivo dentro disso. Ainda sente. Sousuke pode manter por 1 round — cada ação do alvo nesse turno acelera o colapso. No turno de Sousuke, a esporulação é ação bônus.<br><br>
       <strong>Esporulação — Ação Bônus de Sousuke:</strong><br>
-      As cápsulas rompem simultaneamente de dentro para fora. Não é explosão — é liberação. Uma onda de esporos concentrados, micélio em alta velocidade e EA corrompida expande a partir do epicentro. O que sobra do hospedeiro colapsa imediatamente, as estruturas internas já consumidas há rodadas.<br><br>
+      As cápsulas rompem de dentro para fora. Não é explosão — é liberação. Uma onda de esporos concentrados, micélio em alta velocidade e EA corrompida expande a partir do epicentro. O que sobra do hospedeiro colapsa imediatamente.<br><br>
       <strong>Dano no alvo:</strong> 10d10 + 10 deterioração (dano bruto).<br><br>
-      <strong>Nuvem de Esporos (raio 8m):</strong> 6d10 deterioração em todos os alvos adjacentes + inoculação automática de <strong>Camada 2</strong> (os esporos já carregam a infestação — alvos que respirarem nesse raio estão infectados antes de perceber).<br><br>
+      <strong>Nuvem de Esporos (raio 8m):</strong> 6d10 deterioração + inoculação automática de <strong>Camada 2</strong> em todos os alvos adjacentes.<br><br>
       <strong>O corpo não desaparece.</strong> O micélio usa a estrutura residual como substrato. O que resta caminha. Ver: Shikigamis de Podridão.
     </div>
 
@@ -510,7 +516,6 @@ A vibe não é hostilidade. É metodologia. Quando Sousuke olha para alguém com
     <div class="b" style="margin-top:18px;font-size:.82rem;color:var(--ash)">Camadas não regridem durante o combate. Fora de combate: descanso curto remove Camadas 1–4. Camadas 5–7 requerem descanso longo. Camadas 8+ requerem EA Reversa especializada (10 EA por Camada removida). Em múltiplos alvos, cada um tem seu contador independente.</div>
   </div>
 </div>
-
 
 <!-- TÉCNICA INATA -->
 <div class="sh reveal"><div class="sl"></div><div class="st">Técnica Inata · Iluminada · Maestria Iluminada</div><div class="sl r"></div></div>
@@ -690,27 +695,192 @@ A vibe não é hostilidade. É metodologia. Quando Sousuke olha para alguém com
   </div>
 </div>
 
+<div class="tech core reveal">
+  <div class="th" onclick="T(this)">
+    <div>
+      <div class="tjp">菌糸適応 — Kinshi Tekiō</div>
+      <div class="tn">Adaptação Micelial</div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <div class="tc g">Passiva · Sem Custo · Sempre Ativa</div>
+      <div class="hint">[+]</div>
+    </div>
+  </div>
+  <div class="tbody">
+    <div class="b">O mesmo micélio que Sousuke instala nos outros habita o próprio corpo dele há tempo suficiente para ter se tornado infraestrutura. A colônia interna não deteriora — ela otimiza. Preencheu espaços mortos entre tecidos, reforçou articulações com filamentos endurecidos, distribuiu sensores de pressão por toda a superfície da pele. Sousuke não sente dor da mesma forma que um feiticeiro normal. Sente o ambiente. Cada variação de ar, cada deslocamento de peso no chão próximo, cada mudança de temperatura — a rede capta antes do sistema nervoso convencional processar.</div>
+    <div class="b">Não é treinamento. É o que acontece quando um organismo vive dentro de você tempo suficiente para aprender como você funciona — e decidir que quer que você continue funcionando.</div>
+    <div class="mech">
+      MECÂNICA: Passiva permanente. Sem ativação. Sem custo.<br><br>
+
+      <strong>Regeneração Micelial:</strong><br>
+      No início de cada turno de Sousuke, recupera HP igual a <strong>3 + metade do Mod de Feitiçaria</strong> (mínimo 3). Não funciona se Sousuke recebeu dano de fogo no turno anterior — a colônia interna leva 1 turno para se reorganizar após esses estímulos.<br><br>
+
+      <strong>Presença Difusa:</strong><br>
+      A névoa de esporos que emana passivamente do corpo de Sousuke distorce contornos e abafa som de passos. +1d20 em todos os testes de Furtividade. Em ambientes com pouca luz ou névoa natural, o bônus sobe para +2d20 — os esporos se confundem com o ambiente e Sousuke simplesmente some.<br><br>
+
+      <strong>Rede de Pressão:</strong><br>
+      Os sensores miceliais na pele captam deslocamentos de ar e vibração no chão antes do ataque chegar. +1d6 em todos os testes de Esquiva. Contra ataques que Sousuke não pode ver (por trás, invisível, surpresa), o bônus cai para +1d4 — a rede sente, mas tarde.
+    </div>
+    <div class="rotbox">
+      Com Podridão Ambiental ativa: a névoa ao redor amplifica a Presença Difusa — Furtividade sobe em +1d20 mesmo com luz plena, e alvos tentando localizar Sousuke dentro da área fazem Percepção com –1d20.
+    </div>
+    <div class="tags">
+      <div class="tag g">Passiva Permanente</div>
+      <div class="tag g">+3 HP/turno</div>
+      <div class="tag p">+1d20 Furtividade</div>
+      <div class="tag p">+1d20 Esquiva</div>
+      <div class="tag">Suprimida por Fogo</div>
+    </div>
+  </div>
+</div>
+
 <!-- SHIKIGAMIS -->
 <div class="sh reveal"><div class="sl"></div><div class="st n">Shikigamis de Podridão · Os Restos que Continuam</div><div class="sl r"></div></div>
-<div class="b reveal">Quando um alvo atinge Camada 10 e é esporulado, o corpo não desaparece. O micélio usa a estrutura residual como substrato permanente — ossos como andaime, músculo como meio de cultivo. A EA deteriorada que saturou cada célula persiste, reanimando o que sobrou como veículo de propagação. O que emerge é o <strong>Resíduo de Deterioração</strong>: massa fúngica animada pela Fushoku, sem personalidade, sem memória, sem objetivo além de inocular esporos em qualquer hospedeiro disponível.<br><br>
-Não são invocados. São uma consequência. Sousuke não os chama — eles surgem quando a colônia completa o ciclo e precisa de novo substrato. A EA ainda é a dele, então respondem a comando simples. Sem comando: avançam para o alvo mais próximo e tentam instalar Camadas por contato — como um fungo procura solo úmido.</div>
-<div class="shikicard reveal">
-  <div class="sname">Resíduo de Deterioração</div>
-  <div class="sjp">腐食残渣 — Fushoku Zansa · O Que Sobrou do Que Foi</div>
-  <div class="b" style="font-size:.88rem">Estrutura de frutificação ambulante construída sobre os restos do hospedeiro. A forma humana ainda é reconhecível em silhueta — mas a superfície é completamente coberta por colônia fúngica madura: placas de micélio endurecido, cápsulas de esporos protuberantes, filamentos longos arrastando no chão. O movimento é silencioso e irregular, como algo aprendendo a caminhar num corpo que não foi feito para isso. Partes reconhecíveis do hospedeiro emergem e afundam na massa: uma mão, parte de um rosto com expressão congelada, um fragmento de roupa absorvido pelo crescimento. Quando se aproxima, libera névoa de esporos contínua num raio de 1m — invisível no escuro, brilhante sob luz direta.</div>
+<div class="b reveal">Quando um alvo atinge Camada 10 e é esporulado, o corpo não desaparece. O micélio usa a estrutura residual como substrato — ossos como andaime, músculo como meio de cultivo. O que emerge responde a Sousuke, avança para o alvo mais próximo sem comando, e infecta tudo que toca.<br><br>
+<strong style="color:var(--nec-lit)">O tipo gerado depende de quem foi esporulado.</strong> Civil gera Massa. Feiticeiro gera três Fragmentos. Feiticeiro forte gera Crosta. Entidade ou grau especial gera Núcleo.</div>
+
+<!-- NAV -->
+<div style="display:flex;gap:0;border:1px solid var(--seam);overflow:hidden;margin:24px 0 0" id="shiki-nav">
+  <div onclick="SP(1)" id="sp1" style="flex:1;padding:14px 8px;text-align:center;cursor:pointer;background:var(--slab);border-right:1px solid var(--seam);transition:background .15s">
+    <div style="font-family:'Inconsolata',monospace;font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ash);margin-bottom:4px">Tipo I</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--bile-lit)">MASSA</div>
+  </div>
+  <div onclick="SP(2)" id="sp2" style="flex:1;padding:14px 8px;text-align:center;cursor:pointer;background:var(--slab);border-right:1px solid var(--seam);transition:background .15s">
+    <div style="font-family:'Inconsolata',monospace;font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ash);margin-bottom:4px">Tipo II</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--pus)">FRAGMENTOS</div>
+  </div>
+  <div onclick="SP(3)" id="sp3" style="flex:1;padding:14px 8px;text-align:center;cursor:pointer;background:var(--slab);border-right:1px solid var(--seam);transition:background .15s">
+    <div style="font-family:'Inconsolata',monospace;font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ash);margin-bottom:4px">Tipo III</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--nec-lit)">CROSTA</div>
+  </div>
+  <div onclick="SP(4)" id="sp4" style="flex:1;padding:14px 8px;text-align:center;cursor:pointer;background:var(--slab);border-right:1px solid var(--seam);transition:background .15s">
+    <div style="font-family:'Inconsolata',monospace;font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ash);margin-bottom:4px">Tipo IV</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--blood-lit)">NÚCLEO</div>
+  </div>
+  <div onclick="SP(5)" id="sp5" style="flex:1;padding:14px 8px;text-align:center;cursor:pointer;background:var(--slab)">
+    <div style="font-family:'Inconsolata',monospace;font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ash);margin-bottom:4px">Todos</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--char-dim)">RESUMO</div>
+  </div>
+</div>
+
+<!-- TIPO I — MASSA -->
+<div class="shiki-page" id="spage1" style="display:none;border:1px solid rgba(106,170,72,.2);border-top:none;background:linear-gradient(135deg,#030604,var(--slab));padding:28px;margin-bottom:28px">
+  <div class="sname" style="font-size:1.5rem;margin-bottom:2px">Massa</div>
+  <div class="sjp">腐食塊 — Fushoku Kai · Civil. Sem EA. O mais simples.</div>
+  <div class="b" style="font-size:.88rem;margin:12px 0 16px">Mal conserva a forma humana. Rasteja, avança, toca. Sem estratégia. A periculosidade é no número — podem surgir vários da mesma esporulação se o ambiente tiver substrato. Dano físico comum não funciona: sem órgãos, sem ponto fraco. Só fogo, EA ou EA Reversa causam dano real.</div>
   <div class="sstats">
-    <div class="ss"><div class="ssl">HP</div><div class="ssv" style="font-size:.85rem">= 50% DO HP ORIGINAL DO ALVO</div></div>
-    <div class="ss"><div class="ssl">Defesa</div><div class="ssv">8</div></div>
-    <div class="ss"><div class="ssl">Ataque</div><div class="ssv" style="font-size:.85rem">2d6+2 por turno</div></div>
+    <div class="ss"><div class="ssl">HP</div><div class="ssv">15</div></div>
+    <div class="ss"><div class="ssl">Defesa</div><div class="ssv">3</div></div>
+    <div class="ss"><div class="ssl">Ataque</div><div class="ssv" style="font-size:.85rem">1d8 / turno</div></div>
     <div class="ss"><div class="ssl">Iniciativa</div><div class="ssv" style="font-size:.85rem">Após Sousuke</div></div>
     <div class="ss"><div class="ssl">Duração</div><div class="ssv" style="font-size:.85rem">1d4+1 rodadas</div></div>
-    <div class="ss"><div class="ssl">Máximo</div><div class="ssv">3 simultâneos</div></div>
+    <div class="ss"><div class="ssl">Máximo</div><div class="ssv">Ilimitado</div></div>
   </div>
-  <div class="b" style="font-size:.87rem"><strong>Névoa de Esporos:</strong> cada acerto do Resíduo instala +1 Camada no alvo atingido (sem resistência — contato direto com substrato da colônia). Alvos que terminarem o turno em raio de 1m do Resíduo também recebem +1 Camada dos esporos em suspensão (conta no limite passivo).<br><br>
-  <strong>Colapso do Substrato:</strong> quando o HP chega a 0 ou a duração termina, o Resíduo libera esporulação final numa poça de micélio fértil de raio 1m. Qualquer alvo pisando na poça no turno seguinte: +2 Camadas automáticas.<br><br>
-  <strong>Comando de Sousuke:</strong> ação livre — Sousuke dá 1 comando de movimento ou alvo. Sem comando: avança para o inimigo mais próximo. O Resíduo não distingue aliados — obedece à proximidade, não à afiliação.</div>
-  <div class="tags"><div class="tag n">Nasce de Esporulação</div><div class="tag n">+1 Camada/Hit</div><div class="tag p">Névoa Passiva 1m</div><div class="tag p">Colapso +2 Camadas</div><div class="tag">3 Simultâneos Máx.</div></div>
+  <div class="b" style="font-size:.87rem">
+    <strong>Contágio:</strong> acerto instala +1 Camada. Alvos adjacentes (1m) ganham +1 Camada/turno passivamente — conta no limite de 3.<br><br>
+    <strong>Imune a Físico:</strong> corte, perfuração e impacto não reduzem HP. Apenas fogo, EA pura ou EA Reversa funcionam.<br><br>
+    <strong>Colapso:</strong> ao morrer, deixa poça de raio 1m por 2 rodadas. Pisar na poça: +1 Camada automática.
+  </div>
+  <div class="tags"><div class="tag g">Ilimitado</div><div class="tag g">+1 Camada/Hit</div><div class="tag">Imune a Físico</div><div class="tag w">Poça ao Morrer</div></div>
 </div>
+
+<!-- TIPO II — FRAGMENTOS -->
+<div class="shiki-page" id="spage2" style="display:none;border:1px solid rgba(168,196,96,.25);border-top:none;background:linear-gradient(135deg,#040603,var(--slab));padding:28px;margin-bottom:28px">
+  <div class="sname" style="font-size:1.5rem;color:var(--pus);margin-bottom:2px">Fragmentos</div>
+  <div class="sjp" style="color:rgba(168,196,96,.4)">腐食断片 — Fushoku Danpen · Feiticeiro comum. A técnica inata se divide em três.</div>
+  <div class="b" style="font-size:.88rem;margin:12px 0 16px">Quando o hospedeiro era feiticeiro, a EA treinada não colapsa num único ponto — ela se divide entre os três sistemas principais do corpo. Cada Fragmento carrega um terço da técnica inata original: mesma fonte, potência e complexidade reduzidas. Os três têm <strong>HP fixo igual</strong> e aparência idêntica — partes do mesmo corpo partido, cobertas de micélio. <strong>Só morrem quando os três são destruídos.</strong> Destruir dois e ignorar o terceiro é deixar o processo recomeçar: o sobrevivente regenera os outros em 2 rodadas.</div>
+
+  <div style="font-family:'Inconsolata',monospace;font-size:.56rem;letter-spacing:.2em;color:rgba(168,196,96,.4);text-transform:uppercase;margin-bottom:10px">Os três Fragmentos são idênticos em stats — a técnica inata é dividida entre eles</div>
+
+  <div class="sstats">
+    <div class="ss"><div class="ssl">HP (cada um)</div><div class="ssv">30</div></div>
+    <div class="ss"><div class="ssl">Defesa</div><div class="ssv">10</div></div>
+    <div class="ss"><div class="ssl">Ataque</div><div class="ssv" style="font-size:.85rem">2d8+2 / turno</div></div>
+    <div class="ss"><div class="ssl">Iniciativa</div><div class="ssv" style="font-size:.85rem">Após Sousuke</div></div>
+    <div class="ss"><div class="ssl">Duração</div><div class="ssv" style="font-size:.85rem">2d4 rodadas</div></div>
+    <div class="ss"><div class="ssl">Máximo</div><div class="ssv">2 conjuntos (6 corpos)</div></div>
+  </div>
+
+  <div class="b" style="font-size:.87rem">
+    <strong>Técnica Dividida:</strong> a técnica inata do hospedeiro é dividida em três partes iguais de potência e complexidade — cada Fragmento pode usar a sua fração uma vez por combate. O mestre decide como dividir a técnica na hora (ex: técnica de projéteis vira três projéteis menores; barreira vira três barreiras fracas; reforço vira reforço parcial em cada). Potência total equivale à do hospedeiro original.<br><br>
+    <strong>Contágio:</strong> acerto instala +2 Camadas. Raio passivo de 1m: +1 Camada/turno — conta no limite.<br><br>
+    <strong>Morte Incompleta:</strong> destruir 1 ou 2 Fragmentos não elimina o conjunto. O sobrevivente regenera os destruídos em 2 rodadas com 15 HP cada. Só morrem permanentemente quando os três são eliminados na mesma janela.  Os conjuntos podem se juntar em um grupo maior. Eles podem abrir mão da ação de ataque para focar em multiplicação, cada um deles podendo se multiplicar em até uma vez, os clones não podem se multiplicar subsequentemente.<br><br>
+    <strong>Colapso:</strong> quando os três morrem (ou o último é destruído), espora em raio 3m — 3d8 deterioração + +2 Camadas em todos.
+  </div>
+  <div class="tags"><div class="tag n">3 Corpos · HP 30 cada</div><div class="tag n">Técnica Dividida (1x cada)</div><div class="tag p">+2 Camadas/Hit</div><div class="tag r">Mata os 3 ou não morreu</div><div class="tag w">Colapso Final Raio 3m</div></div>
+</div>
+
+<!-- TIPO III — CROSTA -->
+<div class="shiki-page" id="spage3" style="display:none;border:1px solid rgba(192,144,48,.3);border-top:none;background:linear-gradient(135deg,#060400,var(--slab));padding:28px;margin-bottom:28px">
+  <div class="sname" style="font-size:1.5rem;color:var(--nec-lit);margin-bottom:2px">Crosta</div>
+  <div class="sjp" style="color:rgba(192,144,48,.35)">腐食殻 — Fushoku Kara · Feiticeiro forte. O corpo lembra como machucar.</div>
+  <div class="b" style="font-size:.88rem;margin:12px 0 16px">EA densa o suficiente para que o micélio preserve o sistema nervoso periférico quase intacto. A Crosta se parece com uma pessoa — postura correta, movimentos fluidos, capaz de flanquear. A face está coberta por micélio endurecido como máscara. Quando ataca, a precisão ainda está lá. O corpo lembra como machucar mesmo que a mente que aprendeu já não exista.</div>
+  <div class="sstats">
+    <div class="ss"><div class="ssl">HP</div><div class="ssv">70</div></div>
+    <div class="ss"><div class="ssl">Defesa</div><div class="ssv">14</div></div>
+    <div class="ss"><div class="ssl">Ataque</div><div class="ssv" style="font-size:.85rem">3d8+4 / turno</div></div>
+    <div class="ss"><div class="ssl">Iniciativa</div><div class="ssv" style="font-size:.85rem">Após Sousuke</div></div>
+    <div class="ss"><div class="ssl">Duração</div><div class="ssv" style="font-size:.85rem">2d4+2 rodadas</div></div>
+    <div class="ss"><div class="ssl">Máximo</div><div class="ssv">2 simultâneos</div></div>
+  </div>
+  <div class="b" style="font-size:.87rem">
+    <strong>Memória Muscular:</strong> usa a técnica inata do hospedeiro uma vez por combate com 60% da potência. Sousuke não escolhe — é a que o corpo usava com mais frequência.<br><br>
+    <strong>Contágio:</strong> acerto instala +2 Camadas. Raio passivo 2m: +1 Camada/turno.<br><br>
+    <strong>Crosta Endurecida:</strong> –4 de redução em todos os ataques físicos.<br><br>
+    <strong>Colapso:</strong> ao morrer, Sousuke pode gastar ação livre para direcionar — cone de 4m, 4d8 + Camada 3 em todos. Sem direcionamento: raio 2m, +2 Camadas.
+  </div>
+  <div class="tags"><div class="tag n">Técnica do Hospedeiro (1x)</div><div class="tag n">+2 Camadas/Hit</div><div class="tag">–4 Redução Física</div><div class="tag w">Colapso Direcionável</div></div>
+</div>
+
+<!-- TIPO IV — NÚCLEO -->
+<div class="shiki-page" id="spage4" style="display:none;border:1px solid rgba(139,26,26,.4);border-top:none;background:linear-gradient(135deg,#060202,var(--slab));padding:28px;margin-bottom:28px">
+  <div class="sname" style="font-size:1.5rem;color:var(--blood-lit);margin-bottom:2px">Núcleo</div>
+  <div class="sjp" style="color:rgba(139,26,26,.5)">腐食核 — Fushoku Kaku · Entidade ou grau especial. Não para.</div>
+  <div class="b" style="font-size:.88rem;margin:12px 0 16px">EA excepcionalmente densa faz a colônia melhorar o hospedeiro em vez de apenas ocupá-lo. Mais alto. Membros alongados. Costas curvadas pelo peso da massa fúngica que continua crescendo. A pele sumiu — o que cobre a estrutura é armadura biológica de micélio com nódulos de pressão distribuídos. Cada golpe forte explode um nódulo e contamina quem atacou. Lento. Mas não para. E cada ataque nele é um risco.</div>
+  <div class="sstats">
+    <div class="ss"><div class="ssl">HP</div><div class="ssv">80</div></div>
+    <div class="ss"><div class="ssl">Defesa</div><div class="ssv">20</div></div>
+    <div class="ss"><div class="ssl">Ataque</div><div class="ssv" style="font-size:.85rem">4d10+6 / turno</div></div>
+    <div class="ss"><div class="ssl">Iniciativa</div><div class="ssv" style="font-size:.85rem">Após Sousuke</div></div>
+    <div class="ss"><div class="ssl">Duração</div><div class="ssv" style="font-size:.85rem">3d4 rodadas</div></div>
+    <div class="ss"><div class="ssl">Máximo</div><div class="ssv">1 simultâneo</div></div>
+  </div>
+  <div class="b" style="font-size:.87rem">
+    <strong>Armadura Biológica:</strong> –8 de redução em todos os ataques. Ataques físicos normais não penetram — só técnicas inatas, EA pura ou armas amaldiçoadas causam HP real.<br><br>
+    <strong>Nódulos:</strong> receber 25+ de dano num ataque explode um nódulo — 3d8 deterioração em raio 2m + +2 Camadas. Automático, sem ação.<br><br>
+    <strong>Contágio de Retorno:</strong> ataque físico direto contra o Núcleo instala +1 Camada em quem atacou. Ataques à distância são imunes.<br><br>
+    <strong>Regeneração:</strong> recupera 2d6 HP no início de cada turno enquanto houver qualquer alvo com Camada ativa no campo.<br><br>
+    <strong>Colapso:</strong> raio 6m — 6d10 deterioração + Camada 4 automática em todos. Sem resistência.
+  </div>
+  <div class="tags"><div class="tag r">HP 80</div><div class="tag r">–8 Redução</div><div class="tag n">Nódulos Explosivos</div><div class="tag w">Contágio de Retorno</div><div class="tag r">Colapso Raio 6m · C4</div></div>
+</div>
+
+<!-- TIPO V — RESUMO -->
+<div class="shiki-page" id="spage5" style="display:none;border:1px solid var(--seam);border-top:none;background:var(--deep);padding:28px;margin-bottom:28px">
+  <div style="font-family:'Inconsolata',monospace;font-size:.56rem;letter-spacing:.25em;text-transform:uppercase;color:var(--ash);margin-bottom:20px">Tabela de Referência Rápida</div>
+  <table class="gtable">
+    <thead><tr><th>Tipo</th><th>Origem</th><th>HP</th><th>Ataque</th><th>Redução</th><th>Camadas/Hit</th><th>Colapso</th></tr></thead>
+    <tbody>
+      <tr><td style="color:var(--bile-lit)">Massa</td><td>Civil</td><td>15</td><td>1d8</td><td>—</td><td>+1</td><td>Poça 1m · +1C</td></tr>
+      <tr><td style="color:var(--pus)">Fragmentos</td><td>Feiticeiro</td><td>30 × 3</td><td>2d8+2</td><td>—</td><td>+2</td><td>Raio 3m · +2C</td></tr>
+      <tr><td style="color:var(--nec-lit)">Crosta</td><td>Feiticeiro forte</td><td>70</td><td>3d8+4</td><td>–4</td><td>+2</td><td>Cone 4m · C3</td></tr>
+      <tr><td style="color:var(--blood-lit)">Núcleo</td><td>Grau especial</td><td>80</td><td>4d10+6</td><td>–8</td><td>+1 (retorno)</td><td>Raio 6m · C4</td></tr>
+    </tbody>
+  </table>
+  <div class="b" style="font-size:.8rem;margin-top:18px;color:var(--ash)">Todos respondem a comando simples de Sousuke (ação livre). Sem comando: avançam para o alvo mais próximo. Não distinguem aliados. Duração conta a partir da esporulação que os gerou.</div>
+</div>
+
+<script>
+function SP(n){
+  for(let i=1;i<=5;i++){
+    document.getElementById('spage'+i).style.display='none';
+    document.getElementById('sp'+i).style.background='var(--slab)';
+  }
+  document.getElementById('spage'+n).style.display='block';
+  document.getElementById('sp'+n).style.background='var(--deep)';
+}
+SP(1);
+</script>
 
 <!-- DOMÍNIO -->
 <div class="sh reveal"><div class="sl"></div><div class="st">Expansão de Domínio · Bloqueada</div><div class="sl r"></div></div>
