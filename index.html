@@ -694,7 +694,6 @@ A vibe não é hostilidade. É metodologia. Quando Sousuke olha para alguém com
     <div class="tags"><div class="tag g">2 EA ativ.</div><div class="tag p">+1 Camada/turno</div><div class="tag">Raio 10m</div><div class="tag w">Colateral em Aliados</div></div>
   </div>
 </div>
-
 <div class="tech core reveal">
   <div class="th" onclick="T(this)">
     <div>
@@ -707,32 +706,126 @@ A vibe não é hostilidade. É metodologia. Quando Sousuke olha para alguém com
     </div>
   </div>
   <div class="tbody">
-    <div class="b">O mesmo micélio que Sousuke instala nos outros habita o próprio corpo dele há tempo suficiente para ter se tornado infraestrutura. A colônia interna não deteriora — ela otimiza. Preencheu espaços mortos entre tecidos, reforçou articulações com filamentos endurecidos, distribuiu sensores de pressão por toda a superfície da pele. Sousuke não sente dor da mesma forma que um feiticeiro normal. Sente o ambiente. Cada variação de ar, cada deslocamento de peso no chão próximo, cada mudança de temperatura — a rede capta antes do sistema nervoso convencional processar.</div>
-    <div class="b">Não é treinamento. É o que acontece quando um organismo vive dentro de você tempo suficiente para aprender como você funciona — e decidir que quer que você continue funcionando.</div>
-    <div class="mech">
-      MECÂNICA: Passiva permanente. Sem ativação. Sem custo.<br><br>
 
-      <strong>Regeneração Micelial:</strong><br>
-      No início de cada turno de Sousuke, recupera HP igual a <strong>3 + metade do Mod de Feitiçaria</strong> (mínimo 3). Não funciona se Sousuke recebeu dano de fogo no turno anterior — a colônia interna leva 1 turno para se reorganizar após esses estímulos.<br><br>
+    <div class="b">O mesmo micélio que Sousuke instala nos outros habita o próprio corpo dele há tempo suficiente para ter se tornado infraestrutura. A colônia interna não deteriora — ela otimiza. Preencheu espaços mortos entre tecidos, reforçou articulações com filamentos endurecidos, distribuiu sensores de pressão por toda a superfície da pele. Sousuke não sente dor da mesma forma que um feiticeiro normal. Sente o ambiente. Cada variação de ar, cada deslocamento de peso no chão próximo, cada mudança de temperatura — a rede capta antes do sistema nervoso convencional processar.<br><br>
+    A mesma rede que lê o ambiente lê os hospedeiros. Os esporos que instala nos outros são extensões da colônia interna — o que coletam no córtex de um alvo eventualmente retorna. Memória, padrão de EA, forma de se apresentar ao mundo. A colônia aprende. E guarda.</div>
 
-      <strong>Presença Difusa:</strong><br>
-      A névoa de esporos que emana passivamente do corpo de Sousuke distorce contornos e abafa som de passos. +1d20 em todos os testes de Furtividade. Em ambientes com pouca luz ou névoa natural, o bônus sobe para +2d20 — os esporos se confundem com o ambiente e Sousuke simplesmente some.<br><br>
-
-      <strong>Rede de Pressão:</strong><br>
-      Os sensores miceliais na pele captam deslocamentos de ar e vibração no chão antes do ataque chegar. +1d6 em todos os testes de Esquiva. Contra ataques que Sousuke não pode ver (por trás, invisível, surpresa), o bônus cai para +1d4 — a rede sente, mas tarde.
+    <!-- NAV INTERNO -->
+    <div style="display:flex;gap:0;border:1px solid var(--seam);overflow:hidden;margin:18px 0 0">
+      <div onclick="AM(1)" id="am1" style="flex:1;padding:12px 8px;text-align:center;cursor:pointer;background:var(--deep);border-right:1px solid var(--seam);transition:background .15s">
+        <div style="font-family:'Inconsolata',monospace;font-size:.48rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ash);margin-bottom:3px">Corpo</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:.95rem;color:var(--bile-lit)">FISIONOMIA</div>
+      </div>
+      <div onclick="AM(2)" id="am2" style="flex:1;padding:12px 8px;text-align:center;cursor:pointer;background:var(--slab);transition:background .15s">
+        <div style="font-family:'Inconsolata',monospace;font-size:.48rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ash);margin-bottom:3px">Colheita</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:.95rem;color:var(--nec-lit)">ASSIMILAÇÃO</div>
+      </div>
     </div>
-    <div class="rotbox">
-      Com Podridão Ambiental ativa: a névoa ao redor amplifica a Presença Difusa — Furtividade sobe em +1d20 mesmo com luz plena, e alvos tentando localizar Sousuke dentro da área fazem Percepção com –1d20.
+
+    <!-- PÁGINA 1 — FISIONOMIA -->
+    <div id="amp1" style="border:1px solid rgba(58,110,42,.2);border-top:none;padding:20px;margin-bottom:16px">
+
+      <div style="font-family:'Inconsolata',monospace;font-size:.52rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(58,110,42,.35);margin-bottom:18px">Passiva permanente · Sem ativação · Sem custo</div>
+
+      <div style="border-left:2px solid var(--bile-mid);padding:13px 16px;margin-bottom:14px;background:rgba(0,0,0,.4)">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.06em;color:var(--bile-lit);margin-bottom:6px">REGENERAÇÃO MICELIAL</div>
+        <div style="font-family:'Inconsolata',monospace;font-size:.75rem;color:var(--char-dim);line-height:1.9">
+          No início de cada turno de Sousuke, recupera <strong style="color:var(--char)">3 + metade do Mod de Feitiçaria HP</strong> (mínimo 3).<br>
+          Suprimida por 1 turno se recebeu dano de fogo ou EA Reversa no turno anterior — a colônia leva um momento para se reorganizar.
+        </div>
+      </div>
+
+      <div style="border-left:2px solid var(--bile-mid);padding:13px 16px;margin-bottom:14px;background:rgba(0,0,0,.4)">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.06em;color:var(--bile-lit);margin-bottom:6px">PRESENÇA DIFUSA</div>
+        <div style="font-family:'Inconsolata',monospace;font-size:.75rem;color:var(--char-dim);line-height:1.9">
+          A névoa de esporos que emana passivamente distorce contornos e abafa passos.<br>
+          <strong style="color:var(--char)">+1d20 em Furtividade</strong> — rola dois d20, usa o maior.<br>
+          Em ambientes com pouca luz, névoa natural ou Podridão Ambiental ativa: <strong style="color:var(--char)">+2d20</strong> — rola três d20, usa o maior.<br>
+          Alvos tentando localizar Sousuke dentro da Podridão Ambiental rolam Percepção com <strong style="color:var(--blood-lit)">desvantagem</strong> (dois d20, usa o menor).
+        </div>
+      </div>
+
+      <div style="border-left:2px solid var(--bile-mid);padding:13px 16px;background:rgba(0,0,0,.4)">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.06em;color:var(--bile-lit);margin-bottom:6px">REDE DE PRESSÃO</div>
+        <div style="font-family:'Inconsolata',monospace;font-size:.75rem;color:var(--char-dim);line-height:1.9">
+          Sensores miceliais na pele captam deslocamentos de ar e vibração antes do ataque chegar.<br>
+          <strong style="color:var(--char)">+1d20 em Esquiva</strong> — rola dois d20, usa o maior.<br>
+          Contra ataques que Sousuke não pode ver (por trás, invisível, surpresa): sem bônus — a rede sente, mas não a tempo.
+        </div>
+      </div>
+
     </div>
+
+    <!-- PÁGINA 2 — ASSIMILAÇÃO -->
+    <div id="amp2" style="display:none;border:1px solid rgba(192,144,48,.2);border-top:none;padding:20px;margin-bottom:16px">
+
+      <div style="font-family:'Inconsolata',monospace;font-size:.52rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(192,144,48,.35);margin-bottom:18px">Ativa · Ação livre · Req. Camada 6+ no alvo</div>
+
+      <div class="b" style="font-size:.85rem;margin-bottom:18px">Os esporos instalados num hospedeiro leem os impulsos neurais enquanto habitam o córtex — padrão de EA, memória recente, hábito, forma de se mover e se apresentar. Quando Sousuke decide colher o que foi coletado, a rede transmite de volta. O alvo sente apenas um calafrio. O que ele tinha de identificável deixa de ser só dele.</div>
+
+      <div style="border-left:2px solid var(--necrosis);padding:13px 16px;margin-bottom:14px;background:rgba(0,0,0,.4)">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.06em;color:var(--nec-lit);margin-bottom:6px">GATILHOS</div>
+        <div style="font-family:'Inconsolata',monospace;font-size:.75rem;color:var(--char-dim);line-height:1.9">
+          <strong style="color:var(--char)">Na morte</strong> de alvo com Camada 6+: absorção automática disponível como reação gratuita, sem custo de EA.<br>
+          <strong style="color:var(--char)">Com alvo vivo</strong> (Camada 6+): ação livre, custa <strong style="color:var(--char)">3 EA</strong>. O alvo não percebe além de um calafrio passageiro.
+        </div>
+      </div>
+
+      <div style="border-left:2px solid var(--necrosis);padding:13px 16px;margin-bottom:14px;background:rgba(0,0,0,.4)">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.06em;color:var(--nec-lit);margin-bottom:6px">MIMETISMO DE AURA</div>
+        <div style="font-family:'Inconsolata',monospace;font-size:.75rem;color:var(--char-dim);line-height:1.9">
+          Após absorção, Sousuke pode vestir o padrão de EA do alvo como identidade ativa — ação livre, dura até o fim da cena.<br><br>
+          Com mimetismo ativo:<br>
+          — Leitura passiva de aura identifica Sousuke como o alvo absorvido.<br>
+          — Shikigamis e técnicas programadas para o alvo comportam-se da mesma forma com Sousuke.<br>
+          — Aliados do alvo que não viram o rosto de Sousuke o tratam como aliado até <strong style="color:var(--char)">Percepção DT 16</strong>.<br>
+          — Domínios que discriminam por origem incluem Sousuke enquanto o mimetismo estiver ativo.<br><br>
+          Usar técnica ofensiva ativa revela a aura real por 1 turno — a Fushoku em movimento é inconfundível.
+        </div>
+      </div>
+
+      <div style="border-left:2px solid var(--necrosis);padding:13px 16px;margin-bottom:14px;background:rgba(0,0,0,.4)">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.06em;color:var(--nec-lit);margin-bottom:6px">MEMÓRIAS ABSORVIDAS</div>
+        <div style="font-family:'Inconsolata',monospace;font-size:.75rem;color:var(--char-dim);line-height:1.9">
+          Fragmentos do que estava ativo no córtex nas últimas horas — missão em andamento, localização de aliados, segredos no pensamento recente, medos ativos. Quanto mais Camadas o alvo tinha, mais tempo os esporos estavam lendo.<br><br>
+          <strong style="color:var(--char)">Narrativo (peso principal):</strong> o mestre decide o que estava na superfície. Alvo em Camada 9 absorvido — os esporos estavam lendo sob estresse máximo por rodadas inteiras. Material excepcionalmente denso. Pode virar gancho direto de sessão.<br><br>
+          <strong style="color:var(--char)">Mecânico (peso secundário):</strong> +1d20 em Enganação e Persuasão quando diretamente relacionados ao contexto do alvo — se passar por ele, navegar os aliados dele, acessar lugares que ele frequentava. Bônus de XP ao fim da sessão se a informação foi usada de forma relevante — valor decidido pelo mestre.
+        </div>
+      </div>
+
+      <div style="border-left:2px solid var(--necrosis);padding:13px 16px;background:rgba(0,0,0,.4)">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.06em;color:var(--nec-lit);margin-bottom:6px">ARMAZENAMENTO</div>
+        <div style="font-family:'Inconsolata',monospace;font-size:.75rem;color:var(--char-dim);line-height:1.9">
+          A colônia mantém <strong style="color:var(--char)">todos os padrões simultâneos</strong>. Quanto mais padrões absorvidos, mais diferente o usuário fica, perdendo sua identidade e se tornando outra coisa ao longo do tempo.<br>
+          Os mimetismos se juntam, as personalidades são uma só, ao longo do tempo Sousuke se transforma em uma entidade híbrida.
+        </div>
+      </div>
+
+    </div>
+
     <div class="tags">
       <div class="tag g">Passiva Permanente</div>
       <div class="tag g">+3 HP/turno</div>
-      <div class="tag p">+1d20 Furtividade</div>
-      <div class="tag p">+1d20 Esquiva</div>
-      <div class="tag">Suprimida por Fogo</div>
+      <div class="tag p">Furtividade +1d20</div>
+      <div class="tag p">Esquiva +1d20</div>
+      <div class="tag n">Assimilação · C6+</div>
+      <div class="tag n">Mimetismo de Aura</div>
+      <div class="tag n">3 Padrões Armazenados</div>
+      <div class="tag">Suprimida por Fogo / EA Reversa</div>
     </div>
   </div>
 </div>
+
+<script>
+function AM(n){
+  for(let i=1;i<=2;i++){
+    document.getElementById('amp'+i).style.display='none';
+    document.getElementById('am'+i).style.background='var(--slab)';
+  }
+  document.getElementById('amp'+n).style.display='block';
+  document.getElementById('am'+n).style.background='var(--deep)';
+}
+</script>
 
 <!-- SHIKIGAMIS -->
 <div class="sh reveal"><div class="sl"></div><div class="st n">Shikigamis de Podridão · Os Restos que Continuam</div><div class="sl r"></div></div>
