@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⛩️ FOO — A Ficha</title>
+<link href="https://fonts.googleapis.com/css2?family=Rye&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inconsolata:wght@300;400;700&family=Noto+Serif+JP:wght@300;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --void:   #060400;
+  --deep:   #0e0900;
+  --surface:#161100;
+  --slab:   #1c1500;
+  --seam:   #2e2200;
+  --grit:   #3e3208;
+
+  --g1:#1e5c04; --g2:#2e8a08; --g3:#50b812; --g4:#82dc30; --g5:#b4f060;
+  --o1:#6e2200; --o2:#b84800; --o3:#e87010; --o4:#f8a830; --o5:#ffd050;
+
+  --soil:#2a1600; --dirt:#6a3c10;
+  --char:#ecddb8; --dim:#9a8860; --mute:#584e30;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--void);color:var(--char);font-family:'Libre Baskerville',serif;overflow-x:hidden}
+
+/* ── SOIL TEXTURE — organic blotches, NOT a grid ── */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 90% 55% at 50% 100%, rgba(42,22,0,.98) 0%,transparent 65%),
+    radial-gradient(ellipse 55% 70% at 0% 60%,   rgba(30,92,4,.22) 0%,transparent 55%),
+    radial-gradient(ellipse 55% 70% at 100% 40%,  rgba(30,92,4,.18) 0%,transparent 55%),
+    radial-gradient(ellipse 110% 35% at 50% 0%,   rgba(22,40,2,.7) 0%,transparent 60%),
+    radial-gradient(circle at 20% 45%, rgba(110,34,0,.08) 0%,transparent 30%),
+    radial-gradient(circle at 75% 70%, rgba(46,138,8,.06) 0%,transparent 25%),
+    radial-gradient(circle at 55% 30%, rgba(110,34,0,.05) 0%,transparent 20%);
+}
+
+/* ── CANVAS LEAVES — drawn by JS ── */
+#leafCanvas{position:fixed;inset:0;z-index:2;pointer-events:none;}
+
+/* ── VINE BORDERS (SVG, fixed left & right) ── */
+.vine{position:fixed;top:0;bottom:0;width:54px;z-index:3;pointer-events:none;overflow:hidden;}
+.vine.l{left:0;}.vine.r{right:0;transform:scaleX(-1);}
+.vine svg{position:absolute;top:0;left:0;width:100%;height:100%;}
+
+/* ── COVER ── */
+.cover{
+  min-height:100vh;position:relative;z-index:4;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:80px 70px;overflow:hidden;
+}
+
+/* big soil ring behind name */
+.soil-ring{
+  position:absolute;width:560px;height:560px;border-radius:50%;
+  background:radial-gradient(circle,rgba(46,138,8,.10) 0%,rgba(110,34,0,.12) 55%,transparent 75%);
+  top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;
+  animation:sring 9s ease-in-out infinite alternate;
+}
+@keyframes sring{0%{transform:translate(-50%,-50%) scale(1)}100%{transform:translate(-50%,-50%) scale(1.08)}}
+
+/* harvest sun burst */
+.sunburst{
+  position:absolute;width:320px;height:320px;
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  pointer-events:none;
+  background:conic-gradient(
+    transparent 0deg, rgba(248,168,48,.04) 10deg, transparent 20deg,
+    rgba(248,168,48,.06) 30deg, transparent 40deg,
+    rgba(80,184,18,.04) 50deg, transparent 60deg,
+    rgba(248,168,48,.05) 70deg, transparent 80deg,
+    rgba(80,184,18,.03) 90deg, transparent 100deg,
+    rgba(248,168,48,.04) 110deg, transparent 120deg,
+    transparent 130deg, rgba(80,184,18,.04) 140deg, transparent 150deg,
+    rgba(248,168,48,.05) 160deg, transparent 170deg,
+    transparent 180deg, rgba(80,184,18,.04) 190deg, transparent 200deg,
+    rgba(248,168,48,.04) 210deg, transparent 220deg,
+    rgba(80,184,18,.03) 230deg, transparent 240deg,
+    rgba(248,168,48,.05) 250deg, transparent 260deg,
+    rgba(80,184,18,.04) 270deg, transparent 280deg,
+    rgba(248,168,48,.04) 290deg, transparent 300deg,
+    transparent 310deg, rgba(80,184,18,.04) 320deg, transparent 330deg,
+    rgba(248,168,48,.04) 340deg, transparent 350deg, transparent 360deg
+  );
+  animation:spin 60s linear infinite;
+}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+
+/* BIG background kanji */
+.ckanji{
+  font-family:'Noto Serif JP',serif;
+  font-size:clamp(180px,28vw,400px);
+  color:var(--g1);opacity:.07;
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  user-select:none;pointer-events:none;
+  animation:kp 14s ease-in-out infinite;
+}
+@keyframes kp{
+  0%,100%{opacity:.05;transform:translate(-50%,-50%) scale(1) rotate(-1deg)}
+  50%{opacity:.1;transform:translate(-50%,-50%) scale(1.04) rotate(1deg)}
+}
+
+.cid{
+  font-family:'Inconsolata',monospace;font-size:.58rem;letter-spacing:.5em;
+  color:var(--mute);text-transform:uppercase;margin-bottom:22px;
+  position:relative;z-index:1;
+}
+
+/* NAME in Rye — warm harvest gold */
+.cname{
+  font-family:'Rye',serif;
+  font-size:clamp(5rem,18vw,11rem);
+  letter-spacing:.14em;color:var(--o4);
+  line-height:1;position:relative;z-index:1;
+  text-shadow:
+    0 0 80px rgba(232,112,16,.65),
+    0 0 160px rgba(80,184,18,.25),
+    0 5px 0 rgba(0,0,0,.9);
+  animation:npulse 8s ease-in-out infinite;
+}
+@keyframes npulse{
+  0%,100%{text-shadow:0 0 70px rgba(232,112,16,.5),0 5px 0 rgba(0,0,0,.9)}
+  50%{text-shadow:0 0 130px rgba(232,112,16,.8),0 0 80px rgba(80,184,18,.35),0 5px 0 rgba(0,0,0,.9)}
+}
+
+.csub{
+  font-family:'Inconsolata',monospace;font-size:.62rem;letter-spacing:.5em;
+  color:var(--mute);text-transform:uppercase;margin-top:10px;
+  position:relative;z-index:1;
+}
+
+/* decorative rule — crossed stems */
+.crule{
+  position:relative;z-index:1;margin:30px auto;
+  width:280px;height:20px;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.crule::before,.crule::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,transparent,var(--o2),transparent);
+}
+.crule-gem{
+  width:10px;height:10px;transform:rotate(45deg);
+  background:var(--o3);box-shadow:0 0 16px rgba(232,112,16,.7);
+}
+
+.cepitaph{
+  font-style:italic;font-size:clamp(.88rem,2vw,1.05rem);
+  color:var(--dim);text-align:center;max-width:500px;line-height:2.5;
+  position:relative;z-index:1;
+}
+.cscroll{
+  position:absolute;bottom:34px;
+  font-family:'Inconsolata',monospace;font-size:.58rem;letter-spacing:.4em;
+  color:var(--mute);text-transform:uppercase;
+  animation:bob 2.5s ease-in-out infinite;z-index:4;
+}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+
+/* ── PAGE ── */
+.page{max-width:900px;margin:0 auto;padding:0 28px 120px;position:relative;z-index:4;}
+
+/* ── SECTION HEADER — stamp style ── */
+.sh{display:flex;align-items:center;gap:14px;margin:64px 0 24px}
+.sl{flex:1;height:1px;background:linear-gradient(90deg,var(--seam),transparent)}
+.sl.r{background:linear-gradient(270deg,var(--seam),transparent)}
+.st{
+  font-family:'Inconsolata',monospace;font-size:.6rem;letter-spacing:.4em;
+  text-transform:uppercase;color:var(--g3);white-space:nowrap;
+}
+.st.h{color:var(--o3)}.st.s{color:var(--mute)}
+
+/* ── GRIDS ── */
+.sgrid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:1px;background:var(--seam);
+  border:1px solid var(--seam);
+  border-top:2px solid var(--o1);
+  margin-bottom:28px;
+}
+.sc{background:var(--slab);padding:16px 20px;transition:background .2s}
+.sc:hover{background:var(--surface)}
+.sl2{font-family:'Inconsolata',monospace;font-size:.52rem;letter-spacing:.25em;text-transform:uppercase;color:var(--mute);margin-bottom:5px}
+.sv{font-family:'Rye',serif;font-size:1.1rem;color:var(--char);line-height:1.2}
+.sv.g{color:var(--g3)}.sv.h{color:var(--o3)}.sv.gold{color:var(--o4)}.sv.sm{font-size:.82rem;font-family:'Inconsolata',monospace}
+
+.arow{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--seam);border:1px solid var(--seam);border-top:2px solid var(--g1);margin-bottom:28px}
+.ac{background:var(--slab);padding:20px 8px;text-align:center}
+.an{font-family:'Inconsolata',monospace;font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);margin-bottom:6px}
+.av{font-family:'Rye',serif;font-size:2rem;color:var(--char);line-height:1}
+.av.peak{color:var(--g3);text-shadow:0 0 18px rgba(80,184,18,.4)}
+.av.zero{color:var(--grit)}
+.anote{font-family:'Inconsolata',monospace;font-size:.52rem;color:var(--mute);margin-top:4px}
+
+/* ── BODY TEXT ── */
+.b{font-size:.92rem;line-height:2.05;color:var(--dim);margin-bottom:16px}
+.b strong{color:var(--char)}.b em{color:var(--g3);font-style:italic}.b .h{color:var(--o3)}
+.note{font-family:'Inconsolata',monospace;font-size:.7rem;color:var(--mute)}
+
+/* ── PERICIAS ── */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1px;background:var(--seam);border:1px solid var(--seam);margin-bottom:28px}
+.ps{background:var(--slab);padding:10px 16px;display:flex;justify-content:space-between;align-items:center;transition:background .2s}
+.ps:hover{background:var(--surface)}
+.psn{font-size:.82rem;color:var(--dim)}
+.psv{font-family:'Inconsolata',monospace;font-size:.72rem;color:var(--g3)}
+.psv.dim{color:var(--grit)}
+
+/* ── ORIGEM — wood-grain style ── */
+.origem{
+  border:1px solid rgba(184,72,0,.4);
+  background:linear-gradient(160deg,#0c0600 0%,var(--slab) 50%,#100800 100%);
+  overflow:hidden;margin-bottom:28px;position:relative;
+}
+/* wood grain lines */
+.origem::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(
+    88deg,transparent 0,transparent 18px,
+    rgba(184,72,0,.025) 18px,rgba(184,72,0,.025) 19px
+  );
+}
+.origem-head{padding:20px 26px 16px;border-bottom:1px solid rgba(184,72,0,.2)}
+.origem-jp{font-family:'Noto Serif JP',serif;font-size:.66rem;color:rgba(232,112,16,.35);margin-bottom:5px}
+.origem-title{font-family:'Rye',serif;font-size:1.25rem;letter-spacing:.06em;color:var(--o3);text-shadow:0 0 28px rgba(184,72,0,.35)}
+.origem-sub{font-family:'Inconsolata',monospace;font-size:.58rem;letter-spacing:.3em;color:var(--mute);margin-top:4px;text-transform:uppercase}
+.origem-body{padding:20px 26px;position:relative;z-index:1}
+.bonus-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--seam);border:1px solid var(--seam);margin-top:16px}
+.bc{background:var(--deep);padding:14px 18px}
+.bc-l{font-family:'Inconsolata',monospace;font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);margin-bottom:6px}
+.bc-v{font-size:.88rem;color:var(--o3);line-height:1.75}
+
+/* ── HARVEST SYSTEM ── */
+.harvest-sys{
+  border:1px solid rgba(46,138,8,.45);
+  background:linear-gradient(170deg,#050700 0%,var(--slab) 55%,#080600 100%);
+  overflow:hidden;margin-bottom:28px;position:relative;
+}
+.harvest-sys::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse at 8% 75%,rgba(46,138,8,.1) 0%,transparent 50%),
+    radial-gradient(ellipse at 92% 15%,rgba(232,112,16,.08) 0%,transparent 45%);
+}
+.hsh{padding:22px 28px 18px;border-bottom:1px solid rgba(46,138,8,.2)}
+.hsjp{font-family:'Noto Serif JP',serif;font-size:.66rem;color:rgba(80,184,18,.35);margin-bottom:5px}
+.hst{font-family:'Rye',serif;font-size:1.3rem;letter-spacing:.06em;color:var(--g3);text-shadow:0 0 28px rgba(46,138,8,.4)}
+.hss{font-family:'Inconsolata',monospace;font-size:.58rem;letter-spacing:.3em;color:var(--mute);margin-top:5px;text-transform:uppercase}
+.hsb{padding:22px 28px}
+
+/* turno navigator */
+.tnav{display:flex;gap:0;border:1px solid var(--seam);overflow:hidden;margin:16px 0 0}
+.tn2{flex:1;padding:10px 3px;text-align:center;border-right:1px solid var(--seam);cursor:pointer;transition:background .15s;position:relative;background:var(--deep)}
+.tn2:last-child{border-right:none}
+.tn2 .tnum{font-family:'Rye',serif;font-size:.9rem;color:var(--grit);transition:color .2s;line-height:1}
+.tn2 .tlabel{font-family:'Inconsolata',monospace;font-size:.42rem;color:var(--grit);display:block;transition:color .2s;margin-top:2px}
+.tn2::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;transform:scaleX(0);transition:transform .2s;transform-origin:center}
+.tn2.act  .tnum{color:var(--g3)}.tn2.act::after{transform:scaleX(1);background:var(--g3)}.tn2.act .tlabel{color:var(--g3)}
+.tn2.act2 .tnum{color:var(--g4)}.tn2.act2::after{transform:scaleX(1);background:var(--g4)}.tn2.act2 .tlabel{color:var(--g4)}
+.tn2.act3 .tnum{color:var(--o3)}.tn2.act3::after{transform:scaleX(1);background:var(--o3)}.tn2.act3 .tlabel{color:var(--o3)}
+.tn2.act4 .tnum{color:var(--o4);text-shadow:0 0 10px rgba(248,168,48,.5)}.tn2.act4::after{transform:scaleX(1);background:var(--o4)}.tn2.act4 .tlabel{color:var(--o4)}
+
+.tpanel{background:rgba(0,0,0,.6);border:1px solid var(--seam);border-top:none;padding:16px 20px;font-family:'Inconsolata',monospace;font-size:.75rem;line-height:1.9;display:none}
+.tpanel.show{display:block}
+.tpanel.c1{border-left:3px solid var(--g3);color:var(--g3)}
+.tpanel.c2{border-left:3px solid var(--g4);color:var(--g4)}
+.tpanel.c3{border-left:3px solid var(--o3);color:var(--o3)}
+.tpanel.c4{border-left:3px solid var(--o4);color:var(--o4)}
+.tptitle{font-family:'Rye',serif;font-size:1rem;color:var(--char);display:block;margin-bottom:4px}
+.tpsub{font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;display:block;margin-bottom:10px;opacity:.7}
+
+.juros-table{width:100%;border-collapse:collapse;margin-top:16px;font-family:'Inconsolata',monospace}
+.juros-table th{font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);padding:7px 10px;text-align:left;border-bottom:1px solid rgba(46,138,8,.12)}
+.juros-table td{font-size:.8rem;color:var(--dim);padding:8px 10px;border-bottom:1px solid rgba(46,138,8,.06)}
+.juros-table td:first-child{color:var(--g3);white-space:nowrap;width:90px}
+.juros-table td.gold{color:var(--o4);font-weight:700}
+.juros-table tr:last-child td{border-bottom:none}
+.juros-table tr:hover td{background:rgba(46,138,8,.04)}
+
+/* ── TÉCNICAS ── */
+.tech{border:1px solid var(--seam);background:var(--deep);margin-bottom:12px;overflow:hidden;transition:border-color .3s;position:relative}
+/* accent bar left — color coded per type */
+.tech::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--g1)}
+.tech.core::before{background:var(--g2)}.tech.core{border-color:rgba(46,138,8,.2)}.tech.core:hover{border-color:rgba(80,184,18,.45)}
+.tech.harv::before{background:var(--o2)}.tech.harv{border-color:rgba(110,34,0,.25)}.tech.harv:hover{border-color:rgba(184,72,0,.5)}
+.tech.seed::before{background:var(--g1)}.tech:hover::before{filter:brightness(1.5)}
+
+.th{padding:15px 22px 15px 26px;border-bottom:1px solid var(--seam);display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;cursor:pointer;user-select:none}
+.th:hover{background:rgba(46,138,8,.02)}
+.tjp{font-family:'Noto Serif JP',serif;font-size:.68rem;color:var(--mute);margin-bottom:3px}
+.tn{font-family:'Rye',serif;font-size:1rem;letter-spacing:.03em;color:var(--char)}
+.tc{font-family:'Inconsolata',monospace;font-size:.6rem;color:var(--g2);text-align:right;white-space:nowrap}
+.tc.h{color:var(--o2)}.tc.g{color:var(--g3)}
+.hint{font-family:'Inconsolata',monospace;font-size:.5rem;color:var(--mute)}
+.tbody{padding:20px 22px 20px 26px;display:none}
+.tbody.open{display:block}
+.mech{background:rgba(0,0,0,.55);border-left:3px solid var(--g1);padding:13px 15px;margin-top:13px;font-family:'Inconsolata',monospace;font-size:.78rem;color:var(--g3);line-height:1.9}
+.mech.h{border-left-color:var(--o1);color:var(--o3)}
+.mech.gold{border-left-color:var(--o2);color:var(--o4)}
+.harv-box{background:rgba(232,112,16,.06);border:1px solid rgba(232,112,16,.18);padding:11px 14px;margin-top:12px;font-family:'Inconsolata',monospace;font-size:.8rem;color:rgba(248,168,48,.75);line-height:1.85}
+.harv-box::before{content:'↳ COLHEITA — ';color:rgba(232,112,16,.4)}
+.tags{margin-top:10px;display:flex;flex-wrap:wrap;gap:5px}
+.tag{padding:2px 9px;border:1px solid var(--seam);font-family:'Inconsolata',monospace;font-size:.57rem;letter-spacing:.07em;color:var(--mute)}
+.tag.g{border-color:var(--g2);color:var(--g3)}
+.tag.h{border-color:var(--o1);color:var(--o3)}
+.tag.gold{border-color:var(--o2);color:var(--o4)}
+.tag.s{border-color:var(--dirt);color:var(--dim)}
+
+/* ── ESPANTALHO ── */
+.shikicard{border:1px solid rgba(184,72,0,.4);background:linear-gradient(150deg,#0c0600,var(--slab),#080800);padding:26px;margin-bottom:16px;position:relative;overflow:hidden}
+.shikicard::after{content:'案山子';position:absolute;right:-5px;bottom:-18px;font-family:'Noto Serif JP',serif;font-size:100px;color:var(--o1);opacity:.06;user-select:none;pointer-events:none}
+.sname{font-family:'Rye',serif;font-size:1.2rem;letter-spacing:.06em;color:var(--o3);margin-bottom:3px}
+.sjp{font-family:'Noto Serif JP',serif;font-size:.65rem;color:rgba(110,34,0,.5);margin-bottom:14px}
+.sstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1px;background:var(--seam);border:1px solid var(--seam);margin:12px 0}
+.ss{background:var(--deep);padding:10px 14px}
+.ssl{font-family:'Inconsolata',monospace;font-size:.48rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);margin-bottom:4px}
+.ssv{font-family:'Rye',serif;font-size:1rem;color:var(--o3)}
+
+/* ── DOMÍNIO — greenhouse glass panes ── */
+.domain{
+  border:1px solid rgba(232,112,16,.45);
+  background:linear-gradient(160deg,#060800,#0a0900,#080400);
+  padding:32px;position:relative;overflow:hidden;
+}
+/* glass structure lines — vertical + horizontal, NOT a uniform grid */
+.domain::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(90deg,
+      transparent 0%, transparent 32%, rgba(80,184,18,.025) 32%, transparent 33%,
+      transparent 65%, rgba(80,184,18,.02) 65%, transparent 66%,
+      transparent 100%
+    ),
+    linear-gradient(0deg,
+      transparent 0%, transparent 28%, rgba(232,112,16,.025) 28%, transparent 29%,
+      transparent 58%, rgba(232,112,16,.02) 58%, transparent 59%,
+      transparent 100%
+    );
+}
+.domain::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse at 50% 20%,rgba(232,112,16,.12) 0%,transparent 55%),
+    radial-gradient(ellipse at 15% 85%,rgba(46,138,8,.09) 0%,transparent 45%),
+    radial-gradient(ellipse at 85% 75%,rgba(46,138,8,.07) 0%,transparent 40%);
+}
+.dname{font-family:'Rye',serif;font-size:1.9rem;letter-spacing:.08em;color:var(--o4);line-height:1;margin-bottom:4px;text-shadow:0 0 60px rgba(232,112,16,.55),0 0 120px rgba(80,184,18,.25);position:relative;z-index:1}
+.djp{font-family:'Noto Serif JP',serif;font-size:.7rem;color:rgba(46,138,8,.5);margin-bottom:20px;position:relative;z-index:1}
+.domain .b,.domain .mech{position:relative;z-index:1}
+
+/* ── OBLOCK ── */
+.oblock{border:1px solid var(--seam);background:var(--deep);padding:26px;position:relative;overflow:hidden;margin-bottom:14px}
+.oblock::before{content:'植';position:absolute;right:-10px;bottom:-20px;font-family:'Noto Serif JP',serif;font-size:110px;color:var(--char);opacity:.02;user-select:none;pointer-events:none}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(12px);transition:opacity .6s,transform .6s}
+.reveal.visible{opacity:1;transform:none}
+
+/* ── FOOTNOTE ── */
+.footnote{margin-top:64px;padding-top:24px;border-top:1px solid var(--seam);font-style:italic;font-size:.78rem;color:var(--mute);text-align:center;line-height:2.4}
+
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--void)}
+::-webkit-scrollbar-thumb{background:var(--o1);border-radius:2px}
+</style>
+</head>
+<body>
+
+<!-- LEAF CANVAS -->
+<canvas id="leafCanvas"></canvas>
+
+<!-- VINE BORDERS -->
+<div class="vine l">
+<svg viewBox="0 0 54 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M27 0 C10 60 44 120 20 190 C6 240 40 300 18 370 C4 420 38 490 14 560 C2 620 36 680 22 750 C8 810 38 860 27 900" fill="none" stroke="rgba(30,92,4,.3)" stroke-width="1.5"/>
+  <!-- leaves branching off -->
+  <path d="M20 80 C6 70 2 55 14 50 C10 62 16 72 20 80Z" fill="rgba(46,138,8,.22)"/>
+  <path d="M32 155 C46 148 52 134 40 130 C44 142 40 152 32 155Z" fill="rgba(80,184,18,.18)"/>
+  <path d="M22 240 C8 234 4 218 16 215 C12 226 18 236 22 240Z" fill="rgba(46,138,8,.2)"/>
+  <path d="M30 330 C44 322 50 308 38 304 C42 316 38 326 30 330Z" fill="rgba(80,184,18,.16)"/>
+  <path d="M18 415 C4 410 0 394 12 390 C8 402 14 412 18 415Z" fill="rgba(46,138,8,.2)"/>
+  <path d="M28 510 C42 504 48 488 36 485 C40 496 36 507 28 510Z" fill="rgba(80,184,18,.18)"/>
+  <path d="M16 590 C2 584 -2 568 10 565 C6 576 12 586 16 590Z" fill="rgba(46,138,8,.18)"/>
+  <path d="M34 670 C48 663 54 648 42 644 C46 655 42 665 34 670Z" fill="rgba(80,184,18,.16)"/>
+  <path d="M20 755 C6 748 2 732 14 729 C10 740 16 750 20 755Z" fill="rgba(46,138,8,.2)"/>
+  <path d="M30 840 C44 833 50 817 38 813 C42 825 38 835 30 840Z" fill="rgba(80,184,18,.16)"/>
+</svg>
+</div>
+<div class="vine r">
+<svg viewBox="0 0 54 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M27 0 C10 60 44 120 20 190 C6 240 40 300 18 370 C4 420 38 490 14 560 C2 620 36 680 22 750 C8 810 38 860 27 900" fill="none" stroke="rgba(30,92,4,.3)" stroke-width="1.5"/>
+  <path d="M20 80 C6 70 2 55 14 50 C10 62 16 72 20 80Z" fill="rgba(46,138,8,.22)"/>
+  <path d="M32 155 C46 148 52 134 40 130 C44 142 40 152 32 155Z" fill="rgba(80,184,18,.18)"/>
+  <path d="M22 240 C8 234 4 218 16 215 C12 226 18 236 22 240Z" fill="rgba(46,138,8,.2)"/>
+  <path d="M30 330 C44 322 50 308 38 304 C42 316 38 326 30 330Z" fill="rgba(80,184,18,.16)"/>
+  <path d="M18 415 C4 410 0 394 12 390 C8 402 14 412 18 415Z" fill="rgba(46,138,8,.2)"/>
+  <path d="M28 510 C42 504 48 488 36 485 C40 496 36 507 28 510Z" fill="rgba(80,184,18,.18)"/>
+  <path d="M16 590 C2 584 -2 568 10 565 C6 576 12 586 16 590Z" fill="rgba(46,138,8,.18)"/>
+  <path d="M34 670 C48 663 54 648 42 644 C46 655 42 665 34 670Z" fill="rgba(80,184,18,.16)"/>
+  <path d="M20 755 C6 748 2 732 14 729 C10 740 16 750 20 755Z" fill="rgba(46,138,8,.2)"/>
+  <path d="M30 840 C44 833 50 817 38 813 C42 825 38 835 30 840Z" fill="rgba(80,184,18,.16)"/>
+</svg>
+</div>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="soil-ring"></div>
+  <div class="sunburst"></div>
+  <div class="ckanji">植</div>
+  <div class="cid">⛩ Golden Era · Ficha Nº003 · Feiticeiro · Iluminado</div>
+  <div class="cname">FOO</div>
+  <div class="csub">O Maior Fazendeiro da História · Uetsuke</div>
+  <div class="crule"><div class="crule-gem"></div></div>
+  <div class="cepitaph">
+    "Qualquer idiota planta batata.<br>
+    Ele planta tempo. Ele planta energia.<br>
+    Ele planta o que você não queria<br>
+    que ninguém soubesse que existia."
+  </div>
+  <div class="cscroll">▼ &nbsp; role para ver &nbsp; ▼</div>
+</div>
+
+<!-- PAGE -->
+<div class="page">
+
+<div class="sh reveal"><div class="sl"></div><div class="st">Identidade</div><div class="sl r"></div></div>
+<div class="sgrid reveal">
+  <div class="sc"><div class="sl2">Nome</div><div class="sv">Foo</div></div>
+  <div class="sc"><div class="sl2">Codinome</div><div class="sv g">O Fazendeiro</div></div>
+  <div class="sc"><div class="sl2">Classe</div><div class="sv">Feiticeiro</div></div>
+  <div class="sc"><div class="sl2">Grau Inicial</div><div class="sv g">Grau 4</div></div>
+  <div class="sc"><div class="sl2">Nível</div><div class="sv">1</div></div>
+  <div class="sc"><div class="sl2">Colégio</div><div class="sv">Kyoto</div></div>
+  <div class="sc"><div class="sl2">Técnica</div><div class="sv sm g">植付 — Uetsuke</div></div>
+  <div class="sc"><div class="sl2">Maestria</div><div class="sv gold">Iluminada</div></div>
+</div>
+
+<div class="b reveal">
+  <strong>Conceito:</strong> Foo não é um fazendeiro que tem poderes — é um feiticeiro cuja técnica inata se manifestou com o tema do plantio, e que abraçou o lore da fazenda como identidade porque, honestamente, combina. O visual é agrário: calçados enlameados, mãos com terra nas unhas, um jeito lento de observar o espaço que parece distração mas é cálculo. O combate é outro assunto. No campo dele, literalmente qualquer coisa pode virar semente. E o que é semeado cresce.
+</div>
+
+<div class="sh reveal"><div class="sl"></div><div class="st">Combate · Nível 1</div><div class="sl r"></div></div>
+<div class="sgrid reveal">
+  <div class="sc"><div class="sl2">Vida</div><div class="sv g">15 / 15</div></div>
+  <div class="sc"><div class="sl2">Dado de Vida</div><div class="sv sm">1d6</div></div>
+  <div class="sc"><div class="sl2">Defesa</div><div class="sv">13</div></div>
+  <div class="sc"><div class="sl2">EA Inicial</div><div class="sv g">20 / 20</div></div>
+  <div class="sc"><div class="sl2">EA Máxima</div><div class="sv h">300</div></div>
+  <div class="sc"><div class="sl2">Dano Base</div><div class="sv sm g">8d6 + 2d4 + 5</div></div>
+  <div class="sc"><div class="sl2">Custo Base</div><div class="sv sm">5 EA (+3/dado extra)</div></div>
+  <div class="sc"><div class="sl2">DT Resistência</div><div class="sv">Mod + 9</div></div>
+</div>
+
+<div style="border:1px solid var(--seam);background:var(--slab);padding:20px 24px;margin-bottom:28px;display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:stretch" class="reveal">
+  <div style="padding:0 20px 0 0">
+    <div style="font-family:'Inconsolata',monospace;font-size:.48rem;letter-spacing:.3em;text-transform:uppercase;color:var(--mute);margin-bottom:8px">Técnica Iluminada + Maestria Iluminada</div>
+    <div style="font-family:'Rye',serif;font-size:1.25rem;color:var(--g3);line-height:1">8d6</div>
+    <div style="font-family:'Inconsolata',monospace;font-size:.58rem;color:rgba(80,184,18,.45);margin-top:5px">6d6 base + 2d6 Maestria · +1d20 nos testes · Mod. em tempo real</div>
+  </div>
+  <div style="background:var(--seam);width:1px"></div>
+  <div style="padding:0 0 0 20px">
+    <div style="font-family:'Inconsolata',monospace;font-size:.48rem;letter-spacing:.3em;text-transform:uppercase;color:var(--mute);margin-bottom:8px">Maestria Iluminada</div>
+    <div style="font-family:'Rye',serif;font-size:1.25rem;color:var(--g3);line-height:1">+1d20</div>
+    <div style="font-family:'Inconsolata',monospace;font-size:.58rem;color:rgba(80,184,18,.45);margin-top:5px">Em todos os testes · Modificação em tempo real</div>
+  </div>
+</div>
+<div class="b reveal"><span class="note">// DANO BASE —</span> Técnica Iluminada (6d6) + Maestria Iluminada (+2d6) = <strong>8d6</strong>. Uniforme (+2d4). Proficiência Feiticeiro (+5 fixo). Total: <strong>8d6 + 2d4 + 5</strong>. Custo: 5 EA base, +3 por dado adicional além dos 8d6. Maestria Iluminada adiciona +1d20 em todos os testes e permite modificar a técnica em tempo real. DT de resistência = Mod Foo + 9.</div>
+
+<div class="sh reveal"><div class="sl"></div><div class="st">Atributos</div><div class="sl r"></div></div>
+<div class="arow reveal">
+  <div class="ac"><div class="an">Força</div><div class="av zero">1</div><div class="anote">Base</div></div>
+  <div class="ac"><div class="an">Agilidade</div><div class="av peak">3</div><div class="anote">+Def/Esq</div></div>
+  <div class="ac"><div class="an">Constituição</div><div class="av zero">1</div><div class="anote">Base</div></div>
+  <div class="ac" style="background:rgba(46,138,8,.04)"><div class="an">Inteligência</div><div class="av peak">4</div><div class="anote" style="color:var(--g3)">+1 livre</div></div>
+  <div class="ac"><div class="an">Presença</div><div class="av zero">1</div><div class="anote">Base</div></div>
+</div>
+<div class="b reveal">Distribuição: base 1+1+1+1+1, +4 livres → 3 em Inteligência, 1 em Agilidade. Foo não briga corpo a corpo e não absorve dano — ele planta e espera. Inteligência 4 no nível 1 não é comum: escala diretamente com a profundidade estratégica da Uetsuke. Quanto mais ele entende o campo, mais perigoso o campo fica.</div>
+
+<div class="sh reveal"><div class="sl"></div><div class="st h">Origem</div><div class="sl r"></div></div>
+<div class="origem reveal">
+  <div class="origem-head">
+    <div class="origem-jp">農民の子 — Nōmin no Ko</div>
+    <div class="origem-title">NPC — Filho da Terra</div>
+    <div class="origem-sub">Origem Comum · O Que Ninguém Vê Nunca É O Que Mata</div>
+  </div>
+  <div class="origem-body">
+    <div class="b"><strong>Descrição:</strong> Foo cresceu numa propriedade rural sem nenhuma conexão com o mundo jujutsu. A técnica apareceu sem aviso, sem cerimônia e sem ninguém por perto que soubesse o que significava. Ele passou dois anos plantando coisas antes de entender que o que crescia não obedecia à biologia. Chegou ao Colégio de Kyoto com terra nas botas e um caderno de campo cheio de anotações sobre o que planta o quê e em quanto tempo.</div>
+    <div class="bonus-grid">
+      <div class="bc">
+        <div class="bc-l">Benefício Mecânico</div>
+        <div class="bc-v">+5 em Furtividade. Foo é ignorado em plena visão — a aura dele não registra como ameaça até que seja tarde demais.</div>
+      </div>
+      <div class="bc">
+        <div class="bc-l">Benefício Narrativo</div>
+        <div class="bc-v">Maldições e feiticeiros subestimam Foo automaticamente. Ele parece agricultor. É agricultor. E o campo dele já está plantado há três turnos.</div>
+      </div>
+    </div>
+    <div class="b" style="margin-top:16px"><strong>Gancho de História:</strong> Alguém na propriedade rural sabia o que a técnica de Foo era antes que ele nascesse. Os campos da família crescem de forma estranha há décadas. Ninguém falou sobre isso.</div>
+  </div>
+</div>
+
+<div class="sh reveal"><div class="sl"></div><div class="st h">Item Exclusivo</div><div class="sl r"></div></div>
+<div class="oblock reveal">
+  <div class="b" style="margin-bottom:10px"><strong style="color:var(--o3)">Uniforme Amaldiçoado — Avental de Colheita</strong></div>
+  <div class="b">Um avental de trabalho rural com bolsos fundos. Visualmente não tem nada de especial — lona grossa, costuras reforçadas, manchas de terra que não saem com lavagem porque não são terra. A EA tecida no material ressoa com o ato de plantar: cada semente inserida no solo com o avental vestido carrega uma assinatura adicional que o campo reconhece. <em>+2d4 de dano permanente em todos os ataques</em> — o avental amplifica o momento da colheita, fazendo o que germinou sair com mais força do que foi enterrado.</div>
+  <div class="b" style="font-size:.8rem"><span class="note">// ITEM SECUNDÁRIO —</span> <strong>Grandes Tesouras de Podar</strong> (arma Grau III, 1d8 +5, HP 100/100). Ferramenta de colheita que funciona como arma corpo-a-corpo e é exigida por algumas técnicas específicas.</div>
+</div>
+
+<div class="sh reveal"><div class="sl"></div><div class="st">Perícias</div><div class="sl r"></div></div>
+<div class="b reveal">Feiticeiro nível 1: <strong>Feitiçaria</strong> e <strong>Iniciativa</strong> automáticas. 7 + Int(4) = <strong>11 adicionais</strong>. Total 13 com bônus +5.</div>
+<div class="pgrid reveal">
+  <div class="ps"><span class="psn">⚡ Feitiçaria</span><span class="psv">+5 (auto)</span></div>
+  <div class="ps"><span class="psn">⚡ Iniciativa</span><span class="psv">+5 (auto)</span></div>
+  <div class="ps"><span class="psn">Furtividade</span><span class="psv">+10 (origem)</span></div>
+  <div class="ps"><span class="psn">Sobrevivência</span><span class="psv">+5</span></div>
+  <div class="ps"><span class="psn">Investigação</span><span class="psv">+5</span></div>
+  <div class="ps"><span class="psn">Ocultismo</span><span class="psv">+5</span></div>
+  <div class="ps"><span class="psn">Aprendizado</span><span class="psv">+5</span></div>
+  <div class="ps"><span class="psn">Disciplina</span><span class="psv">+5</span></div>
+  <div class="ps"><span class="psn">Medicina</span><span class="psv">+5</span></div>
+  <div class="ps"><span class="psn">Intuição</span><span class="psv">+5</span></div>
+  <div class="ps"><span class="psn">Atletismo</span><span class="psv">+5</span></div>
+  <div class="ps"><span class="psn">Natureza</span><span class="psv">+5</span></div>
+  <div class="ps"><span class="psn">Esquiva</span><span class="psv">+5</span></div>
+  <div class="ps"><span class="psn">Luta</span><span class="psv dim">— sem bônus</span></div>
+  <div class="ps"><span class="psn">Tankar</span><span class="psv dim">— sem bônus</span></div>
+</div>
+<div class="sh reveal"><div class="sl"></div><div class="st">Aplicações Descobertas</div><div class="sl r"></div></div>
+
+<!-- PASSIVA: CICLO DO CAMPO -->
+<div class="tech reveal" style="border-color:rgba(80,184,18,.35);border-width:2px;">
+  <div class="th" onclick="T(this)" style="background:rgba(80,184,18,.03);">
+    <div>
+      <div class="tjp">田畑の律動 — Tahata no Ritsudō</div>
+      <div class="tn" style="color:var(--g3);">Ritmo do Campo</div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <div class="tc g">Passiva Permanente</div>
+      <div class="hint">[+]</div>
+    </div>
+  </div>
+  <div class="tbody">
+    <div class="b">A Uetsuke não separa o cultivador da lavoura — Foo <em>é</em> o campo. Enquanto há solo arado sob seus pés, seu corpo sincroniza com o ritmo de crescimento das plantas: a mesma cadência que faz uma semente dobrar de valor por turno acelera seus reflexos, distribui ações pelo turno como raízes distribuem água.</div>
+    <div class="b">Na prática: Foo opera com <strong>+2 ações bônus adicionais por turno</strong> enquanto estiver em contato com solo de campo. Não é velocidade — é ritmo. Cada ação extra tem a precisão de quem conhece exatamente onde cada semente está enterrada.</div>
+    <div class="mech">
+      PASSIVA PERMANENTE. Ativa enquanto Foo estiver em contato com solo arado.<br>
+      Efeito: +2 ações bônus adicionais no turno de Foo.<br>
+      Condição: ao menos 1m² de solo de campo sob ou imediatamente ao redor de Foo.<br>
+      Se Foo for removido do campo (teleporte, suspensão, etc.): passiva desativa até retornar.<br>
+      As ações bônus extras seguem as mesmas regras das ações bônus normais do sistema.<br>
+      Não acumula com efeitos externos que também concedam ações bônus extras.
+    </div>
+    <div class="tags">
+      <div class="tag g">Passiva</div><div class="tag g">+2 Ações Bônus/Turno</div><div class="tag h">Requer Solo de Campo</div><div class="tag s">Desativa Fora do Campo</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 1. ARAR ══ -->
+<div class="tech core reveal">
+  <div class="th" onclick="T(this)">
+    <div><div class="tjp">耕す — Tagayasu</div><div class="tn">Arar</div></div>
+    <div style="display:flex;gap:10px;align-items:center"><div class="tc g">Passivo de Toque · Ação Livre</div><div class="hint">[+]</div></div>
+  </div>
+  <div class="tbody">
+    <div class="b">Qualquer superfície que Foo toca vira solo instantaneamente. Concreto, aço, vidro, madeira — tudo se comporta como terra fértil ao contato. Sem declaração, sem custo. Ele caminha e o chão já é campo. A cada novo trecho tocado durante o movimento, 1 semente de 2 EA é plantada automaticamente por cada 3m² cobertos.</div>
+    <div class="b">A ação livre ativa expande conscientemente: raízes avançam até 8m em direção a ponto específico, cobrem área não tocada, ou criam terreno difícil entre Foo e o oponente (DT AGI 14 pra atravessar em velocidade normal).</div>
+    <div class="mech">
+      PASSIVO: toque = solo de Foo. Sem custo. Sem ação.<br>
+      Ao mover: 1 semente de 2 EA por 3m² tocado — automático.<br>
+      AÇÃO LIVRE — Expansão: raízes avançam até 8m em direção a ponto específico.<br>
+      &nbsp;&nbsp;— Cria terreno difícil: DT AGI 14 pra atravessar em velocidade normal.<br>
+      &nbsp;&nbsp;— Qualquer coisa no solo detectada: Furtividade impossível na área.
+    </div>
+    <div class="tags">
+      <div class="tag g">Passivo de Toque</div><div class="tag g">Semeadura Automática ao Mover</div><div class="tag h">Radar na Área</div><div class="tag s">Sem Custo</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 2. SEMEAR ══ -->
+<div class="tech core reveal">
+  <div class="th" onclick="T(this)">
+    <div><div class="tjp">播種 — Hashu</div><div class="tn">Semear</div></div>
+    <div style="display:flex;gap:10px;align-items:center"><div class="tc g">Variável · Ação Bônus ou Padrão</div><div class="hint">[+]</div></div>
+  </div>
+  <div class="tbody">
+    <div class="b">Foo insere qualquer objeto no solo e o declara semente. Qualquer coisa. O custo de EA é pelo tipo do objeto, não pela quantidade. A partir do plantio, os juros correm automaticamente — início de cada turno de Foo, todas as sementes ativas ganham +1 turno de juros sem gastar ação.</div>
+    <div class="b"><strong>O que pode ser semeado:</strong> vegetais e objetos físicos (1–3 EA), EA solidificada (custo = EA investida), técnicas capturadas (mestre define), shikigamis latentes (mestre define), HP voluntário de aliado (HP doado = EA na semente), maldições capturadas (variável).</div>
+    <div class="mech">
+      AÇÃO BÔNUS: 1 semente simples — vegetal ou EA até 10 pontos.<br>
+      AÇÃO PADRÃO: semeadura múltipla ou objeto complexo (técnica, shikigami).<br><br>
+      CRESCIMENTO PASSIVO: início do turno de Foo — todas sementes ativas<br>
+      &nbsp;&nbsp;ganham +1 turno de juros automaticamente. Sem ação. Sem custo.<br><br>
+      CUSTO POR TIPO:<br>
+      &nbsp;&nbsp;— Vegetal/físico: 1–3 EA por unidade.<br>
+      &nbsp;&nbsp;— EA solidificada: custo = EA investida.<br>
+      &nbsp;&nbsp;— Técnica/shikigami: mestre define.<br>
+      &nbsp;&nbsp;— HP aliado voluntário: HP doado → EA equivalente na semente.
+    </div>
+    <div class="harv-box">Colheita: ação bônus. Valor pós-juros usado como EA imediata, dano direto ou custo de técnica. A forma muda na colheita, não no plantio.</div>
+    <div class="tags">
+      <div class="tag g">Ação Bônus</div><div class="tag gold">Juros Passivos Automáticos</div><div class="tag h">Qualquer Objeto</div><div class="tag s">Custo Variável</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 3. COLHEITA EXPLOSIVA ══ -->
+<div class="tech harv reveal">
+  <div class="th" onclick="T(this)">
+    <div><div class="tjp">爆発収穫 — Bakuhatsu Shūkaku</div><div class="tn">Colheita Explosiva</div></div>
+    <div style="display:flex;gap:10px;align-items:center"><div class="tc h">0 EA · Ação Padrão ou Bônus</div><div class="hint">[+]</div></div>
+  </div>
+  <div class="tbody">
+    <div class="b">Foo detona N sementes simultaneamente — externas no campo ou internas em alvos. Custo zero: as sementes são o combustível. As plantas <em>estouram de dentro para fora</em> em detonações laranja-dourado que deixam crateras de terra carbonizada. Sementes internas explodem sem aviso externo — o alvo arrebenta por dentro.</div>
+    <div class="mech h">
+      CUSTO: 0 EA. As sementes fornecem o próprio combustível.<br>
+      AÇÃO PADRÃO: detona qualquer número de sementes no campo.<br>
+      AÇÃO BÔNUS: detona até 3 sementes específicas.<br><br>
+      DANO por semente:<br>
+      &nbsp;&nbsp;— Semente externa: explosão raio 3m. Dano = valor atual da semente.<br>
+      &nbsp;&nbsp;— Semente interna: dano = valor atual × 1,5. Ignora toda redução de dano.<br><br>
+      CASCATA: 3+ sementes detonadas no mesmo alvo no mesmo turno<br>
+      &nbsp;&nbsp;→ atordoamento 1 rodada (falha automática em qualquer resistência).<br><br>
+      Sementes detonadas são consumidas. Foo escolhe quais preservar para crescer mais.
+    </div>
+    <div class="harv-box">5 sementes em T+3 (16 EA cada): internas = 5 × 24 = 120 dano puro num turno. Custo 0 EA. 3+ no mesmo alvo = atordoamento garantido.</div>
+    <div class="tags">
+      <div class="tag h">0 EA</div><div class="tag gold">Dano = Juros Acumulados</div><div class="tag h">Interno × 1,5</div><div class="tag g">3+ = Atordoamento</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 4. PODAR ══ -->
+<div class="tech harv reveal">
+  <div class="th" onclick="T(this)">
+    <div><div class="tjp">剪定 — Sentei</div><div class="tn">Podar</div></div>
+    <div style="display:flex;gap:10px;align-items:center"><div class="tc h">5 EA · Modificador de Ataque</div><div class="hint">[+]</div></div>
+  </div>
+  <div class="tbody">
+    <div class="b">Foo declara Podar antes de qualquer ataque. Se acertar: dano normal + semente passiva do Germinar Dentro + efeito de Poda escolhido. O corte não é físico — é uma separação energética. Foo não corta o corpo: corta o que está <em>ligado</em> ao corpo. Uma técnica ativa. A capacidade de se mover. A EA de um órgão de combate.</div>
+    <div class="mech h">
+      CUSTO: 5 EA. Declarado antes do ataque. Se errar: custo perdido.<br>
+      Se acertar: dano normal + Germinar Dentro passivo + 1 efeito (escolha):<br><br>
+      — CORTAR EA: alvo perde 2d10+5 EA permanentemente nesse combate.<br>
+      — CORTAR TÉCNICA: destrói técnica ativa, shikigami ou objeto amaldiçoado. Não retorna.<br>
+      — ENRAIZAR: raízes brotam dos pés. Alvo não pode se mover por 1d4+1 rodadas.<br>
+      — CORTAR PERCEPÇÃO: alvo não detecta Foo, o campo nem sementes por 2 rodadas.<br>
+      — CORTAR RESISTÊNCIA: remove toda redução de dano do alvo por 2 rodadas.<br>
+      — COLHEITA FORÇADA (com Tesouras): detona semente interna do alvo instantaneamente.<br>
+      &nbsp;&nbsp;Dano = valor atual × 2. Semente consumida.<br><br>
+      COM TESOURAS DE PODAR: +4d6 no dano do ataque. Todos os efeitos disponíveis.
+    </div>
+    <div class="tags">
+      <div class="tag h">5 EA</div><div class="tag h">Modificador de Ataque</div><div class="tag gold">6 Efeitos de Corte</div><div class="tag g">Combo com Germinar</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 5. GERMINAR DENTRO ══ -->
+<div class="tech harv reveal" style="border-color:rgba(232,112,16,.6);border-width:2px;">
+  <div class="th" onclick="T(this)" style="background:rgba(232,112,16,.04);">
+    <div>
+      <div class="tjp" style="color:rgba(232,112,16,.5);">内芽 — Uchime</div>
+      <div class="tn" style="color:var(--o3);font-size:1.1rem;">Germinar Dentro</div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <div class="tc h" style="color:var(--o3);">Passivo — acontece em todo acerto</div>
+      <div class="hint">[+]</div>
+    </div>
+  </div>
+  <div class="tbody">
+    <div class="b">Todo ataque de Foo que acerta planta 1 semente de 2 EA dentro do alvo. Sem custo. Sem ação. Sem condição. A semente cresce com juros normais internamente. No T+3, veias douradas aparecem na pele do alvo. No T+4 sem detonação, a <strong style="color:var(--o3)">Germinação Forçada</strong> acontece — automática, inevitável.</div>
+    <div class="b">Múltiplos acertos = múltiplas sementes com timers independentes rodando em paralelo. Não há limite de sementes internas no mesmo alvo.</div>
+    <div class="mech h" style="border-left-color:var(--o3);">
+      PASSIVO: qualquer acerto → 1 semente de 2 EA no alvo. Sem custo. Sem ação.<br>
+      Crescimento passivo de Foo também se aplica às sementes internas.<br><br>
+      DETONAÇÃO VOLUNTÁRIA (Ação Bônus, 1×/turno):<br>
+      &nbsp;&nbsp;Dano = valor atual × 1,5. Ignora toda redução. Sem alcance — está dentro.<br><br>
+      REMOÇÃO: EA Positiva interna. DT Mod Foo + 12.<br>
+      &nbsp;&nbsp;1 tentativa por semente por turno. Sucesso: extrai e perde os juros.<br><br>
+      GERMINAÇÃO FORÇADA (T+4 sem detonação):<br>
+      &nbsp;&nbsp;Automática no início do turno de Foo.<br>
+      &nbsp;&nbsp;Dano: valor T+4 (32) × 1,5 = 48 base + 8d6 bônus.<br>
+      &nbsp;&nbsp;Ignora toda redução física e mágica.<br>
+      &nbsp;&nbsp;Encerra qualquer técnica ativa do alvo. Alvo sem técnicas por 1 rodada.<br><br>
+      3+ detonações no mesmo alvo no mesmo turno: atordoamento automático 1 rodada.
+    </div>
+    <div class="harv-box">3 acertos em 3 turnos diferentes → T+4 do primeiro: Germinação Forçada automática (48+8d6). Foo detona as outras duas como ação bônus. Três explosões. Atordoamento. Custo 0 EA.</div>
+    <div class="tags">
+      <div class="tag h">Passivo Incondicional</div><div class="tag h">Todo Acerto = Semente</div><div class="tag gold">Múltiplas Paralelas</div><div class="tag g">T+4 = Auto-Detonação</div><div class="tag h">Ignora Toda Redução</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 6. BARREIRA DE RAÍZES ══ -->
+<div class="tech core reveal">
+  <div class="th" onclick="T(this)">
+    <div><div class="tjp">根の障壁 — Ne no Shōheki</div><div class="tn">Barreira de Raízes</div></div>
+    <div style="display:flex;gap:10px;align-items:center"><div class="tc g">8 EA (5 EA em T+3+) · Reação</div><div class="hint">[+]</div></div>
+  </div>
+  <div class="tbody">
+    <div class="b">Quando Foo recebe um ataque, ele faz o impacto passar pelo solo de campo. O golpe <em>entra na terra</em> — as raízes absorvem a energia e redistribuem pelo campo. Raízes laranja-douradas aparecem por uma fração de segundo, absorvem, voltam ao solo. Fora do campo arado: inativa.</div>
+    <div class="mech">
+      CUSTO: 8 EA. Reação ao receber ataque. Apenas no campo de Foo.<br>
+      Campo em T+3 ou mais: custo cai para 5 EA.<br><br>
+      ABSORÇÃO: dano reduzido em (valor da semente mais próxima pós-juros × 2).<br>
+      A semente usada é consumida na absorção.<br><br>
+      SE DANO REDUZIDO A 0:<br>
+      &nbsp;&nbsp;— Foo não recebe dano.<br>
+      &nbsp;&nbsp;— Energia absorvida → EA para Foo (dano evitado ÷ 2).<br><br>
+      Pode ser usada no mesmo turno de Colheita Explosiva.
+    </div>
+    <div class="tags">
+      <div class="tag g">Reação</div><div class="tag g">Apenas no Campo</div><div class="tag gold">Dano Evitado → EA</div><div class="tag h">5 EA em T+3+</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 7. TRANSPLANTE FORÇADO ══ -->
+<div class="tech harv reveal">
+  <div class="th" onclick="T(this)">
+    <div><div class="tjp">強制移植 — Kyōsei Ishoku</div><div class="tn">Transplante Forçado</div></div>
+    <div style="display:flex;gap:10px;align-items:center"><div class="tc h">12 EA · Ação Padrão</div><div class="hint">[+]</div></div>
+  </div>
+  <div class="tbody">
+    <div class="b">Foo agarra uma semente interna de qualquer alvo — sem contato físico, basta a semente existir — e a transplanta. Para outro alvo. Para o solo. De volta para quem veio. Juros preservados no estado em que estavam. Alvo original não pode resistir se a semente já está dentro.</div>
+    <div class="mech h">
+      CUSTO: 12 EA. Ação padrão. Alcance: qualquer alvo com semente interna de Foo.<br><br>
+      MODO 1 — ALVO → ALVO:<br>
+      &nbsp;&nbsp;Remove semente do Alvo A e planta dentro do Alvo B. Juros não reiniciam.<br>
+      &nbsp;&nbsp;Alvo B não precisa ter sido atacado.<br><br>
+      MODO 2 — ALVO → SOLO:<br>
+      &nbsp;&nbsp;Remove semente interna e planta no campo. Pode ser detonada normalmente.<br><br>
+      MODO 3 — SOLO → ALVO:<br>
+      &nbsp;&nbsp;Força semente do campo para dentro de alvo sem ataque físico.<br>
+      &nbsp;&nbsp;Custo +5 EA. Resistência: DT Feitiçaria Mod Foo + 9.<br>
+      &nbsp;&nbsp;Falha = semente entra com juros do campo. Sucesso = rejeitada.
+    </div>
+    <div class="tags">
+      <div class="tag h">Sem Contato</div><div class="tag h">Juros Preservados</div><div class="tag gold">3 Modos</div><div class="tag g">Controle Total do Campo</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 8. COLHEITA INVERTIDA ══ -->
+<div class="tech core reveal">
+  <div class="th" onclick="T(this)">
+    <div><div class="tjp">逆収穫 — Gyaku Shūkaku</div><div class="tn">Colheita Invertida</div></div>
+    <div style="display:flex;gap:10px;align-items:center"><div class="tc g">0 EA · Reação ou Ação Bônus</div><div class="hint">[+]</div></div>
+  </div>
+  <div class="tbody">
+    <div class="b">Ao invés de colher para dentro, Foo inverte o fluxo: usa o valor de uma semente para pagar o custo de outra técnica, absorver dano recebido como HP temporário, ou alimentar Kakashi instantaneamente. O campo vira bateria viva — se Foo está sem EA mas o campo está carregado, ele sustenta o combate usando o que cresceu.</div>
+    <div class="mech">
+      CUSTO: 0 EA. Reação (turno do oponente) ou ação bônus (próprio turno).<br><br>
+      MODO 1 — PAGAR TÉCNICA: valor de semente → EA para qualquer técnica de Foo.<br>
+      MODO 2 — ABSORVER DANO: ao receber dano, colhe semente → HP temporário = valor da semente.<br>
+      &nbsp;&nbsp;HP temporário absorve antes do HP real. Dura até o próximo turno de Foo.<br>
+      MODO 3 — ALIMENTAR KAKASHI: valor de semente → HP de Kakashi. 1 EA = 1 HP.<br><br>
+      Cada uso consome a semente colhida.
+    </div>
+    <div class="tags">
+      <div class="tag g">0 EA</div><div class="tag g">Campo como Bateria</div><div class="tag gold">3 Usos</div><div class="tag s">Reação ou Ação Bônus</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 9. SACOLÃO ECOBAG ══ -->
+<div class="tech seed reveal">
+  <div class="th" onclick="T(this)">
+    <div><div class="tjp">魔呪空間袋 — Majokūkan Bukuro</div><div class="tn">Sacolão Ecobag</div></div>
+    <div style="display:flex;gap:10px;align-items:center"><div class="tc">Passivo · Sem Custo</div><div class="hint">[+]</div></div>
+  </div>
+  <div class="tbody">
+    <div class="b">Espaço dimensional de armazenamento adaptativo. Sementes aqui têm juros pausados — o relógio para. Só volta ao plantar. Permite chegar em combate com sementes já em T+2 ou T+3, prontas pra plantar e detonar imediatamente. Pode salvar o estado de até 20 sementes ativas entre sessões.</div>
+    <div class="mech">
+      PASSIVO. Sem custo. Itens preservados indefinidamente.<br>
+      Sementes: juros pausados. Relógio retoma do ponto que parou ao plantar.<br>
+      Acesso: ação livre (itens simples) / ação bônus (sementes carregadas ou EA significativa).<br>
+      Entre sessões: pode entrar em combate com sementes já em T+2 (mestre valida).<br>
+      SALVAR CAMPO: registra posição e valor de até 20 sementes ativas.
+    </div>
+    <div class="tags">
+      <div class="tag g">Passivo</div><div class="tag g">Juros Pausados</div><div class="tag h">Pré-Combate Carregado</div><div class="tag s">Salva Estado do Campo</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ SHIKIGAMI ══════ -->
+<div class="sh reveal"><div class="sl"></div><div class="st h">Shikigami · O Espantalho</div><div class="sl r"></div></div>
+
+<div class="shikicard reveal">
+  <div class="sname">Kakashi — 案山子</div>
+  <div class="sjp">Guardião Permanente do Campo · Shikigami de Foo · Iluminado · Escala com o Campo</div>
+  <div class="b">Um espantalho de palha e madeira que Foo plantou como semente e deixou crescer até ganhar vontade. Visualmente idêntico a um espantalho comum — até os olhos acenderem laranja-dourado. Move-se com lentidão deliberada impossível para palha. Permanente enquanto o campo existir. Quanto mais o campo cresce, mais forte ele fica — Kakashi e o campo são o mesmo organismo.</div>
+  <div class="sstats">
+    <div class="ss"><div class="ssl">HP</div><div class="ssv">4d12 + HP Foo + EA do Campo</div></div>
+    <div class="ss"><div class="ssl">Defesa</div><div class="ssv">= Foo + Turno de Juros</div></div>
+    <div class="ss"><div class="ssl">Dano</div><div class="ssv">= Foo + 1d6/turno campo</div></div>
+    <div class="ss"><div class="ssl">Ataques/Turno</div><div class="ssv">1 (autônomo)</div></div>
+    <div class="ss"><div class="ssl">Invocação</div><div class="ssv">1× por combate</div></div>
+    <div class="ss"><div class="ssl">Duração</div><div class="ssv">Permanente no combate</div></div>
+  </div>
+  <div class="mech h">
+    ESCALA COM CAMPO: +1d6 dano e +1 Defesa por turno de juros nas sementes ativas.<br>
+    Máximo +4d6 dano e +4 Defesa. HP inclui EA total do campo somada ao HP base.<br><br>
+    ATAQUE AUTÔNOMO: ataca 1× por turno na iniciativa de Foo sem gastar ação de Foo.<br>
+    Se o ataque de Kakashi acertar: Germinar Dentro passivo também se aplica.<br><br>
+    GUARDIÃO ILIMITADO: intercepta ataques em qualquer planta do campo sem limite de distância.<br>
+    Reação para absorver dano no lugar da semente.<br>
+    Se a semente tinha juros: Kakashi ganha os juros como dano bônus por 2 rodadas.<br><br>
+    PALHA AMALDIÇOADA (ao ser destruído):<br>
+    Explosão raio 15m. Dano 8d6 + valor do campo atual.<br>
+    Todas as sementes na área: Germinação Forçada imediata.<br><br>
+    RESSURGIR (1× por combate): 25 EA como ação livre. HP máximo. Escala reinicia.
+  </div>
+</div>
+ 
+<!-- ══════ DOMÍNIO ══════ -->
+<div class="sh reveal"><div class="sl"></div><div class="st">Expansão de Domínio · Bloqueada</div><div class="sl r"></div></div>
+<div class="domain reveal">
+  <div class="dname">A Estufa Eterna</div>
+  <div class="djp">永遠の温室 — Eien no Onshitsu · O Jardim Onde Tudo Obedece</div>
+  <div class="b">Uma estufa de vidro de proporções impossíveis — paredes transparentes que vão até um teto que não existe, luz perpétua de uma fonte que ninguém localiza, cheiro de terra úmida e colheita tão denso que parece sólido. Cada centímetro quadrado do chão dentro do Domínio é solo de Foo. Ele sente tudo que toca qualquer ponto do chão instantaneamente. E tudo que ele quiser — qualquer coisa — já está plantado aqui, em algum lugar, em algum estágio de crescimento. Ele é o único Deus desse jardim.</div>
+  <div class="b">Dentro da Estufa Eterna, a lei dos juros ainda existe — mas o crescimento passivo conta em dobro. O campo já estava plantado antes de qualquer combatente chegar. E as plantas aqui crescem na direção de quem Foo decidir que é colheita.</div>
+  <div class="mech gold" style="border-left-color:var(--o3)">
+    CUSTO: 25% EA máx + 5d10. Exaustão pós: 1d4 rodadas.<br><br>
+    [1] SUPREMACIA DO SOLO — qualquer superfície é solo de Foo. Arar é automático e gratuito.<br>
+    Semear como ação livre sem limite de vezes por turno (custo de EA normal por semente).<br><br>
+    [2] PRESSÃO VEGETAL DUPLA — crescimento passivo conta 2× por turno de Foo.<br>
+    Uma batata plantada em T0 está em T+2 na primeira rodada. T+3 na segunda.<br><br>
+    [3] RADAR ABSOLUTO — posição, intenção de movimento e EA de qualquer entidade dentro<br>
+    da Estufa detectadas pelo chão. Furtividade impossível. Teleporte: DT Mod Foo + 9.<br><br>
+    [4] COLHEITA COMPULSÓRIA — 1× por rodada como reação: Foo colhe qualquer semente<br>
+    ativa e redireciona o valor como dano direto ao alvo mais próximo. Sem ação de ataque.<br><br>
+    [5] GERMINAR AUTOMÁTICO — alvo que pisou no chão por 2 rodadas consecutivas<br>
+    recebe semente de 2 EA sem ação de Foo. Juros correm normalmente.<br><br>
+    [6] CAMPO ETERNO — sementes dentro da Estufa não podem ser removidas por nenhum<br>
+    meio que não seja destruir o Domínio. DT de remoção sobe para Mod Foo + 16.<br><br>
+    VIDA DO NÚCLEO: 5d100
+  </div>
+</div>
+ 
+<!-- ══════ HISTÓRIA ══════ -->
+<div class="sh reveal"><div class="sl"></div><div class="st s">Fragmento de História</div><div class="sl r"></div></div>
+<div class="oblock reveal">
+  <div class="b" style="font-style:italic;color:var(--mute)">
+    O processo de admissão de Foo foi o mais curto da história recente do Colégio de Kyoto.<br><br>
+ 
+    O avaliador chegou à propriedade rural às 9h da manhã. Deveria durar duas horas.<br>
+    Durou onze minutos.<br><br>
+ 
+    Ele encontrou Foo no campo, agachado, plantando o que pareciam ser batatas comuns. Foo não levantou a cabeça quando o avaliador chegou. Disse, sem olhar: <em>"O senhor pode sentar naquela pedra, mas não na outra. A outra tem coisa plantada embaixo."</em><br><br>
+ 
+    O avaliador sentou na pedra certa. Observou em silêncio por dois minutos enquanto Foo continuava plantando. Depois perguntou o que estava enterrado embaixo da outra pedra.<br><br>
+ 
+    Foo finalmente olhou para cima e disse: <em>"Três turnos de EA, três Cordyceps, dois Batsukaku e um pouco da raiva que o senhor trouxe de casa hoje."</em><br><br>
+ 
+    O avaliador abriu a boca. Fechou. Escreveu alguma coisa no caderno. Fez um único teste de verificação de técnica — pediu para Foo demonstrar. Foo apontou para um melão que estava crescendo na beira do campo. O melão estava laranja-dourado, pulsando levemente. Foo disse: <em>"Plantei esse no domingo. É segunda-feira. Se o senhor quiser ver o que tem dentro, pode cortar."</em><br><br>
+ 
+    O avaliador cortou. O melão tinha dentro: uma amostra de EA solidificada equivalente a aproximadamente quarenta pontos — plantada com dois. O campo havia sido plantado dois dias antes, sem saber que haveria avaliação.<br><br>
+ 
+    O avaliador escreveu a recomendação de admissão na hora. No relatório, a única nota técnica dizia:<br>
+    <em>"O candidato não entende que o que faz é extraordinário. Isso é mais preocupante do que se entendesse."</em><br><br>
+ 
+    <span style="color:rgba(46,138,8,.35);font-style:normal;font-family:'Inconsolata',monospace;font-size:.67rem;">
+    — adendo ao arquivo, semana 2, sem assinatura:<br>
+    "Foo chegou na primeira aula de combate com uma muda de abóbora no bolso. O instrutor perguntou o que era. Foo disse que era o plano B. Ninguém perguntou o que era o plano A. Ainda bem."
+    </span>
+  </div>
+</div>
+ 
+<div class="footnote reveal">
+  "Ele não planta plantas.<br>
+  Ele planta o que vai matar você<br>
+  enquanto você ainda estava decidindo<br>
+  se ele era uma ameaça."<br><br>
+  <span style="font-family:'Inconsolata',monospace;font-size:.6rem;letter-spacing:.35em;color:var(--mute)">⛩️ GOLDEN ERA · FOO · O MAIOR FAZENDEIRO DA HISTÓRIA ⛩️</span>
+</div>
+ 
+</div>
+
+<script>
+/* ── CANVAS LEAVES ── */
+(function(){
+  const C=document.getElementById('leafCanvas');
+  const ctx=C.getContext('2d');
+  function resize(){C.width=window.innerWidth;C.height=window.innerHeight;}
+  resize();window.addEventListener('resize',resize);
+
+  const COLORS=['#50b812','#82dc30','#e87010','#f8a830','#2e8a08','#b4f060','#ffd050'];
+  const leaves=[];
+  for(let i=0;i<28;i++){
+    leaves.push({
+      x:Math.random()*window.innerWidth,
+      y:-Math.random()*window.innerHeight,
+      w:6+Math.random()*12,
+      h:8+Math.random()*14,
+      rot:Math.random()*Math.PI*2,
+      rotSpd:(Math.random()-.5)*.04,
+      vx:(Math.random()-.5)*1.2,
+      vy:.6+Math.random()*1.4,
+      color:COLORS[Math.floor(Math.random()*COLORS.length)],
+      alpha:.15+Math.random()*.35,
+      shape:Math.floor(Math.random()*3)
+    });
+  }
+
+  function drawLeaf(l){
+    ctx.save();
+    ctx.translate(l.x,l.y);
+    ctx.rotate(l.rot);
+    ctx.globalAlpha=l.alpha;
+    ctx.fillStyle=l.color;
+    ctx.beginPath();
+    if(l.shape===0){
+      // oval leaf
+      ctx.ellipse(0,0,l.w/2,l.h/2,0,0,Math.PI*2);
+    } else if(l.shape===1){
+      // diamond
+      ctx.moveTo(0,-l.h/2);ctx.lineTo(l.w/2,0);ctx.lineTo(0,l.h/2);ctx.lineTo(-l.w/2,0);ctx.closePath();
+    } else {
+      // teardrop
+      ctx.moveTo(0,-l.h/2);
+      ctx.bezierCurveTo(l.w/2,-l.h/4, l.w/2,l.h/4, 0,l.h/2);
+      ctx.bezierCurveTo(-l.w/2,l.h/4, -l.w/2,-l.h/4, 0,-l.h/2);
+    }
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function tick(){
+    ctx.clearRect(0,0,C.width,C.height);
+    leaves.forEach(l=>{
+      l.x+=l.vx+Math.sin(l.y*.012)*.5;
+      l.y+=l.vy;
+      l.rot+=l.rotSpd;
+      if(l.y>C.height+30){
+        l.y=-20;l.x=Math.random()*C.width;
+        l.color=COLORS[Math.floor(Math.random()*COLORS.length)];
+      }
+      drawLeaf(l);
+    });
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+
+/* ── TECHNIQUE TOGGLE ── */
+function T(h){
+  const b=h.nextElementSibling,hint=h.querySelector('.hint');
+  b.classList.toggle('open');
+  hint.textContent=b.classList.contains('open')?'[−]':'[+]';
+}
+
+/* ── TURNO NAVIGATOR ── */
+const TC={1:'c1',2:'c2',3:'c3',4:'c4',5:'c4'};
+const TA={1:'act',2:'act2',3:'act3',4:'act4',5:'act4'};
+let activeT=null;
+function TN(n){
+  for(let i=1;i<=5;i++){
+    document.getElementById('tp'+i).style.display='none';
+    document.querySelectorAll('.tn2')[i-1].className='tn2';
+  }
+  if(activeT===n){activeT=null;return;}
+  activeT=n;
+  const panel=document.getElementById('tp'+n);
+  panel.style.display='block';
+  if(n===5){panel.className='tpanel show';panel.style.borderLeft='3px solid var(--o5)';panel.style.color='var(--o5)';}
+  else{panel.className='tpanel '+TC[n]+' show';}
+  for(let i=1;i<=n;i++) document.querySelectorAll('.tn2')[i-1].className='tn2 '+TA[n];
+}
+
+/* ── REVEAL ON SCROLL ── */
+const obs=new IntersectionObserver(es=>{
+  es.forEach((e,i)=>{
+    if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*45);obs.unobserve(e.target)}
+  });
+},{threshold:.07});
+document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
+</script>
+</body>
+</html>
