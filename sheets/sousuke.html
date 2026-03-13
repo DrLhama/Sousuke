@@ -862,7 +862,7 @@ Em conversa, é completamente normal. Educado, às vezes até curioso. A tempera
     <div class="bonus-grid">
       <div class="bc">
         <div class="bc-l">Benefício Mecânico — Potencialização Retroativa</div>
-        <div class="bc-v">A Origem se alimenta dos alvos infectados. Enquanto houver ao menos um alvo com Estágio 3+ em campo, Sousuke ganha <strong>+5 em Feitiçaria</strong> e <strong>+1d20 adicional em testes de Feitiçaria</strong>. Não é treinamento — é o vírus devolvendo o que colheu.</div>
+        <div class="bc-v">A Origem se alimenta dos alvos infectados. Enquanto houver ao menos um alvo infectado em campo, Sousuke ganha <strong>+5 em Feitiçaria</strong> e <strong>+1d20 adicional em testes de Feitiçaria</strong>. Não é treinamento — é o vírus devolvendo o que colheu.</div>
       </div>
       <div class="bc">
         <div class="bc-l">Custo de Técnicas</div>
@@ -1973,8 +1973,7 @@ const engine = (() => {
 })();
 
 /* T precisa ser global — chamado via onclick="T(this)" no HTML */
-function T(h) { engine.T(h); }
-
+document.addEventListener('DOMContentLoaded', () => engine.init());
 </script>
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
