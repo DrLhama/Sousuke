@@ -48,30 +48,34 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .drips{position:absolute;top:0;left:0;right:0;height:180px;pointer-events:none;overflow:hidden}
 .drip{position:absolute;top:0;width:1px;border-radius:0 0 1px 1px;
   background:linear-gradient(180deg,var(--bile) 0%,var(--bile-mid) 60%,transparent 100%);
+  transform-origin:top center;
+  will-change:transform,opacity;
   animation:drip var(--d,6s) ease-in infinite var(--dl,0s)}
-@keyframes drip{0%{height:0;opacity:.9;top:0}60%{height:var(--h,110px);opacity:.8}90%{height:var(--h,110px);opacity:.6}100%{height:0;opacity:0;top:160px}}
+@keyframes drip{0%{transform:scaleY(0);opacity:.9}60%{transform:scaleY(1);opacity:.8}90%{transform:scaleY(1);opacity:.6}100%{transform:scaleY(0) translateY(160px);opacity:0}}
 
 /* VEIAS PULSANTES */
 .veins-layer{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.vein{position:absolute;background:transparent;opacity:0;animation:vein-pulse var(--d,4s) ease-in-out infinite var(--dl,0s)}
-.vein-path{stroke:var(--blood);stroke-width:var(--sw,1.2px);fill:none;stroke-dasharray:var(--da,200);stroke-dashoffset:var(--da,200);animation:vein-draw var(--d,4s) ease-in-out infinite var(--dl,0s)}
+.vein{position:absolute;background:transparent;opacity:0;will-change:opacity;animation:vein-pulse var(--d,4s) ease-in-out infinite var(--dl,0s)}
+.vein-path{stroke:var(--blood);stroke-width:var(--sw,1.2px);fill:none;stroke-dasharray:var(--da,200);stroke-dashoffset:var(--da,200);will-change:stroke-dashoffset,opacity;animation:vein-draw var(--d,4s) ease-in-out infinite var(--dl,0s)}
 @keyframes vein-pulse{0%,100%{opacity:0}20%{opacity:var(--op,.7)}80%{opacity:var(--op,.5)}}
 @keyframes vein-draw{0%{stroke-dashoffset:var(--da,200);opacity:0}15%{opacity:1}60%{stroke-dashoffset:0;opacity:.8}85%{stroke-dashoffset:0;opacity:.4}100%{stroke-dashoffset:calc(var(--da,200)*-1);opacity:0}}
-.vein-glow{stroke:var(--blood-lit);stroke-width:calc(var(--sw,1.2px)*2);fill:none;opacity:.18;stroke-dasharray:var(--da,200);stroke-dashoffset:var(--da,200);animation:vein-draw var(--d,4s) ease-in-out infinite var(--dl,.1s);filter:blur(1.5px)}
+.vein-glow{stroke:var(--blood-lit);stroke-width:calc(var(--sw,1.2px)*2);fill:none;opacity:.18;stroke-dasharray:var(--da,200);stroke-dashoffset:var(--da,200);will-change:stroke-dashoffset,opacity;animation:vein-draw var(--d,4s) ease-in-out infinite var(--dl,.1s)}
 
 .ckanji{font-family:'Noto Serif JP',serif;font-size:clamp(160px,25vw,310px);color:var(--bile-mid);
   opacity:.06;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);user-select:none;pointer-events:none;
+  will-change:transform,opacity;
   animation:kp 10s ease-in-out infinite}
 @keyframes kp{0%,100%{opacity:.04;transform:translate(-50%,-50%) scale(1)}50%{opacity:.08;transform:translate(-50%,-50%) scale(1.02)}}
 
 .cid{font-family:'Inconsolata',monospace;font-size:.58rem;letter-spacing:.5em;color:var(--ash);text-transform:uppercase;margin-bottom:26px;position:relative;z-index:1}
 .cname{font-family:'Bebas Neue',sans-serif;font-size:clamp(5rem,20vw,12rem);letter-spacing:.18em;color:var(--char);line-height:1;position:relative;z-index:1;
+  will-change:text-shadow;
   text-shadow:0 0 110px rgba(160,20,20,.6),0 2px 0 rgba(0,0,0,.95);animation:nb 11s ease-in-out infinite}
 @keyframes nb{0%,100%{text-shadow:0 0 100px rgba(155,18,18,.4),0 2px 0 rgba(0,0,0,.95)}50%{text-shadow:0 0 170px rgba(185,22,22,.75),0 2px 0 rgba(0,0,0,.95)}}
 .csub{font-family:'Inconsolata',monospace;font-size:.6rem;letter-spacing:.5em;color:var(--ash);text-transform:uppercase;margin-top:10px;position:relative;z-index:1}
 .crule{width:280px;height:1px;background:linear-gradient(90deg,transparent,var(--blood),var(--bile-lit),transparent);margin:32px auto;position:relative;z-index:1}
 .cepitaph{font-style:italic;font-size:clamp(.88rem,2vw,1.05rem);color:var(--char-dim);text-align:center;max-width:480px;line-height:2.4;position:relative;z-index:1}
-.cscroll{position:absolute;bottom:34px;font-family:'Inconsolata',monospace;font-size:.58rem;letter-spacing:.4em;color:var(--ash);text-transform:uppercase;animation:bob 2.5s ease-in-out infinite;z-index:2}
+.cscroll{position:absolute;bottom:34px;font-family:'Inconsolata',monospace;font-size:.58rem;letter-spacing:.4em;color:var(--ash);text-transform:uppercase;will-change:transform;animation:bob 2.5s ease-in-out infinite;z-index:2}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
 
 /* PAGE */
@@ -142,7 +146,6 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .ln:last-child{border-right:none}
 .ln .lnum{font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--grit);transition:color .2s;line-height:1}
 .ln::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;transform:scaleX(0);transition:transform .2s;transform-origin:center}
-/* phase colors on active */
 .ln.ph1 .lnum{color:var(--bile-lit)}.ln.ph1::after{transform:scaleX(1);background:var(--bile-lit)}
 .ln.ph2 .lnum{color:var(--pus)}.ln.ph2::after{transform:scaleX(1);background:var(--pus)}
 .ln.ph3 .lnum{color:var(--nec-lit)}.ln.ph3::after{transform:scaleX(1);background:var(--nec-lit)}
@@ -233,7 +236,6 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-track{background:var(--void)}
 ::-webkit-scrollbar-thumb{background:var(--seam);border-radius:2px}
-
 /* extra bottom padding for edit bar */
 body { padding-bottom: 52px; }
 
@@ -2899,20 +2901,13 @@ function PD2(n) {
   if (b) b.style.background = 'var(--deep)';
 }
 
-/* Boot */
-document.addEventListener('DOMContentLoaded', () => {
-  engine.init();
-  SP(1);   // abre shiki padrão
-  PD1(1);  // abre Retorno Viral
-  PD2(1);  // abre Fisiologia
-});
 </script>
 <script>
 (function() {
-    const TRACK_URL = 'https://soundcloud.com/lightningsplash/doors-ost-dawn-of-the-doors';
-    let currentVol = 25;
+    const TRACK_PATH = './audio/bgm.mp3'; // coloca o arquivo em /audio/bgm.mp3
+    let currentVol = 0.25;
     let isReady = false;
-    let frame = null;
+    let audio = null;
     let fadeInterval = null;
 
     /* ── BOTÃO DE VOLUME ── */
@@ -2926,7 +2921,7 @@ document.addEventListener('DOMContentLoaded', () => {
     slider.type = 'range';
     slider.min = 0;
     slider.max = 100;
-    slider.value = currentVol;
+    slider.value = 25;
     slider.style.cssText = 'width:0;transition:width .3s;accent-color:#b82020;cursor:pointer;vertical-align:middle;';
     volBtn.appendChild(slider);
     document.body.appendChild(volBtn);
@@ -2936,22 +2931,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /* ── FADE DE VOLUME ── */
     function fadeTo(target, duration) {
-        if (!isReady || !frame || !frame.contentWindow) return;
-        if (fadeInterval) clearInterval(fadeInterval);
+        if (!isReady || !audio) return;
+        if (fadeInterval) { clearInterval(fadeInterval); fadeInterval = null; }
         const steps = 40;
         const delay = duration / steps;
         let step = 0;
-        const start = currentVol;
-        const delta = (target - start) / steps;
+        const start = audio.volume;
+        const targetNorm = target / 100;
+        const delta = (targetNorm - start) / steps;
         fadeInterval = setInterval(function() {
             step++;
-            const v = Math.round(start + delta * step);
-            const clamped = Math.max(0, Math.min(100, v));
-            frame.contentWindow.postMessage(JSON.stringify({method:'setVolume', value: clamped}), 'https://w.soundcloud.com');
+            const v = Math.min(1, Math.max(0, start + delta * step));
+            audio.volume = v;
             if (step >= steps) {
                 clearInterval(fadeInterval);
                 fadeInterval = null;
-                if (target > 0) currentVol = target;
+                if (target > 0) currentVol = targetNorm;
             }
         }, delay);
     }
@@ -2984,40 +2979,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /* ── PLAYER ── */
     function initPlayer() {
-        frame = document.createElement('iframe');
-        frame.id = 'sc-player';
-        frame.style.cssText = 'position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;bottom:0;left:0;';
-        frame.src = 'https://w.soundcloud.com/player/?url=' + encodeURIComponent(TRACK_URL) + '&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false&visual=false';
-        document.body.appendChild(frame);
+        audio = new Audio(TRACK_PATH);
+        audio.loop = true;
+        audio.volume = 0;
+        audio.preload = 'auto';
 
-        frame.addEventListener('load', function() {
+        audio.addEventListener('canplaythrough', function() {
+            if (isReady) return;
             isReady = true;
-            /* fade in suave ao iniciar */
-            frame.contentWindow.postMessage(JSON.stringify({method:'setVolume', value: 0}), 'https://w.soundcloud.com');
-            setTimeout(function() { fadeTo(currentVol, 2000); }, 300);
-            volBtn.style.opacity = '1';
-
-            slider.addEventListener('input', function() {
-                currentVol = parseInt(this.value);
-                if (fadeInterval) return; /* não interrompe fade em curso */
-                frame.contentWindow.postMessage(JSON.stringify({method:'setVolume', value: currentVol}), 'https://w.soundcloud.com');
+            audio.play().then(function() {
+                fadeTo(25, 2000);
+                volBtn.style.opacity = '1';
+            }).catch(function(e) {
+                console.error('BGM ERRO ao dar play:', e);
             });
+        }, { once: true });
+
+        audio.load();
+
+        slider.addEventListener('input', function() {
+            const v = parseInt(this.value) / 100;
+            currentVol = v;
+            if (!fadeInterval) audio.volume = v;
         });
 
         /* ── FADE AO SAIR / VOLTAR ── */
         document.addEventListener('visibilitychange', function() {
             if (!isReady) return;
             if (document.hidden) {
-                fadeTo(0, 1500);
+                fadeTo(0, 800);
             } else {
-                fadeTo(currentVol, 1500);
+                fadeTo(Math.round(currentVol * 100), 800);
             }
         });
 
         window.addEventListener('pagehide', function() {
-            if (isReady && frame && frame.contentWindow) {
-                frame.contentWindow.postMessage(JSON.stringify({method:'setVolume', value: 0}), 'https://w.soundcloud.com');
-            }
+            if (audio) { audio.volume = 0; audio.pause(); }
         });
     }
 
