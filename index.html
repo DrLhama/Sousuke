@@ -6,6 +6,7 @@
 <title>⛩️ Golden Era — Fichas</title>
 <link href="https://fonts.googleapis.com/css2?family=Rye&family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inconsolata:wght@300;400;700&family=Noto+Serif+JP:wght@300;700&display=swap" rel="stylesheet">
 <link href="https://fonts.cdnfonts.com/css/the-last-shuriken" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Texturina:ital,opsz,wght@0,12..72,100..900;1,12..72,100..900&display=swap" rel="stylesheet">
 <style>
 
   
@@ -142,6 +143,7 @@ main {
 .card-name.rye    { font-family: 'Rye', serif; }
 .card-name.bebas  { font-family: 'Bebas Neue', sans-serif; }
 .card-name.shuriken { font-family: 'The Last Shuriken', sans-serif; }
+.card-name.texturina { font-family: 'Texturina', serif; }
 
 .card-jp {
   font-family: 'Noto Serif JP', serif;
@@ -175,6 +177,104 @@ main {
   opacity: 0; transform: translateY(6px);
   transition: opacity .3s, transform .3s;
   position: relative; z-index: 1;
+}
+
+/* ── SOUSUKE — estilos específicos ── */
+.char-card.sousuke-card {
+  background: #050202;
+}
+.char-card.sousuke-card:hover {
+  background: #080303;
+}
+
+/* Drips animados no topo do card */
+.card-drips {
+  position: absolute; top: 0; left: 0; right: 0; height: 60px;
+  pointer-events: none; overflow: hidden;
+}
+.card-drip {
+  position: absolute; top: 0; width: 1px; border-radius: 0 0 1px 1px;
+  background: linear-gradient(180deg, rgba(110,26,26,.9) 0%, rgba(80,16,16,.5) 60%, transparent 100%);
+  animation: cdrop var(--d, 5s) ease-in infinite var(--dl, 0s);
+}
+@keyframes cdrop {
+  0%   { transform: scaleY(0); opacity: .8; }
+  55%  { transform: scaleY(1); opacity: .7; }
+  85%  { transform: scaleY(1); opacity: .4; }
+  100% { transform: scaleY(0) translateY(60px); opacity: 0; }
+}
+
+/* Veias SVG animadas no fundo do card */
+.card-veins {
+  position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+}
+.vein-path {
+  stroke: rgba(139,10,10,.55);
+  stroke-width: 1px;
+  fill: none;
+  stroke-dasharray: 180;
+  stroke-dashoffset: 180;
+  animation: vein-draw var(--d, 5s) ease-in-out infinite var(--dl, 0s);
+}
+@keyframes vein-draw {
+  0%   { stroke-dashoffset: 180; opacity: 0; }
+  15%  { opacity: 1; }
+  60%  { stroke-dashoffset: 0; opacity: .7; }
+  85%  { stroke-dashoffset: 0; opacity: .3; }
+  100% { stroke-dashoffset: -180; opacity: 0; }
+}
+
+/* Kanji do Sousuke pulsa */
+.sousuke-card .card-kanji {
+  animation: kanji-pulse 10s ease-in-out infinite;
+  opacity: .09;
+}
+@keyframes kanji-pulse {
+  0%, 100% { opacity: .06; transform: scale(1); }
+  50%       { opacity: .14; transform: scale(1.02); }
+}
+
+/* Nome do Sousuke — glow de sangue pulsante */
+.sousuke-card .card-name {
+  will-change: text-shadow;
+  animation: name-bleed 10s ease-in-out infinite;
+  letter-spacing: .06em;
+  font-size: clamp(2.6rem, 7vw, 3.4rem);
+}
+@keyframes name-bleed {
+  0%, 100% { text-shadow: 0 0 0px rgba(255,0,0,.0), 0 2px 0 rgba(80,0,0,.8); }
+  50%       { text-shadow: 0 0 60px rgba(185,22,22,.6), 0 2px 0 rgba(0,0,0,.95); }
+}
+
+/* Accent bar do Sousuke pulsa junto */
+.sousuke-card .card-accent {
+  background: linear-gradient(90deg, rgba(139,10,10,.6), rgba(192,48,48,.8), rgba(139,10,10,.6));
+  animation: accent-pulse 10s ease-in-out infinite;
+}
+@keyframes accent-pulse {
+  0%, 100% { opacity: .3; }
+  50%       { opacity: .85; }
+}
+
+/* Tags do Sousuke — borda sanguínea */
+.sousuke-card .card-tag {
+  border-color: rgba(139,10,10,.3);
+  color: rgba(180,80,80,.45);
+}
+
+/* Epitáfio do Sousuke */
+.sousuke-card .card-epithet {
+  color: rgba(160,80,80,.35);
+}
+
+/* Num do Sousuke */
+.sousuke-card .card-num {
+  color: rgba(160,80,60,.4);
+}
+
+/* JP do Sousuke */
+.sousuke-card .card-jp {
+  color: rgba(160,60,60,.3);
 }
 
 /* ── ADD CARD (template para novo personagem) ── */
@@ -240,7 +340,7 @@ footer {
    Campos:
      id       → nome do arquivo em sheets/ (sem .html)
      name     → nome exibido no card
-     font     → 'rye' ou 'bebas'
+     font     → 'rye' | 'bebas' | 'texturina'
      jp       → texto em japonês (opcional)
      num      → número da ficha (ex: "Ficha Nº003")
      tags     → array de strings (ex: ["Feiticeiro", "Grau 4"])
@@ -248,38 +348,28 @@ footer {
      kanji    → kanji grande de fundo (decorativo)
      color    → cor principal em rgba ou hex
      glow     → gradiente de glow no hover (CSS string)
+     special  → string de classe extra no card (ex: 'sousuke-card')
 ═══════════════════════════════════════════════════════════ */
 const ROSTER = [
   {
-    id:      'foo',
-    name:    'FOO',
-    font:    'rye',
-    jp:      '植付術 · Uetsuke · O Campo Que Já Estava Plantado',
-    num:     'Ficha Nº003 · Feiticeiro · Iluminado',
-    tags:    ['Feiticeiro', 'Grau 4', 'Nível 1', 'Kyoto', 'Maestria Iluminada'],
-    epithet: '"Qualquer idiota planta batata.\nEle planta tempo."',
-    kanji:   '植',
-    color:   'rgba(248,168,48,.65)',
-    glow:    'radial-gradient(ellipse at 50% 70%, rgba(232,112,16,.09) 0%, transparent 65%)',
-  },
-  {
     id:      'sousuke',
     name:    'SOUSUKE',
-    font:    'bebas',
+    font:    'texturina',
     jp:      '腐食術 · Fushoku-jutsu · O Ambiente Que Já Decidiu',
     num:     'Ficha Nº005 · Feiticeiro · Nv.1',
     tags:    ['Feiticeiro', 'Grau 4', 'Nível 1', 'Kyoto', 'Arma Biológica'],
     epithet: '"Não é veneno. Veneno mata rápido.\nIsso é outra coisa."',
     kanji:   '腐',
-    color:   'rgba(106,170,72,.65)',
-    glow:    'radial-gradient(ellipse at 50% 70%, rgba(58,110,42,.09) 0%, transparent 65%)',
+    color:   'rgba(192,48,48,.75)',
+    glow:    'radial-gradient(ellipse at 50% 70%, rgba(139,10,10,.18) 0%, transparent 65%)',
+    special: 'sousuke-card',
   },
 
   /* ── TEMPLATE — descomente e edite para adicionar um personagem ──
   {
     id:      'seupersonagem',
     name:    'NOME',
-    font:    'rye',           // 'rye' ou 'bebas'
+    font:    'rye',           // 'rye' | 'bebas' | 'texturina'
     jp:      '術 · Nome JP',
     num:     'Ficha NºXXX · Classe · Nv.X',
     tags:    ['Classe', 'Grau X', 'Nível X', 'Colégio'],
@@ -299,11 +389,36 @@ function renderRoster() {
   ROSTER.forEach(char => {
     const a = document.createElement('a');
     a.href = 'sheets/' + char.id + '.html';
-    a.className = 'char-card';
+    a.className = 'char-card' + (char.special ? ' ' + char.special : '');
     a.style.setProperty('--card-color', char.color);
     a.style.setProperty('--card-glow', char.glow);
 
+    /* Extras visuais para Sousuke */
+    const dripsHTML = char.special === 'sousuke-card' ? `
+      <div class="card-drips">
+        <div class="card-drip" style="left:12%;height:28px;--d:4.8s;--dl:0s"></div>
+        <div class="card-drip" style="left:27%;height:18px;--d:6.2s;--dl:1.1s"></div>
+        <div class="card-drip" style="left:44%;height:35px;--d:5.5s;--dl:0.4s"></div>
+        <div class="card-drip" style="left:61%;height:22px;--d:7s;--dl:2s"></div>
+        <div class="card-drip" style="left:78%;height:30px;--d:5.2s;--dl:0.8s"></div>
+        <div class="card-drip" style="left:90%;height:16px;--d:6.8s;--dl:1.7s"></div>
+      </div>` : '';
+
+    const veinsHTML = char.special === 'sousuke-card' ? `
+      <div class="card-veins">
+        <svg width="100%" height="100%" viewBox="0 0 300 280" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path class="vein-path" style="--d:5.5s;--dl:0s;stroke-dasharray:200;stroke-dashoffset:200"
+            d="M0,140 C40,120 80,160 120,130 S200,100 240,145 S280,160 300,140"/>
+          <path class="vein-path" style="--d:7s;--dl:1.2s;stroke-dasharray:160;stroke-dashoffset:160;stroke:rgba(192,48,48,.4)"
+            d="M300,80 C260,100 220,70 180,95 S100,120 60,90 S20,70 0,85"/>
+          <path class="vein-path" style="--d:6.2s;--dl:2.5s;stroke-dasharray:120;stroke-dashoffset:120;stroke:rgba(100,8,8,.5)"
+            d="M80,280 C100,240 90,200 115,170 S140,140 130,100"/>
+        </svg>
+      </div>` : '';
+
     a.innerHTML = `
+      ${dripsHTML}
+      ${veinsHTML}
       <div class="card-accent"></div>
       <div class="card-kanji">${char.kanji}</div>
       <div class="card-num">${char.num}</div>

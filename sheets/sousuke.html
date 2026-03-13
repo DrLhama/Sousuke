@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-BR" data-char="sousuke">
 <head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Texturina:ital,opsz,wght@0,12..72,100..900;1,12..72,100..900&display=swap" rel="stylesheet">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>☣ Sousuke — A Ficha · Golden Era</title>
@@ -23,7 +26,7 @@
   --nec-lit:  #e04040;
   --blood:    #8b0a0a;
   --blood-lit:#ff4444;
-  --char:     #c8b8b8;
+  --char:     #ffffff;
   --char-dim: #7a6060;
   --ash:      #8a6060;
   --dust:     #281818;
@@ -61,17 +64,38 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 @keyframes vein-draw{0%{stroke-dashoffset:var(--da,200);opacity:0}15%{opacity:1}60%{stroke-dashoffset:0;opacity:.8}85%{stroke-dashoffset:0;opacity:.4}100%{stroke-dashoffset:calc(var(--da,200)*-1);opacity:0}}
 .vein-glow{stroke:var(--blood-lit);stroke-width:calc(var(--sw,1.2px)*2);fill:none;opacity:.18;stroke-dasharray:var(--da,200);stroke-dashoffset:var(--da,200);will-change:stroke-dashoffset,opacity;animation:vein-draw var(--d,4s) ease-in-out infinite var(--dl,.1s)}
 
-.ckanji{font-family:'Noto Serif JP',serif;font-size:clamp(160px,25vw,310px);color:var(--bile-mid);
-  opacity:.06;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);user-select:none;pointer-events:none;
-  will-change:transform,opacity;
-  animation:kp 10s ease-in-out infinite}
-@keyframes kp{0%,100%{opacity:.04;transform:translate(-50%,-50%) scale(1)}50%{opacity:.08;transform:translate(-50%,-50%) scale(1.02)}}
+.ckanji {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(160px, 25vw, 310px);
+  color: var(--bile-mid);
+  /* Aumentei a opacidade base para 0.35 para maior visibilidade */
+  opacity: 0.1;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  user-select: none;
+  pointer-events: none;
+  will-change: transform, opacity;
+  animation: kp 10s ease-in-out infinite;
+}
 
-.cid{font-family:'Inconsolata',monospace;font-size:.58rem;letter-spacing:.5em;color:var(--ash);text-transform:uppercase;margin-bottom:26px;position:relative;z-index:1}
-.cname{font-family:'Bebas Neue',sans-serif;font-size:clamp(5rem,20vw,12rem);letter-spacing:.18em;color:var(--char);line-height:1;position:relative;z-index:1;
+@keyframes kp {
+  0%, 100% {
+    /* Ajustado para oscilar entre 0.25 e 0.45 */
+    opacity: 0.0;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.1;
+    transform: translate(-50%, -50%) scale(1.02);
+  }
+}
+.cid{font-family:'Inconsolata',monospace;font-size:.58rem;letter-spacing:.5em;color:var(--ash);text-transform:uppercase;margin-bottom:6px;position:relative;z-index:1}
+.cname{font-family:'Texturina',sans-serif;font-size:clamp(5rem,10vw,12rem);letter-spacing:.03em;color:var(--char);line-height:1;position:relative;z-index:1;
   will-change:text-shadow;
-  text-shadow:0 0 110px rgba(160,20,20,.6),0 2px 0 rgba(0,0,0,.95);animation:nb 11s ease-in-out infinite}
-@keyframes nb{0%,100%{text-shadow:0 0 100px rgba(155,18,18,.4),0 2px 0 rgba(0,0,0,.95)}50%{text-shadow:0 0 170px rgba(185,22,22,.75),0 2px 0 rgba(0,0,0,.95)}}
+  text-shadow:0 0 110px rgba(0, 0, 0, 0.6),0 2px 0 rgba(0,0,0,.95);animation:nb 10s ease-in-out infinite}
+@keyframes nb{0%,100%{text-shadow:0 0 0px rgb(255, 0, 0),0 2px 0 rgb(80, 0, 0)}50%{text-shadow:0 0 170px rgba(185,22,22,.75),0 2px 0 rgba(0,0,0,.95)}}
 .csub{font-family:'Inconsolata',monospace;font-size:.6rem;letter-spacing:.5em;color:var(--ash);text-transform:uppercase;margin-top:10px;position:relative;z-index:1}
 .crule{width:280px;height:1px;background:linear-gradient(90deg,transparent,var(--blood),var(--bile-lit),transparent);margin:32px auto;position:relative;z-index:1}
 .cepitaph{font-style:italic;font-size:clamp(.88rem,2vw,1.05rem);color:var(--char-dim);text-align:center;max-width:480px;line-height:2.4;position:relative;z-index:1}
@@ -392,18 +416,18 @@ body { padding-bottom: 52px; }
   transition:background .3s
 }
 .tech:hover::before{background:linear-gradient(180deg,transparent,rgba(155,18,18,.4),transparent)}
-.tech.core::before{background:linear-gradient(180deg,transparent,rgba(155,18,18,.25),transparent)}
+.tech.core::before{background:linear-gradient(180deg,transparent,rgba(255, 0, 0, 0.87))}
 .tech.shiki::before{background:linear-gradient(180deg,transparent,rgba(122,90,24,.25),transparent)}
 .th{
   padding:14px 22px 14px 28px;
-  border-bottom:1px solid rgba(155,18,18,.06);
+  border-bottom:1px solid rgba(255, 0, 0, 0.87);
   background:transparent;
   transition:background .2s
 }
 .th:hover{background:rgba(155,18,18,.02)}
 .tn{font-size:1rem;letter-spacing:.02em}
 .tjp{font-size:.6rem;margin-bottom:4px;opacity:.5}
-.tbody{padding:18px 28px;background:rgba(6,2,2,.6);border-bottom:1px solid rgba(155,18,18,.06)}
+.tbody{padding:18px 28px;background:rgba(2, 6, 3, 0.6);border-bottom:1px solid rgba(155,18,18,.06)}
 .mech{
   border-left:none;padding:12px 16px;margin-top:12px;
   background:rgba(0,0,0,.3);
@@ -707,9 +731,9 @@ body { padding-bottom: 52px; }
       <circle cx="520" cy="340" r="3" fill="var(--blood-lit)" opacity="0" style="animation:vein-pulse 3.8s ease-in-out infinite 4.2s"/>
     </svg>
   </div>
-  <div class="ckanji">感</div>
+  <div class="ckanji">染</div>
   <div class="cid">⛩ GOLDEN ERA · FICHA Nº005 · FEITICEIRO · NV.1</div>
-  <div class="cname">Sousuke</div>
+  <div class="cname">SOUSUKE</div>
   <div class="csub">感染術式 · A Infecção</div>
   <div class="crule"></div>
   <div class="cepitaph">
@@ -737,10 +761,10 @@ body { padding-bottom: 52px; }
 </div>
 
 <!-- FOTO DO PERSONAGEM -->
-<div class="reveal" style="position:relative;margin-bottom:28px;overflow:hidden;height:120px">
+<div class="reveal" style="position:relative;margin-bottom:28px;overflow:hidden;height:760px">
   <img src="https://cdn.discordapp.com/attachments/555827662120157195/1481426968850337984/image_upscaled_fullhd.png?ex=69b345e0&is=69b1f460&hm=397ef7b702570252726b87e1f170468dca209ca6907e3af0554ca47f0a695efa" alt="Sousuke"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;opacity:.68;filter:saturate(.5) contrast(1.2) brightness(.7)">
-  <div style="position:absolute;bottom:14px;right:18px;font-family:'Inconsolata',monospace;font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(131, 255, 94, 0.3)">疫病 · Sousuke · 生物兵器</div>
+  <div style="position:absolute;bottom:14px;right:18px;font-family:'Inconsolata',monospace;font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:rgb(255, 0, 0)">疫病 · Sousuke · 生物兵器</div>
 </div>
 
 <div class="b reveal"><strong>Descrição física:</strong> Altura mediana. Construção que parece calibrada — não como quem não come, como quem foi projetado sem excesso. A pele tem veias escuras visíveis perto dos olhos e no pescoço — vasos que carregam algo que não é sangue normal. Nos pulsos, uma rede de linhas quase negras, como tinta se expandindo sob a superfície. Cabelo branco, sempre ligeiramente úmido sem razão aparente. Os olhos são íris branco avermelhado — esclera frequentemente injetada sem sinal de irritação, como se o corpo simplesmente decidisse assim.</div>
@@ -1245,33 +1269,498 @@ function VT(n) {
 </div>
 <div class="sh reveal"><div class="sl"></div><div class="st">Passivas Defensivas</div><div class="sl r"></div></div>
 
-<!-- REGRA DE 0 HP — INFECÇÃO AUTÔNOMA -->
-<div class="reveal" style="border:1px solid rgba(200,28,28,.45);background:linear-gradient(135deg,rgba(18,2,2,.9),rgba(12,4,4,.7));padding:18px 24px;margin-bottom:24px;position:relative;overflow:hidden">
-  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(200,15,15,.07) 0%,transparent 65%);pointer-events:none"></div>
-  <div style="font-family:'Inconsolata',monospace;font-size:.48rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(210,50,50,.6);margin-bottom:10px;position:relative">☣ REGRA SISTÊMICA · INFECÇÃO &amp; INCAPACITAÇÃO</div>
-  <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.06em;color:var(--bile-lit);margin-bottom:10px;position:relative">A INFECÇÃO NÃO PARA QUANDO SOUSUKE CAI</div>
-  <div style="font-family:'Inconsolata',monospace;font-size:.75rem;color:var(--char-dim);line-height:2;position:relative">
-    No sistema, técnicas são desfeitas quando o feiticeiro chega a <strong style="color:var(--char)">0 HP</strong>. <strong style="color:var(--bile-lit)">A infecção viral de Sousuke é exceção explícita a essa regra.</strong><br><br>
-    A carga viral instalada nos alvos <strong style="color:var(--char)">não é uma técnica sustentada</strong> — é uma extensão biológica autônoma do seu organismo. Uma vez no sangue do hospedeiro, o vírus se replica por conta própria. Sousuke ficar inconsciente ou chegar a 0 HP não encerra o processo.<br><br>
-    <strong style="color:var(--char)">O que continua normalmente:</strong> dano passivo por turno de cada Estágio ativo, Retorno Viral (redução de dano em atacantes infectados), e os Estágios acumulados permanecem intactos.<br><br>
-    <strong style="color:var(--blood-lit)">O que para enquanto incapacitado:</strong> proliferação ativa — Tags, Contato, Dispersão, Ambiental Viral, e qualquer fonte que exija ação ou presença consciente de Sousuke. O vírus mantém o que tem, mas não expande.<br><br>
-    <strong style="color:var(--char)">Para remover a infecção</strong> os Estágios precisam ser tratados individualmente — descanso, EA Reversa especializada, ou equivalente narrativo — independente do estado de Sousuke. <em style="color:var(--ash)">Não há atalho via incapacitar o originador.</em>
+<!-- MÓDULO UNIFICADO: REGRAS SISTÊMICAS -->
+<style>
+.vsmod {
+  border: 1px solid rgba(200,28,28,.45);
+  background: linear-gradient(135deg,rgba(18,2,2,.9),rgba(12,4,4,.7));
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.vsmod::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 50%,rgba(200,15,15,.07) 0%,transparent 65%);
+  pointer-events: none;
+}
+.vsmod-label {
+  font-family: 'Inconsolata', monospace;
+  font-size: .48rem;
+  letter-spacing: .35em;
+  text-transform: uppercase;
+  color: rgba(210,50,50,.5);
+  margin-bottom: 6px;
+  position: relative;
+}
+.vsmod-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1rem;
+  letter-spacing: .1em;
+  color: var(--bile-lit);
+  margin-bottom: 18px;
+  position: relative;
+}
+
+/* DOIS CARDS LADO A LADO */
+.vsmod-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  position: relative;
+  z-index: 2;
+  margin-bottom: 12px;
+}
+@media (max-width: 600px) {
+  .vsmod-grid { grid-template-columns: 1fr; }
+}
+
+/* CARD BASE */
+.vscard {
+  border: 1px solid rgba(200,28,28,.25);
+  background: rgba(8,2,2,.6);
+  overflow: hidden;
+  position: relative;
+  transition: border-color .3s ease;
+}
+.vscard:hover { border-color: rgba(200,28,28,.5); }
+.vscard.reversa {
+  border-color: rgba(80,120,180,.25);
+  background: linear-gradient(135deg,rgba(5,10,25,.7),rgba(3,6,18,.5));
+}
+.vscard.reversa:hover { border-color: rgba(80,120,180,.55); }
+
+/* HEADER DO CARD */
+.vscard-head {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  z-index: 2;
+}
+.vscard-head::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: rgba(200,28,28,.15);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .4s ease;
+}
+.vscard.open .vscard-head::after { transform: scaleX(1); }
+.vscard.reversa .vscard-head::after { background: rgb(80, 120, 180); }
+
+.vscard-icon {
+  font-size: 1.1rem;
+  margin-right: 10px;
+  opacity: .75;
+  flex-shrink: 0;
+}
+.vscard-meta {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.vscard-tag {
+  font-family: 'Inconsolata', monospace;
+  font-size: .47rem;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: rgba(210,50,50,.55);
+  line-height: 1;
+}
+.vscard.reversa .vscard-tag { color: rgba(80,120,180,.7); }
+.vscard-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1rem;
+  letter-spacing: .06em;
+  color: var(--char);
+  line-height: 1;
+}
+
+/* BOTÃO TOGGLE */
+.vscard-toggle {
+  width: 24px;
+  height: 24px;
+  border: 1px solid rgba(200,28,28,.3);
+  background: rgba(200, 28, 28, 0.301);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inconsolata', monospace;
+  font-size: .75rem;
+  color: rgba(210,50,50,.6);
+  flex-shrink: 0;
+  transition: all .3s ease;
+  position: relative;
+}
+.vscard-toggle::before,
+.vscard-toggle::after {
+  content: '';
+  position: absolute;
+  background: rgba(210,50,50,.6);
+  transition: transform .3s ease, opacity .3s ease;
+}
+.vscard-toggle::before { width: 8px; height: 1px; }
+.vscard-toggle::after  { width: 1px; height: 8px; }
+.vscard.open .vscard-toggle::after { transform: scaleY(0); opacity: 0; }
+.vscard.open .vscard-toggle { border-color: rgba(200,28,28,.6); background: rgba(200,28,28,.12); }
+.vscard.reversa .vscard-toggle {
+  border-color: rgba(80,120,180,.3);
+  background: rgba(80,120,180,.06);
+}
+.vscard.reversa .vscard-toggle::before,
+.vscard.reversa .vscard-toggle::after { background: rgba(80,120,180,.6); }
+.vscard.reversa.open .vscard-toggle { border-color: rgba(80,120,180,.6); background: rgba(80,120,180,.12); }
+
+/* CORPO EXPANSÍVEL */
+.vscard-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .55s cubic-bezier(.4,0,.2,1);
+}
+.vscard.open .vscard-body { max-height: 900px; }
+
+.vscard-inner {
+  padding: 14px 16px 16px;
+  font-family: 'Inconsolata', monospace;
+  font-size: .72rem;
+  line-height: 1.85;
+  color: var(--char-dim);
+}
+
+/* SEÇÕES DENTRO DO CARD */
+.vsrow {
+  margin-bottom: 11px;
+  padding-bottom: 11px;
+  border-bottom: 1px solid rgba(200,28,28,.08);
+}
+.vsrow:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.vscard.reversa .vsrow { border-bottom-color: rgba(80,120,180,.08); }
+
+.vsrow-label {
+  font-size: .48rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(210,50,50,.55);
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.vsrow-label::before {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 1px;
+  background: rgba(210,50,50,.4);
+  flex-shrink: 0;
+}
+.vscard.reversa .vsrow-label { color: rgba(80,120,180,.7); }
+.vscard.reversa .vsrow-label::before { background: rgba(80,120,180,.4); }
+
+.vsrow-text { color: var(--char-dim); line-height: 1.8; }
+.vsrow-text strong { color: rgba(210,80,80,.85); }
+.vscard.reversa .vsrow-text strong { color: rgba(100,150,210,.85); }
+.vsrow-text em { color: var(--ash); font-style: italic; }
+
+/* BLOCO DE SOBREVIVÊNCIA PARASITÁRIA */
+.vsparasita {
+  position: relative;
+  z-index: 2;
+  border: 1px solid rgba(200,28,28,.3);
+  background: linear-gradient(135deg, rgba(14,2,2,.8), rgba(8,1,1,.6));
+  overflow: hidden;
+}
+.vsparasita::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(200,28,28,.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+.vsparasita-head {
+  padding: 12px 18px;
+  border-bottom: 1px solid rgba(200,28,28,.15);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.vsparasita-badge {
+  font-family: 'Inconsolata', monospace;
+  font-size: .44rem;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: rgba(210,50,50,.55);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.vsparasita-badge::before {
+  content: '⚡';
+  font-size: .7rem;
+  opacity: .8;
+}
+.vsparasita-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: .95rem;
+  letter-spacing: .08em;
+  color: var(--bile-lit);
+}
+.vsparasita-body {
+  padding: 14px 18px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+@media (max-width: 560px) { .vsparasita-body { grid-template-columns: 1fr; } }
+
+.vsparasita-main {
+  grid-column: 1 / -1;
+  font-family: 'Inconsolata', monospace;
+  font-size: .73rem;
+  color: var(--char-dim);
+  line-height: 1.85;
+  margin-bottom: 4px;
+}
+.vsparasita-main strong { color: var(--char); }
+.vsparasita-main em { color: rgba(210,70,70,.75); font-style: normal; }
+
+.vsp-block {
+  background: rgba(0,0,0,.4);
+  border-left: 2px solid rgba(200,28,28,.35);
+  padding: 10px 12px;
+  font-family: 'Inconsolata', monospace;
+  font-size: .68rem;
+  line-height: 1.75;
+  color: var(--char-dim);
+}
+.vsp-block.alt { border-left-color: rgba(180, 80, 80, 0.35); }
+.vsp-block-label {
+  font-size: .46rem;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: rgba(210,50,50,.6);
+  margin-bottom: 6px;
+  display: block;
+}
+.vsp-block.alt .vsp-block-label { color: rgba(80,120,180,.6); }
+.vsp-block strong { color: rgba(210,80,80,.8); }
+.vsp-block.alt strong { color: rgba(100,150,210,.8); }
+
+/* BARRA DE CONTADOR */
+.vsp-counter {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  margin-top: 6px;
+}
+.vsp-pip {
+  flex: 1;
+  height: 3px;
+  background: rgba(200,28,28,.15);
+  position: relative;
+  overflow: hidden;
+}
+.vsp-pip::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--blood), var(--bile-lit));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .4s ease;
+}
+.vsp-pip.filled::after { transform: scaleX(1); }
+.vsp-pip-label {
+  font-family: 'Inconsolata', monospace;
+  font-size: .44rem;
+  color: rgba(210,50,50,.45);
+  letter-spacing: .15em;
+  white-space: nowrap;
+  margin-left: 6px;
+}
+</style>
+
+<!-- MÓDULO PRINCIPAL -->
+<div class="vsmod reveal">
+  <div style="position:relative;z-index:2">
+    <div class="vsmod-label">☣ Regras Sistêmicas · Infecção &amp; Fraqueza</div>
+    <div class="vsmod-title">MECÂNICAS ESPECIAIS</div>
+
+    <!-- DOIS CARDS -->
+    <div class="vsmod-grid">
+
+      <!-- CARD 1: INFECÇÃO AUTÔNOMA -->
+      <div class="vscard" id="vscard1">
+        <div class="vscard-head" onclick="vsToggle(1)">
+          <span class="vscard-icon">☣</span>
+          <div class="vscard-meta">
+            <span class="vscard-tag">Regra Sistêmica</span>
+            <span class="vscard-name">Infecção Autônoma</span>
+          </div>
+          <div class="vscard-toggle"></div>
+        </div>
+        <div class="vscard-body">
+          <div class="vscard-inner">
+
+            <div class="vsrow">
+              <div class="vsrow-label">Mecanismo Base</div>
+              <div class="vsrow-text">
+                No sistema, técnicas são desfeitas quando o feiticeiro chega a 0 HP. <strong>A infecção viral de Sousuke é exceção explícita.</strong> Uma vez no sangue do hospedeiro, o vírus se replica por conta própria — Sousuke ficar inconsciente não encerra o processo.
+              </div>
+            </div>
+
+            <div class="vsrow">
+              <div class="vsrow-label">Continua durante incapacitação</div>
+              <div class="vsrow-text">
+                • Dano passivo por turno de cada Estágio ativo<br>
+                • Retorno Viral (redução de dano em atacantes infectados)<br>
+                • Estágios acumulados permanecem intactos<br>
+                <em>O vírus mantém o que tem, mas não expande.</em>
+              </div>
+            </div>
+
+            <div class="vsrow">
+              <div class="vsrow-label">Para durante incapacitação</div>
+              <div class="vsrow-text">
+                • Proliferação ativa — Tags, Contato, Dispersão<br>
+                • Ambiental Viral e qualquer ação consciente<br>
+                <em>Sem atalho: incapacitar o originador não remove o vírus.</em>
+              </div>
+            </div>
+
+            <div class="vsrow">
+              <div class="vsrow-label">Remoção</div>
+              <div class="vsrow-text">
+                Estágios precisam ser tratados <strong>individualmente</strong> — descanso, EA Reversa especializada ou equivalente narrativo. <em>Não há atalho via incapacitar Sousuke.</em>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 2: EA REVERSA -->
+      <div class="vscard reversa" id="vscard2">
+        <div class="vscard-head" onclick="vsToggle(2)">
+          <span class="vscard-icon">✦</span>
+          <div class="vscard-meta">
+            <span class="vscard-tag">Fraqueza Estrutural</span>
+            <span class="vscard-name">EA Reversa</span>
+          </div>
+          <div class="vscard-toggle"></div>
+        </div>
+        <div class="vscard-body">
+          <div class="vscard-inner">
+
+            <div class="vsrow">
+              <div class="vsrow-label">Incompatibilidade biológica</div>
+              <div class="vsrow-text">
+                EA Reversa é energia de vida em estado puro — o organismo de Sousuke é o oposto em nível estrutural. O vírus evoluiu para habitar corpos morrendo, não corpos sendo restaurados. <strong>Não tem defesa contra ela.</strong>
+              </div>
+            </div>
+
+            <div class="vsrow">
+              <div class="vsrow-label">Ignora Retorno Viral</div>
+              <div class="vsrow-text">
+                A redução de dano passiva <strong>não se aplica</strong> contra nenhuma fonte de EA Reversa, independente de quantos Estágios o atacante possui.
+              </div>
+            </div>
+
+            <div class="vsrow">
+              <div class="vsrow-label">Dano aumentado em Sousuke</div>
+              <div class="vsrow-text">
+                Ataque direto, área ou ambiente — <strong>sem resistência aplicável</strong> em qualquer fonte de EA Reversa.
+              </div>
+            </div>
+
+            <div class="vsrow">
+              <div class="vsrow-label">Supressão de regeneração</div>
+              <div class="vsrow-text">
+                Se Sousuke recebeu dano de EA Reversa no turno anterior, <strong>Regeneração Autônoma é completamente suprimida</strong> no turno atual. Sem HP, sem EA.
+              </div>
+            </div>
+
+            <div class="vsrow">
+              <div class="vsrow-label">Aliado vs Inimigo</div>
+              <div class="vsrow-text">
+                EA Reversa aplicada por aliado causa dano normalmente — <strong>o vírus não distingue intenção.</strong> Aliados precisam coordenar antes de agir.
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /vsmod-grid -->
+
+    <!-- BLOCO: SOBREVIVÊNCIA PARASITÁRIA -->
+    <div class="vsparasita">
+      <div class="vsparasita-head">
+        <div>
+          <div class="vsparasita-badge">Mecânica Especial · Âncora Parasitária</div>
+          <div class="vsparasita-title">SOBREVIVÊNCIA POR INFECÇÃO ESTÁGIO 3+</div>
+        </div>
+      </div>
+      <div class="vsparasita-body">
+
+        <div class="vsparasita-main">
+          Enquanto um alvo estiver com <strong>Infecção Estágio 3 ou superior</strong>, ele <em>não morre</em> mesmo após sofrer <strong>3 quedas</strong>. O vírus atua como âncora parasitária — o hospedeiro é mantido em suspensão biológica, incapaz de morrer de vez enquanto a carga viral de alto estágio permanecer ativa. Se a <strong>Infecção Estágio 3+ for removida ou o portador for derrotado</strong>, a âncora colapsa e o alvo pode <em>voltar à vida</em> — ou morrer imediatamente, a depender do resultado da batalha.
+        </div>
+
+        <!-- BARRA DE QUEDAS -->
+        <div class="vsp-counter" id="vspCounter">
+          <div class="vsp-pip" id="vspip1"></div>
+          <div class="vsp-pip" id="vspip2"></div>
+          <div class="vsp-pip" id="vspip3"></div>
+        </div>
+
+        <div class="vsp-block">
+          <span class="vsp-block-label">Se Sousuke for derrotado</span>
+          A estrutura viral <strong>colapsa</strong>. O hospedeiro suspenso em Estágio 3+ <strong>morre imediatamente</strong> — sem possibilidade de retorno via cura posterior.
+        </div>
+
+        <div class="vsp-block alt">
+          <span class="vsp-block-label">Se o alvo for curado antes</span>
+          EA Reversa ou descanso profundo pode remover os Estágios antes do colapso total. O hospedeiro é <strong>libertado da suspensão</strong> — e das mortes pendentes acumuladas.
+        </div>
+
+      </div>
+    </div><!-- /vsparasita -->
+
   </div>
 </div>
 
-<!-- FRAQUEZA ESTRUTURAL — EA REVERSA -->
-<div class="reveal" style="border:1px solid rgba(200,80,80,.5);background:linear-gradient(135deg,rgba(20,4,4,.95),rgba(10,3,3,.8));padding:18px 24px;margin-bottom:24px;position:relative;overflow:hidden">
-  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(220,60,60,.06) 0%,transparent 65%);pointer-events:none"></div>
-  <div style="font-family:'Inconsolata',monospace;font-size:.48rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(220,80,80,.7);margin-bottom:10px;position:relative">☣ FRAQUEZA ESTRUTURAL · EA REVERSA</div>
-  <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.06em;color:var(--blood-lit);margin-bottom:10px;position:relative">O ÚNICO VETOR QUE TRABALHA CONTRA O VÍRUS</div>
-  <div style="font-family:'Inconsolata',monospace;font-size:.75rem;color:var(--char-dim);line-height:2;position:relative">
-    EA Reversa é energia de vida em estado puro — e o organismo de Sousuke é o oposto disso em nível estrutural. O vírus não tem defesa contra ela porque não foi projetado para encontrá-la: ele evoluiu para habitar corpos que já estão morrendo, não corpos que estão sendo restaurados.<br><br>
-    <strong style="color:var(--blood-lit)">EA Reversa ignora o Retorno Viral completamente.</strong> A redução de dano passiva não se aplica contra nenhuma fonte de EA Reversa, independente de quantos Estágios o atacante tem.<br><br>
-    <strong style="color:var(--blood-lit)">EA Reversa causa dano aumentado em Sousuke.</strong> Qualquer fonte — ataque direto, área, ambiente. Não há resistência aplicável.<br><br>
-    <strong style="color:var(--char)">Se Sousuke recebeu dano de EA Reversa no turno anterior:</strong> a Regeneração Autônoma é suprimida completamente no turno atual. Ele não recupera HP nem EA naquele turno.<br><br>
-    <strong style="color:var(--char)">EA Reversa aplicada por aliado em Sousuke:</strong> causa dano normalmente — o vírus não distingue intenção. Aliados precisam saber disso antes de agir.
-  </div>
-</div>
+<script>
+window.vsToggle = function(n){
+  var card = document.getElementById('vscard'+n);
+  card.classList.toggle('open');
+};
+document.addEventListener('DOMContentLoaded', function(){
+  var pips = document.querySelectorAll('.vsp-pip');
+  var filled = false;
+  function fillPips(){
+    if(filled) return;
+    filled = true;
+    pips.forEach(function(p,i){
+      setTimeout(function(){ p.classList.add('filled'); }, i*120);
+    });
+  }
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting) fillPips(); });
+  },{threshold:.4});
+  if(pips.length) observer.observe(pips[0].closest('.vsparasita'));
+});
+</script>
 
 <!-- PASSIVA I — CORPO DO VÍRUS (Retorno + Ciclo) -->
 <div class="tech core reveal">
@@ -1301,7 +1790,7 @@ function VT(n) {
     </div>
 
     <!-- ABA 1 — RETORNO VIRAL -->
-    <div id="pd1p1" style="border:1px solid rgba(155,18,18,.2);border-top:none;padding:20px;margin-bottom:16px">
+    <div id="pd1p1" style="border:1px solid rgba(155, 18, 18, 0.658);border-top:none;padding:20px;margin-bottom:16px">
       <div style="font-family:'Inconsolata',monospace;font-size:.52rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(185,35,35,.4);margin-bottom:18px">Passiva permanente · Sem ativação · Sem custo · Requer Estágio no atacante</div>
       <div class="b" style="font-size:.85rem;margin-bottom:14px">A EA corrompida instalada num hospedeiro ainda reconhece Sousuke como originador. Quando esse hospedeiro tenta atacá-lo, o impulso nervoso que comanda o golpe passa pela mesma rede que o vírus já ocupa — e chega atenuado. Não é um escudo. É o vírus trabalhando contra quem o carrega no momento errado.</div>
       <div style="border-left:2px solid var(--blood);padding:13px 16px;margin-bottom:14px;background:rgba(0,0,0,.4)">
@@ -1634,171 +2123,373 @@ function VT(n) {
   <div class="djp">感染サイクル — Kansen Saikuru · O Vírus Não Aprende. Ele Muta.</div>
   <div class="b">A técnica de Sousuke não se expande para um domínio nem se inverte — ela <em>muta</em>. Cada ciclo de poder é uma geração viral nova: o que antes era instável se consolida, o que era lento se acelera, o que era doloroso se torna inevitável. Não existe reversão porque o vírus não tem origem para retornar. Não existe expansão de domínio porque o espaço já pertence a ele desde o começo — ele só demora para perceber.</div>
 
-  <!-- NAV DOS CICLOS -->
-  <div class="lnav" id="prog-nav">
-    <div class="ln ph1" id="pcn-1" onclick="PC(1)"><div class="lnum">I</div></div>
-    <div class="ln" id="pcn-2" onclick="PC(2)"><div class="lnum">II</div></div>
-    <div class="ln" id="pcn-3" onclick="PC(3)"><div class="lnum">III</div></div>
-    <div class="ln" id="pcn-4" onclick="PC(4)"><div class="lnum">IV</div></div>
-    <div class="ln" id="pcn-5" onclick="PC(5)"><div class="lnum">V</div></div>
-    <div class="ln" id="pcn-6" onclick="PC(6)"><div class="lnum">VI</div></div>
-    <div class="ln" id="pcn-7" onclick="PC(7)"><div class="lnum">VII</div></div>
-    <div class="ln" id="pcn-8" onclick="PC(8)"><div class="lnum">VIII</div></div>
-    <div class="ln" id="pcn-9" onclick="PC(9)"><div class="lnum">IX</div></div>
-    <div class="ln" id="pcn-10" onclick="PC(10)"><div class="lnum">X</div></div>
+  <!-- ABAS DE CATEGORIA -->
+  <div style="display:flex;gap:0;border:1px solid var(--seam);overflow:hidden;margin:20px 0 0">
+    <div id="ptab-ciclos" onclick="PTB('ciclos')" style="flex:1;padding:11px 8px;text-align:center;cursor:pointer;background:var(--deep);border-right:1px solid var(--seam);transition:background .15s">
+      <div style="font-family:'Inconsolata',monospace;font-size:.48rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ash);margin-bottom:3px">Loop · N1→N10</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:.9rem;color:var(--bile-lit)">CICLOS VIRAIS</div>
+    </div>
+    <div id="ptab-marcos" onclick="PTB('marcos')" style="flex:1;padding:11px 8px;text-align:center;cursor:pointer;background:var(--slab);border-right:1px solid var(--seam);transition:background .15s">
+      <div style="font-family:'Inconsolata',monospace;font-size:.48rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ash);margin-bottom:3px">Marcos · N10→N100</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:.9rem;color:var(--pus)">MUTAÇÕES VIRAIS</div>
+    </div>
+    <div id="ptab-despertar" onclick="PTB('despertar')" style="flex:1;padding:11px 8px;text-align:center;cursor:pointer;background:var(--slab);transition:background .15s">
+      <div style="font-family:'Inconsolata',monospace;font-size:.48rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ash);margin-bottom:3px">501+</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:.9rem;color:var(--blood-lit)">TRANSCENDÊNCIA</div>
+    </div>
   </div>
 
-  <!-- CICLO I -->
-  <div class="lpanel c1 show" id="pcp-1">
-    <span class="ltitle">Ciclo I — Inoculação Primária</span>
-    <span class="lphase" style="color:var(--bile-lit)">感染初期 · Primeiro Contato</span>
-    <div class="mech" style="border-left-color:var(--bile-lit);color:var(--pus)">
-      [CLASSE +1] O vírus reconhece o hospedeiro. Sousuke sobe um nível de classe — o corpo aprende a carregar mais carga sem colapsar.<br><br>
-      [SAÚDE] +1 dado de saúde (d8). A resistência não é força — é o organismo aceitando a infecção como parte de si.<br><br>
-      [TÉCNICA] <strong>Carga Viral Latente</strong> — os Estágios instalados por ataques diretos agora somam +1 automaticamente quando o alvo já possui ao menos 1 Estágio ativo. Nenhum custo adicional. O vírus já dentro potencializa o vírus chegando.
+  <!-- ═══════════════ PAINEL: CICLOS VIRAIS ═══════════════ -->
+  <div id="ppanel-ciclos" style="display:block">
+    <div style="font-family:'Inconsolata',monospace;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ash);padding:12px 0 8px;border-bottom:1px solid var(--seam);margin-bottom:4px">Este ciclo se repete a cada 10 níveis — cada número é o que você ganha naquele nível dentro do loop</div>
+    <div class="lnav" id="prog-nav">
+      <div class="ln ph1" id="pcn-1" onclick="PC(1)"><div class="lnum">I</div></div>
+      <div class="ln" id="pcn-2" onclick="PC(2)"><div class="lnum">II</div></div>
+      <div class="ln" id="pcn-3" onclick="PC(3)"><div class="lnum">III</div></div>
+      <div class="ln" id="pcn-4" onclick="PC(4)"><div class="lnum">IV</div></div>
+      <div class="ln" id="pcn-5" onclick="PC(5)"><div class="lnum">V</div></div>
+      <div class="ln" id="pcn-6" onclick="PC(6)"><div class="lnum">VI</div></div>
+      <div class="ln" id="pcn-7" onclick="PC(7)"><div class="lnum">VII</div></div>
+      <div class="ln" id="pcn-8" onclick="PC(8)"><div class="lnum">VIII</div></div>
+      <div class="ln" id="pcn-9" onclick="PC(9)"><div class="lnum">IX</div></div>
+      <div class="ln" id="pcn-10" onclick="PC(10)"><div class="lnum">X</div></div>
     </div>
-    <div class="tags"><span class="tag g">Passivo</span><span class="tag p">Sempre Ativo</span><span class="tag">Acúmulo</span></div>
-  </div>
 
-  <!-- CICLO II -->
-  <div class="lpanel c1" id="pcp-2">
-    <span class="ltitle">Ciclo II — Propagação Nervosa</span>
-    <span class="lphase" style="color:var(--bile-lit)">神経感染 · O Vírus Aprende os Caminhos</span>
-    <div class="mech" style="border-left-color:var(--bile-lit);color:var(--pus)">
-      [PERÍCIA DE COMBATE +1] Reflexo cirúrgico — o sistema nervoso de Sousuke opera em frequência viral.<br><br>
-      [SAÚDE] +1 dado de saúde (d8).<br><br>
-      [TÉCNICA] <strong>Propagação Subcutânea</strong> — uma vez por combate, ao instalar qualquer Estágio em um alvo, Sousuke pode gastar 3 EA para propagar 1 Estágio a um segundo alvo adjacente ao primeiro (dentro de 4m). O alvo secundário não precisa ter sido atacado. O vírus viaja pelo ar entre corpos próximos.
+    <!-- CICLO I -->
+    <div class="lpanel c1 show" id="pcp-1">
+      <span class="ltitle">Ciclo I — Inoculação Primária</span>
+      <span class="lphase" style="color:var(--bile-lit)">感染初期 · N1, N11, N21... · Classe + Saúde</span>
+      <div class="mech" style="border-left-color:var(--bile-lit);color:var(--pus)">
+        [CLASSE +1] Sousuke sobe um nível de classe — ganhos padrão da classe Feiticeiro aplicados normalmente.<br><br>
+        [SAÚDE] +1d8.<br><br>
+        [TÉCNICA VIRAL] <strong>Carga Latente</strong> — ataques diretos em alvos com 1+ Estágio instalam +1 Estágio extra automaticamente. Sem custo. Empilha a cada vez que o Ciclo I é completado: na segunda repetição (N11), o bônus sobe para +1 Estágio extra em alvos com 3+ Estágios também.
+      </div>
+      <div class="tags"><span class="tag g">Passivo</span><span class="tag p">Sempre Ativo</span><span class="tag">Escala com Repetição</span></div>
     </div>
-    <div class="tags"><span class="tag g">1x/Combate</span><span class="tag p">Custo: 3 EA</span><span class="tag">Contágio</span></div>
-  </div>
 
-  <!-- CICLO III -->
-  <div class="lpanel c2" id="pcp-3">
-    <span class="ltitle">Ciclo III — Memória Adaptativa</span>
-    <span class="lphase" style="color:var(--pus)">適応記憶 · O Vírus Lembra</span>
-    <div class="mech" style="border-left-color:var(--pus);color:var(--pus)">
-      [APRENDIZADO] Sousuke pode aprender ou refinar uma técnica viral durante a campanha (aprovação do GM).<br><br>
-      [SAÚDE] +1 dado de saúde (d8).<br><br>
-      [TÉCNICA] <strong>Resistência Cruzada Invertida</strong> — quando um alvo tenta resistir a qualquer efeito do vírus (Fortitude, Constituição, etc.), se ele já falhou numa resistência anteriormente nesse combate, a DT base da nova resistência aumenta em +2. O vírus registra as falhas do hospedeiro e as explora.
+    <!-- CICLO II -->
+    <div class="lpanel c1" id="pcp-2">
+      <span class="ltitle">Ciclo II — Propagação Nervosa</span>
+      <span class="lphase" style="color:var(--bile-lit)">神経感染 · N2, N12, N22... · Perícia de Combate + Saúde</span>
+      <div class="mech" style="border-left-color:var(--bile-lit);color:var(--pus)">
+        [PERÍCIA DE COMBATE +1] +1 em uma perícia de combate à escolha.<br><br>
+        [SAÚDE] +1d8.<br><br>
+        [TÉCNICA VIRAL] <strong>Contágio Subcutâneo</strong> — 1x por combate, ao instalar Estágio num alvo, gasta 3 EA para propagar 1 Estágio a um segundo alvo até 4m. O segundo alvo não precisa ter sido atacado. A cada repetição do ciclo, o raio de propagação aumenta 1m.
+      </div>
+      <div class="tags"><span class="tag g">1x/Combate</span><span class="tag p">Custo: 3 EA</span><span class="tag">Raio Escala</span></div>
     </div>
-    <div class="tags"><span class="tag g">Passivo</span><span class="tag p">Escalada de DT</span><span class="tag">Memória Viral</span></div>
-  </div>
 
-  <!-- CICLO IV -->
-  <div class="lpanel c2" id="pcp-4">
-    <span class="ltitle">Ciclo IV — Saturação Tissular</span>
-    <span class="lphase" style="color:var(--pus)">組織飽和 · A Carne Não Aguenta Mais</span>
-    <div class="mech" style="border-left-color:var(--pus);color:var(--pus)">
-      [PERÍCIA GERAL] Gire 1d6 — ganha esse número em perícias fora de combate. O vírus amplia percepção e leitura de ambiente.<br><br>
-      [SAÚDE] +1 dado de saúde (d8).<br><br>
-      [TÉCNICA] <strong>Necrose Acelerada</strong> — alvos em Estágio 5 ou superior sofrem dano passivo no início do turno deles (não de Sousuke): 1d6 por Estágio acima de 4. Estágio 6 = 1d6. Estágio 7 = 2d6. Estágio 8 = 3d6. Isso não é um ataque — é o tecido se desmontando. Não pode ser esquivado.<br><br>
-      [DEFESA] Barreira Tecidual — ação bônus, gasta 4 EA, reduz 6 de dano no round. Funciona usando tecido viral endurecido ao invés de EA pura.
+    <!-- CICLO III -->
+    <div class="lpanel c2" id="pcp-3">
+      <span class="ltitle">Ciclo III — Memória Adaptativa</span>
+      <span class="lphase" style="color:var(--pus)">適応記憶 · N3, N13, N23... · Aprendizado + Saúde</span>
+      <div class="mech" style="border-left-color:var(--pus);color:var(--pus)">
+        [APRENDIZADO] Aprende ou refina uma técnica viral na campanha (aprovação do GM).<br><br>
+        [SAÚDE] +1d8.<br><br>
+        [TÉCNICA VIRAL] <strong>Registro de Falha</strong> — após um alvo falhar em qualquer resistência viral nesse combate, todas as DTs das técnicas de Sousuke contra ele sobem +2 permanentemente nesse combate. A cada repetição do ciclo, o bônus de DT acumulável por falha sobe em +1 adicional.
+      </div>
+      <div class="tags"><span class="tag g">Passivo</span><span class="tag p">DT +2 pós-falha</span><span class="tag">Acumula por Combate</span></div>
     </div>
-    <div class="tags"><span class="tag g">Passivo</span><span class="tag p">Dano por Estágio</span><span class="tag r">Não-Esquivável</span><span class="tag">Ataque Extra</span></div>
-  </div>
 
-  <!-- CICLO V -->
-  <div class="lpanel c2" id="pcp-5">
-    <span class="ltitle">Ciclo V — Simbiose Forçada</span>
-    <span class="lphase" style="color:var(--pus)">強制共生 · Sousuke e o Vírus São a Mesma Coisa</span>
-    <div class="mech" style="border-left-color:var(--pus);color:var(--pus)">
-      [ENERGIA +5] O vínculo com a carga viral se aprofunda — a reserva de EA cresce naturalmente.<br><br>
-      [SAÚDE] +1 dado de saúde (d8).<br><br>
-      [TÉCNICA] <strong>Metabolismo Parasita</strong> — sempre que um alvo infectado (1+ Estágio) sofre dano passivo de Necrose ou avança de Estágio espontaneamente, Sousuke recupera 2 EA. Recupera 1 EA por turno em combate enquanto há pelo menos um alvo com Estágio ativo no campo. A dor do outro o alimenta.
+    <!-- CICLO IV -->
+    <div class="lpanel c2" id="pcp-4">
+      <span class="ltitle">Ciclo IV — Saturação Tissular</span>
+      <span class="lphase" style="color:var(--pus)">組織飽和 · N4, N14, N24... · Perícia Geral + Saúde</span>
+      <div class="mech" style="border-left-color:var(--pus);color:var(--pus)">
+        [PERÍCIA GERAL] Gire 1d6 — ganha esse número em perícias fora de combate.<br><br>
+        [SAÚDE] +1d8.<br><br>
+        [TÉCNICA VIRAL] <strong>Necrose Passiva</strong> — alvos em Estágio 5+ sofrem 1d6 de dano no início do turno deles por Estágio acima de 4. Não pode ser esquivado — é o tecido se desmontando por dentro. A cada repetição, o limiar de ativação cai 1 (começa em 5+, vira 4+, depois 3+).
+      </div>
+      <div class="tags"><span class="tag g">Passivo</span><span class="tag p">Limiar Reduz a cada Loop</span><span class="tag r">Não-Esquivável</span></div>
     </div>
-    <div class="tags"><span class="tag g">Passivo</span><span class="tag p">Recuperação EA</span><span class="tag">Simbiose</span></div>
-  </div>
 
-  <!-- CICLO VI -->
-  <div class="lpanel c3" id="pcp-6">
-    <span class="ltitle">Ciclo VI — Cepas Assinatura</span>
-    <span class="lphase" style="color:var(--nec-lit)">署名株 · Esse Vírus Tem Autoria</span>
-    <div class="mech" style="border-left-color:var(--nec-lit);color:var(--nec-lit)">
-      [PERÍCIA GERAL] Gire 1d6 — ganha esse número em perícias fora de combate.<br><br>
-      [SAÚDE] +1 dado de saúde (d8).<br><br>
-      [TÉCNICA] <strong>Cepa Personalizada</strong> — Sousuke escolhe <strong>uma</strong> técnica de seu arsenal. Ela ganha +4d4 de dano e custa –1 EA permanentemente. Além disso, essa técnica agora instala Estágio <strong>mesmo em alvos que resistiram</strong> à inoculação naquele turno — instala 1 Estágio ao invés de 0 (resistência parcial, não imunidade).
+    <!-- CICLO V -->
+    <div class="lpanel c2" id="pcp-5">
+      <span class="ltitle">Ciclo V — Simbiose Forçada</span>
+      <span class="lphase" style="color:var(--pus)">強制共生 · N5, N15, N25... · Energia +5 + Saúde</span>
+      <div class="mech" style="border-left-color:var(--pus);color:var(--pus)">
+        [ENERGIA +5] EA máxima aumenta em 5.<br><br>
+        [SAÚDE] +1d8.<br><br>
+        [TÉCNICA VIRAL] <strong>Metabolismo Parasita</strong> — recupera 2 EA sempre que um alvo infectado sofre dano passivo de Necrose ou avança de Estágio. Recupera 1 EA por turno enquanto há 1+ alvo com Estágio ativo no campo. A cada repetição do ciclo, a recuperação por Necrose sobe em +1 EA.
+      </div>
+      <div class="tags"><span class="tag g">Passivo</span><span class="tag p">Regen EA por Dano Alheio</span><span class="tag">Escala com Loop</span></div>
     </div>
-    <div class="tags"><span class="tag g">Permanente</span><span class="tag p">+4d4 Dano</span><span class="tag n">Resistência Parcial</span></div>
-  </div>
 
-  <!-- CICLO VII -->
-  <div class="lpanel c3" id="pcp-7">
-    <span class="ltitle">Ciclo VII — Amplificação Endógena</span>
-    <span class="lphase" style="color:var(--nec-lit)">内因性増幅 · O Vírus Grita</span>
-    <div class="mech" style="border-left-color:var(--nec-lit);color:var(--nec-lit)">
-      [ENERGIA +5] O corpo não só aceita — ele produz. EA base cresce.<br><br>
-      [SAÚDE] +1 dado de saúde (d8).<br><br>
-      [TÉCNICA] <strong>Surto Viral</strong> — pode gastar 5 EA extras num ataque ou teste para escolher UMA das opções:<br>
-      · +5 dados de dano naquele ataque<br>
-      · +2d20 no teste de acerto ou resistência<br>
-      · Forçar todos os alvos com Estágio ativo no campo a avançar +1 Estágio imediatamente (sem teste de resistência)<br><br>
-      A terceira opção só existe para Sousuke — é o custo de não ter domínio: o surto é indiscriminado, brutal e pessoal.
+    <!-- CICLO VI -->
+    <div class="lpanel c3" id="pcp-6">
+      <span class="ltitle">Ciclo VI — Cepa Assinatura</span>
+      <span class="lphase" style="color:var(--nec-lit)">署名株 · N6, N16, N26... · Perícia Geral + Saúde</span>
+      <div class="mech" style="border-left-color:var(--nec-lit);color:var(--nec-lit)">
+        [PERÍCIA GERAL] Gire 1d6 — ganha esse número em perícias fora de combate.<br><br>
+        [SAÚDE] +1d8.<br><br>
+        [TÉCNICA VIRAL] <strong>Cepa Personalizada</strong> — escolhe uma técnica do arsenal. Ela ganha +4d4 de dano e custa –1 EA permanentemente. Essa técnica instala 1 Estágio mesmo em alvos que resistiram naquele turno. A cada repetição, pode escolher uma técnica adicional para receber –1 EA (sem o bônus de dano).
+      </div>
+      <div class="tags"><span class="tag g">Permanente</span><span class="tag p">+4d4 · –1 EA</span><span class="tag n">Resistência Parcial</span></div>
     </div>
-    <div class="tags"><span class="tag g">Ativo</span><span class="tag p">Custo: 5 EA</span><span class="tag r">3 Opções</span></div>
-  </div>
 
-  <!-- CICLO VIII -->
-  <div class="lpanel c3" id="pcp-8">
-    <span class="ltitle">Ciclo VIII — Pele Como Armadura</span>
-    <span class="lphase" style="color:var(--nec-lit)">皮膚装甲 · Infectado Não É Frágil</span>
-    <div class="mech" style="border-left-color:var(--nec-lit);color:var(--nec-lit)">
-      [SAÚDE] +1 dado de saúde (d8) — duas vezes. O ciclo VIII é exclusivamente físico.<br><br>
-      [TÉCNICA] <strong>Casulo Patogênico</strong> — testes de esquiva e resistência contra magia e efeitos de energia amaldiçoada recebem +1d20. A carga viral dentro de Sousuke interfere com frequências de EA externas.<br><br>
-      <strong>Imunidade Cruzada</strong> — efeitos de veneno, doença e degeneração aplicados por outros têm suas DTs reduzidas em 4 contra Sousuke. O vírus reconhece os primos e os rejeita.<br><br>
-      +1 dado em qualquer teste que envolva resistir fisicamente (não é Feitiçaria — é biologia pura).
+    <!-- CICLO VII -->
+    <div class="lpanel c3" id="pcp-7">
+      <span class="ltitle">Ciclo VII — Amplificação Endógena</span>
+      <span class="lphase" style="color:var(--nec-lit)">内因性増幅 · N7, N17, N27... · Energia +5 + Saúde</span>
+      <div class="mech" style="border-left-color:var(--nec-lit);color:var(--nec-lit)">
+        [ENERGIA +5] EA máxima aumenta em 5.<br><br>
+        [SAÚDE] +1d8.<br><br>
+        [TÉCNICA VIRAL] <strong>Surto Viral</strong> — gasta 5 EA extras num ataque para escolher UMA opção:<br>
+        · +5 dados de dano naquele ataque<br>
+        · +2d20 no teste de acerto ou resistência<br>
+        · Todos os alvos com Estágio ativo avançam +1 Estágio sem resistência<br><br>
+        A cada repetição, o custo do Surto cai em 1 EA (mínimo 2).
+      </div>
+      <div class="tags"><span class="tag g">Ativo</span><span class="tag p">Custo Reduz a cada Loop</span><span class="tag r">3 Opções</span></div>
     </div>
-    <div class="tags"><span class="tag g">Passivo</span><span class="tag p">+1d20 Esquiva Mágica</span><span class="tag">Imunidade Cruzada</span></div>
-  </div>
 
-  <!-- CICLO IX -->
-  <div class="lpanel c4" id="pcp-9">
-    <span class="ltitle">Ciclo IX — Portador Temido</span>
-    <span class="lphase" style="color:var(--blood-lit)">恐れられた保菌者 · Eles Sabem Quando Ele Chega</span>
-    <div class="mech" style="border-left-color:var(--blood-lit);color:#e07070">
-      [ENERGIA +5] A presença viral de Sousuke é tão densa que a EA transborda.<br><br>
-      [SAÚDE] +1 dado de saúde (d8).<br><br>
-      [TÉCNICA] <strong>Presença Infecciosa</strong> — inimigos que iniciam o turno a até 9m de Sousuke recebem automaticamente 1 Estágio se já possuírem qualquer Estágio ativo (o vírus no ar amplia o que está dentro). Fortitude DT Mod+8 anula.<br><br>
-      <strong>Aura de Decomposição</strong> — curas recebidas por alvos infectados dentro de 9m são reduzidas à metade. A presença de Sousuke corrói a recuperação do inimigo como um campo passivo.<br><br>
-      Inoculações de Sousuke ignoram resistência comum — apenas Energia Positiva direcionada conta como proteção real.
+    <!-- CICLO VIII -->
+    <div class="lpanel c3" id="pcp-8">
+      <span class="ltitle">Ciclo VIII — Pele Como Armadura</span>
+      <span class="lphase" style="color:var(--nec-lit)">皮膚装甲 · N8, N18, N28... · Saúde + Saúde</span>
+      <div class="mech" style="border-left-color:var(--nec-lit);color:var(--nec-lit)">
+        [SAÚDE] +1d8 duas vezes. O Ciclo VIII é exclusivamente físico.<br><br>
+        [TÉCNICA VIRAL] <strong>Casulo Patogênico</strong> — testes de esquiva e resistência contra magia e EA externa recebem +1d20. Veneno, doença e degeneração externos têm DTs reduzidas em 4 contra Sousuke. A cada repetição, a redução de DT sobe em +2.
+      </div>
+      <div class="tags"><span class="tag g">Passivo</span><span class="tag p">+1d20 Esquiva Mágica</span><span class="tag">Redução de DT Escala</span></div>
     </div>
-    <div class="tags"><span class="tag g">Aura Passiva</span><span class="tag r">9m de Raio</span><span class="tag p">Ignora Resistência</span></div>
-  </div>
 
-  <!-- CICLO X -->
-  <div class="lpanel c4" id="pcp-10">
-    <span class="ltitle">Ciclo X — Vírus Inato Manifestado</span>
-    <span class="lphase" style="color:var(--blood-lit)">先天性ウイルス顕現 · A Origem Se Revela</span>
-    <div class="mech" style="border-left-color:var(--blood-lit);color:#e07070">
-      [HABILIDADE INATA / MARCO DE PODER] — O ciclo final não escolhe entre caminhos. Ele revela o que sempre foi.<br><br>
-      [SAÚDE] +1 dado de saúde (d8).<br><br>
-      Escolha <strong>UMA</strong> Manifestação Inata:<br><br>
-      <strong>· CEPA OMEGA</strong> — Destruição Biológica Pura: todos os ataques virais ganham +5d6 de dano base. Estágios aplicados por Sousuke avançam em 2 ao invés de 1 em qualquer ataque direto.<br><br>
-      <strong>· VÍRUS FANTASMA</strong> — Penetração Total: a técnica de Sousuke passa a ignorar Domínios Simples e barreiras de EA que não sejam Energia Positiva. Os Estágios não são bloqueados por escudos, armaduras ou proteções mágicas — o vírus não ataca a superfície.<br><br>
-      <strong>· HOSPEDEIRO ETERNO</strong> — Controle do Campo: uma vez por combate (sem custo), todos os alvos com Estágio ativo recebem um efeito específico escolhido por Sousuke no momento (lentidão, cegueira viral, falha muscular, etc.) que dura 1d4 rodadas. É como um debuff distribuído por rede biológica — o vírus como sistema nervoso externo.
+    <!-- CICLO IX -->
+    <div class="lpanel c4" id="pcp-9">
+      <span class="ltitle">Ciclo IX — Portador Temido</span>
+      <span class="lphase" style="color:var(--blood-lit)">恐れられた保菌者 · N9, N19, N29... · Energia +5 + Saúde</span>
+      <div class="mech" style="border-left-color:var(--blood-lit);color:#e07070">
+        [ENERGIA +5] EA máxima aumenta em 5.<br><br>
+        [SAÚDE] +1d8.<br><br>
+        [TÉCNICA VIRAL] <strong>Presença Infecciosa</strong> — inimigos com 1+ Estágio que iniciam o turno até 9m de Sousuke recebem +1 Estágio automático (Fortitude DT Mod+8 anula). Curas recebidas por infectados nesse raio são reduzidas à metade. Inoculações ignoram resistência comum. A cada repetição, o raio cresce 2m.
+      </div>
+      <div class="tags"><span class="tag g">Aura Passiva</span><span class="tag r">Raio Escala</span><span class="tag p">Ignora Resistência Comum</span></div>
     </div>
-    <div class="tags"><span class="tag g">Marco Permanente</span><span class="tag r">Escolha Única</span><span class="tag p">Ciclo Final</span><span class="tag n">Inato</span></div>
-  </div>
-</div>
+
+    <!-- CICLO X -->
+    <div class="lpanel c4" id="pcp-10">
+      <span class="ltitle">Ciclo X — Vírus Inato Manifestado</span>
+      <span class="lphase" style="color:var(--blood-lit)">先天性ウイルス顕現 · N10, N20, N30... · Inata + Saúde</span>
+      <div class="mech" style="border-left-color:var(--blood-lit);color:#e07070">
+        [HABILIDADE INATA] A cada vez que o Ciclo X é completado, o efeito escolhido na primeira vez se intensifica — não há nova escolha. O vírus não muda de direção. Ele aprofunda.<br><br>
+        [SAÚDE] +1d8.<br><br>
+        <strong>Primeira vez (N10):</strong> escolhe UMA Manifestação Inata permanente:<br><br>
+        · <strong>CEPA OMEGA</strong> — +5d6 de dano base em todos os ataques virais. Estágios aplicados avançam 2 ao invés de 1.<br>
+        · <strong>VÍRUS FANTASMA</strong> — técnicas ignoram Domínios Simples e barreiras de EA que não sejam Energia Positiva.<br>
+        · <strong>HOSPEDEIRO ETERNO</strong> — 1x por combate sem custo, todos os alvos com Estágio ativo recebem um debuff escolhido por Sousuke por 1d4 rodadas.<br><br>
+        <strong>Repetições (N20, N30...):</strong> a Manifestação escolhida ganha +1 intensidade — dano extra, alcance maior, duração aumentada. Definido na campanha com GM.
+      </div>
+      <div class="tags"><span class="tag g">Marco Permanente</span><span class="tag r">Escolha Única no N10</span><span class="tag p">Intensifica a cada Loop</span><span class="tag n">Inato</span></div>
+    </div>
+  </div><!-- /ppanel-ciclos -->
+
+  <!-- ═══════════════ PAINEL: MUTAÇÕES VIRAIS (N10-N100) ═══════════════ -->
+  <div id="ppanel-marcos" style="display:none">
+    <div style="font-family:'Inconsolata',monospace;font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--ash);padding:14px 0 10px">A cada 10 níveis o vírus sofre uma mutação estrutural permanente — esses ganhos são adicionais ao loop normal</div>
+
+    <!-- N10 -->
+    <div style="border:1px solid rgba(160,20,20,.25);background:rgba(6,2,2,.7);margin-bottom:8px;overflow:hidden">
+      <div style="padding:13px 18px;border-bottom:1px solid rgba(160,20,20,.12);display:flex;align-items:baseline;justify-content:space-between">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.06em;color:var(--bile-lit)">N10 · Primeira Geração</div>
+        <div style="font-family:'Inconsolata',monospace;font-size:.55rem;color:var(--ash)">+1 dado de dano em todos os ataques</div>
+      </div>
+      <div style="padding:12px 18px;font-family:'Inconsolata',monospace;font-size:.73rem;color:var(--char-dim);line-height:1.85">
+        A carga viral atingiu massa crítica — cada ataque carrega mais vírus por unidade de EA. <strong style="color:var(--char)">+1 dado de dano em todos os ataques virais</strong>, empilhável com tudo. Permanente.
+      </div>
+    </div>
+
+    <!-- N20 -->
+    <div style="border:1px solid rgba(160,20,20,.25);background:rgba(6,2,2,.7);margin-bottom:8px;overflow:hidden">
+      <div style="padding:13px 18px;border-bottom:1px solid rgba(160,20,20,.12);display:flex;align-items:baseline;justify-content:space-between">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.06em;color:var(--bile-lit)">N20 · Loop Metabólico</div>
+        <div style="font-family:'Inconsolata',monospace;font-size:.55rem;color:var(--ash)">+1 dado de dano · +1 regen EA/turno</div>
+      </div>
+      <div style="padding:12px 18px;font-family:'Inconsolata',monospace;font-size:.73rem;color:var(--char-dim);line-height:1.85">
+        O metabolismo viral fecha o ciclo — produção e consumo se equilibram. <strong style="color:var(--char)">+1 dado de dano</strong> e <strong style="color:var(--char)">+1 de regeneração de EA por turno em combate</strong>, passivo e automático.
+      </div>
+    </div>
+
+    <!-- N30 -->
+    <div style="border:1px solid rgba(160,20,20,.25);background:rgba(6,2,2,.7);margin-bottom:8px;overflow:hidden">
+      <div style="padding:13px 18px;border-bottom:1px solid rgba(160,20,20,.12);display:flex;align-items:baseline;justify-content:space-between">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.06em;color:var(--pus)">N30 · Tecido Reservatório</div>
+        <div style="font-family:'Inconsolata',monospace;font-size:.55rem;color:var(--ash)">+1 dado de dano · +5 EA · +5 HP fixo</div>
+      </div>
+      <div style="padding:12px 18px;font-family:'Inconsolata',monospace;font-size:.73rem;color:var(--char-dim);line-height:1.85">
+        Os tecidos virais acumulam energia como reserva orgânica. <strong style="color:var(--char)">+1 dado de dano</strong>, <strong style="color:var(--char)">+5 EA máxima</strong> e <strong style="color:var(--char)">+5 HP fixo</strong> (além dos dados de saúde). O corpo virou o recipiente.
+      </div>
+    </div>
+
+    <!-- N40 -->
+    <div style="border:1px solid rgba(160,20,20,.25);background:rgba(6,2,2,.7);margin-bottom:8px;overflow:hidden">
+      <div style="padding:13px 18px;border-bottom:1px solid rgba(160,20,20,.12);display:flex;align-items:baseline;justify-content:space-between">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.06em;color:var(--pus)">N40 · Reversão Viral</div>
+        <div style="font-family:'Inconsolata',monospace;font-size:.55rem;color:var(--ash)">+1 dado de dano · Reversão de Feitiço viral</div>
+      </div>
+      <div style="padding:12px 18px;font-family:'Inconsolata',monospace;font-size:.73rem;color:var(--char-dim);line-height:1.85">
+        O vírus aprende a consumir técnicas inimigas. <strong style="color:var(--char)">+1 dado de dano</strong>. <strong style="color:var(--char)">Reversão Viral</strong> — 1x por cena, ao ser alvo de uma técnica, gasta 8 EA para forçar o efeito de volta ao originador (DT Mod+10 para resistir). Não funciona contra EA Reversa.
+      </div>
+    </div>
+
+    <!-- N50 -->
+    <div style="border:1px solid rgba(160,20,20,.3);background:rgba(8,2,2,.85);margin-bottom:8px;overflow:hidden;position:relative">
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(160,20,20,.07) 0%,transparent 60%);pointer-events:none"></div>
+      <div style="padding:13px 18px;border-bottom:1px solid rgba(160,20,20,.18);display:flex;align-items:baseline;justify-content:space-between;position:relative">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.06em;color:var(--nec-lit)">N50 · Domínio Biológico</div>
+        <div style="font-family:'Inconsolata',monospace;font-size:.55rem;color:var(--ash)">Domínio Simples · versão viral</div>
+      </div>
+      <div style="padding:12px 18px;font-family:'Inconsolata',monospace;font-size:.73rem;color:var(--char-dim);line-height:1.85;position:relative">
+        Sousuke não projeta um espaço — ele infecta um. <strong style="color:var(--char)">Domínio Biológico</strong>: funciona como Domínio Simples, mas ao invés de barreira de EA, o ambiente libera névoa viral em raio de 18m. Todo ser vivo na névoa recebe 1 Estágio ao entrar e +1 Estágio por turno que permanecer. Aliados designados são imunes. Custo e ativação idênticos ao Domínio Simples padrão.
+      </div>
+    </div>
+
+    <!-- N60 -->
+    <div style="border:1px solid rgba(160,20,20,.3);background:rgba(8,2,2,.85);margin-bottom:8px;overflow:hidden;position:relative">
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(160,20,20,.07) 0%,transparent 60%);pointer-events:none"></div>
+      <div style="padding:13px 18px;border-bottom:1px solid rgba(160,20,20,.18);display:flex;align-items:baseline;justify-content:space-between;position:relative">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.06em;color:var(--nec-lit)">N60 · Saturação Total</div>
+        <div style="font-family:'Inconsolata',monospace;font-size:.55rem;color:var(--ash)">Expansão do Domínio Biológico · +2 regen EA/turno</div>
+      </div>
+      <div style="padding:12px 18px;font-family:'Inconsolata',monospace;font-size:.73rem;color:var(--char-dim);line-height:1.85;position:relative">
+        O Domínio Biológico expande para saturação total. Raio aumenta para <strong style="color:var(--char)">30m</strong>. Alvos em Estágio 3+ dentro do campo têm dano passivo dobrado. Infecções em Estágio 5+ são imunes a curas comuns enquanto o Domínio estiver ativo. Adicionalmente: <strong style="color:var(--char)">+2 de regeneração de EA por turno</strong> (acumula com N20).
+      </div>
+    </div>
+
+    <!-- N70 -->
+    <div style="border:1px solid rgba(160,20,20,.25);background:rgba(6,2,2,.7);margin-bottom:8px;overflow:hidden">
+      <div style="padding:13px 18px;border-bottom:1px solid rgba(160,20,20,.12);display:flex;align-items:baseline;justify-content:space-between">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.06em;color:var(--nec-lit)">N70 · Evolução Dirigida</div>
+        <div style="font-family:'Inconsolata',monospace;font-size:.55rem;color:var(--ash)">+1 dado em status à escolha OU +1 reação · +1 dado de dano</div>
+      </div>
+      <div style="padding:12px 18px;font-family:'Inconsolata',monospace;font-size:.73rem;color:var(--char-dim);line-height:1.85">
+        <strong style="color:var(--char)">+1 dado de dano</strong> em todos os ataques. Escolha permanentemente UMA mutação adicional:<br><br>
+        · <strong style="color:var(--char)">Adaptação Estatística</strong> — +1 dado em qualquer status (Feitiçaria, Resistência, Iniciativa, etc.)<br>
+        · <strong style="color:var(--char)">Reflexo Parasitário</strong> — +1 reação por rodada, usável para respostas a ataques que causariam HP.
+      </div>
+    </div>
+
+    <!-- N80 -->
+    <div style="border:1px solid rgba(160,20,20,.3);background:rgba(8,2,2,.85);margin-bottom:8px;overflow:hidden;position:relative">
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(160,20,20,.07) 0%,transparent 60%);pointer-events:none"></div>
+      <div style="padding:13px 18px;border-bottom:1px solid rgba(160,20,20,.18);display:flex;align-items:baseline;justify-content:space-between;position:relative">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.06em;color:var(--blood-lit)">N80 · Amplificação Biológica</div>
+        <div style="font-family:'Inconsolata',monospace;font-size:.55rem;color:var(--ash)">Amplificação do Domínio · +2 dados de dano dentro do campo</div>
+      </div>
+      <div style="padding:12px 18px;font-family:'Inconsolata',monospace;font-size:.73rem;color:var(--char-dim);line-height:1.85;position:relative">
+        O Domínio Biológico atinge potência máxima. Enquanto ativo: <strong style="color:var(--char)">+2 dados de dano</strong> em todos os ataques de Sousuke dentro do campo. Estágios instalados dentro avançam 2 ao invés de 1. O campo <strong style="color:var(--char)">suprime regeneração passiva</strong> de todos os inimigos — nenhum HP ou EA volta enquanto estiverem dentro.
+      </div>
+    </div>
+
+    <!-- N90 -->
+    <div style="border:1px solid rgba(160,20,20,.25);background:rgba(6,2,2,.7);margin-bottom:8px;overflow:hidden">
+      <div style="padding:13px 18px;border-bottom:1px solid rgba(160,20,20,.12);display:flex;align-items:baseline;justify-content:space-between">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.06em;color:var(--blood-lit)">N90 · Cepa Absoluta</div>
+        <div style="font-family:'Inconsolata',monospace;font-size:.55rem;color:var(--ash)">+2 dados de dano · Estágios ignoram imunidade comum</div>
+      </div>
+      <div style="padding:12px 18px;font-family:'Inconsolata',monospace;font-size:.73rem;color:var(--char-dim);line-height:1.85">
+        A cepa viral atingiu forma definitiva. <strong style="color:var(--char)">+2 dados de dano em todos os ataques</strong>. Adicionalmente: Estágios instalados por Sousuke passam a ignorar imunidade a doenças e venenos — apenas proteção ativa de EA Reversa ou Domínio oposto ainda funciona como barreira real.
+      </div>
+    </div>
+
+    <!-- N100 -->
+    <div style="border:1px solid rgba(200,28,28,.55);background:linear-gradient(135deg,rgba(14,2,2,.98),rgba(8,1,1,.85));margin-bottom:8px;overflow:hidden;position:relative">
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(200,28,28,.1) 0%,transparent 55%);pointer-events:none"></div>
+      <div style="padding:13px 18px;border-bottom:1px solid rgba(200,28,28,.22);display:flex;align-items:baseline;justify-content:space-between;position:relative">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1.15rem;letter-spacing:.06em;color:var(--blood-lit);text-shadow:0 0 22px rgba(200,28,28,.45)">N100 · DESPERTAR VIRAL</div>
+        <div style="font-family:'Inconsolata',monospace;font-size:.55rem;color:rgba(200,28,28,.55)">???</div>
+      </div>
+      <div style="padding:14px 18px;font-family:'Inconsolata',monospace;font-size:.73rem;color:var(--char-dim);line-height:1.85;position:relative">
+        O vírus não tem mais nada a aprender de Sousuke. Ele <em>é</em> Sousuke. O Despertar Viral não é uma técnica — é um estado de existência.<br><br>
+        <strong style="color:var(--char)">A ser revelado em campanha.</strong><br><br>
+        <em style="color:rgba(200,28,28,.45)">Nenhum feiticeiro chegou aqui antes. Não há registro. Não há precedente. Não há nome para o que vem depois.</em>
+      </div>
+    </div>
+  </div><!-- /ppanel-marcos -->
+
+  <!-- ═══════════════ PAINEL: TRANSCENDÊNCIA VIRAL ═══════════════ -->
+  <div id="ppanel-despertar" style="display:none">
+    <div style="font-family:'Inconsolata',monospace;font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--ash);padding:14px 0 6px">501+ pontos de maestria · a cada 100 pontos acima de 501, 1 Ponto de Transcendência Viral</div>
+    <div style="font-family:'Inconsolata',monospace;font-size:.7rem;color:var(--char-dim);line-height:1.8;margin-bottom:16px">O vírus transcendeu o aprendizado. Cada Ponto de Transcendência é gasto em <strong style="color:var(--char)">uma</strong> mutação permanente abaixo. Quando todas as opções forem tomadas, pontos remanescentes convertem-se em vida ou energia além do limite máximo.</div>
+
+    <!-- TÉCNICA -->
+    <div style="border:1px solid rgba(160,20,20,.3);background:rgba(6,2,2,.8);margin-bottom:10px;overflow:hidden">
+      <div style="padding:11px 18px;border-bottom:1px solid rgba(160,20,20,.12);display:flex;align-items:center;gap:10px">
+        <div style="font-family:'Inconsolata',monospace;font-size:.44rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(200,50,50,.5)">Transcendência</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.06em;color:var(--bile-lit)">DA TÉCNICA VIRAL</div>
+      </div>
+      <div style="padding:13px 18px;font-family:'Inconsolata',monospace;font-size:.72rem;color:var(--char-dim);line-height:1.9">
+        <strong style="color:var(--char)">· Replicação Permanente</strong> — 1 efeito passivo do vírus torna-se permanente mesmo sob supressão de EA. O vírus não para porque a energia parou.<br>
+        <strong style="color:var(--char)">· Penetração Condicional</strong> — ignora 1 condição da técnica (alcance, linha de visão, contato físico, Estágio mínimo requerido).<br>
+        <strong style="color:var(--char)">· Eficiência Metabólica</strong> — reduz em –2 o custo base de EA de qualquer técnica viral (mínimo 1). Pode ser tomada múltiplas vezes para técnicas diferentes.
+      </div>
+    </div>
+
+    <!-- CORPO -->
+    <div style="border:1px solid rgba(160,20,20,.3);background:rgba(6,2,2,.8);margin-bottom:10px;overflow:hidden">
+      <div style="padding:11px 18px;border-bottom:1px solid rgba(160,20,20,.12);display:flex;align-items:center;gap:10px">
+        <div style="font-family:'Inconsolata',monospace;font-size:.44rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(200,50,50,.5)">Transcendência</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.06em;color:var(--pus)">DO CORPO INFECTADO</div>
+      </div>
+      <div style="padding:13px 18px;font-family:'Inconsolata',monospace;font-size:.72rem;color:var(--char-dim);line-height:1.9">
+        <strong style="color:var(--char)">· Imunidade Adquirida</strong> — ignora 1 condição física negativa permanentemente (veneno extremo, paralisia, hemorragia, necrose externa, etc.).<br>
+        <strong style="color:var(--char)">· Reflexo Viral</strong> — +1 reação extra por rodada, usável exclusivamente para respostas a ataques que causariam HP direto.<br>
+        <strong style="color:var(--char)">· Âncora Biológica</strong> — 1 vida extra por combate: ao ser reduzido a 0 HP, permanece em 1 HP. O vírus rejeita a morte do hospedeiro.
+      </div>
+    </div>
+
+    <!-- ENERGIA -->
+    <div style="border:1px solid rgba(160,20,20,.3);background:rgba(6,2,2,.8);margin-bottom:10px;overflow:hidden">
+      <div style="padding:11px 18px;border-bottom:1px solid rgba(160,20,20,.12);display:flex;align-items:center;gap:10px">
+        <div style="font-family:'Inconsolata',monospace;font-size:.44rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(200,50,50,.5)">Transcendência</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.06em;color:var(--nec-lit)">DA CARGA VIRAL</div>
+      </div>
+      <div style="padding:13px 18px;font-family:'Inconsolata',monospace;font-size:.72rem;color:var(--char-dim);line-height:1.9">
+        <strong style="color:var(--char)">· Produção Autônoma</strong> — recupera EA mesmo sob supressão: quando HP estiver abaixo da metade, regenera 2 EA por turno automaticamente. O organismo produz o que o ambiente nega.<br>
+        <strong style="color:var(--char)">· Reserva Crítica</strong> — ao zerar EA, pode continuar usando técnicas virais por 1 turno completo. O corpo consome tecido muscular viral ao invés de energia amaldiçoada.
+      </div>
+    </div>
+
+    <!-- MENTE -->
+    <div style="border:1px solid rgba(160,20,20,.3);background:rgba(6,2,2,.8);margin-bottom:10px;overflow:hidden">
+      <div style="padding:11px 18px;border-bottom:1px solid rgba(160,20,20,.12);display:flex;align-items:center;gap:10px">
+        <div style="font-family:'Inconsolata',monospace;font-size:.44rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(200,50,50,.5)">Transcendência</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.06em;color:var(--blood-lit)">DA MENTE VIRAL</div>
+      </div>
+      <div style="padding:13px 18px;font-family:'Inconsolata',monospace;font-size:.72rem;color:var(--char-dim);line-height:1.9">
+        <strong style="color:var(--char)">· Prioridade Patogênica</strong> — age antes da iniciativa normal 1x por cena. O vírus calculou o movimento antes que o cérebro soubesse que havia perigo.<br>
+        <strong style="color:var(--char)">· Frieza Estrutural</strong> — imunidade a medo comum e intimidação espiritual. Sousuke não processa ameaça como emoção — processa como variável.<br>
+        <strong style="color:var(--char)">· Continuidade Parasitária</strong> — pode agir normalmente mesmo sob confusão, dor extrema ou controle mental parcial. O vírus mantém o corpo em movimento quando a mente falha.
+      </div>
+    </div>
+
+  </div><!-- /ppanel-despertar -->
+
+</div><!-- /domain -->
 
 <script>
 function PC(n) {
   for (let i = 1; i <= 10; i++) {
     const p = document.getElementById('pcp-' + i);
     const b = document.getElementById('pcn-' + i);
-    if (p) { p.classList.remove('show'); p.style.display = 'none'; }
-    if (b) {
-      b.classList.remove('ph1','ph2','ph3','ph4');
-    }
+    if (p) { p.classList.remove('show'); p.style.display = ''; }
+    if (b) b.classList.remove('ph1','ph2','ph3','ph4');
   }
   const colors = {1:'ph1',2:'ph1',3:'ph2',4:'ph2',5:'ph2',6:'ph3',7:'ph3',8:'ph3',9:'ph4',10:'ph4'};
   const panel = document.getElementById('pcp-' + n);
-  const btn = document.getElementById('pcn-' + n);
-  if (panel) { panel.classList.add('show'); panel.style.display = 'block'; }
-  if (btn) btn.classList.add(colors[n] || 'ph1');
+  const btn   = document.getElementById('pcn-' + n);
+  if (panel) panel.classList.add('show');
+  if (btn)   btn.classList.add(colors[n] || 'ph1');
 }
 PC(1);
-</script>
 
+function PTB(tab) {
+  ['ciclos','marcos','despertar'].forEach(function(t) {
+    document.getElementById('ppanel-' + t).style.display = t === tab ? 'block' : 'none';
+    const btn = document.getElementById('ptab-' + t);
+    if (btn) btn.style.background = t === tab ? 'var(--deep)' : 'var(--slab)';
+  });
+}
+</script>
 
 <!-- HISTÓRIA -->
 <div class="sh reveal"><div class="sl"></div><div class="st">Fragmento de História</div><div class="sl r"></div></div>
@@ -2082,12 +2773,12 @@ const engine = (() => {
     const ctx = canvas.getContext('2d');
     let alpha = 0;
     function step() {
-      alpha = Math.min(1, alpha + 0.04);
+      alpha = Math.min(1, alpha + 0.018);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = `rgba(3,2,0,${alpha})`;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       if (alpha < 1) requestAnimationFrame(step);
-      else done();
+      else setTimeout(done, 80);
     }
     step();
   }
@@ -2107,6 +2798,12 @@ const engine = (() => {
 })();
 
 /* T precisa ser global — chamado via onclick="T(this)" no HTML */
+window.T = function(header) {
+  const body = header.nextElementSibling;
+  const hint = header.querySelector('.hint');
+  body.classList.toggle('open');
+  if (hint) hint.textContent = body.classList.contains('open') ? '[−]' : '[+]';
+};
 document.addEventListener('DOMContentLoaded', () => engine.init());
 </script>
 <script>
@@ -2129,24 +2826,27 @@ window.GE_TRANSITION = function(canvas, done) {
     color: COLS[Math.floor(Math.random()*COLS.length)],
     alpha: .3+Math.random()*.6, wobble: Math.random()*Math.PI*2, ws:.02+Math.random()*.04,
   }));
-  let bgAlpha=0, done_=false;
-  setTimeout(()=>{ if(!done_){done_=true;done();} }, 2000);
+  let bgAlpha = 0, called = false;
+  function finish() {
+    if (called) return;
+    called = true;
+    setTimeout(done, 120);
+  }
   function tick() {
-    if(done_) return;
+    if (called) return;
     ctx.clearRect(0,0,W,H);
-    bgAlpha = Math.min(1, bgAlpha+0.025);
+    bgAlpha = Math.min(1, bgAlpha + 0.012);
     ctx.fillStyle = `rgba(1,5,2,${bgAlpha})`; ctx.fillRect(0,0,W,H);
-    drops.forEach(s=>{
-      s.wobble+=s.ws; s.x+=s.vx+Math.sin(s.wobble)*.4; s.y+=s.vy;
+    drops.forEach(s => {
+      s.wobble += s.ws; s.x += s.vx + Math.sin(s.wobble)*.4; s.y += s.vy;
       ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-      ctx.globalAlpha=s.alpha; ctx.fillStyle=s.color; ctx.fill();
-      // linha de rastro
-      ctx.globalAlpha=s.alpha*.25;
+      ctx.globalAlpha = s.alpha; ctx.fillStyle = s.color; ctx.fill();
+      ctx.globalAlpha = s.alpha*.25;
       ctx.beginPath(); ctx.moveTo(s.x,s.y); ctx.lineTo(s.x-s.vx*3,s.y-s.vy*3);
-      ctx.strokeStyle=s.color; ctx.lineWidth=s.r*.4; ctx.stroke();
-      ctx.globalAlpha=1;
+      ctx.strokeStyle = s.color; ctx.lineWidth = s.r*.4; ctx.stroke();
+      ctx.globalAlpha = 1;
     });
-    if(bgAlpha>=1){done_=true;done();return;}
+    if (bgAlpha >= 1) { finish(); return; }
     requestAnimationFrame(tick);
   }
   tick();
@@ -2958,7 +3658,7 @@ render();
 
 /* Layer navigator (Sistema de Infecção Viral) */
 const PH = {1:'ph1',2:'ph1',3:'ph1',4:'ph2',5:'ph2',6:'ph2',7:'ph3',8:'ph3',9:'ph3',10:'ph4'};
-const PC = {1:'c1',2:'c1',3:'c1',4:'c2',5:'c2',6:'c2',7:'c3',8:'c3',9:'c3',10:'c4'};
+const PC_COLOR = {1:'c1',2:'c1',3:'c1',4:'c2',5:'c2',6:'c2',7:'c3',8:'c3',9:'c3',10:'c4'};
 let activeLayer = null;
 
 function SL(n) {
@@ -2966,7 +3666,7 @@ function SL(n) {
     const ln = document.getElementById('ln' + i);
     const lp = document.getElementById('lp' + i);
     if (ln) ln.className = 'ln';
-    if (lp) lp.className = 'lpanel ' + PC[i];
+    if (lp) lp.className = 'lpanel ' + PC_COLOR[i];
   }
   if (activeLayer === n) { activeLayer = null; return; }
   activeLayer = n;
@@ -2975,7 +3675,7 @@ function SL(n) {
     if (ln) ln.className = 'ln ' + PH[n];
   }
   const lp = document.getElementById('lp' + n);
-  if (lp) lp.className = 'lpanel ' + PC[n] + ' show';
+  if (lp) lp.className = 'lpanel ' + PC_COLOR[n] + ' show';
 }
 
 /* Shikigami type navigator */
