@@ -102,6 +102,35 @@ body::before {
   padding: 4px 10px; cursor: pointer; font-family: 'Inconsolata', monospace;
   text-transform: uppercase;
 }
+.tb-save-btn, .tb-load-btn {
+  font-family: 'Inconsolata', monospace;
+  font-size: .55rem; letter-spacing: .2em; text-transform: uppercase;
+  height: 26px; padding: 0 10px; cursor: pointer;
+  border: 1px solid;
+  transition: filter .15s, border-color .15s;
+}
+.tb-save-btn {
+  background: linear-gradient(180deg, rgba(139,10,10,.6) 0%, rgba(80,5,5,.8) 100%);
+  border-color: rgba(192,48,48,.5) rgba(40,5,5,.8) rgba(40,5,5,.8) rgba(192,48,48,.5);
+  color: rgba(240,200,200,.85);
+}
+.tb-save-btn:hover { filter: brightness(1.35); border-color: rgba(220,60,60,.7) rgba(40,5,5,.8) rgba(40,5,5,.8) rgba(220,60,60,.7); }
+.tb-save-btn:active { border-color: rgba(40,5,5,.8) rgba(192,48,48,.5) rgba(192,48,48,.5) rgba(40,5,5,.8); filter: brightness(.9); }
+.tb-load-btn {
+  background: linear-gradient(180deg, rgba(255,255,255,.05) 0%, rgba(0,0,0,.2) 100%);
+  border-color: rgba(139,10,10,.4) rgba(20,3,3,.7) rgba(20,3,3,.7) rgba(139,10,10,.4);
+  color: rgba(180,120,120,.6);
+}
+.tb-load-btn:hover { color: rgba(230,180,180,.9); border-color: rgba(192,48,48,.5) rgba(20,3,3,.7) rgba(20,3,3,.7) rgba(192,48,48,.5); }
+.tb-load-btn:active { border-color: rgba(20,3,3,.7) rgba(139,10,10,.4) rgba(139,10,10,.4) rgba(20,3,3,.7); }
+
+/* Feedback visual de save concluído */
+.tb-save-btn.saved {
+  background: linear-gradient(180deg, rgba(10,80,30,.7) 0%, rgba(5,40,15,.8) 100%);
+  border-color: rgba(57,255,136,.3) rgba(5,20,10,.8) rgba(5,20,10,.8) rgba(57,255,136,.3);
+  color: rgba(100,255,160,.85);
+}
+
 .tb-start:active { border-color: var(--win-sh) var(--win-lt) var(--win-lt) var(--win-sh); }
 
 .tb-sep { width: 1px; background: var(--win-bar2); height: 26px; margin: 0 3px; }
@@ -1060,6 +1089,355 @@ body { padding-bottom: 40px; }
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 
+/* ═══════════════════════════
+   ÍCONE DE PASTA
+═══════════════════════════ */
+.desk-folder .folder-ico {
+  font-size: 2rem !important;
+  color: var(--gold) !important;
+  filter: drop-shadow(0 0 6px rgba(192,128,48,.25));
+  transition: filter .2s;
+}
+.desk-folder:hover .folder-ico { filter: drop-shadow(0 0 12px rgba(192,128,48,.5)); }
+
+/* ═══════════════════════════
+   JANELA EXPLORADOR DE PASTA
+═══════════════════════════ */
+#folder-win {
+  position: fixed; z-index: 6500;
+  width: 560px; height: 420px;
+  top: 80px; left: 80px;
+  background: var(--win-bg);
+  border: 2px solid; border-color: var(--win-lt) var(--win-sh) var(--win-sh) var(--win-lt);
+  box-shadow: 2px 2px 0 var(--win-sh), inset 1px 1px 0 rgba(255,255,255,.04);
+  display: none; flex-direction: column;
+  resize: both; overflow: hidden; min-width: 300px; min-height: 200px;
+}
+#folder-win.open { display: flex; }
+
+.fw-bar {
+  background: linear-gradient(90deg, var(--win-lt) 0%, var(--win-bar) 60%, var(--win-bar2) 100%);
+  padding: 3px 4px; display: flex; align-items: center; gap: 3px;
+  cursor: move; flex-shrink: 0; border-bottom: 1px solid var(--win-bar2);
+  user-select: none;
+}
+.fw-title { flex: 1; font-size: .58rem; letter-spacing: .15em; text-transform: uppercase; color: var(--white); padding: 0 4px; }
+.fw-btn {
+  width: 16px; height: 14px;
+  background: linear-gradient(180deg, var(--btn-lt) 0%, var(--btn-bg) 100%);
+  border: 1px solid; border-color: var(--btn-lt) var(--btn-sh) var(--btn-sh) var(--btn-lt);
+  color: var(--white); font-size: .5rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; font-family: 'Inconsolata', monospace;
+}
+.fw-btn:active { border-color: var(--btn-sh) var(--btn-lt) var(--btn-lt) var(--btn-sh); }
+
+.fw-menu {
+  background: var(--win-bg); border-bottom: 1px solid var(--win-bdr);
+  display: flex; flex-shrink: 0;
+}
+.fw-menu-item {
+  font-size: .55rem; color: var(--text-d); padding: 3px 10px; cursor: pointer;
+  letter-spacing: .08em; text-transform: uppercase; transition: background .1s, color .1s;
+}
+.fw-menu-item:hover { background: var(--win-bar); color: var(--white); }
+
+.fw-toolbar {
+  background: rgba(0,0,0,.2); border-bottom: 1px solid var(--win-bdr);
+  padding: 3px 6px; display: flex; align-items: center; gap: 4px; flex-shrink: 0;
+}
+.fw-path {
+  flex: 1; background: rgba(0,0,0,.4); border: 1px solid;
+  border-color: var(--win-sh) var(--win-lt) var(--win-lt) var(--win-sh);
+  color: var(--text); font-size: .52rem; padding: 2px 6px; letter-spacing: .06em;
+}
+
+.fw-body {
+  display: flex; flex: 1; overflow: hidden;
+}
+.fw-sidebar {
+  width: 130px; flex-shrink: 0; border-right: 1px solid var(--win-bdr);
+  background: rgba(0,0,0,.15); padding: 6px 4px; overflow-y: auto;
+}
+.fw-sidebar-item {
+  display: flex; align-items: center; gap: 5px;
+  padding: 4px 6px; font-size: .54rem; color: var(--text-d);
+  cursor: pointer; letter-spacing: .05em; border: 1px solid transparent;
+  transition: background .1s;
+}
+.fw-sidebar-item:hover { background: rgba(180,20,20,.08); border-color: var(--red-dim); color: var(--text); }
+.fw-sidebar-item.active { background: rgba(180,20,20,.12); border-color: var(--red-dim); color: var(--white); }
+.fw-sidebar-ico { font-size: .8rem; flex-shrink: 0; }
+
+.fw-files {
+  flex: 1; padding: 8px; overflow-y: auto; display: flex; flex-wrap: wrap;
+  align-content: flex-start; gap: 4px;
+  scrollbar-width: thin; scrollbar-color: var(--red-dim) var(--win-bg);
+}
+
+/* Ícone de arquivo dentro da pasta */
+.fw-file-icon {
+  width: 88px; text-align: center; padding: 8px 4px;
+  cursor: pointer; border: 1px solid transparent;
+  transition: background .1s, border-color .1s;
+  user-select: none;
+}
+.fw-file-icon:hover { background: rgba(180,20,20,.1); border-color: var(--red-dim); }
+.fw-file-icon.selected { background: rgba(180,20,20,.18); border-color: var(--red-dim); }
+.fw-file-icon .fi-ico { font-size: 1.8rem; display: block; margin-bottom: 4px; line-height: 1; }
+.fw-file-icon .fi-lbl {
+  font-size: .5rem; color: var(--text); letter-spacing: .06em;
+  text-transform: uppercase; line-height: 1.3;
+  text-shadow: 1px 1px 0 rgba(0,0,0,.9);
+}
+
+.fw-status {
+  border-top: 1px solid var(--win-bdr); padding: 2px 8px; flex-shrink: 0;
+  display: flex; gap: 0;
+}
+.fw-sb-cell {
+  font-size: .44rem; color: var(--text-d); padding: 1px 8px;
+  border-right: 1px solid var(--win-bdr); letter-spacing: .05em;
+}
+.fw-sb-cell:last-child { border-right: none; }
+
+/* ═══════════════════════════
+   JANELA PDF — NOTAS DE INTERPRETAÇÃO
+═══════════════════════════ */
+#pdf-win {
+  position: fixed; z-index: 6600;
+  width: 680px; height: 560px;
+  top: 60px; left: 120px;
+  background: var(--win-bg);
+  border: 2px solid; border-color: var(--win-lt) var(--win-sh) var(--win-sh) var(--win-lt);
+  box-shadow: 2px 2px 0 var(--win-sh);
+  display: none; flex-direction: column;
+  resize: both; overflow: hidden; min-width: 400px; min-height: 300px;
+}
+#pdf-win.open { display: flex; }
+
+.pdf-bar {
+  background: linear-gradient(90deg, var(--win-lt) 0%, var(--win-bar) 60%, var(--win-bar2) 100%);
+  padding: 3px 4px; display: flex; align-items: center; gap: 3px;
+  cursor: move; flex-shrink: 0; border-bottom: 1px solid var(--win-bar2);
+}
+.pdf-bar-title { flex: 1; font-size: .55rem; letter-spacing: .15em; text-transform: uppercase; color: var(--white); padding: 0 4px; }
+.pdf-win-btn {
+  width: 16px; height: 14px;
+  background: linear-gradient(180deg, var(--btn-lt) 0%, var(--btn-bg) 100%);
+  border: 1px solid; border-color: var(--btn-lt) var(--btn-sh) var(--btn-sh) var(--btn-lt);
+  color: var(--white); font-size: .5rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; font-family: 'Inconsolata', monospace;
+}
+.pdf-win-btn:active { border-color: var(--btn-sh) var(--btn-lt) var(--btn-lt) var(--btn-sh); }
+
+.pdf-toolbar {
+  background: rgba(0,0,0,.25); border-bottom: 1px solid var(--win-bdr);
+  padding: 3px 8px; display: flex; align-items: center; gap: 6px; flex-shrink: 0;
+}
+.pdf-tb-btn {
+  padding: 2px 8px; font-size: .46rem; letter-spacing: .1em; text-transform: uppercase;
+  border: 1px solid var(--win-bdr); color: var(--text-d); background: transparent;
+  cursor: pointer; font-family: 'Inconsolata', monospace; transition: color .12s;
+}
+.pdf-tb-btn:hover { color: var(--white); border-color: var(--red-dim); }
+.pdf-tb-sep { width: 1px; height: 14px; background: var(--win-bdr); }
+.pdf-page-info {
+  margin-left: auto; font-size: .46rem; color: var(--text-d); letter-spacing: .1em;
+}
+
+/* Área do documento */
+.pdf-viewport {
+  flex: 1; overflow-y: auto; background: rgba(6,2,2,.6);
+  padding: 20px 24px 32px;
+  scrollbar-width: thin; scrollbar-color: var(--red-dim) transparent;
+}
+.pdf-viewport::-webkit-scrollbar { width: 8px; }
+.pdf-viewport::-webkit-scrollbar-thumb { background: var(--red-dim); }
+
+/* O documento em si — parece papel escaneado */
+.pdf-doc {
+  max-width: 580px; margin: 0 auto;
+  background: #0a0404;
+  border: 1px solid rgba(139,10,10,.35);
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,.8),
+    4px 4px 0 rgba(0,0,0,.5),
+    inset 0 0 40px rgba(80,5,5,.15);
+  padding: 40px 44px 48px;
+  position: relative; overflow: hidden;
+}
+
+/* Fundo do doc — grade muito sutil */
+.pdf-doc::before {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(160,20,20,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(160,20,20,.025) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Kanji d'água */
+.pdf-doc::after {
+  content: '腐';
+  position: absolute; bottom: -30px; right: -20px;
+  font-family: 'Noto Serif JP', serif; font-size: 15rem;
+  color: rgba(139,10,10,.04); pointer-events: none; line-height: 1;
+  user-select: none;
+}
+
+/* Cabeçalho do doc */
+.pdf-doc-header {
+  border-bottom: 1px solid rgba(139,10,10,.3);
+  margin-bottom: 28px; padding-bottom: 16px;
+  position: relative; z-index: 1;
+}
+.pdf-doc-stamp {
+  font-size: .42rem; letter-spacing: .6em; text-transform: uppercase;
+  color: rgba(160,80,60,.4); margin-bottom: 8px;
+}
+.pdf-doc-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.9rem; letter-spacing: .12em;
+  color: rgba(192,48,48,.85); line-height: 1; margin-bottom: 4px;
+  text-shadow: 0 0 40px rgba(160,20,20,.3), 0 2px 0 rgba(0,0,0,.9);
+}
+.pdf-doc-sub {
+  font-size: .52rem; color: rgba(160,80,60,.4); letter-spacing: .08em;
+}
+.pdf-doc-meta {
+  display: flex; gap: 18px; margin-top: 10px;
+}
+.pdf-meta-item { font-size: .44rem; color: rgba(140,80,60,.35); letter-spacing: .12em; text-transform: uppercase; }
+.pdf-meta-val { color: rgba(180,100,80,.5); }
+
+/* Seções do doc */
+.pdf-section {
+  position: relative; z-index: 1;
+  margin-bottom: 24px;
+}
+.pdf-sec-head {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 10px;
+}
+.pdf-sec-num {
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem;
+  color: rgba(139,10,10,.5); line-height: 1; flex-shrink: 0;
+}
+.pdf-sec-rule {
+  flex: 1; height: 1px;
+  background: linear-gradient(90deg, rgba(139,10,10,.35), transparent);
+}
+.pdf-sec-title {
+  font-size: .55rem; letter-spacing: .35em; text-transform: uppercase;
+  color: rgba(192,80,60,.55); white-space: nowrap; margin-right: 8px;
+}
+
+/* Grid de blocos */
+.pdf-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+  margin-bottom: 8px;
+}
+.pdf-block {
+  background: rgba(0,0,0,.35); border-left: 1px solid rgba(139,10,10,.3);
+  padding: 10px 12px; position: relative;
+}
+.pdf-block::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, rgba(139,10,10,.25), transparent);
+}
+.pdf-block-title {
+  font-size: .44rem; letter-spacing: .3em; text-transform: uppercase;
+  color: rgba(180,80,60,.5); margin-bottom: 6px;
+}
+.pdf-block-body {
+  font-size: .65rem; color: rgba(170,150,120,.5); line-height: 1.9;
+}
+.pdf-block-body em { color: rgba(190,110,90,.65); font-style: italic; }
+.pdf-block-body strong { color: rgba(200,130,100,.75); }
+
+/* Linha cheia */
+.pdf-block-full {
+  background: rgba(0,0,0,.35); border-left: 1px solid rgba(139,10,10,.3);
+  padding: 10px 12px; margin-bottom: 8px; position: relative;
+}
+.pdf-block-full::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, rgba(139,10,10,.25), transparent);
+}
+
+/* Citações */
+.pdf-quote {
+  position: relative; padding: 10px 14px 10px 36px; margin-bottom: 8px;
+  background: rgba(0,0,0,.3); border-left: 1px solid rgba(139,10,10,.2);
+}
+.pdf-quote::before {
+  content: '"'; position: absolute; left: 12px; top: 6px;
+  font-size: 1.6rem; color: rgba(139,10,10,.35); line-height: 1;
+  font-family: 'Noto Serif JP', serif;
+}
+.pdf-quote-text {
+  font-style: italic; font-size: .66rem;
+  color: rgba(170,150,120,.5); line-height: 1.9;
+}
+.pdf-quote-note {
+  font-size: .44rem; letter-spacing: .2em; text-transform: uppercase;
+  color: rgba(160,80,60,.35); margin-top: 6px;
+}
+
+/* Checklist estilizada */
+.pdf-checks { display: flex; flex-direction: column; gap: 6px; }
+.pdf-check {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 8px 10px; background: rgba(0,0,0,.3);
+  border: 1px solid rgba(80,10,10,.2);
+  cursor: pointer; transition: border-color .2s, background .2s;
+}
+.pdf-check:hover { background: rgba(15,4,4,.6); border-color: rgba(139,10,10,.4); }
+.pdf-check-box {
+  width: 9px; height: 9px; flex-shrink: 0; margin-top: 3px;
+  border: 1px solid rgba(139,10,10,.45);
+  position: relative; transition: background .15s;
+}
+.pdf-check.marked .pdf-check-box {
+  background: rgba(139,10,10,.6);
+}
+.pdf-check.marked .pdf-check-box::after {
+  content: ''; position: absolute; inset: 2px; background: rgba(255,80,60,.5);
+}
+.pdf-check-text {
+  font-size: .63rem; color: rgba(165,148,115,.5); line-height: 1.8;
+}
+.pdf-check-text strong { color: rgba(190,120,100,.7); }
+
+/* Rodapé do doc */
+.pdf-doc-footer {
+  position: relative; z-index: 1;
+  margin-top: 32px; padding-top: 12px;
+  border-top: 1px solid rgba(139,10,10,.15);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.pdf-footer-left { font-size: .42rem; color: rgba(120,50,50,.35); letter-spacing: .15em; text-transform: uppercase; }
+.pdf-footer-right { font-size: .42rem; color: rgba(120,50,50,.3); letter-spacing: .1em; }
+
+/* Marca de página */
+.pdf-page-mark {
+  display: flex; align-items: center; justify-content: center;
+  margin: 16px 0 0; font-size: .42rem; color: rgba(100,40,40,.3);
+  letter-spacing: .3em; text-transform: uppercase;
+}
+.pdf-win-statusbar {
+  border-top: 1px solid var(--win-bdr); padding: 2px 8px; flex-shrink: 0;
+  display: flex; gap: 0;
+}
+.pdf-wsb-cell {
+  font-size: .44rem; color: var(--text-d); padding: 1px 8px;
+  border-right: 1px solid var(--win-bdr); letter-spacing: .05em;
+}
+.pdf-wsb-cell:last-child { border-right: none; }
+
 /* Origem Übermensch melhorada */
 .uber-header {
   position: relative; overflow: hidden;
@@ -1139,27 +1517,267 @@ body { padding-bottom: 40px; }
 <!-- DESKTOP -->
 <div id="desktop">
 <div id="icon-grid" style="position:relative;z-index:1">
-  <div class="desk-icon" style="left:200px;top:20px" ondblclick="Board.toggle()" onclick="selIcon(this)">
-  <span class="ico" style="color:var(--red);font-size:1.6rem">✦
-  <br style="line-height:.5"></span>
-  <span class="lbl">Mural<br>Policial</span>
-</div>
 
-  <div class="desk-icon" style="left:20px;top:20px"   ondblclick="openWin('id-win')"         onclick="selIcon(this)"><span class="ico">⚿</span><span class="lbl">Identidade<br>& Combate</span></div>
-  <div class="desk-icon" style="left:20px;top:120px"  ondblclick="openWin('perics-win')"      onclick="selIcon(this)"><span class="ico">▤</span><span class="lbl">Perícias &<br>Atributos</span></div>
-  <div class="desk-icon" style="left:20px;top:220px"  ondblclick="openWin('origem-win')"      onclick="selIcon(this)"><span class="ico">⚗</span><span class="lbl">Origem<br>Übermensch</span></div>
-  <div class="desk-icon" style="left:20px;top:320px"  ondblclick="openWin('tecnica-win')"     onclick="selIcon(this)"><span class="ico">☣</span><span class="lbl">Kisei Jutsu<br>Técnicas</span></div>
-  <div class="desk-icon" style="left:20px;top:420px"  ondblclick="openWin('passivas-win')"    onclick="selIcon(this)"><span class="ico">⛨</span><span class="lbl">Passivas<br>Defensivas</span></div>
-  <div class="desk-icon" style="left:110px;top:20px"  ondblclick="openWin('parasitados-win')" onclick="selIcon(this)"><span class="ico">⚰</span><span class="lbl">Parasitados<br>& Tipos</span></div>
-  <div class="desk-icon" style="left:110px;top:120px" ondblclick="openWin('progressao-win')"  onclick="selIcon(this)"><span class="ico">⌬</span><span class="lbl">Progressão<br>Ciclos Virais</span></div>
-  <div class="desk-icon" style="left:110px;top:220px" ondblclick="openWin('dominio-win')"     onclick="selIcon(this)"><span class="ico">⬡</span><span class="lbl">Domínio<br>Expansão</span></div>
-  <div class="desk-icon" style="left:110px;top:320px" ondblclick="openWin('historia-win')"    onclick="selIcon(this)"><span class="ico">☰</span><span class="lbl">História<br>& Lore</span></div>
-  <div class="desk-icon" style="left:110px;top:420px" ondblclick="openWin('tracker-win')"     onclick="selIcon(this)"><span class="ico">⊹</span><span class="lbl">Tracker de<br>Parasitismo</span></div>
-  <div class="desk-icon" style="left:200px;top:120px" ondblclick="Notes.openFolder()" onclick="selIcon(this)"><span class="ico" style="color:var(--gold)">▦</span><span class="lbl">Anotações<br>de Mesa</span></div>
+  <!-- PASTA SOUSUKE — contém todos os arquivos exceto Mural Policial -->
+  <div class="desk-icon desk-folder" style="left:20px;top:20px" ondblclick="Folder.open()" onclick="selIcon(this)">
+    <span class="ico folder-ico">🗂</span>
+    <span class="lbl">Sousuke<br>Ficha Nº005</span>
+  </div>
   <div class="desk-icon" style="left:200px;top:220px" ondblclick="openWin('calc-win')" onclick="selIcon(this)"><span class="ico">⊞</span><span class="lbl">Calcula-<br>dora</span></div>
-  <div class="desk-icon" style="left:290px;top:20px" ondblclick="openWin('parasita-win')" onclick="selIcon(this)"><span class="ico" style="color:#c03030">⛾</span><span class="lbl">O<br>Parasita</span></div>
+  <div class="desk-icon" style="left:200px;top:20px" ondblclick="Board.toggle()" onclick="selIcon(this)">
+    <span class="ico" style="color:var(--red);font-size:1.6rem">✦<br style="line-height:.5"></span>
+    <span class="lbl">Mural<br>Policial</span>
+  </div>
 </div>
 
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     JANELA EXPLORADOR — PASTA SOUSUKE
+═══════════════════════════════════════════ -->
+<div id="folder-win">
+  <div class="fw-bar" id="folder-win-bar">
+    <span style="font-size:.8rem;margin-right:4px">🗂</span>
+    <span class="fw-title">Sousuke — Ficha Nº005</span>
+    <div style="display:flex;gap:2px">
+      <button class="fw-btn" onclick="Folder.minimize()">_</button>
+      <button class="fw-btn" onclick="Folder.close()">✕</button>
+    </div>
+  </div>
+  <div class="fw-menu">
+    <span class="fw-menu-item">Arquivo</span>
+    <span class="fw-menu-item">Editar</span>
+    <span class="fw-menu-item">Exibir</span>
+    <span class="fw-menu-item">Ajuda</span>
+  </div>
+  <div class="fw-toolbar">
+    <span style="font-size:.5rem;color:var(--text-d);letter-spacing:.08em;text-transform:uppercase">Endereço:</span>
+    <div class="fw-path">C:\Golden_Era\Fichas\Sousuke\</div>
+  </div>
+  <div class="fw-body">
+    <div class="fw-sidebar">
+      <div style="font-size:.44rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(140,60,60,.4);padding:4px 6px;margin-bottom:4px">Pasta Atual</div>
+      <div class="fw-sidebar-item active"><span class="fw-sidebar-ico">🗂</span>Sousuke</div>
+      <div style="margin-top:12px;font-size:.44rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(140,60,60,.4);padding:4px 6px;margin-bottom:4px">Outras</div>
+      <div class="fw-sidebar-item"><span class="fw-sidebar-ico">🖥</span>Desktop</div>
+      <div class="fw-sidebar-item"><span class="fw-sidebar-ico">💾</span>Golden Era</div>
+    </div>
+    <div class="fw-files" id="folder-files">
+      <!-- gerado pelo Folder.render() -->
+    </div>
+  </div>
+  <div class="fw-status">
+    <div class="fw-sb-cell" id="fw-count">11 objetos</div>
+    <div class="fw-sb-cell">Sousuke · Ficha Nº005 · Feiticeiro · Grau 4</div>
+    <div class="fw-sb-cell" style="margin-left:auto">⚕ Kyoto · 腐食術</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     JANELA PDF — NOTAS DE INTERPRETAÇÃO
+═══════════════════════════════════════════ -->
+<div id="pdf-win">
+  <div class="pdf-bar" id="pdf-win-bar">
+    <span style="font-size:.75rem;margin-right:4px">📄</span>
+    <span class="pdf-bar-title">notas_interpretacao_sousuke.pdf — Visualizador de Documentos</span>
+    <div style="display:flex;gap:2px">
+      <button class="pdf-win-btn" onclick="closePdf()">_</button>
+      <button class="pdf-win-btn" onclick="closePdf()">✕</button>
+    </div>
+  </div>
+  <div class="pdf-toolbar">
+    <button class="pdf-tb-btn">◀ Anterior</button>
+    <button class="pdf-tb-btn">Próximo ▶</button>
+    <div class="pdf-tb-sep"></div>
+    <button class="pdf-tb-btn">⊕ Zoom +</button>
+    <button class="pdf-tb-btn">⊖ Zoom –</button>
+    <div class="pdf-tb-sep"></div>
+    <button class="pdf-tb-btn">🖶 Imprimir</button>
+    <span class="pdf-page-info">Pág. 1 / 1 · notas_interpretacao_sousuke.pdf</span>
+  </div>
+  <div class="pdf-viewport">
+    <div class="pdf-doc">
+
+      <!-- Cabeçalho do documento -->
+      <div class="pdf-doc-header">
+        <div class="pdf-doc-stamp">⛩ Golden Era · Documento Classificado · Uso Interno</div>
+        <div class="pdf-doc-title">NOTAS DE INTERPRETAÇÃO</div>
+        <div class="pdf-doc-sub">Personagem: Sousuke · Ficha Nº005 · Feiticeiro Grau 4 · Kyoto</div>
+        <div class="pdf-doc-meta">
+          <span class="pdf-meta-item">Versão: <span class="pdf-meta-val">1.0</span></span>
+          <span class="pdf-meta-item">Classificação: <span class="pdf-meta-val">Mestre & Jogador</span></span>
+          <span class="pdf-meta-item">Sistema: <span class="pdf-meta-val">Golden Era RPG</span></span>
+          <span class="pdf-meta-item">Ref: <span class="pdf-meta-val">腐食術 · Fushoku-jutsu</span></span>
+        </div>
+      </div>
+
+      <!-- SEÇÃO 01 — FUNDAÇÃO -->
+      <div class="pdf-section">
+        <div class="pdf-sec-head">
+          <span class="pdf-sec-num">01</span>
+          <div class="pdf-sec-rule"></div>
+          <span class="pdf-sec-title">Fundação do Personagem</span>
+          <div class="pdf-sec-rule" style="background:linear-gradient(270deg,rgba(139,10,10,.35),transparent)"></div>
+        </div>
+        <div class="pdf-grid">
+          <div class="pdf-block">
+            <div class="pdf-block-title">A Imagem Central</div>
+            <div class="pdf-block-body">
+              Um <strong>rio</strong>. Suave, transparente, bonito de olhar.
+              Tudo que cai dentro é levado. Ninguém culpa o rio.<br><br>
+              Sousuke não destrói. <em>A destruição acontece ao redor dele</em>
+              como consequência natural da realidade entrando em contato com ele.
+            </div>
+          </div>
+          <div class="pdf-block">
+            <div class="pdf-block-title">O Que Ele Não É</div>
+            <div class="pdf-block-body">
+              Não age com raiva. Não comemora vitórias.<br>
+              Não se irrita com derrotas. Não quer poder.<br><br>
+              <em>Um furacão não odeia a cidade que destrói.</em>
+              Sousuke tem essa mesma qualidade de <strong>inevitabilidade</strong>.
+            </div>
+          </div>
+          <div class="pdf-block">
+            <div class="pdf-block-title">O Que Ele Quer (Realmente)</div>
+            <div class="pdf-block-body">
+              Provar algo sobre a natureza humana.
+              Cada manipulação é uma <strong>hipótese testada</strong>:<br><br>
+              <em>"Se eu disser isso, essa pessoa vai fazer aquilo."</em><br><br>
+              E ele quase sempre acerta.
+            </div>
+          </div>
+          <div class="pdf-block">
+            <div class="pdf-block-title">A Camada Humana</div>
+            <div class="pdf-block-body">
+              A força da natureza precisa estar
+              <strong>escondida dentro de um humano convincente</strong>.
+              As pessoas precisam genuinamente gostar dele.<br><br>
+              <em>Só assim a inevitabilidade golpeia com força.</em>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEÇÃO 02 — EM JOGO -->
+      <div class="pdf-section">
+        <div class="pdf-sec-head">
+          <span class="pdf-sec-num">02</span>
+          <div class="pdf-sec-rule"></div>
+          <span class="pdf-sec-title">Como Jogar na Mesa</span>
+          <div class="pdf-sec-rule" style="background:linear-gradient(270deg,rgba(139,10,10,.35),transparent)"></div>
+        </div>
+        <div class="pdf-block-full">
+          <div class="pdf-block-title">Voz e Ritmo</div>
+          <div class="pdf-block-body">
+            Sousuke fala <strong>devagar</strong>, com pausas naturais. Nunca interrompe.
+            Quando alguém termina de falar, fica em silêncio por um segundo —
+            como se estivesse <em>saboreando</em> o que ouviu.
+            Raramente faz perguntas diretas. Faz <strong>observações</strong> que levam o outro a se revelar.
+            <em>"Você parece cansado ultimamente"</em> é mais poderoso que <em>"por que você está cansado?"</em>
+          </div>
+        </div>
+        <div class="pdf-grid">
+          <div class="pdf-block">
+            <div class="pdf-block-title">Escuta Como Arma</div>
+            <div class="pdf-block-body">
+              Sousuke é o <strong>melhor ouvinte da mesa</strong>.
+              Lembra de detalhes que os outros esqueceram.
+              Relembrar uma fala de sessões anteriores é a jogada mais poderosa disponível.
+            </div>
+          </div>
+          <div class="pdf-block">
+            <div class="pdf-block-title">Nunca Demonstre Querer</div>
+            <div class="pdf-block-body">
+              Age por caminhos indiretos. Se precisa de uma informação,
+              não pergunta — cria uma situação onde a outra pessoa
+              <em>oferece espontaneamente</em>. Planta ideias. Espera.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEÇÃO 03 — FRASES -->
+      <div class="pdf-section">
+        <div class="pdf-sec-head">
+          <span class="pdf-sec-num">03</span>
+          <div class="pdf-sec-rule"></div>
+          <span class="pdf-sec-title">Registro de Voz</span>
+          <div class="pdf-sec-rule" style="background:linear-gradient(270deg,rgba(139,10,10,.35),transparent)"></div>
+        </div>
+        <div class="pdf-quote">
+          <div class="pdf-quote-text">X vai acontecer.</div>
+          <div class="pdf-quote-note">Nunca uma ameaça. Uma observação sobre o futuro — neutralidade de quem diz que vai chover amanhã.</div>
+        </div>
+        <div class="pdf-quote">
+          <div class="pdf-quote-text">Você parece cansado ultimamente.</div>
+          <div class="pdf-quote-note">Observação que convida à revelação. Nunca uma pergunta direta.</div>
+        </div>
+        <div class="pdf-quote">
+          <div class="pdf-quote-text">Não precisa explicar. Eu entendo.</div>
+          <div class="pdf-quote-note">Cria intimidade imediata. A pessoa sente que foi vista — mesmo que Sousuke esteja apenas coletando dados.</div>
+        </div>
+        <div class="pdf-quote">
+          <div class="pdf-quote-text">Não é veneno. Veneno mata rápido. Isso é outra coisa.</div>
+          <div class="pdf-quote-note">Epitáfio do personagem. Usado com parcimônia — apenas quando o momento já chegou.</div>
+        </div>
+      </div>
+
+      <!-- SEÇÃO 04 — LEMBRETES -->
+      <div class="pdf-section">
+        <div class="pdf-sec-head">
+          <span class="pdf-sec-num">04</span>
+          <div class="pdf-sec-rule"></div>
+          <span class="pdf-sec-title">Lembretes de Mesa</span>
+          <div class="pdf-sec-rule" style="background:linear-gradient(270deg,rgba(139,10,10,.35),transparent)"></div>
+        </div>
+        <div class="pdf-checks">
+          <div class="pdf-check" onclick="this.classList.toggle('marked')">
+            <div class="pdf-check-box"></div>
+            <div class="pdf-check-text"><strong>Nunca monologar.</strong> Quanto menos você explicar as intenções, mais o mistério cresce. Quando Sousuke explica seus planos, já é tarde demais.</div>
+          </div>
+          <div class="pdf-check" onclick="this.classList.toggle('marked')">
+            <div class="pdf-check-box"></div>
+            <div class="pdf-check-text"><strong>A maldade é quieta.</strong> Resistir à tentação de "mostrar" a maldade. O horror está no silêncio entre as frases. A crueldade não é performática — é consequencial.</div>
+          </div>
+          <div class="pdf-check" onclick="this.classList.toggle('marked')">
+            <div class="pdf-check-box"></div>
+            <div class="pdf-check-text"><strong>Lembrar detalhes de sessões anteriores.</strong> Anotar falas e revelações de outros personagens. É a jogada mais poderosa disponível.</div>
+          </div>
+          <div class="pdf-check" onclick="this.classList.toggle('marked')">
+            <div class="pdf-check-box"></div>
+            <div class="pdf-check-text"><strong>Guardar jogadas para o momento certo.</strong> Sousuke planta ideias e <em>espera</em>. Não há pressa. Uma semente plantada na sessão 2 floresce na sessão 8.</div>
+          </div>
+          <div class="pdf-check" onclick="this.classList.toggle('marked')">
+            <div class="pdf-check-box"></div>
+            <div class="pdf-check-text"><strong>Permitir afeto genuíno por certas pessoas.</strong> Aquelas que considera genuínas ou interessantes. Essa ambiguidade é o que torna o personagem rico — e mais perturbador.</div>
+          </div>
+          <div class="pdf-check" onclick="this.classList.toggle('marked')">
+            <div class="pdf-check-box"></div>
+            <div class="pdf-check-text"><strong>Nunca agir com raiva. Agir com certeza.</strong> A diferença é tudo. Quando Sousuke está irritado, o mundo ao redor percebe — não ele.</div>
+          </div>
+          <div class="pdf-check" onclick="this.classList.toggle('marked')">
+            <div class="pdf-check-box"></div>
+            <div class="pdf-check-text"><strong>Ele entra na sala antes de entrar na sala.</strong> Quando Sousuke aparece, o ambiente já começou a mudar. Postura tranquila. Nenhuma pressa. Nenhuma urgência.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rodapé do documento -->
+      <div class="pdf-doc-footer">
+        <span class="pdf-footer-left">⛩ Golden Era · Notas de Interpretação · Sousuke · Ficha Nº005</span>
+        <span class="pdf-footer-right">腐食術 · Uso Confidencial</span>
+      </div>
+      <div class="pdf-page-mark">— Página 1 de 1 —</div>
+
+    </div><!-- .pdf-doc -->
+  </div><!-- .pdf-viewport -->
+  <div class="pdf-win-statusbar">
+    <div class="pdf-wsb-cell">📄 notas_interpretacao_sousuke.pdf</div>
+    <div class="pdf-wsb-cell">Adobe Acrobat Reader 4.0</div>
+    <div class="pdf-wsb-cell">Pág: 1/1</div>
+    <div class="pdf-wsb-cell" style="margin-left:auto">100%</div>
   </div>
 </div>
 
@@ -2202,9 +2820,6 @@ body { padding-bottom: 40px; }
     style="background:rgba(8,2,2,.9);border:1px solid var(--win-bdr);color:var(--text);font-family:'Inconsolata',monospace;font-size:.52rem;padding:2px 8px;outline:none;width:110px;letter-spacing:.05em;"
     oninput="Board.search(this.value)" onkeydown="if(event.key==='Escape'){this.value='';Board.search('');}">
   <div class="bt-sep"></div>
-  <button class="bt-btn" onclick="Session.save()">▼ Salvar Sessão</button>
-  <button class="bt-btn" onclick="Session.load()">▲ Carregar Sessão</button>
-  <div class="bt-sep"></div>
   <button class="bt-btn danger" onclick="Board.toggle()">✕ Fechar</button>
 </div>
 
@@ -2218,7 +2833,7 @@ body { padding-bottom: 40px; }
 <!-- PASTA DE ANOTAÇÕES -->
 <div id="notes-folder">
   <div class="nf-bar active" id="nf-bar">
-    <span class="nf-title">▦ Anotações de Mesa</span>
+    <span class="nf-title">📄 Anotações de Mesa</span>
     <div style="display:flex;gap:2px">
       <button class="nf-btn" onclick="Notes.minimize()">_</button>
       <button class="nf-btn" onclick="Notes.closeFolder()">✕</button>
@@ -2227,13 +2842,14 @@ body { padding-bottom: 40px; }
   <div class="nf-list" id="nf-list"></div>
   <div class="nf-toolbar">
     <button class="nf-tb-btn" onclick="Notes.newFile()">+ Nova Nota</button>
-    <button class="nf-tb-btn" onclick="Notes.saveAll()">▼ Salvar JSON</button>
-    <button class="nf-tb-btn" onclick="Notes.loadJSON()">▲ Carregar JSON</button>
   </div>
 </div>
 
 <div id="taskbar">
   <button class="tb-start" onclick="openMusicModal(true)">♪ BGM</button>
+  <div class="tb-sep"></div>
+  <button class="tb-save-btn" onclick="Session.save()" title="Salvar tudo: janelas, mural, anotações, tracker">▼ SAVE</button>
+  <button class="tb-load-btn" onclick="Session.load()" title="Carregar sessão salva">▲ LOAD</button>
   <div class="tb-sep"></div>
   <span id="tb-id-win"    class="tb-btn" onclick="tbClick('id-win')">Identidade</span>
   <span id="tb-perics-win" class="tb-btn" onclick="tbClick('perics-win')">Perícias</span>
@@ -3519,6 +4135,8 @@ const Notes = (() => {
 const Session = (() => {
 
   /* coleta posição e estado de todas as janelas .win */
+  const EXTRA_WINS = ['folder-win', 'pdf-win', 'notes-folder'];
+
   function getWins() {
     const wins = {};
     document.querySelectorAll('.win').forEach(w => {
@@ -3532,6 +4150,17 @@ const Session = (() => {
         minimized: w.classList.contains('minimized'),
       };
     });
+    // janelas extras (pasta, pdf, anotações)
+    EXTRA_WINS.forEach(id => {
+      const w = document.getElementById(id); if(!w) return;
+      wins[id] = {
+        left:   w.style.left,
+        top:    w.style.top,
+        width:  w.style.width,
+        height: w.style.height,
+        open:   w.classList.contains('open'),
+      };
+    });
     return wins;
   }
 
@@ -3543,11 +4172,14 @@ const Session = (() => {
       if(s.top)    w.style.top    = s.top;
       if(s.width)  w.style.width  = s.width;
       if(s.height) w.style.height = s.height;
-      w.classList.toggle('hidden',    !!s.hidden);
-      w.classList.toggle('minimized', !!s.minimized);
-      // sincroniza taskbar
-      const btn = document.getElementById('tb-'+id);
-      if(btn) btn.classList.toggle('active', !s.hidden);
+      if(EXTRA_WINS.includes(id)) {
+        w.classList.toggle('open', !!s.open);
+      } else {
+        w.classList.toggle('hidden',    !!s.hidden);
+        w.classList.toggle('minimized', !!s.minimized);
+        const btn = document.getElementById('tb-'+id);
+        if(btn) btn.classList.toggle('active', !s.hidden);
+      }
     });
   }
 
@@ -3601,6 +4233,14 @@ const Session = (() => {
     a.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(json);
     a.download = 'mesa.json';
     a.click();
+    // Feedback visual no botão
+    const btn = document.querySelector('.tb-save-btn');
+    if (btn) {
+      const orig = btn.textContent;
+      btn.textContent = '✓ SAVED';
+      btn.classList.add('saved');
+      setTimeout(() => { btn.textContent = orig; btn.classList.remove('saved'); }, 1800);
+    }
   }
 
   function load() {
@@ -3953,6 +4593,101 @@ function toggleAllAttr() {
   });
   const btn = document.querySelector('[onclick="toggleAllAttr()"]');
   btn.textContent = _allOpen ? 'RECOLHER TUDO ▴' : 'EXPANDIR TUDO ▾';
+}
+/* ═════════════════════════════════════════
+   FOLDER — EXPLORADOR DE PASTA
+═════════════════════════════════════════ */
+const Folder = (() => {
+  const FILES = [
+    { ico: '⚿', lbl: 'Identidade\n& Combate',    action: () => openWin('id-win') },
+    { ico: '▤', lbl: 'Perícias &\nAtributos',     action: () => openWin('perics-win') },
+    { ico: '⚗', lbl: 'Origem\nÜbermensch',        action: () => openWin('origem-win') },
+    { ico: '☣', lbl: 'Kisei Jutsu\nTécnicas',     action: () => openWin('tecnica-win') },
+    { ico: '⛨', lbl: 'Passivas\nDefensivas',      action: () => openWin('passivas-win') },
+    { ico: '⚰', lbl: 'Parasitados\n& Tipos',      action: () => openWin('parasitados-win') },
+    { ico: '⌬', lbl: 'Progressão\nCiclos Virais', action: () => openWin('progressao-win') },
+    { ico: '⬡', lbl: 'Domínio\nExpansão',         action: () => openWin('dominio-win') },
+    { ico: '☰', lbl: 'História\n& Lore',           action: () => openWin('historia-win') },
+    { ico: '⊹', lbl: 'Tracker de\nParasitismo',   action: () => openWin('tracker-win') },
+    { ico: '📄', lbl: 'Anotações\nde Mesa',         color: 'var(--gold)', action: () => Notes.openFolder() },
+    { ico: '📄', lbl: 'Notas de\nInterpretação',   action: () => openPdf() },
+    { ico: '⛾', lbl: 'O\nParasita',               color: '#c03030', action: () => openWin('parasita-win') },
+  ];
+
+  let clickTimer = null;
+
+  function render() {
+    const container = document.getElementById('folder-files');
+    container.innerHTML = '';
+    FILES.forEach((f, i) => {
+      const el = document.createElement('div');
+      el.className = 'fw-file-icon';
+      el.innerHTML = `<span class="fi-ico" style="color:${f.color||'var(--red)'}">${f.ico}</span><span class="fi-lbl">${f.lbl.replace('\n','<br>')}</span>`;
+      el.addEventListener('click', () => {
+        document.querySelectorAll('.fw-file-icon').forEach(x => x.classList.remove('selected'));
+        el.classList.add('selected');
+      });
+      el.addEventListener('dblclick', () => { f.action(); });
+      container.appendChild(el);
+    });
+  }
+
+  function open() {
+    const win = document.getElementById('folder-win');
+    win.classList.add('open');
+    win.style.zIndex = ++zTop;
+    render();
+    makeDraggable(win, document.getElementById('folder-win-bar'));
+  }
+
+  function close() {
+    document.getElementById('folder-win').classList.remove('open');
+  }
+
+  function minimize() {
+    close();
+  }
+
+  return { open, close, minimize };
+})();
+
+/* ═════════════════════════════════════════
+   PDF — NOTAS DE INTERPRETAÇÃO
+═════════════════════════════════════════ */
+function openPdf() {
+  const win = document.getElementById('pdf-win');
+  win.classList.add('open');
+  win.style.zIndex = ++zTop;
+  makeDraggable(win, document.getElementById('pdf-win-bar'));
+}
+function closePdf() {
+  document.getElementById('pdf-win').classList.remove('open');
+}
+
+/* ═════════════════════════════════════════
+   HELPER — makeDraggable genérico
+═════════════════════════════════════════ */
+function makeDraggable(win, bar) {
+  if (bar._dragBound) return;
+  bar._dragBound = true;
+  let drag = false, ox = 0, oy = 0;
+  bar.addEventListener('mousedown', e => {
+    if (e.button !== 0) return;
+    drag = true;
+    const rect = win.getBoundingClientRect();
+    ox = e.clientX - rect.left;
+    oy = e.clientY - rect.top;
+    win.style.zIndex = ++zTop;
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', e => {
+    if (!drag) return;
+    win.style.left = Math.max(0, e.clientX - ox) + 'px';
+    win.style.top  = Math.max(0, e.clientY - oy) + 'px';
+    win.style.right = 'auto'; win.style.bottom = 'auto';
+  });
+  document.addEventListener('mouseup', () => { drag = false; });
+  win.addEventListener('mousedown', () => { win.style.zIndex = ++zTop; });
 }
 
 </script>
