@@ -922,212 +922,6 @@ body { padding-bottom: 40px; }
 }
 .sticky-grip:hover { color: rgba(240,200,200,.8); }
 
-/* ═══════════════════════════
-   MIXER DE VOLUME WIN98
-═══════════════════════════ */
-#music-ui {
-  position: fixed; bottom: 46px; right: 16px;
-  z-index: 8500; opacity: 0; pointer-events: none;
-  transition: opacity .3s;
-}
-.hidden-body { display: none !important; }
-#mixer-win {
-  background: var(--win-bg);
-  border: 2px solid;
-  border-color: var(--win-lt) var(--win-sh) var(--win-sh) var(--win-lt);
-  box-shadow: 2px 2px 0 var(--win-sh), inset 1px 1px 0 rgba(255,255,255,.03);
-  width: 160px;
-  display: flex; flex-direction: column;
-  font-family: 'Inconsolata', monospace;
-}
-#mixer-bar {
-  background: linear-gradient(90deg, var(--win-lt) 0%, var(--win-bar) 60%, var(--win-bar2) 100%);
-  padding: 3px 4px;
-  display: flex; align-items: center; justify-content: space-between;
-  cursor: move; flex-shrink: 0;
-  border-bottom: 1px solid var(--win-bar2);
-  user-select: none;
-}
-#mixer-title {
-  font-size: .52rem; letter-spacing: .12em; text-transform: uppercase;
-  color: var(--white);
-}
-.mixer-wbtn {
-  width: 14px; height: 12px;
-  background: linear-gradient(180deg, var(--btn-lt) 0%, var(--btn-bg) 100%);
-  border: 1px solid; border-color: var(--btn-lt) var(--btn-sh) var(--btn-sh) var(--btn-lt);
-  color: var(--white); font-size: .44rem; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-}
-.mixer-wbtn:active { border-color: var(--btn-sh) var(--btn-lt) var(--btn-lt) var(--btn-sh); }
-#mixer-menu {
-  background: var(--win-bg);
-  border-bottom: 1px solid var(--win-bdr);
-  display: flex; flex-shrink: 0;
-}
-.mixer-menu-item {
-  font-size: .48rem; color: var(--text-d); padding: 2px 7px;
-  cursor: pointer; letter-spacing: .06em; text-transform: uppercase;
-}
-.mixer-menu-item:hover { background: var(--win-bar); color: var(--white); }
-#mixer-body {
-  padding: 10px 10px 8px;
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-}
-.mixer-channel {
-  display: flex; flex-direction: column; align-items: center; gap: 4px; width: 100%;
-}
-.mixer-ch-label {
-  font-size: .44rem; letter-spacing: .25em; text-transform: uppercase;
-  color: var(--ash); border-bottom: 1px solid var(--win-bdr);
-  width: 100%; text-align: center; padding-bottom: 3px;
-}
-.mixer-fader-wrap {
-  display: flex; align-items: center; justify-content: center;
-  height: 90px; width: 100%;
-}
-.mixer-track {
-  position: relative;
-  width: 12px; height: 80px;
-  background: rgba(0,0,0,.6);
-  border: 1px solid;
-  border-color: var(--win-sh) var(--win-lt) var(--win-lt) var(--win-sh);
-  cursor: pointer;
-}
-.mixer-fill {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  background: linear-gradient(0deg, var(--red-dim) 0%, var(--red) 100%);
-  pointer-events: none;
-}
-.mixer-thumb {
-  position: absolute; left: -5px; right: -5px;
-  height: 10px;
-  background: linear-gradient(180deg, var(--btn-lt) 0%, var(--btn-bg) 100%);
-  border: 1px solid; border-color: var(--win-lt) var(--win-sh) var(--win-sh) var(--win-lt);
-  cursor: ns-resize; z-index: 2;
-  /* grip lines */
-  background-image: linear-gradient(180deg, var(--btn-lt) 0%, var(--btn-bg) 100%),
-    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,.07) 2px, rgba(255,255,255,.07) 3px);
-}
-.mixer-thumb:active { border-color: var(--win-sh) var(--win-lt) var(--win-lt) var(--win-sh); }
-.mixer-pct {
-  font-family: 'Bebas Neue', sans-serif; font-size: 1rem;
-  color: var(--white); line-height: 1; letter-spacing: .05em;
-}
-.mixer-icon {
-  font-size: .9rem; cursor: pointer; line-height: 1;
-  transition: filter .15s;
-}
-.mixer-icon:hover { filter: brightness(1.5); }
-.mixer-ch-mute {
-  display: flex; align-items: center; gap: 4px; cursor: pointer;
-  border: 1px solid var(--win-bdr); padding: 2px 7px;
-  font-size: .44rem; letter-spacing: .15em; text-transform: uppercase;
-  color: var(--text-d);
-  background: linear-gradient(180deg, rgba(255,255,255,.03) 0%, rgba(0,0,0,.2) 100%);
-  transition: color .15s;
-  user-select: none;
-}
-.mixer-ch-mute:hover { color: var(--white); border-color: var(--red-dim); }
-.mixer-ch-mute.muted { color: var(--red); border-color: var(--red-dim); }
-.mixer-mute-led {
-  width: 6px; height: 6px;
-  background: var(--text-d);
-  border: 1px solid var(--win-bdr);
-  border-radius: 50%;
-}
-.mixer-ch-mute.muted .mixer-mute-led { background: var(--red); box-shadow: 0 0 4px var(--red); }
-.mixer-divider {
-  width: 100%; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--win-bdr), transparent);
-}
-#mixer-switch {
-  width: 100%; padding: 4px 0; text-align: center;
-  font-size: .48rem; letter-spacing: .15em; text-transform: uppercase;
-  color: var(--text-d); cursor: pointer;
-  border: 1px solid var(--win-bdr);
-  background: linear-gradient(180deg, rgba(255,255,255,.03) 0%, rgba(0,0,0,.2) 100%);
-  display: flex; align-items: center; justify-content: center; gap: 5px;
-  transition: color .15s, border-color .15s;
-}
-#mixer-switch:hover { color: var(--white); border-color: var(--red-dim); background: rgba(180,20,20,.06); }
-#mixer-switch:active { border-color: var(--win-sh) var(--win-lt) var(--win-lt) var(--win-sh); }
-#mixer-statusbar {
-  border-top: 1px solid var(--win-bdr);
-  padding: 2px 6px;
-  font-size: .42rem; color: var(--text-d); letter-spacing: .06em;
-  text-align: center; flex-shrink: 0;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-
-/* Origem Übermensch melhorada */
-.uber-header {
-  position: relative; overflow: hidden;
-  padding: 18px 16px 14px;
-  background: linear-gradient(135deg, rgba(2,8,6,.98) 0%, rgba(4,14,10,.95) 100%);
-  border-bottom: 1px solid rgba(0,255,140,.12);
-  cursor: pointer;
-}
-.uber-header::before {
-  content: '究極の生命体';
-  position: absolute; right: -8px; top: 50%; transform: translateY(-50%);
-  font-family: 'Noto Serif JP', serif; font-size: 2.8rem;
-  color: rgba(0,255,140,.04); pointer-events: none; white-space: nowrap;
-  letter-spacing: -.05em;
-}
-.uber-header:hover { background: linear-gradient(135deg, rgba(2,10,7,.98) 0%, rgba(5,18,12,.95) 100%); }
-.uber-eyebrow {
-  font-size: .4rem; letter-spacing: .5em; text-transform: uppercase;
-  color: rgba(0,255,149,.2); margin-bottom: 6px;
-}
-.uber-name {
-  font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem;
-  letter-spacing: .1em; color: var(--white); line-height: 1;
-  text-shadow: 0 0 30px rgba(0,255,140,.08);
-}
-.uber-sub {
-  font-size: .5rem; color: rgba(180,240,210,.3);
-  letter-spacing: .08em; margin-top: 5px;
-}
-.uber-toggle-hint {
-  position: absolute; bottom: 8px; right: 10px;
-  font-size: .42rem; color: rgba(0,255,140,.2); letter-spacing: .1em;
-  transition: color .2s;
-}
-.uber-header:hover .uber-toggle-hint { color: rgba(0,255,140,.45); }
-
-.uber-body { padding: 14px; }
-
-.traco {
-  padding: 8px 10px; border-left: 2px solid rgba(57,255,136,.18);
-  background: linear-gradient(90deg, rgba(0,30,20,.4) 0%, rgba(0,15,10,.2) 100%);
-  margin-bottom: 5px; position: relative;
-}
-.traco::before {
-  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
-  background: linear-gradient(180deg, rgba(57,255,136,.05) 0%, rgba(57,255,136,.3) 50%, rgba(57,255,136,.05) 100%);
-}
-.traco-title {
-  color: rgba(57,255,136,.55); font-size: .68rem; margin-bottom: 3px;
-  font-family: 'Inconsolata', monospace;
-}
-.traco-neg { border-left-color: rgba(255,80,80,.2); }
-.traco-neg::before { background: linear-gradient(180deg, rgba(255,80,80,.05) 0%, rgba(255,80,80,.25) 50%, rgba(255,80,80,.05) 100%); }
-.traco-neg .traco-title { color: rgba(255,100,100,.5); }
-
-.protocolo {
-  margin-top: 14px; padding: 14px;
-  border: 1px solid rgba(0,255,150,.15);
-  background: linear-gradient(135deg, rgba(0,10,7,.95) 0%, rgba(0,5,3,.98) 100%);
-  position: relative; overflow: hidden;
-}
-.protocolo::after {
-  content: ''; position: absolute; inset: 0; pointer-events: none;
-  background-image: linear-gradient(rgba(0,255,140,.015) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(0,255,140,.015) 1px,transparent 1px);
-  background-size: 16px 16px;
-}
-
 </style>
 </head>
 <body>
@@ -1432,7 +1226,7 @@ body { padding-bottom: 40px; }
 </div>
 
 <!-- JANELA: ORIGEM -->
-<div class="win hidden" id="origem-win" style="width:540px;height:480px;top:80px;left:180px;">
+<div class="win hidden" id="origem-win" style="width:540px;height:460px;top:80px;left:180px;">
   <div class="win-bar" id="origem-win-bar">
     <span class="win-title">🧬 Origem — Übermensch</span>
     <div class="win-ctrl">
@@ -1440,53 +1234,45 @@ body { padding-bottom: 40px; }
       <button class="win-btn" onclick="closeWin('origem-win')">✕</button>
     </div>
   </div>
-  <div class="win-content" style="padding:0">
+  <div class="win-content">
 
-    <!-- Header clicável -->
-    <div class="uber-header" onclick="document.getElementById('uberbox-body').classList.toggle('hidden-body');this.querySelector('.uber-toggle-hint').textContent=document.getElementById('uberbox-body').classList.contains('hidden-body')?'[+] expandir':'[−] recolher'">
-      <div class="uber-eyebrow">究極の生命体 — Kyūkyoku no Seimeitai</div>
-      <div class="uber-name">ÜBERMENSCH</div>
-      <div class="uber-sub">Síntese Alquímica · O Ápice do Sangue · O Hospedeiro Perfeito</div>
-      <div class="uber-toggle-hint">[−] recolher</div>
-    </div>
-
-    <div id="uberbox-body" class="uber-body">
-
-      <div class="txt" style="margin-bottom:12px"><strong style="color:rgba(57,255,136,.45)">Descrição:</strong> Fruto da obsessão de Amon Kamo, Sousuke não nasceu; foi cultivado. Uma síntese biológica perfeita das linhagens Kamo e Zenin, projetada para eliminar qualquer falha orgânica. O resultado é um organismo de pureza antinatural — uma carcaça humana sustentada por uma consciência viral.</div>
-
-      <!-- Traços negativos -->
-      <div style="font-size:.42rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,80,80,.35);margin-bottom:4px">Penalidades</div>
-      <div class="traco traco-neg">
-        <div class="traco-title">Atrofia da Casca</div>
-        <div class="txt" style="margin:0;font-size:.67rem;color:var(--text)">A biologia original definhou em prol da técnica. Sousuke sofre <strong style="color:rgba(255,100,100,.7)">-1 em Força e Agilidade</strong>.</div>
+    <div class="origem-box active" id="uberbox">
+      <div class="origem-btn" onclick="document.getElementById('uberbox').classList.toggle('active')">
+        <div style="font-size:.5rem;letter-spacing:.25em;color:rgba(0,255,149,.15)">究極の生命体 — Kyūkyoku no Seimeitai</div>
+        <div class="origem-title">ÜBERMENSCH</div>
+        <div class="origem-sub">Síntese Alquímica · O Ápice do Sangue · O Hospedeiro Perfeito</div>
       </div>
+      <div class="origem-body">
+        <div class="txt"><strong style="color:rgba(57,255,136,.4)">Descrição:</strong> Fruto da obsessão de Amon Kamo, Sousuke não nasceu; foi cultivado. Uma síntese biológica perfeita das linhagens Kamo e Zenin, projetada para eliminar qualquer falha orgânica. O resultado é um organismo de pureza antinatural — uma carcaça humana sustentada por uma consciência viral.</div>
 
-      <!-- Traços positivos -->
-      <div style="font-size:.42rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(57,255,136,.3);margin-bottom:4px;margin-top:10px">Traços</div>
-      <div class="traco">
-        <div class="traco-title">Marionete Amaldiçoada</div>
-        <div class="txt" style="margin:0;font-size:.67rem;color:var(--text)">Testes não-físicos podem ser substituídos por <strong style="color:var(--green)">Int + Feitiçaria</strong>.</div>
-      </div>
-      <div class="traco">
-        <div class="traco-title">Soberania Biológica</div>
-        <div class="txt" style="margin:0;font-size:.67rem;color:var(--text)">Ganha <strong style="color:var(--green)">+10 em Persuasão e +5 em Enganação</strong>. Controle completo dos próprios sinais vitais.</div>
-      </div>
-      <div class="traco">
-        <div class="traco-title">Custo de Existência</div>
-        <div class="txt" style="margin:0;font-size:.67rem;color:var(--text)">Custo Padrão: <strong style="color:var(--green)">8 EA</strong> · Regeneração: <strong style="color:var(--green)">3 EA/turno</strong></div>
-      </div>
+        <div class="traco">
+          <div class="traco-title">Atrofia da Casca</div>
+          <div class="txt" style="margin:0;font-size:.68rem;color:var(--text)">A biologia original definhou em prol da técnica. Sousuke sofre <strong style="color:var(--green)">-1 em Força e Agilidade</strong>.</div>
+        </div>
+        <div class="traco">
+          <div class="traco-title">Marionete Amaldiçoada</div>
+          <div class="txt" style="margin:0;font-size:.68rem;color:var(--text)">Testes não-físicos podem ser substituídos por <strong style="color:var(--green)">Int + Feitiçaria</strong>.</div>
+        </div>
+        <div class="traco">
+          <div class="traco-title">Soberania Biológica</div>
+          <div class="txt" style="margin:0;font-size:.68rem;color:var(--text)">Ganha <strong style="color:var(--green)">+10 em Persuasão e +5 em Enganação</strong>. Controle completo dos próprios sinais vitais.</div>
+        </div>
+        <div class="traco">
+          <div class="traco-title">Custo de Existência</div>
+          <div class="txt" style="margin:0;font-size:.68rem;color:var(--text)">Custo Padrão: <strong style="color:var(--green)">8 EA</strong> · Regeneração: <strong style="color:var(--green)">3 EA/turno</strong></div>
+        </div>
 
-      <div class="protocolo">
-        <div style="font-family:'Bebas Neue';font-size:1.15rem;letter-spacing:.22em;color:var(--green);text-align:center;margin-bottom:8px;text-shadow:0 0 20px rgba(0,255,140,.3);position:relative;z-index:1">⚠ PROTOCOLO DE EXTINÇÃO</div>
-        <div class="txt" style="font-size:.67rem;color:rgba(200,245,225,.6);line-height:1.85;position:relative;z-index:1">Quando ocorre a <strong style="color:var(--green)">morte definitiva do corpo físico</strong>, os selos biológicos colapsam. Nesse momento emerge <strong style="color:var(--green)">"Las Plagas"</strong>, uma entidade de <strong style="color:var(--green)">Grau Especial</strong>. O personagem é permanentemente perdido, desencadeando uma arma biológica amaldiçoada autônoma.</div>
+        <div class="protocolo">
+          <div style="font-family:'Bebas Neue';font-size:1.1rem;letter-spacing:.2em;color:var(--green);text-align:center;margin-bottom:8px;text-shadow:0 0 15px rgba(0,255,140,.6)">PROTOCOLO DE EXTINÇÃO</div>
+          <div class="txt" style="font-size:.68rem;color:rgba(210,255,235,.7)">Quando ocorre a <strong style="color:var(--green)">morte definitiva do corpo físico</strong>, os selos biológicos colapsam. Nesse momento emerge <strong style="color:var(--green)">"Las Plagas"</strong>, uma entidade de <strong style="color:var(--green)">Grau Especial</strong>. O personagem é permanentemente perdido, desencadeando uma verdadeira arma biológica amaldiçoada.</div>
+        </div>
       </div>
-
     </div>
 
   </div>
   <div class="win-status-bar">
     <div class="wsb-cell">Origem Homebrew</div>
-    <div class="wsb-cell">+10 Persuasão · +5 Enganação · 8 EA custo base</div>
+    <div class="wsb-cell">+10 Persuasão e +5 Enganação · +8 EA custo</div>
   </div>
 </div>
 
@@ -2098,48 +1884,13 @@ body { padding-bottom: 40px; }
   <div id="tb-clock">00:00</div>
 </div>
 
-<!-- PLAYER DE MÚSICA — MIXER WIN98 -->
+<!-- PLAYER DE MÚSICA -->
 <div id="music-ui">
-  <div id="mixer-win">
-    <div id="mixer-bar">
-      <span id="mixer-title">♪ Volume Control</span>
-      <div style="display:flex;gap:2px">
-        <div class="mixer-wbtn" id="mixer-min-btn">_</div>
-        <div class="mixer-wbtn" onclick="document.getElementById('music-ui').style.opacity='0';document.getElementById('music-ui').style.pointerEvents='none'">✕</div>
-      </div>
-    </div>
-    <div id="mixer-menu">
-      <span class="mixer-menu-item" onclick="openMusicModal(true)">Opções</span>
-      <span class="mixer-menu-item">Ajuda</span>
-    </div>
-    <div id="mixer-body">
-      <!-- Canal BGM -->
-      <div class="mixer-channel">
-        <div class="mixer-ch-label">BGM</div>
-        <div class="mixer-fader-wrap">
-          <div class="mixer-track" id="vol-track">
-            <div class="mixer-fill" id="vol-fill"></div>
-            <div class="mixer-thumb" id="vol-thumb"></div>
-          </div>
-        </div>
-        <div class="mixer-pct" id="vol-pct">25%</div>
-        <div class="mixer-icon" id="vol-icon">🔉</div>
-        <div class="mixer-ch-mute" id="mixer-mute" onclick="toggleMute()">
-          <div class="mixer-mute-led" id="mute-led"></div>
-          MUTE
-        </div>
-      </div>
-      <!-- Divisor -->
-      <div class="mixer-divider"></div>
-      <!-- Botão trocar trilha -->
-      <div id="mixer-switch" onclick="openMusicModal(true)">
-        <span>▶</span> TROCAR TRILHA
-      </div>
-    </div>
-    <div id="mixer-statusbar">
-      <span id="mixer-track-name">— sem trilha —</span>
-    </div>
+  <div class="music-row">
+    VOL
+    <input type="range" id="vol-slider" min="0" max="100" value="25">
   </div>
+  <div class="music-switch" onclick="openMusicModal(true)">[ TROCAR TRILHA ]</div>
 </div>
 
 <!-- ═══════════════════════════════════════════
@@ -2507,7 +2258,7 @@ function fadeTo(target, duration, cb) {
   }, delay);
 }
 
-function playTrack(path, switching, title) {
+function playTrack(path, switching) {
   const start = () => {
     if (audio) { audio.pause(); audio = null; }
     audio = new Audio(path);
@@ -2515,9 +2266,7 @@ function playTrack(path, switching, title) {
     audio.play().then(() => {
       musicReady = true;
       document.getElementById('music-ui').style.opacity = '1';
-      document.getElementById('music-ui').style.pointerEvents = 'all';
       fadeTo(currentVol * 100, 2000);
-      if (title && window.setMixerTrackName) window.setMixerTrackName(title);
     });
   };
   if (switching && audio) fadeTo(0, 500, start);
@@ -2547,7 +2296,7 @@ function openMusicModal(switching) {
       const b = document.createElement('button');
       b.className = 'music-track-btn';
       b.textContent = tr.title;
-      b.onclick = () => { modal.remove(); playTrack(tr.path, switching, tr.title); };
+      b.onclick = () => { modal.remove(); playTrack(tr.path, switching); };
       mbody.appendChild(b);
     });
     if (switching) {
@@ -2577,98 +2326,29 @@ function openMusicModal(switching) {
 
 (function(){
   let dragging = false;
-  let muted = false;
-  let volBeforeMute = 0.25;
-
   function setVol(v) {
     currentVol = Math.min(1, Math.max(0, v));
     const pct = Math.round(currentVol * 100);
-    const trackH = 80, thumbH = 10;
+    const trackH = 80, thumbH = 8;
     const pos = (1 - currentVol) * (trackH - thumbH);
-    const fill = document.getElementById('vol-fill');
-    const thumb = document.getElementById('vol-thumb');
-    const pctEl = document.getElementById('vol-pct');
-    const icon  = document.getElementById('vol-icon');
-    if (fill)  fill.style.height = (currentVol * trackH) + 'px';
-    if (thumb) thumb.style.top   = pos + 'px';
-    if (pctEl) pctEl.textContent = pct + '%';
-    if (icon)  icon.textContent  = pct === 0 ? '🔇' : pct < 50 ? '🔉' : '🔊';
+    document.getElementById('vol-fill').style.height  = (currentVol * trackH) + 'px';
+    document.getElementById('vol-thumb').style.top    = pos + 'px';
+    document.getElementById('vol-pct').textContent    = pct + '%';
+    document.getElementById('vol-icon').textContent   = pct === 0 ? '🔇' : pct < 50 ? '🔉' : '🔊';
     if (audio && !fadeInterval) audio.volume = currentVol;
   }
-
   function volFromY(e, track) {
     const r = track.getBoundingClientRect();
     const y = e.clientY - r.top;
     return 1 - Math.min(1, Math.max(0, y / r.height));
   }
-
-  window.toggleMute = function() {
-    const btn = document.getElementById('mixer-mute');
-    muted = !muted;
-    btn.classList.toggle('muted', muted);
-    if (muted) { volBeforeMute = currentVol; setVol(0); }
-    else        { setVol(volBeforeMute); }
-  };
-
-  window.setMixerTrackName = function(name) {
-    const el = document.getElementById('mixer-track-name');
-    if (el) el.textContent = '♪ ' + name;
-  };
-
   document.addEventListener('DOMContentLoaded', () => {
     const track = document.getElementById('vol-track');
-    if (!track) return;
     setVol(0.25);
-
-    track.addEventListener('mousedown', e => {
-      dragging = true;
-      if (muted) { muted = false; document.getElementById('mixer-mute')?.classList.remove('muted'); }
-      setVol(volFromY(e, track));
-      e.preventDefault();
-    });
+    track.addEventListener('mousedown', e => { dragging = true; setVol(volFromY(e, track)); e.preventDefault(); });
     document.addEventListener('mousemove', e => { if (dragging) setVol(volFromY(e, track)); });
     document.addEventListener('mouseup',   () => { dragging = false; });
-    document.getElementById('vol-icon')?.addEventListener('click', () => {
-      if (currentVol > 0) { volBeforeMute = currentVol; setVol(0); }
-      else setVol(volBeforeMute || 0.25);
-    });
-
-    /* Drag do mixer */
-    const bar = document.getElementById('mixer-bar');
-    const win = document.getElementById('mixer-win');
-    const ui  = document.getElementById('music-ui');
-    if (bar && win && ui) {
-      let dx=false, ox=0, oy=0;
-      bar.addEventListener('mousedown', e => {
-        if (e.target.classList.contains('mixer-wbtn')) return;
-        dx = true;
-        const r = ui.getBoundingClientRect();
-        ui.style.right = 'auto';
-        ui.style.bottom = 'auto';
-        ui.style.left = r.left + 'px';
-        ui.style.top  = r.top  + 'px';
-        ox = e.clientX - r.left;
-        oy = e.clientY - r.top;
-        e.preventDefault();
-      });
-      document.addEventListener('mousemove', e => {
-        if (!dx) return;
-        ui.style.left = Math.max(0, e.clientX - ox) + 'px';
-        ui.style.top  = Math.max(0, e.clientY - oy) + 'px';
-      });
-      document.addEventListener('mouseup', () => { dx = false; });
-    }
-
-    /* Botão minimizar mixer */
-    document.getElementById('mixer-min-btn')?.addEventListener('click', () => {
-      const body = document.getElementById('mixer-body');
-      const sb   = document.getElementById('mixer-statusbar');
-      const menu = document.getElementById('mixer-menu');
-      const hidden = body.style.display === 'none';
-      body.style.display = hidden ? '' : 'none';
-      if (sb)   sb.style.display   = hidden ? '' : 'none';
-      if (menu) menu.style.display = hidden ? '' : 'none';
-    });
+    document.getElementById('vol-icon').addEventListener('click', () => setVol(currentVol > 0 ? 0 : 0.25));
   });
 })();
 
