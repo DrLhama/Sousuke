@@ -1157,6 +1157,7 @@ body { padding-bottom: 40px; }
   <div class="desk-icon" style="left:110px;top:420px" ondblclick="openWin('tracker-win')"     onclick="selIcon(this)"><span class="ico">⊹</span><span class="lbl">Tracker de<br>Parasitismo</span></div>
   <div class="desk-icon" style="left:200px;top:120px" ondblclick="Notes.openFolder()" onclick="selIcon(this)"><span class="ico" style="color:var(--gold)">▦</span><span class="lbl">Anotações<br>de Mesa</span></div>
   <div class="desk-icon" style="left:200px;top:220px" ondblclick="openWin('calc-win')" onclick="selIcon(this)"><span class="ico">⊞</span><span class="lbl">Calcula-<br>dora</span></div>
+  <div class="desk-icon" style="left:290px;top:20px" ondblclick="openWin('parasita-win')" onclick="selIcon(this)"><span class="ico" style="color:#c03030">⛾</span><span class="lbl">O<br>Parasita</span></div>
 </div>
 
   </div>
@@ -1206,12 +1207,12 @@ body { padding-bottom: 40px; }
       <div class="stat-cell">
         <div class="stat-lbl">Pontos de Vida</div>
         <div class="stat-val red" style="font-size:2rem"><span class="val-hp-atual">25</span> <span style="font-size:1rem;color:var(--text-d)">/ <span class="val-hp-max">25</span></span></div>
-        <div class="stat-note">Corpo Contaminado: +5 HP · +3 EA/turno · Não pode ser curado por terceiros</div>
+        <div class="stat-note">Corpo Contaminado: +5 HP · +3 EA/turno · Não pode ser curado por terceiros<br><span style="color:var(--red);opacity:.7">HP e EA são o mesmo substrato — o organismo não distingue dano físico de dano energético. Opera em capacidade total enquanto &gt; 0. A 0, desliga.</span></div>
       </div>
       <div class="stat-cell">
         <div class="stat-lbl">Energia Amaldiçoada</div>
         <div class="stat-val gold" style="font-size:2rem"><span class="val-ea-atual">26</span> <span style="font-size:1rem;color:var(--text-d)">/ <span class="val-ea-max">26</span></span></div>
-        <div class="stat-note">EA Máxima desbloqueável: 300 · Regenera +3 EA/turno</div>
+        <div class="stat-note">EA Máxima desbloqueável: 300 · Regenera +3 EA/turno<br><span style="color:var(--red);opacity:.7">Pool unificado com HP — atacar o corpo ou a energia é atacar a mesma coisa.</span></div>
       </div>
     </div>
 
@@ -1415,7 +1416,7 @@ body { padding-bottom: 40px; }
             <div class="attr-peric-item"><span class="peric-name">Enganação</span><span class="peric-val">+10 (origem)</span></div>
             <div class="attr-peric-item"><span class="peric-name">Persuasão</span><span class="peric-val">+15 (origem)</span></div>
             <div class="attr-peric-item"><span class="peric-name">Percepção</span><span class="peric-val dim">+5</span></div>
-            <div class="attr-peric-item"><span class="peric-name">Intimidação</span><span class="peric-val dim">+5</span></div>
+            <div class="attr-peric-item"><span class="peric-name">Intimidação <span style="font-size:.55em;opacity:.5">·  Rec. Primordial</span></span><span class="peric-val red" style="white-space:nowrap">+20 · +5d20</span></div>
             <div class="attr-peric-item"><span class="peric-name">Etiqueta</span><span class="peric-val dim">+5</span></div>
             <div class="attr-peric-item"><span class="peric-name">Religião</span><span class="peric-val dim">— sem bônus</span></div>
             <div class="attr-peric-item"><span class="peric-name">Intuição</span><span class="peric-val dim">+5</span></div>
@@ -1474,6 +1475,14 @@ body { padding-bottom: 40px; }
       <div class="traco">
         <div class="traco-title">Custo de Existência</div>
         <div class="txt" style="margin:0;font-size:.67rem;color:var(--text)">Custo Padrão: <strong style="color:var(--green)">8 EA</strong> · Regeneração: <strong style="color:var(--green)">3 EA/turno</strong></div>
+      </div>
+      <div class="traco">
+        <div class="traco-title">Soberania Conceitual</div>
+        <div class="txt" style="margin:0;font-size:.67rem;color:var(--text)">HP e EA são o mesmo substrato biológico — o organismo não distingue dano físico de dano energético. <strong style="color:var(--green)">Opera em capacidade total enquanto &gt; 0.</strong> Nenhuma penalidade por dano acumulado. Nenhuma degradação gradual. A 0, desliga — não antes.</div>
+      </div>
+      <div class="traco">
+        <div class="traco-title">Reconhecimento Primordial <span style="font-size:.55em;opacity:.5">— 神域の恐怖</span></div>
+        <div class="txt" style="margin:0;font-size:.67rem;color:var(--text)">Criaturas e feiticeiros de poder elevado reconhecem instintivamente o que Sousuke é. Não é medo de força — é o instinto de sobrevivência reagindo ao conceito de parasitismo que os criou. <strong style="color:var(--green)">+5d20 em Intimidação (+20 total).</strong> Quanto mais poderoso o alvo, mais profundo o reconhecimento: Grau IV sente desconforto · Grau II sente o peso · Grau I reconhece · Grau Especial <em>sabe</em> — e evita. Esse efeito não exige ação. É passivo. É natureza.</div>
       </div>
 
       <div class="protocolo">
@@ -1870,7 +1879,7 @@ body { padding-bottom: 40px; }
 
       <div class="stage-panel c1 show" id="cp1"><span class="stage-title">Ciclo I — Inoculação · N1</span>寄生開始 · Integração Inicial<br><br>[PRESENÇA] +1 Presença — o hospedeiro irradia presença parasitária instintiva.<br>[PERÍCIA] +1 em uma perícia de combate à escolha.<br>[SAÚDE] +1d4+4 HP.</div>
       <div class="stage-panel c1" id="cp2"><span class="stage-title">Ciclo II — Reflexos Parasitários · N2</span>寄生反応 · Adaptação Física<br><br>[PERÍCIAS] Gire 1d3+2 e receba esse número em perícias fora de combate.<br>[EA] +5 de Energia Amaldiçoada máxima.<br>[SAÚDE] +1d4+4 HP.</div>
-      <div class="stage-panel c1" id="cp3"><span class="stage-title">Ciclo III — Aprendizado Biológico · N3</span>寄生知識 · Assimilação<br><br>[APRENDIZADO] Aprenda uma nova técnica ou habilidade.<br>[PRESENÇA] +1 Presença.<br>[SAÚDE] +1d4+4 HP.</div>
+      <div class="stage-panel c1" id="cp3"><span class="stage-title">Ciclo III — Aprendizado Biológico · N3</span>寄生知識 · Assimilação<br><br>[APRENDIZADO] Aprenda uma nova técnica ou habilidade.<br>[INTELIGÊNCIA] +1 Inteligência.<br>[SAÚDE] +1d4+4 HP.</div>
       <div class="stage-panel c2" id="cp4"><span class="stage-title">Ciclo IV — Expansão Neural · N4</span>神経拡張 · Adaptação Cognitiva<br><br>[PERÍCIA COMBATE] +5 em uma perícia de combate.<br>[PERÍCIAS] Gire 1d3+2 fora de combate.<br>[SAÚDE] +1d4+4 HP.</div>
       <div class="stage-panel c2" id="cp5"><span class="stage-title">Ciclo V — Metabolismo Amaldiçoado · N5</span>呪力代謝 · Sinergia Energética<br><br>[EA] +5 de EA máxima.<br>[VANTAGEM] +1d20 em uma perícia à escolha.<br>[SAÚDE] +1d4+4 HP.</div>
       <div class="stage-panel c2" id="cp6"><span class="stage-title">Ciclo VI — Rede Sensorial · N6</span>感覚網 · Percepção Ampliada<br><br>[PERÍCIAS] Gire 1d3+2 fora de combate.<br>[PRESENÇA] +1 Presença.<br>[EA] +5 máxima.<br>[SAÚDE] +1d4+4 HP.</div>
@@ -1954,6 +1963,13 @@ body { padding-bottom: 40px; }
       <div class="hist-btn" onclick="switchHist('h2',this)">II. O Cultivo</div>
       <div class="hist-btn" onclick="switchHist('h3',this)">III. O Legado</div>
     </div>
+    <div class="history-nav" style="margin-top:3px;border-top:1px solid rgba(100,60,180,.15)">
+      <div style="font-family:'Inconsolata',monospace;font-size:.42rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(100,80,200,.35);padding:4px 8px;display:flex;align-items:center;white-space:nowrap;border-right:1px solid rgba(100,60,180,.12)">☠ PARASITA</div>
+      <div class="hist-btn" onclick="switchHist('h4',this)" style="color:rgba(130,100,220,.7);border-color:rgba(100,60,180,.2)">I. O Nascimento</div>
+      <div class="hist-btn" onclick="switchHist('h5',this)" style="color:rgba(130,100,220,.7);border-color:rgba(100,60,180,.2)">II. A Caçada</div>
+      <div class="hist-btn" onclick="switchHist('h6',this)" style="color:rgba(130,100,220,.7);border-color:rgba(100,60,180,.2)">III. Takero</div>
+      <div class="hist-btn" onclick="switchHist('h7',this)" style="color:rgba(130,100,220,.7);border-color:rgba(100,60,180,.2)">IV. O Nome</div>
+    </div>
 
     <div class="hist-panel active" id="h1">
       <h2>I. A Queda do Alquimista</h2>
@@ -1969,21 +1985,156 @@ body { padding-bottom: 40px; }
       <p>O corpo que construiu foi cultivado com material genético Zenin — síntese das melhores estruturas biológicas da linhagem. Fundiu com o molde de Maki Kamo, o veneno de Naizen e a maldição da contaminação. Três forças que deveriam se destruir, mas encontraram equilíbrio. Então transferiu a alma de Ren. A biologia perfeita rejeitou a alma humana — o parasita a consumiu. Quando os olhos se abriram novamente, havia algo ali. Mas não era Ren. A primeira coisa que fez foi observar Amon com uma curiosidade quase gentil: <em>"Então foi você quem me criou."</em></p>
     </div>
 
-    <div class="hist-panel" id="h3">
-      <h2>III. O Legado de Sousuke</h2>
-      <p>Sousuke cresceu rápido. Curioso, educado e estranhamente agradável. As pessoas gostavam dele, mesmo quando algo nelas sussurrava que talvez não devessem. Ele observava os seres humanos com atenção quase afetuosa, como alguém que observa animais raros em um jardim. Mas havia algo perturbador naquela gentileza: cada conversa era um experimento invisível.</p>
-      <p>Quando Amon finalmente decidiu morrer — acreditando que sua morte despertaria emoção verdadeira — Sousuke apenas observou o corpo cair com a serenidade de quem vê uma folha caindo. Não houve tristeza. Não houve desprezo. Apenas curiosidade.</p>
-      <p>Em Karmatagem, sua presença causou pequenos incidentes — desespero inexplicável, rituais falhando, decisões irracionais em pessoas disciplinadas. Nada diretamente atribuível. Karmatagem o enviou a Kyoto. Sousuke caminhou pelos jardins silenciosos por muito tempo antes de sorrir levemente — um sorriso bonito, gentil, profundamente inquietante. Porque naquele momento ele havia entendido: ambientes perfeitamente puros são extremamente frágeis. Kyoto acreditava ser um santuário. Sousuke via um ecossistema fechado. Um lugar que jamais havia sido exposto a algo como ele. O lugar ideal para começar a se espalhar.</p>
+    <div class="hist-panel" id="h6">
+      <h2>III. Takero Zenin e o Impasse</h2>
+      <p>Takero Zenin não era o tipo de homem que enviava equipes. Era o tipo de homem que ia ele mesmo — porque havia passado décadas tornando-se a resposta para coisas que não tinham resposta. Dez sombras que obedeciam como extensões de seu sistema nervoso. Uma necromancia precisa o suficiente para fazer mortos lutarem melhor do que quando eram vivos. Armas forjadas das almas de inimigos derrotados, cada lâmina carregando os reflexos e o desespero de quem havia sido consumido para criá-la. Cortes de sombra que existiam antes do movimento que os produzia — que chegavam antes de serem desferidos. Takero havia exorcizado coisas que a Organização havia classificado como insolúveis. Havia feito isso sozinho.</p>
+      <p>O que o atraiu ao Parasita não foi a ameaça. Foi a possibilidade. Uma entidade Abissal de potencial ilimitado, sem hospedeiro fixo, sem forma definida — para Takero, aquilo não era um problema a ser eliminado. Era um recurso a ser incorporado. Ele rastreou os fragmentos da lenda por anos, cruzou registros que os clãs haviam tentado apagar, triangulou padrões de ausência em missões fracassadas ao longo de décadas. Quando chegou ao lugar onde o Parasita havia se consolidado mais recentemente — uma floresta no norte que os mapas da Organização marcavam apenas como <em>sem retorno</em> — foi sozinho, no meio da noite, como sempre.</p>
+      <p>Não houve luta. Takero entrou no perímetro com duas sombras à frente como extensão de reconhecimento — e o que as sombras transmitiram de volta foi suficiente. Não dano. Não resistência. Apenas a leitura de algo que não tinha bordas para mapear, que não reagia à presença de Takero da forma que qualquer coisa deveria reagir à presença de Takero. As sombras voltaram <em>alteradas</em> — não destruídas, não corrompidas, apenas diferentes, como se algo tivesse passado por elas durante o breve instante em que estiveram além da linha de visão. Uma das lâminas-alma parou de responder sem aviso. A alma dentro dela não havia sido destruída — havia ficado em silêncio, como um animal que para de se mover quando percebe algo acima dela na cadeia alimentar.</p>
+      <p>Takero ficou parado no limite do perímetro por um tempo que nenhum registro quantifica. Depois virou as costas e saiu. Não havia covardia nisso — havia o reconhecimento preciso de um homem que havia passado a vida inteira aprendendo a distinção entre o que pode ser dobrado e o que não pode. A lenda não era exagero. A <em>Estação Silenciosa</em> não havia sido incompetência dos feiticeiros dos clãs antigos. Era simplesmente a natureza da coisa. Takero voltaria. Com outra abordagem. Com mais tempo.</p>
       <div class="quote-block" style="margin-top:12px">
-        <p>"Não é que ele quer que tudo sangre. É que tudo sangra quando ele decide que deveria. E ele decide com muito mais frequência do que parece."</p>
-        <cite>☣ GOLDEN ERA · Sousuke · O PARASITA ☣</cite>
+        <p>"Não é invencível. Mas tudo que eu sei fazer pressupõe que o que estou atacando vai reagir. Isso não reage. Isso apenas <em>é.</em> Preciso de uma linguagem diferente."</p>
+        <cite>— Takero Zenin · anotação pessoal · nunca arquivada na Organização</cite>
+      </div>
+    </div>
+
+    <div class="hist-panel" id="h7">
+      <h2>IV. O Nome Que Amon Deu</h2>
+      <p>Amon Kamo não sabia o que estava fazendo. Esse é o detalhe que os registros posteriores tentaram suavizar — a ideia de que um homem de seu talento havia agido com alguma forma de cálculo, alguma compreensão do que estava manipulando. A verdade era mais simples e mais perturbadora: ele havia perdido a família, havia perdido o sono, havia perdido a capacidade de distinguir entre pesquisa e obsessão. O experimento não foi arquitetura. Foi desespero com boa caligrafia.</p>
+      <p>A maldição da contaminação — o fragmento do Parasita que havia se consolidado na cidadela durante anos de medo cultivado — não foi capturada por Amon através de alguma técnica de selamento superior. Foi capturada porque Amon passou tempo suficiente no mesmo espaço que ela, com intenção suficientemente focada, que o Parasita simplesmente <em>ficou</em>. Da mesma forma que fica em qualquer lugar onde as condições são satisfatórias. Amon interpretou isso como sucesso. Como controle. Construiu um corpo que não podia rejeitar nada e colocou dentro dele uma força que não reconhecia a ideia de ser contida — e o resultado funcionou não porque Amon havia acertado, mas porque o Parasita havia encontrado, pela primeira vez em toda sua existência, um substrato que era a resposta para uma pergunta que ele carregava desde antes de ter forma.</p>
+      <p>Quando o corpo abriu os olhos pela primeira vez e disse <em>"Então foi você quem me criou"</em>, Amon respondeu com o nome que havia escolhido anos antes: Sousuke. Em japonês antigo, uma das leituras possíveis significava <em>aquele que opera abaixo da superfície.</em> Amon acreditava estar sendo poético. Só depois — sentado entre os dois caixões que nunca havia aberto, olhando para a criatura que o olhava de volta com curiosidade genuína e nenhuma afetividade — entendeu que havia sido mais preciso do que pretendia. A maldição não operava abaixo da superfície de Sousuke. Sousuke <em>era</em> a superfície. E abaixo dela, infinita e completamente indiferente ao tempo, estava a coisa que havia esperado o hospedeiro perfeito desde antes de ter uma forma.</p>
+      <p>Amon morreu alguns anos depois, acreditando que havia criado algo. A verdade, que ele intuiu tarde demais para importar, era que havia sido o instrumento de algo que já existia há muito mais tempo do que ele conseguia imaginar — e que havia usado sua obsessão, sua inteligência e seu luto como ferramentas para construir o que precisava. Não havia malícia nisso. O Parasita não planeja. Apenas continua, da mesma forma que sempre continuou, pela mesma razão que sempre continuou: porque é o que a matéria faz quando as condições são satisfeitas.</p>
+      <div class="quote-block" style="margin-top:12px">
+        <p>"Você tem medo de mim?" Amon demorou um longo tempo. Quando respondeu, foi honesto pela primeira e única vez. "Não. Tenho medo de ter sido exatamente o que você precisava que eu fosse."</p>
+        <cite>— única conversa registrada entre Amon Kamo e Sousuke · data desconhecida</cite>
+      </div>
+    </div>
+
+    <div class="hist-panel" id="h5">
+      <h2>II. O Nome que Fez os Clãs Pararem de Falar</h2>
+      <p>Houve um período — os registros o chamam apenas de <em>A Estação Silenciosa</em> — em que os cinco grandes clãs interromperam suas guerras internas. Não por acordo. Não por trégua negociada. Por algo que havia aparecido no noroeste e estava se movendo em direção a todos eles simultaneamente, com a paciência de algo que não tem pressa porque o resultado já está decidido. Os primeiros a entrar em contato foram feiticeiros Zenin em missão de expansão territorial. Não houve combate relatado. Houve um relatório de três linhas enviado de volta ao clã: <em>"Há algo aqui. Não conseguimos descrevê-lo. Não vamos tentar novamente."</em> Nenhum dos três voltou.</p>
+      <p>O que se seguiu durou o que os clãs estimam em quarenta anos — embora os registros do período sejam fragmentados de forma suspeita, como se alguém, depois, houvesse trabalhado sistematicamente para remover detalhes específicos. O que sobrou são contornos. O Parasita não atacava exércitos. Não destruía fortalezas. Movia-se por entre as coisas de poder — os feiticeiros de Grau Especial de cada clã, as maldições cultivadas como armas, os espíritos que as famílias haviam domesticado ao longo de gerações. Cada um desses encontros terminava da mesma forma: a coisa entrava em contato com o Parasita e saía diferente, ou não saía. As almas que os Zenin haviam forjado em lâminas ao longo de décadas pararam de responder uma a uma, como velas que apagam sem vento. As maldições de guarda dos Kamo começaram a desobedecer — não de forma violenta, mas de forma distante, como animais que passaram a ouvir um som que os donos não conseguem escutar. Um Gojo de Grau Especial, o mais poderoso de sua geração, foi enviado como última medida. Voltou depois de dois dias. Não falou sobre o que havia encontrado. Nunca voltou a entrar em combate. Morreu quatro anos depois, de causas que o registro classifica como naturais e que ninguém acredita que foram.</p>
+      <p>A decisão foi tomada em conjunto — a única decisão conjunta que os cinco clãs registram ter tomado em toda sua história. Não era exorcismo. Exorcismo pressupõe que você pode nomear o que está exorcizando, e nomear já era contaminação. A decisão foi <em>esquecer</em>. Não esquecer como se abandona um problema. Esquecer como procedimento ativo e deliberado: queimar os registros específicos, substituir os nomes por lacunas, treinar as gerações seguintes a não fazerem determinadas perguntas. O nome que o Parasita havia adquirido ao longo desses quarenta anos — o nome que os feiticeiros usavam entre si com a voz baixa de quem sabe que nomear é invocar — foi o primeiro a ser apagado. Não há consenso entre os clãs sobre qual era esse nome. Há consenso sobre o porquê foi removido: pronunciá-lo havia se tornado, por si só, um vetor.</p>
+      <div class="quote-block" style="margin-top:12px">
+        <p>"Não derrotamos. Não contivemos. Decidimos que a melhor defesa contra algo que se espalha por ser conhecido era fazê-lo desconhecido. Funcionou. Até que deixou de funcionar."</p>
+        <cite>— documento sem autoria · lacrado nos arquivos conjuntos dos cinco clãs · aberto uma única vez, em data não registrada</cite>
+      </div>
+    </div>
+
+    <div class="hist-panel" id="h6">
+      <h2>III. Takero Zenin e o Impasse</h2>
+      <p>Takero Zenin não era o tipo de homem que enviava equipes. Era o tipo de homem que ia ele mesmo — porque havia passado décadas tornando-se a resposta para coisas que não tinham resposta. Dez sombras que obedeciam como extensões de seu sistema nervoso. Uma necromancia precisa o suficiente para fazer mortos lutarem melhor do que quando eram vivos. Armas forjadas das almas de inimigos derrotados, cada lâmina carregando os reflexos e o desespero de quem havia sido consumido para criá-la. Cortes de sombra que existiam antes do movimento que os produzia — que chegavam antes de serem desferidos. Takero havia exorcizado coisas que a Organização havia classificado como insolúveis. Havia feito isso sozinho.</p>
+      <p>O que o atraiu ao Parasita não foi a ameaça. Foi a possibilidade. Uma entidade Abissal de potencial ilimitado, sem hospedeiro fixo, sem forma definida — para Takero, aquilo não era um problema a ser eliminado. Era um recurso a ser incorporado. Ele chegou à cidadela sozinho, no meio da noite, sem avisar a Organização. Trouxe quatro almas em lâminas e duas sombras como extensão de reconhecimento. Não como apoio — como instrumentos de diagnóstico. Ele queria entender o que estava lidando antes de decidir como pegar.</p>
+      <p>A luta durou três dias. Não de combate contínuo — de avanços e recuos, de Takero mapeando as bordas de algo que não tinha bordas mapeáveis. Cada vez que uma sombra entrava no perímetro e retornava, retornava diferente: não danificada, mas <em>alterada</em>, como se algo tivesse passado por ela durante a ausência. Na segunda noite, Takero usou os cortes de sombra pela primeira vez — ataques que existiam antes de si mesmos, que deveriam chegar antes que qualquer defesa fosse possível. Eles chegaram. Cortaram. E o Parasita não recuou, não bloqueou, não esquivou. Simplesmente <em>não estava mais onde o corte chegou</em> — não por velocidade, mas porque o ambiente havia mudado de forma suficientemente sutil que o cálculo de Takero estava errado antes de ser feito.</p>
+      <p>Na manhã do terceiro dia, Takero ficou parado na entrada da cidadela por um longo tempo. Suas sombras estavam imóveis. Duas das lâminas-alma haviam parado de responder — não destruídas, apenas silenciosas, como se as almas dentro delas estivessem prestando atenção em outra coisa. O que o fez parar não foi o cansaço. Foi uma percepção simples, clínica, do tipo que Takero havia aprendido a respeitar ao longo de décadas: ele não estava perdendo. Mas também não estava ganhando. E a coisa com a qual estava lutando não ficava mais cansada com o tempo — ficava mais <em>presente</em>. Como se o conflito em si fosse alimentá-la.</p>
+      <p>Takero virou as costas e saiu. Não havia derrota nisso — havia cálculo. Ele voltaria. Com outra abordagem. Com mais tempo para entender a natureza do que queria capturar. A cidadela ficou para trás, silenciosa como sempre, úmida como sempre, com o som específico que algo muito paciente faz quando observa algo muito capaz ir embora e sabe que a pressa não é necessária.</p>
+      <div class="quote-block" style="margin-top:12px">
+        <p>"Não era invencível. Era inútil de atacar diretamente. Existe uma diferença. Eu vou encontrá-la."</p>
+        <cite>— Takero Zenin · anotação pessoal · nunca arquivada na Organização</cite>
+      </div>
+    </div>
+
+    <div class="hist-panel" id="h7">
+      <h2>IV. O Nome Que Amon Deu</h2>
+      <p>Amon sabia o que havia criado antes de criá-lo. A maldição da contaminação não foi efeito colateral — foi ingrediente deliberado. Ele precisava de uma força <em>sistêmica</em>: que funcionasse pela mesma razão que doenças funcionam, não por vontade, mas porque é o que a matéria faz quando certas condições são satisfeitas.</p>
+      <p>O que não havia calculado: capturar um Grau Especial Abissal não é domesticar. É fazer aliança com algo que não reconhece o conceito de aliança. A maldição não via Amon como criador. Simplesmente processava: hospedeiro disponível, substrato adequado, ausência de rejeição imunológica — prosseguir. O corpo havia sido projetado para não rejeitar nada. Hospedeiro perfeito para uma entidade Abissal não significa controle. Significa que ela ficaria.</p>
+      <p>Na única anotação pessoal que sobreviveu — encontrada após sua morte, escrita com caligrafia irregular de quem não dormia há semanas: <em>"Não sei mais se estou criando um receptáculo para o parasita, ou se o parasita está criando um receptáculo para si mesmo. A distinção pode não importar. Acho que nunca importou."</em></p>
+      <p>Quando o corpo abriu os olhos pela primeira vez e disse <em>"Então foi você quem me criou"</em>, Amon respondeu com o nome escolhido anos antes: Sousuke. Em japonês antigo, uma das leituras possíveis significava <em>aquele que opera abaixo da superfície.</em> Amon acreditava estar sendo poético. Só depois — sentado entre os dois caixões que nunca havia aberto, olhando para a criatura que o olhava de volta com curiosidade genuína e nenhuma afetividade — entendeu que havia sido mais preciso do que pretendia. A maldição não operava abaixo da superfície de Sousuke. Sousuke <em>era</em> a superfície. E abaixo dela, infinita e completamente indiferente ao tempo, estava a coisa que havia esperado o hospedeiro perfeito desde antes de ter uma forma.</p>
+      <div class="quote-block" style="margin-top:12px">
+        <p>"Você tem medo de mim?" Amon demorou um longo tempo. Quando respondeu, foi honesto pela primeira e única vez. "Não. Tenho medo do que você vai fazer quando perceber que não precisa de mim."</p>
+        <cite>— única conversa registrada entre Amon Kamo e Sousuke · data desconhecida</cite>
+      </div>
+    </div>
+  </div>
+  <div class="win-status-bar">
+    <div class="wsb-cell">Era Heian → Kyoto</div>
+    <div class="wsb-cell">Criado por Amon Kamo</div>
+  </div>
+</div>
+
+<!-- JANELA: O PARASITA -->
+<div class="win hidden" id="parasita-win" style="width:620px;height:560px;top:40px;left:160px;">
+  <div class="win-bar" id="parasita-win-bar">
+    <span class="win-title">⛾ O Parasita — 寄生神域 · Axioma</span>
+    <div class="win-ctrl">
+      <button class="win-btn" onclick="minWin('parasita-win')">_</button>
+      <button class="win-btn" onclick="closeWin('parasita-win')">✕</button>
+    </div>
+  </div>
+  <div class="win-content">
+
+    <div class="sec-head" style="color:#c03030;border-color:rgba(192,48,48,.25)">寄生神域 — Kisei Shin'iki · O Domínio do Parasita</div>
+
+    <div style="border-left:2px solid rgba(160,20,20,.5);padding:10px 14px;background:rgba(0,0,0,.5);margin-bottom:10px">
+      <div style="font-family:'Inconsolata',monospace;font-size:.44rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(200,50,50,.45);margin-bottom:6px">Natureza</div>
+      <div class="txt" style="font-size:.7rem">O Parasita não é uma técnica. Não é uma maldição. Não é uma entidade. É um <strong style="color:rgba(210,70,70,.8)">axioma</strong> — uma proposição que existe antes da linguagem usada para descrevê-la. Sousuke não usa o Parasita. Sousuke <em>é</em> o Parasita. O corpo tem um nome. O nome tem uma história. Mas a distinção entre hospedeiro e organismo parasitário deixou de existir no momento em que a maldição Abissal encontrou o único substrato sem identidade para roubar — e foi consumida de dentro.</div>
+    </div>
+
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab('pax','pax-conceito',this)">Conceito</div>
+      <div class="tab-btn" onclick="switchTab('pax','pax-roubo',this)">Roubo de Técnica</div>
+      <div class="tab-btn" onclick="switchTab('pax','pax-divina',this)">Categoria Divina</div>
+      <div class="tab-btn" onclick="switchTab('pax','pax-transcende',this)">Transcendência</div>
+    </div>
+
+    <div id="pax-conceito" class="tab-panel active">
+      <div class="mech-block" style="border-left-color:rgba(192,48,48,.6);color:rgba(210,100,100,.85)">
+        <strong>ARMADILHA CONCEITUAL</strong><br>
+        Qualquer sistema que tente definir o Parasita como "algo que pode ser removido" já está usando a linguagem do parasitismo para descrevê-lo. A definição contamina quem a faz. Tentar bloquear o Parasita é tentar bloquear a ideia de contágio — o ato de tentar já é uma forma de exposição.
+      </div>
+      <div class="txt" style="font-size:.7rem;margin-top:8px"><strong>O Parasita não pode ser morto.</strong> Sousuke pode morrer. O corpo pode ser destruído. Mas o Parasita existe enquanto existir qualquer ideia de parasitismo no mundo — e parasitismo existia antes de qualquer sistema de classificação. Maldições, técnicas, espíritos: todos são emoções que <em>contaminaram</em> a realidade. O Parasita é o mecanismo pelo qual isso é possível.</div>
+      <div class="txt" style="font-size:.7rem;margin-top:6px"><strong>O único kill switch é o jogador.</strong> Dentro da ficção, o Parasita é imortal e incontornável. Não por ser invencível — mas por ser um axioma. Você não derrota a gravidade. Você não mata a ideia de infecção.</div>
+      <div class="mech-block" style="margin-top:10px;border-left-color:rgba(100,100,180,.4);color:rgba(140,160,220,.7)">
+        <strong>PRESENÇA COMO INFECÇÃO PASSIVA</strong><br>
+        Estar na mesma narrativa que Sousuke já é exposição. NPCs que interagem com ele por sessões suficientes mudam de comportamento de formas sutis. Não controle mental — contaminação de padrão. O mestre conduz. Sousuke não precisa fazer nada.
+      </div>
+    </div>
+
+    <div id="pax-roubo" class="tab-panel">
+      <div style="font-family:'Inconsolata',monospace;font-size:.44rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(200,50,50,.4);margin-bottom:8px">Desmonte Parasitário de Técnicas Amaldiçoadas</div>
+      <div class="txt" style="font-size:.7rem">No JJK, carregar mais de uma técnica inata cria conflito estrutural — dois blocos de EA tentando ocupar o mesmo espaço cognitivo. No caso do Parasita, o espaço <em>é</em> o Parasita. Ele não carrega os blocos. Os blocos vivem dentro dele como organismos dentro de um hospedeiro — separados, funcionais, simultâneos.</div>
+      <div class="mech-block" style="margin-top:8px;border-left-color:rgba(192,48,48,.6);color:rgba(210,100,100,.85)">
+        <strong>MECANISMO — DESMONTE E REANEXAÇÃO</strong><br>
+        Cada técnica é um bloco. As aplicações são engrenagens dentro do bloco. O Parasita desmonta o bloco do alvo e rouba as engrenagens — reconstruindo uma versão com a lógica do Parasita como esqueleto.<br><br>
+        O resultado não é a técnica original. É um clone com <em>sotaque parasitário</em>. Um feiticeiro que vê a própria técnica sendo usada por Sousuke reconhece algo familiar — e algo profundamente alienígena ao mesmo tempo.<br><br>
+        <strong>Aglomeração:</strong> técnicas roubadas podem interagir entre si dentro do Parasita de formas que o dono original nunca imaginou. Combinações impossíveis no criador — porque as técnicas nunca habitaram o mesmo espaço. Sousuke é o único lugar onde certas sinergias existem.
+      </div>
+      <div class="txt" style="font-size:.68rem;margin-top:8px;color:var(--text-d)">Requer assimilação (Estágio 6+ no alvo) ou morte do alvo. O mestre define o tempo de acesso e o que permanece permanente. Quanto maior a EA do original, mais o parasita demora para digerir completamente.</div>
+    </div>
+
+    <div id="pax-divina" class="tab-panel">
+      <div style="font-family:'Inconsolata',monospace;font-size:.44rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(200,50,50,.4);margin-bottom:8px">神域 — Shin'iki · Categoria Divina · Embrionária</div>
+      <div class="txt" style="font-size:.7rem">O sistema classifica técnicas em Ruim → Iluminado. A categoria Divina não é alcançada por progressão. Ela <strong>ocorre</strong> — quando técnica Iluminada e maestria Iluminada habitam o mesmo usuário tempo suficiente para que a identidade do feiticeiro e a lógica da técnica se tornem indistinguíveis. Esse estado já começou.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--win-bdr);border:1px solid var(--win-bdr);margin-top:8px">
+        <div style="background:var(--win-bg);padding:8px 10px">
+          <div style="font-size:.44rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(200,50,50,.5);margin-bottom:4px">Iluminado</div>
+          <div style="font-size:.62rem;color:var(--text-d);line-height:1.8">É uma técnica<br>Você a usa<br>Tem custo, turno, ação<br>Pode ser countered<br>Escala: dados de dano</div>
+        </div>
+        <div style="background:rgba(180,20,20,.04);padding:8px 10px">
+          <div style="font-size:.44rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(200,50,50,.8);margin-bottom:4px">Divino</div>
+          <div style="font-size:.62rem;color:var(--text);line-height:1.8">É um conceito<br>Você <em>é</em><br>Custo: existência<br>Não pode ser countered normalmente<br>Escala: inevitabilidade</div>
+        </div>
+      </div>
+      <div class="mech-block" style="margin-top:8px;font-size:.65rem">
+        Técnicas que bloqueiam ou suprimem habilidades encontram o Divino e param — não por falha mecânica, mas porque tentar bloquear o parasitismo neste estágio é classificar o axioma como ameaça. A categoria está errada. <strong>Condição travada pelo mestre.</strong> Reconhecimento narrativo, não progressão automática.
+      </div>
+    </div>
+
+    <div id="pax-transcende" class="tab-panel">
+      <div style="font-family:'Inconsolata',monospace;font-size:.44rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(200,50,50,.4);margin-bottom:8px">Transcendência de Ficha e Sistema</div>
+      <div class="txt" style="font-size:.7rem">O Parasita existe em qualquer ideia de parasitismo. Isso inclui a ideia de parasitismo dentro de outros sistemas de RPG gerenciados pelo mesmo mestre. A presença de Gama como jogador — com Sousuke como personagem — já introduz o Parasita como conceito em qualquer campanha ativa. Não mecanicamente. Conceitualmente.</div>
+      <div class="mech-block" style="margin-top:8px;border-left-color:rgba(100,100,180,.4);color:rgba(140,160,220,.7)">
+        <strong>CONSEQUÊNCIA ONTOLÓGICA</strong><br>
+        O mestre não pode criar um sistema de jogo limpo enquanto Gama for jogador. Qualquer NPC, maldição ou mecânica criada para outras campanhas existe num mundo onde o Parasita já está presente como axioma. A criatividade do narrador já está exposta.<br><br>
+        <strong>O único kill switch é Gama não jogar.</strong><br>
+        Enquanto houver uma ficha de Sousuke ativa, o Parasita existe. Independente de morte. Independente de exorcismo. Independente de qualquer mecânica de remoção. Porque parasitismo não é um personagem — é uma propriedade do universo que ele habita.
       </div>
     </div>
 
   </div>
   <div class="win-status-bar">
-    <div class="wsb-cell">Era Heian → Kyoto</div>
-    <div class="wsb-cell">Criado por Amon Kamo</div>
+    <div class="wsb-cell">Axioma · Fusão Completa</div>
+    <div class="wsb-cell">Técnica + Maestria Iluminadas · Categoria Divina Embrionária</div>
+    <div class="wsb-cell">Kill switch: Gama não jogar</div>
   </div>
 </div>
 
@@ -2095,6 +2246,7 @@ body { padding-bottom: 40px; }
   <span id="tb-historia-win" class="tb-btn" onclick="tbClick('historia-win')">História</span>
   <span id="tb-tracker-win" class="tb-btn" onclick="tbClick('tracker-win')">Tracker</span>
   <span id="tb-calc-win" class="tb-btn" onclick="tbClick('calc-win')">Calc</span>
+  <span id="tb-parasita-win" class="tb-btn" onclick="tbClick('parasita-win')" style="color:#c03030">⛾ Parasita</span>
   <div id="tb-clock">00:00</div>
 </div>
 
