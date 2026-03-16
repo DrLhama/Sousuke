@@ -2984,7 +2984,7 @@ const Board = (() => {
     el.innerHTML = `
       <div class="sticky-bar" style="background:${NOTE_COLORS[colorIdx]}">
         <span class="sticky-grip">⠿</span>
-        <input class="sticky-title-input" value="${title}"
+        <input class="sticky-title-input" value="${title}" readonly
           spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off">
         <div class="sticky-bar-btns">
           <div class="sticky-bar-btn" onclick="Board._del('${id}')">✕</div>
@@ -2998,7 +2998,7 @@ const Board = (() => {
     el.addEventListener('click', e => { startWire(e, el); });
 
     // drag pela grip
-    makeDrag(el, el.querySelector('.sticky-grip'), () => {
+    makeDrag(el, el.querySelector('.sticky-bar'), () => {
       const n = state.notes.find(n => n.id===id);
       if (n) { n.x=parseInt(el.style.left); n.y=parseInt(el.style.top); }
       redraw(); refreshLabels();
@@ -3011,6 +3011,14 @@ const Board = (() => {
 
     el.querySelector('.sticky-title-input').addEventListener('input', function() {
       const n = state.notes.find(n => n.id===id); if (n) n.title = this.value;
+    });
+    el.querySelector('.sticky-title-input').addEventListener('dblclick', function(e) {
+      e.stopPropagation();
+      this.removeAttribute('readonly');
+      this.focus(); this.select();
+    });
+    el.querySelector('.sticky-title-input').addEventListener('blur', function() {
+      this.setAttribute('readonly', '');
     });
     el.querySelector('textarea').addEventListener('input', function() {
       const n = state.notes.find(n => n.id===id); if (n) n.text = this.value;
