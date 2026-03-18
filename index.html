@@ -277,7 +277,147 @@ main {
   color: rgba(160,60,60,.3);
 }
 
-/* ── ADD CARD (template para novo personagem) ── */
+/* ── YAGAMI — estilos específicos ── */
+.char-card.yagami-card {
+  background: #020508;
+}
+.char-card.yagami-card:hover {
+  background: #030810;
+}
+
+/* Linhas de varredura ciano — como um terminal ativo */
+.yagami-card .card-veins {
+  position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+}
+.yagami-scan-line {
+  position: absolute; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(80,200,240,.35) 40%, rgba(138,224,255,.5) 50%, rgba(80,200,240,.35) 60%, transparent 100%);
+  animation: yscan var(--d, 8s) ease-in-out infinite var(--dl, 0s);
+  opacity: 0;
+}
+@keyframes yscan {
+  0%          { top: 0%;   opacity: 0; }
+  5%          { opacity: 1; }
+  80%         { top: 100%; opacity: .6; }
+  85%, 100%   { top: 100%; opacity: 0; }
+}
+
+/* Kanji do Yagami — pulsa suavemente em ciano */
+.yagami-card .card-kanji {
+  animation: ykanji 12s ease-in-out infinite;
+  opacity: .06;
+  color: rgba(80,200,240,.5);
+}
+@keyframes ykanji {
+  0%, 100% { opacity: .04; transform: scale(1); }
+  50%       { opacity: .10; transform: scale(1.015); }
+}
+
+/* Nome — glow abissal ciano */
+.yagami-card .card-name {
+  animation: yname 12s ease-in-out infinite;
+}
+@keyframes yname {
+  0%, 100% { text-shadow: none; }
+  50%       { text-shadow: 0 0 50px rgba(80,200,240,.35), 0 0 12px rgba(80,200,240,.2); }
+}
+
+/* Accent bar ciano pulsante */
+.yagami-card .card-accent {
+  background: linear-gradient(90deg, transparent, rgba(80,200,240,.6), rgba(138,224,255,.8), rgba(80,200,240,.6), transparent);
+  animation: yaccent 12s ease-in-out infinite;
+}
+@keyframes yaccent {
+  0%, 100% { opacity: .2; }
+  50%       { opacity: .75; }
+}
+
+/* Tags ciano */
+.yagami-card .card-tag {
+  border-color: rgba(80,200,240,.18);
+  color: rgba(80,200,240,.35);
+}
+.yagami-card .card-epithet { color: rgba(100,190,230,.3); }
+.yagami-card .card-num     { color: rgba(80,200,240,.3); }
+.yagami-card .card-jp      { color: rgba(80,160,200,.25); }
+
+/* Corner brackets visíveis no hover */
+.yagami-card::after {
+  content: '';
+  position: absolute; bottom: 14px; right: 14px;
+  width: 16px; height: 16px;
+  border-bottom: 1px solid rgba(80,200,240,.2);
+  border-right:  1px solid rgba(80,200,240,.2);
+  transition: border-color .3s;
+}
+.yagami-card:hover::after {
+  border-color: rgba(80,200,240,.55);
+}
+
+/* ── KAITO — estilos específicos ── */
+.char-card.kaito-card { background: #08060e; }
+.char-card.kaito-card:hover { background: #0e0818; }
+
+/* Partículas de vazio — pontos roxos flutuando */
+.kaito-void-dot {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(147,51,234,.6);
+  box-shadow: 0 0 4px rgba(147,51,234,.4);
+  animation: kvoid var(--d, 8s) ease-in-out infinite var(--dl, 0s);
+  opacity: 0;
+}
+@keyframes kvoid {
+  0%          { bottom: -4px; opacity: 0; transform: scale(.8); }
+  10%         { opacity: 1; }
+  80%         { bottom: 105%; opacity: .4; }
+  100%        { bottom: 105%; opacity: 0; }
+}
+
+.kaito-card .card-kanji {
+  animation: kkanji 12s ease-in-out infinite;
+  opacity:.05; color:rgba(147,51,234,.8);
+}
+@keyframes kkanji { 0%,100%{opacity:.04;transform:scale(1)} 50%{opacity:.11;transform:scale(1.015)} }
+
+.kaito-card .card-name {
+  animation: kname 12s ease-in-out infinite;
+}
+@keyframes kname {
+  0%,100% { text-shadow: none; }
+  50%     { text-shadow: 0 0 50px rgba(147,51,234,.4), 0 0 12px rgba(147,51,234,.2); }
+}
+
+.kaito-card .card-accent {
+  background: linear-gradient(90deg, transparent, rgba(107,33,168,.5), rgba(147,51,234,.75), rgba(192,132,252,.9), rgba(147,51,234,.75), rgba(107,33,168,.5), transparent);
+  animation: kaccent 12s ease-in-out infinite;
+}
+@keyframes kaccent { 0%,100%{opacity:.15} 50%{opacity:.8} }
+
+.kaito-card .card-tag     { border-color: rgba(147,51,234,.2); color: rgba(192,132,252,.45); }
+.kaito-card .card-epithet { color: rgba(192,132,252,.28); }
+.kaito-card .card-num     { color: rgba(147,51,234,.35); }
+.kaito-card .card-jp      { color: rgba(120,60,180,.28); }
+
+/* Corner — dois ângulos opostos */
+.kaito-card::before {
+  content: ''; position: absolute; top: 14px; left: 14px;
+  width: 14px; height: 14px;
+  border-top: 1px solid rgba(147,51,234,.25);
+  border-left: 1px solid rgba(147,51,234,.25);
+  transition: border-color .3s;
+}
+.kaito-card::after {
+  content: ''; position: absolute; bottom: 14px; right: 14px;
+  width: 14px; height: 14px;
+  border-bottom: 1px solid rgba(147,51,234,.25);
+  border-right:  1px solid rgba(147,51,234,.25);
+  transition: border-color .3s;
+}
+.kaito-card:hover::before { border-color: rgba(147,51,234,.6); }
+.kaito-card:hover::after  { border-color: rgba(147,51,234,.6); }
+
+
 .char-card.add-card {
   --card-color: rgba(80,80,80,.3);
   border: 1px dashed rgba(60,60,40,.2);
@@ -364,6 +504,32 @@ const ROSTER = [
     glow:    'radial-gradient(ellipse at 50% 70%, rgba(139,10,10,.18) 0%, transparent 65%)',
     special: 'sousuke-card',
   },
+  {
+    id:      'yagami',
+    name:    'YAGAMI',
+    font:    'bebas',
+    jp:      '獄口 · Gokuguchi · O Arauto do Purgatório',
+    num:     'Ficha Nº001 · Feiticeiro · Grau Especial',
+    tags:    ['Soul Society', 'Grau Especial', 'EA 300', 'Clã Gojo', 'Purgatório'],
+    epithet: '"Quando ele nasceu, maldições ao redor do mundo sentiram.\nAlgumas fugiram."',
+    kanji:   '獄',
+    color:   'rgba(80,200,240,.65)',
+    glow:    'radial-gradient(ellipse at 50% 70%, rgba(20,80,120,.2) 0%, transparent 65%)',
+    special: 'yagami-card',
+  },
+  {
+    id:      'kaito',
+    name:    'KAITO',
+    font:    'bebas',
+    jp:      '反物質 · Han-busshitsu · O Prometido · O Geômetra do Vazio',
+    num:     'Ficha Nº003 · Feiticeiro · Grau Especial',
+    tags:    ['Soul Society', 'Grau Especial', 'Antimatéria', 'Campo Ativo', 'Intocável'],
+    epithet: '"Parado. Frio. O campo ao redor dele não é defesa —\né a física proibindo que você chegue."',
+    kanji:   '反',
+    color:   'rgba(147,51,234,.75)',
+    glow:    'radial-gradient(ellipse at 50% 70%, rgba(107,33,168,.2) 0%, transparent 65%)',
+    special: 'kaito-card',
+  },
 
   /* ── TEMPLATE — descomente e edite para adicionar um personagem ──
   {
@@ -404,6 +570,23 @@ function renderRoster() {
         <div class="card-drip" style="left:90%;height:16px;--d:6.8s;--dl:1.7s"></div>
       </div>` : '';
 
+    /* Extras visuais para Yagami */
+    const scanLinesHTML = char.special === 'yagami-card' ? `
+      <div class="card-veins">
+        <div class="yagami-scan-line" style="--d:9s;--dl:0s"></div>
+        <div class="yagami-scan-line" style="--d:11s;--dl:3.5s"></div>
+        <div class="yagami-scan-line" style="--d:7.5s;--dl:6s"></div>
+      </div>` : '';
+
+    const geoLinesHTML = char.special === 'kaito-card' ? `
+      <div class="card-veins">
+        <div class="kaito-void-dot" style="left:15%;width:3px;height:3px;--d:9s;--dl:0s"></div>
+        <div class="kaito-void-dot" style="left:35%;width:2px;height:2px;--d:12s;--dl:2s"></div>
+        <div class="kaito-void-dot" style="left:55%;width:4px;height:4px;--d:8s;--dl:5s"></div>
+        <div class="kaito-void-dot" style="left:72%;width:2px;height:2px;--d:11s;--dl:1s"></div>
+        <div class="kaito-void-dot" style="left:85%;width:3px;height:3px;--d:10s;--dl:7s"></div>
+      </div>` : '';
+
     const veinsHTML = char.special === 'sousuke-card' ? `
       <div class="card-veins">
         <svg width="100%" height="100%" viewBox="0 0 300 280" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
@@ -418,7 +601,9 @@ function renderRoster() {
 
     a.innerHTML = `
       ${dripsHTML}
-      ${veinsHTML}
+      ${char.special === 'sousuke-card' ? veinsHTML : ''}
+      ${char.special === 'yagami-card'  ? scanLinesHTML : ''}
+      ${char.special === 'kaito-card'   ? geoLinesHTML : ''}
       <div class="card-accent"></div>
       <div class="card-kanji">${char.kanji}</div>
       <div class="card-num">${char.num}</div>

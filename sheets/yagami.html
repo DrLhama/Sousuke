@@ -1,0 +1,1845 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yagami Gojo — Soul Society</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;900&family=Share+Tech+Mono&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #05060a;
+  --surface:   #0a0c10;
+  --surface2:  #0f1218;
+  --border:    rgba(80,200,240,0.12);
+  --border2:   rgba(80,200,240,0.22);
+  --cyan:      #50c8f0;
+  --cyan2:     #8ae0ff;
+  --cyan-dim:  rgba(80,200,240,0.08);
+  --cyan-glow: rgba(80,200,240,0.18);
+  --white:     #e8f0f4;
+  --muted:     #5a6a72;
+  --dim:       #2a3840;
+  --mono:      'Share Tech Mono', monospace;
+  --serif:     'IM Fell English', Georgia, serif;
+  --display:   'Cinzel Decorative', serif;
+  --ui:        'Cinzel', serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{background:var(--bg);color:var(--white);font-family:var(--serif);min-height:100vh;overflow-x:hidden;}
+
+
+/* ─ PAGE TRANSITION — CANVAS WIPE ─ */
+#pt-canvas {
+  position:fixed; inset:0; z-index:500;
+  pointer-events:none;
+  display:none;
+}
+#pt-scan {
+  position:fixed; left:0; right:0; height:3px; z-index:501;
+  pointer-events:none; display:none; top:0;
+  background:linear-gradient(90deg,
+    transparent 0%, rgba(80,200,240,0.1) 8%,
+    #50c8f0 30%, #8ae0ff 50%, #50c8f0 70%,
+    rgba(80,200,240,0.1) 92%, transparent 100%
+  );
+  box-shadow: 0 0 8px #50c8f0, 0 0 20px rgba(80,200,240,0.5), 0 2px 12px rgba(80,200,240,0.3);
+}
+#pt-scan::after {
+  content:''; position:absolute; left:0; right:0; top:3px;
+  height:18px;
+  background:linear-gradient(180deg, rgba(80,200,240,0.1) 0%, transparent 100%);
+}
+#pt-corners-l, #pt-corners-r {
+  position:fixed; width:12px; height:12px; z-index:501;
+  pointer-events:none; display:none; top:0;
+}
+#pt-corners-l { left:0;  border-left:1px solid #8ae0ff; border-bottom:1px solid #8ae0ff; }
+#pt-corners-r { right:0; border-right:1px solid #8ae0ff; border-bottom:1px solid #8ae0ff; }
+.scan-line { display:none; }
+
+/* ─── SCANLINE TEXTURE ─── */
+body::after {
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:999;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+}
+
+/* ─── TABS ─── */
+.tab-bar {
+  position:sticky; top:0; z-index:100;
+  display:flex; background:rgba(5,6,10,0.97);
+  border-bottom:1px solid var(--border2);
+  backdrop-filter:blur(10px);
+}
+.tab-btn {
+  flex:1; padding:15px 0;
+  font-family:var(--mono); font-size:10px; letter-spacing:4px;
+  text-transform:uppercase; background:none; border:none; cursor:pointer;
+  color:var(--muted); transition:all .3s;
+  border-bottom:2px solid transparent; position:relative;
+}
+.tab-btn::before {
+  content:''; position:absolute; bottom:-1px; left:50%; right:50%;
+  height:2px; background:var(--cyan);
+  transition:all .3s; opacity:0;
+}
+.tab-btn.on { color:var(--cyan2); }
+.tab-btn.on::before { left:0; right:0; opacity:1; }
+.tab-btn:hover:not(.on) { color:var(--white); }
+.page{display:none;}
+.page.on{display:block;}
+.page.wiping { display:block; clip-path: inset(0 0 100% 0); }
+
+/* ─── WRAPPERS ─── */
+.wrap { max-width:960px; margin:0 auto; padding:56px 28px 90px; }
+
+/* ─── SECTION LABEL ─── */
+.slabel {
+  font-family:var(--mono); font-size:9px; letter-spacing:5px;
+  text-transform:uppercase; color:var(--cyan); margin-bottom:18px;
+  display:flex; align-items:center; gap:12px; margin-top:40px;
+  position:relative;
+}
+.slabel::before { content:''; width:18px; height:1px; background:var(--cyan); }
+.slabel::after  { content:''; flex:1; height:1px; background:linear-gradient(90deg,var(--border2),transparent); }
+.slabel:first-child { margin-top:0; }
+/* Ghost section number */
+.slabel[data-n]::before {
+  content: attr(data-n);
+  font-family:var(--display); font-size:80px; font-weight:900;
+  color:rgba(80,200,240,0.04); letter-spacing:-2px; line-height:1;
+  position:absolute; right:0; top:50%; transform:translateY(-50%);
+  width:auto; height:auto; background:none; pointer-events:none;
+  z-index:0;
+}
+
+/* ─── UTILITY ─── */
+.mono { font-family:var(--mono); }
+.card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  padding:18px 20px; position:relative; overflow:hidden;
+}
+.card::after {
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(135deg, var(--cyan-dim) 0%, transparent 60%);
+}
+
+/* ══════════════════════════════════════════
+   PAGE 1 — FICHA
+══════════════════════════════════════════ */
+
+/* ─ HERO ─ */
+.hero {
+  display:grid; grid-template-columns:280px 1fr;
+  gap:36px; align-items:start; margin-bottom:48px;
+}
+@media(max-width:640px){.hero{grid-template-columns:1fr;}}
+
+.photo-frame {
+  position:relative; aspect-ratio:2.5/4;
+  border:1px solid var(--border2);
+  background:var(--surface);
+  overflow:hidden;
+}
+.photo-frame img {
+  width:100%; height:100%; object-fit:cover;
+  filter:grayscale(20%) contrast(1.05);
+  display:block;
+}
+.photo-frame .photo-fallback {
+  width:100%; height:100%;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:12px;
+  background: linear-gradient(160deg, #0a0e14, #06080c);
+}
+.photo-frame .photo-fallback .kanji {
+  font-size:80px; color:rgba(80,200,240,0.08); line-height:1;
+}
+.photo-frame .photo-fallback .ph-text {
+  font-family:var(--mono); font-size:8px; letter-spacing:3px;
+  color:var(--muted); text-transform:uppercase;
+}
+/* corner accents on photo */
+.photo-frame::before, .photo-frame::after {
+  content:''; position:absolute; width:16px; height:16px; z-index:2;
+}
+.photo-frame::before { top:0; left:0; border-top:2px solid var(--cyan); border-left:2px solid var(--cyan); }
+.photo-frame::after  { bottom:0; right:0; border-bottom:2px solid var(--cyan); border-right:2px solid var(--cyan); }
+.photo-overlay {
+  position:absolute; bottom:0; left:0; right:0;
+  background:linear-gradient(0deg,rgba(5,6,10,0.9),transparent);
+  padding:12px 14px;
+}
+.photo-grau {
+  font-family:var(--mono); font-size:8px; letter-spacing:4px;
+  color:var(--cyan); text-transform:uppercase;
+}
+
+.hero-info { display:flex; flex-direction:column; justify-content:flex-end; }
+.hero-society {
+  font-family:var(--mono); font-size:8px; letter-spacing:5px;
+  color:var(--muted); text-transform:uppercase; margin-bottom:14px;
+}
+.hero-name {
+  font-family:var(--display); font-weight:900;
+  font-size:clamp(26px,4.5vw,46px); letter-spacing:3px;
+  color:var(--white); line-height:1.05; margin-bottom:8px;
+  text-shadow: 0 0 40px rgba(80,200,240,0.15);
+}
+.hero-epithet {
+  font-family:var(--serif); font-style:italic; font-size:14px;
+  color:var(--cyan); letter-spacing:1px; margin-bottom:28px;
+  opacity:.8;
+}
+.hero-line { width:100%; height:1px; background:linear-gradient(90deg,var(--border2),transparent); margin-bottom:24px; }
+.hero-tags { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
+.htag {
+  font-family:var(--mono); font-size:8px; letter-spacing:3px;
+  padding:5px 12px; border:1px solid var(--border);
+  color:var(--muted); text-transform:uppercase; background:var(--surface);
+}
+.htag.hi { border-color:var(--border2); color:var(--cyan2); background:var(--cyan-dim); }
+.hero-quote {
+  font-style:italic; font-size:13px; color:var(--muted);
+  line-height:1.8; border-left:2px solid var(--border2); padding-left:16px;
+}
+
+/* ─ RESOURCES ─ */
+.res-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+.res-card {
+  border:1px solid var(--border); background:var(--surface);
+  padding:16px 18px; position:relative;
+}
+.res-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:1px;
+  background:linear-gradient(90deg,transparent,var(--cyan),transparent); opacity:.4;
+}
+.rc-label { font-family:var(--mono); font-size:8px; letter-spacing:3px; color:var(--muted); text-transform:uppercase; margin-bottom:6px; }
+.rc-val { font-family:var(--display); font-size:26px; color:var(--white); font-weight:700; }
+.rc-val.cyan { color:var(--cyan2); }
+.rc-sub { font-family:var(--mono); font-size:9px; color:var(--muted); margin-top:4px; }
+
+/* ─ ATTRS ─ */
+.attr-block { border:1px solid var(--border); background:var(--surface); padding:24px 28px; }
+.attr-row { display:flex; align-items:center; gap:14px; margin-bottom:14px; }
+.attr-row:last-child { margin-bottom:0; }
+.attr-name { font-family:var(--mono); font-size:9px; letter-spacing:3px; text-transform:uppercase; color:var(--muted); width:110px; flex-shrink:0; }
+.attr-track { display:flex; gap:5px; flex:1; }
+.attr-pip {
+  width:22px; height:22px;
+  border:1px solid var(--dim);
+  background:transparent; position:relative; flex-shrink:0;
+  transition:all .3s;
+}
+.attr-pip.filled {
+  background:var(--cyan-dim);
+  border-color:var(--border2);
+  box-shadow:0 0 6px rgba(80,200,240,0.2);
+}
+.attr-pip.filled::after {
+  content:''; position:absolute; inset:4px;
+  background:var(--cyan); opacity:.7;
+}
+.attr-num { font-family:var(--display); font-size:20px; color:var(--white); width:32px; text-align:right; }
+
+/* ─ ABILITY CARDS ─ */
+.ab-list { display:flex; flex-direction:column; gap:8px; }
+.ab {
+  border:1px solid var(--border); background:var(--surface);
+  padding:16px 18px; position:relative;
+}
+.ab::before {
+  content:''; position:absolute; left:0; top:0; bottom:0; width:2px;
+  background:linear-gradient(180deg,var(--cyan),transparent); opacity:.4;
+}
+.ab-head { display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:6px; }
+.ab-name { font-family:var(--ui); font-size:11.5px; font-weight:600; color:var(--white); letter-spacing:1px; }
+.ab-kanji { font-family:var(--serif); font-size:10px; color:var(--cyan); opacity:.7; font-style:italic; }
+.ab-tag {
+  margin-left:auto; font-family:var(--mono); font-size:7px; letter-spacing:2px;
+  padding:2px 8px; border:1px solid var(--border); color:var(--cyan); text-transform:uppercase;
+}
+.ab-desc { font-size:12.5px; color:rgba(232,240,244,0.7); line-height:1.75; }
+
+/* ─ ABILITY CARDS — DESKTOP ICONS ─ */
+.ab-desktop {
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(90px, 1fr));
+  gap:6px;
+  margin-bottom:4px;
+}
+.ab-icon {
+  display:flex; flex-direction:column; align-items:center;
+  padding:10px 6px 8px;
+  border:1px solid transparent;
+  cursor:pointer;
+  transition:background .15s, border-color .15s;
+  position:relative; text-align:center;
+  user-select:none;
+}
+.ab-icon:hover { background:rgba(80,200,240,0.05); border-color:var(--border); }
+.ab-icon.selected { background:rgba(80,200,240,0.09); border-color:var(--border2); }
+.ab-icon-glyph {
+  font-size:22px; line-height:1; margin-bottom:5px;
+  filter:drop-shadow(0 0 4px rgba(80,200,240,0.15));
+}
+.ab-icon-label {
+  font-family:var(--mono); font-size:7.5px; letter-spacing:1px;
+  color:var(--muted); text-transform:uppercase; line-height:1.3;
+  word-break:break-word;
+}
+.ab-icon.selected .ab-icon-label { color:var(--cyan2); }
+.ab-icon-type {
+  font-family:var(--mono); font-size:6px; letter-spacing:1px;
+  color:rgba(80,200,240,0.3); margin-top:3px;
+  text-transform:uppercase;
+}
+
+/* Detail panel that opens below */
+.ab-detail-panel {
+  display:block;
+  max-height:0; overflow:hidden;
+  border:0px solid var(--border2);
+  background:var(--surface);
+  padding:0 16px;
+  margin-bottom:0;
+  position:relative;
+  transition: max-height .35s cubic-bezier(.4,0,.2,1),
+              padding .35s cubic-bezier(.4,0,.2,1),
+              margin-bottom .35s cubic-bezier(.4,0,.2,1),
+              border-width .35s,
+              opacity .3s ease;
+  opacity:0;
+}
+.ab-detail-panel::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:1px;
+  background:linear-gradient(90deg,var(--cyan),transparent);
+  opacity:0; transition:opacity .3s ease .1s;
+}
+.ab-detail-panel.open {
+  max-height:200px;
+  border:1px solid var(--border2);
+  padding:14px 16px;
+  margin-bottom:6px;
+  opacity:1;
+}
+.ab-detail-panel.open::before { opacity:.4; }
+.ab-detail-name {
+  font-family:var(--ui); font-size:11px; font-weight:600;
+  color:var(--white); letter-spacing:1px; margin-bottom:2px;
+}
+.ab-detail-kanji { font-family:var(--serif); font-style:italic; font-size:10px; color:var(--cyan); opacity:.7; margin-bottom:8px; }
+.ab-detail-type {
+  font-family:var(--mono); font-size:7px; letter-spacing:2px;
+  padding:2px 8px; border:1px solid var(--border); color:var(--cyan);
+  text-transform:uppercase; display:inline-block; margin-bottom:8px;
+}
+.ab-detail-desc { font-size:12.5px; color:rgba(232,240,244,0.75); line-height:1.75; }
+
+/* ─ TECHNIQUES — GRID SYSTEM ─ */
+.tech-grid-wrap { margin-bottom:8px; }
+.tech-module { margin-bottom:20px; position:relative; }
+.tech-module-header {
+  display:flex; align-items:center; gap:12px;
+  padding:10px 14px 10px 0; margin-bottom:10px;
+  border-bottom:1px solid rgba(80,200,240,0.1);
+  position:relative;
+}
+.tech-module-header::before {
+  content:''; position:absolute; bottom:-1px; left:0;
+  width:60px; height:1px; background:var(--cyan);
+}
+.tech-index {
+  font-family:var(--mono); font-size:9px; letter-spacing:3px;
+  color:rgba(80,200,240,0.35); flex-shrink:0;
+  border:1px solid rgba(80,200,240,0.12); padding:3px 8px;
+}
+.tech-module-name { font-family:var(--ui); font-size:13px; font-weight:600; color:var(--white); letter-spacing:1px; }
+.tech-module-sub { font-family:var(--mono); font-size:9px; color:var(--muted); letter-spacing:1px; }
+.tech-module-dmg {
+  margin-left:auto; font-family:var(--mono); font-size:12px;
+  color:var(--cyan2); flex-shrink:0;
+  background:rgba(80,200,240,0.06); border:1px solid rgba(80,200,240,0.15); padding:3px 10px;
+}
+
+/* Grid of sub-cards */
+.sub-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(200px,1fr)); gap:8px; }
+.sub-card {
+  background:var(--surface); border:1px solid rgba(80,200,240,0.09);
+  padding:13px 14px; position:relative; overflow:hidden;
+  cursor:pointer; transition:border-color .2s, background .2s;
+}
+.sub-card:hover { border-color:rgba(80,200,240,0.22); background:rgba(80,200,240,0.04); }
+.sub-card.open { border-color:var(--border2); background:rgba(80,200,240,0.06); }
+.sub-card::before {
+  content:''; position:absolute; top:0; left:0;
+  width:0; height:0; border-style:solid;
+  border-width:14px 14px 0 0;
+  border-color:rgba(80,200,240,0.18) transparent transparent transparent;
+}
+.sub-card::after {
+  content:''; position:absolute; bottom:0; right:0;
+  width:22px; height:1px;
+  background:linear-gradient(90deg,transparent,rgba(80,200,240,0.2));
+}
+.sub-card-id {
+  font-family:var(--mono); font-size:7px; letter-spacing:3px;
+  color:rgba(80,200,240,0.25); text-transform:uppercase; margin-bottom:6px;
+}
+.sub-card-name {
+  font-family:var(--ui); font-size:10px; font-weight:600;
+  color:var(--cyan2); letter-spacing:1px; text-transform:uppercase; margin-bottom:2px;
+}
+.sub-card-kanji {
+  font-family:var(--serif); font-size:10px;
+  color:rgba(80,200,240,0.35); font-style:italic; margin-bottom:8px; display:block;
+}
+.sub-card-sep {
+  height:1px;
+  background:linear-gradient(90deg,rgba(80,200,240,0.12),transparent);
+  margin-bottom:8px;
+}
+/* Collapsible body */
+.sub-card-body {
+  display:block;
+  max-height:0; overflow:hidden;
+  opacity:0;
+  transition: max-height .32s cubic-bezier(.4,0,.2,1),
+              opacity .28s ease;
+}
+.sub-card.open .sub-card-body {
+  max-height:300px;
+  opacity:1;
+}
+.sub-card-desc { font-family:var(--serif); font-size:11.5px; color:rgba(232,240,244,0.68); line-height:1.7; }
+.sub-card-tag {
+  display:inline-block; margin-top:8px;
+  font-family:var(--mono); font-size:7px; letter-spacing:2px;
+  padding:2px 7px; border:1px solid rgba(80,200,240,0.12);
+  color:rgba(80,200,240,0.4); text-transform:uppercase;
+}
+.sub-card-tag.red { border-color:rgba(200,60,60,0.2); color:rgba(220,100,100,0.6); }
+/* Collapsed preview — just name + id visible, no desc */
+.sub-card-chevron {
+  position:absolute; top:11px; right:12px;
+  font-family:var(--mono); font-size:8px; color:var(--muted);
+  transition:transform .25s;
+}
+.sub-card.open .sub-card-chevron { transform:rotate(90deg); color:var(--cyan); }
+
+/* ─ SKILLS — COMPACT GRID ─ */
+.skills-desktop {
+  border:1px solid var(--border);
+  background:var(--surface);
+}
+.skills-desktop-bar {
+  display:flex; align-items:center; gap:6px;
+  padding:7px 14px;
+  background:var(--surface2);
+  border-bottom:1px solid var(--border);
+  font-family:var(--mono); font-size:8px; letter-spacing:3px;
+  color:var(--muted); text-transform:uppercase;
+}
+.skills-desktop-bar span { color:var(--cyan); }
+.sk-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(140px, 1fr));
+  gap:1px;
+  background:rgba(80,200,240,0.04);
+}
+.sk-row {
+  background:var(--surface);
+  padding:6px 12px;
+  display:flex; justify-content:space-between; align-items:center;
+  transition:background .15s;
+}
+.sk-row:hover { background:rgba(80,200,240,0.04); }
+.sk-row-name { font-family:var(--mono); font-size:9px; color:var(--muted); letter-spacing:1px; }
+.sk-row-val { font-family:var(--mono); font-size:9px; color:var(--muted); }
+.sk-row.p .sk-row-name { color:var(--white); }
+.sk-row.p .sk-row-val { color:var(--cyan2); }
+.sk-group-head {
+  grid-column:1/-1;
+  background:rgba(80,200,240,0.07);
+  padding:4px 12px;
+  font-family:var(--mono); font-size:7px; letter-spacing:4px;
+  color:var(--cyan); text-transform:uppercase;
+  border-bottom:1px solid rgba(80,200,240,0.08);
+  display:flex; align-items:center; gap:8px;
+}
+.sk-group-head::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,rgba(80,200,240,0.15),transparent); }
+
+@media(max-width:600px){
+  .sub-grid { grid-template-columns:1fr; }
+  .ab-desktop { grid-template-columns:repeat(4,1fr); }
+  .sk-grid { grid-template-columns:1fr 1fr; }
+}
+
+/* ─ SKILLS ─ */
+.skills-wrap { border:1px solid var(--border); background:var(--surface); }
+.skill-group { padding:16px 20px; border-bottom:1px solid var(--border); }
+.skill-group:last-child { border-bottom:none; }
+.sg-title { font-family:var(--mono); font-size:8px; letter-spacing:4px; color:var(--cyan); text-transform:uppercase; margin-bottom:10px; }
+.sg-list { display:flex; flex-wrap:wrap; gap:6px; }
+.sk {
+  font-family:var(--mono); font-size:9px; padding:4px 10px;
+  border:1px solid var(--border); color:var(--muted); letter-spacing:1px;
+  background:var(--surface2);
+}
+.sk.p { border-color:var(--border2); color:var(--cyan2); background:var(--cyan-dim); }
+
+/* ─ ITEM ─ */
+.item-card {
+  border:1px solid var(--border2); background:var(--surface);
+  padding:18px 20px; position:relative; overflow:hidden;
+}
+.item-card::before {
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(ellipse 80% 60% at 100% 0%, rgba(80,200,240,0.05), transparent);
+}
+.item-name { font-family:var(--ui); font-size:13px; font-weight:600; color:var(--white); letter-spacing:1px; margin-bottom:6px; }
+.item-desc { font-size:12.5px; color:rgba(232,240,244,0.7); line-height:1.75; }
+.item-stat { display:inline-block; font-family:var(--mono); font-size:10px; color:var(--cyan2); margin-top:10px; padding:3px 10px; border:1px solid var(--border2); }
+
+
+
+
+
+/* ─ ACTIVE SUB-CARD PULSE ─ */
+.sub-card.open::before {
+  animation: cornerPulse 2s ease-in-out infinite;
+}
+@keyframes cornerPulse {
+  0%,100% { opacity:.18; }
+  50% { opacity:.55; }
+}
+
+/* ─ TECHNIQUE MODULE COLORS ─ */
+/* I — Abismo: cyan puro */
+.tech-module[data-tc="I"] .tech-module-header::before,
+.tech-module[data-tc="I"] .sub-card::before { border-color:rgba(80,200,240,0.25) transparent transparent transparent; }
+.tech-module[data-tc="I"] .sub-card-name { color:var(--cyan2); }
+.tech-module[data-tc="I"] .tech-module-header::before { background:var(--cyan); }
+
+/* II — Fogo Negro: âmbar */
+.tech-module[data-tc="II"] .tech-module-header { border-bottom-color:rgba(220,160,40,0.15); }
+.tech-module[data-tc="II"] .tech-module-header::before { background:#d4a020; }
+.tech-module[data-tc="II"] .tech-index { color:rgba(220,160,40,0.5); border-color:rgba(220,160,40,0.15); }
+.tech-module[data-tc="II"] .tech-module-name { color:#e8c060; }
+.tech-module[data-tc="II"] .sub-card { border-color:rgba(220,160,40,0.09); }
+.tech-module[data-tc="II"] .sub-card:hover { border-color:rgba(220,160,40,0.25); background:rgba(220,160,40,0.03); }
+.tech-module[data-tc="II"] .sub-card.open { border-color:rgba(220,160,40,0.3); }
+.tech-module[data-tc="II"] .sub-card::before { border-color:rgba(220,160,40,0.2) transparent transparent transparent; }
+.tech-module[data-tc="II"] .sub-card-name { color:#d4b050; }
+.tech-module[data-tc="II"] .sub-card-kanji { color:rgba(220,160,40,0.3); }
+.tech-module[data-tc="II"] .sub-card-sep { background:linear-gradient(90deg,rgba(220,160,40,0.15),transparent); }
+.tech-module[data-tc="II"] .sub-card-tag { border-color:rgba(220,160,40,0.15); color:rgba(220,160,40,0.5); }
+.tech-module[data-tc="II"] .sub-card-chevron { color:rgba(220,160,40,0.4); }
+.tech-module[data-tc="II"] .sub-card.open .sub-card-chevron { color:#d4a020; }
+.tech-module[data-tc="II"] .tech-module-dmg { color:#d4b050; background:rgba(220,160,40,0.06); border-color:rgba(220,160,40,0.15); }
+
+/* III — Descarne: branco-osso */
+.tech-module[data-tc="III"] .tech-module-header { border-bottom-color:rgba(200,200,190,0.1); }
+.tech-module[data-tc="III"] .tech-module-header::before { background:#c8c0b0; }
+.tech-module[data-tc="III"] .tech-index { color:rgba(200,200,190,0.4); border-color:rgba(200,200,190,0.1); }
+.tech-module[data-tc="III"] .tech-module-name { color:#d8d0c0; }
+.tech-module[data-tc="III"] .sub-card { border-color:rgba(200,200,190,0.07); }
+.tech-module[data-tc="III"] .sub-card:hover { border-color:rgba(200,200,190,0.2); background:rgba(200,200,190,0.025); }
+.tech-module[data-tc="III"] .sub-card.open { border-color:rgba(200,200,190,0.25); }
+.tech-module[data-tc="III"] .sub-card::before { border-color:rgba(200,200,190,0.15) transparent transparent transparent; }
+.tech-module[data-tc="III"] .sub-card-name { color:#c8c0b0; }
+.tech-module[data-tc="III"] .sub-card-kanji { color:rgba(200,200,190,0.25); }
+.tech-module[data-tc="III"] .sub-card-sep { background:linear-gradient(90deg,rgba(200,200,190,0.12),transparent); }
+.tech-module[data-tc="III"] .sub-card-tag { border-color:rgba(200,200,190,0.12); color:rgba(200,200,190,0.4); }
+.tech-module[data-tc="III"] .sub-card-chevron { color:rgba(200,200,190,0.35); }
+.tech-module[data-tc="III"] .sub-card.open .sub-card-chevron { color:#c8c0b0; }
+
+/* IV — Carne: vermelho escuro */
+.tech-module[data-tc="IV"] .tech-module-header { border-bottom-color:rgba(180,40,40,0.2); }
+.tech-module[data-tc="IV"] .tech-module-header::before { background:#a03030; }
+.tech-module[data-tc="IV"] .tech-index { color:rgba(180,60,60,0.5); border-color:rgba(180,40,40,0.15); }
+.tech-module[data-tc="IV"] .tech-module-name { color:#c06060; }
+.tech-module[data-tc="IV"] .sub-card { border-color:rgba(180,40,40,0.1); }
+.tech-module[data-tc="IV"] .sub-card:hover { border-color:rgba(180,40,40,0.28); background:rgba(180,40,40,0.04); }
+.tech-module[data-tc="IV"] .sub-card.open { border-color:rgba(180,40,40,0.35); }
+.tech-module[data-tc="IV"] .sub-card::before { border-color:rgba(180,40,40,0.2) transparent transparent transparent; }
+.tech-module[data-tc="IV"] .sub-card-name { color:#b05050; }
+.tech-module[data-tc="IV"] .sub-card-kanji { color:rgba(180,60,60,0.3); }
+.tech-module[data-tc="IV"] .sub-card-sep { background:linear-gradient(90deg,rgba(180,40,40,0.15),transparent); }
+.tech-module[data-tc="IV"] .sub-card-tag { border-color:rgba(180,40,40,0.15); color:rgba(200,80,80,0.5); }
+.tech-module[data-tc="IV"] .sub-card-chevron { color:rgba(180,60,60,0.4); }
+.tech-module[data-tc="IV"] .sub-card.open .sub-card-chevron { color:#a03030; }
+
+/* ─ PHOTO HUD TAGS ─ */
+.photo-hud { display:flex; flex-wrap:wrap; gap:4px; }
+.ph-hud-tag {
+  font-family:var(--mono); font-size:7px; letter-spacing:2px;
+  padding:2px 7px; border:1px solid rgba(80,200,240,0.2);
+  color:rgba(80,200,240,0.5); text-transform:uppercase;
+  background:rgba(5,6,10,0.7);
+}
+.ph-hud-tag.hi { border-color:rgba(80,200,240,0.4); color:var(--cyan2); background:rgba(80,200,240,0.1); }
+
+/* ─ EA PROGRESS BAR ─ */
+.ea-bar-wrap { margin-top:10px; }
+.ea-bar-track {
+  width:100%; height:3px;
+  background:rgba(80,200,240,0.06);
+  border:1px solid rgba(80,200,240,0.1);
+  position:relative; overflow:hidden;
+}
+.ea-bar-fill {
+  height:100%;
+  background:linear-gradient(90deg, rgba(80,200,240,0.4), var(--cyan));
+  box-shadow:0 0 8px rgba(80,200,240,0.4);
+  transition:width .6s cubic-bezier(.4,0,.2,1);
+  position:relative;
+}
+.ea-bar-fill::after {
+  content:''; position:absolute; right:0; top:0; bottom:0;
+  width:4px;
+  background:var(--cyan2);
+  box-shadow:0 0 6px var(--cyan);
+}
+.ea-bar-labels {
+  display:flex; justify-content:space-between; margin-top:3px;
+}
+
+
+/* ─ LORE TIMELINE ─ */
+.lore-timeline {
+  display:flex; gap:0;
+}
+.lore-spine {
+  width:40px; flex-shrink:0;
+  position:relative; padding-top:6px;
+}
+.lore-spine::before {
+  content:''; position:absolute;
+  left:18px; top:0; bottom:0; width:1px;
+  background:linear-gradient(180deg,var(--cyan),rgba(80,200,240,0.05));
+}
+.lore-entries { flex:1; }
+.lore-entry { display:flex; gap:0; margin-bottom:28px; position:relative; }
+.lore-entry:last-child { margin-bottom:0; }
+.lore-marker {
+  position:absolute; left:-22px; top:5px;
+  width:8px; height:8px;
+  border:1px solid var(--border2);
+  background:var(--bg);
+  border-radius:50%;
+  transition:border-color .3s, box-shadow .3s;
+}
+.lore-entry:hover .lore-marker {
+  border-color:var(--cyan);
+  box-shadow:0 0 8px rgba(80,200,240,0.3);
+}
+.lore-content {
+  padding:0 0 0 26px;
+  border-left:1px solid rgba(80,200,240,0.05);
+  transition:border-color .25s;
+}
+.lore-entry:hover .lore-content { border-left-color:rgba(80,200,240,0.15); }
+.lore-event {
+  font-family:var(--mono); font-size:7.5px; letter-spacing:3px;
+  color:rgba(80,200,240,0.35); text-transform:uppercase;
+  margin-bottom:5px;
+}
+.lore-text {
+  font-size:13px; line-height:1.95;
+  color:rgba(232,240,244,0.75);
+}
+.lore-text::first-letter {
+  font-size:20px; color:var(--cyan); float:left;
+  margin-right:3px; line-height:1;
+}
+
+/* ─ LORE ─ */
+.lore-block { border:1px solid var(--border); background:var(--surface); padding:26px 28px; }
+.lore-block p { font-size:13px; line-height:1.95; color:rgba(232,240,244,0.75); margin-bottom:16px; }
+.lore-block p:last-child { margin-bottom:0; }
+.lore-block p::first-letter { font-size:20px; color:var(--cyan); float:left; margin-right:3px; line-height:1; }
+
+/* ─ FOOTER ─ */
+.pg-footer { text-align:center; margin-top:60px; }
+.footer-sigil {
+  display:inline-block; width:60px; height:60px;
+  border:1px solid var(--border); border-radius:50%;
+  display:inline-flex; align-items:center; justify-content:center;
+  font-size:20px; animation:spin 25s linear infinite;
+  color:rgba(80,200,240,0.4);
+}
+.footer-text { font-family:var(--mono); font-size:8px; letter-spacing:5px; color:var(--muted); margin-top:16px; text-transform:uppercase; opacity:.4; }
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ══════════════════════════════════════════
+   PAGE 2 — SOUL SOCIETY
+══════════════════════════════════════════ */
+.ss-hero { text-align:center; margin-bottom:52px; padding-top:12px; }
+.ss-eye {
+  display:inline-block; width:72px; height:72px;
+  border:1px solid var(--border2); border-radius:50%;
+  display:inline-flex; align-items:center; justify-content:center;
+  font-size:24px; margin-bottom:18px; position:relative;
+  animation:spin 30s linear infinite;
+}
+.ss-eye::before {
+  content:''; position:absolute; inset:8px;
+  border:1px solid var(--border); border-radius:50%;
+  animation:spin 30s linear infinite reverse;
+}
+.ss-eye-inner { animation:spin 30s linear infinite reverse; }
+.ss-classified { font-family:var(--mono); font-size:8px; letter-spacing:6px; color:var(--cyan); opacity:.4; text-transform:uppercase; margin-bottom:10px; }
+.ss-title { font-family:var(--display); font-size:clamp(24px,4vw,40px); font-weight:900; letter-spacing:6px; color:var(--white); margin-bottom:6px; }
+.ss-sub { font-family:var(--mono); font-size:9px; letter-spacing:4px; color:var(--muted); text-transform:uppercase; }
+
+.itag { font-family:var(--mono); font-size:8px; letter-spacing:2px; padding:4px 12px; border:1px solid var(--border); color:var(--muted); text-transform:uppercase; }
+.itag.hi { border-color:var(--border2); color:var(--cyan2); background:var(--cyan-dim); }
+.tags-row { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:6px; }
+
+/* accordion */
+.acc { border:1px solid var(--border); margin-bottom:8px; overflow:hidden; }
+.acc-h {
+  display:flex; align-items:center; gap:14px; padding:14px 18px;
+  background:var(--surface2); cursor:pointer; user-select:none;
+  border-bottom:1px solid transparent; transition:all .2s;
+}
+.acc-h:hover { background:rgba(80,200,240,0.04); }
+.acc-h.open { border-bottom-color:var(--border); background:rgba(80,200,240,0.05); }
+.acc-ico { font-family:var(--mono); font-size:10px; color:var(--cyan); transition:transform .3s; flex-shrink:0; }
+.acc-h.open .acc-ico { transform:rotate(90deg); }
+.acc-t { font-family:var(--ui); font-size:11.5px; color:var(--white); letter-spacing:1px; }
+.acc-m { font-family:var(--mono); font-size:9px; color:var(--muted); margin-left:auto; letter-spacing:1px; }
+.acc-b { display:block; max-height:0; overflow:hidden; padding:0 22px; background:rgba(5,6,10,0.7); opacity:0; transition:max-height .35s cubic-bezier(.4,0,.2,1), padding .32s cubic-bezier(.4,0,.2,1), opacity .28s ease; }
+.acc-b.open { max-height:600px; padding:20px 22px; opacity:1; }
+.acc-b p { font-size:13px; line-height:1.85; color:rgba(232,240,244,0.75); margin-bottom:14px; }
+.acc-b p:last-child { margin-bottom:0; }
+
+/* members */
+.member-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:12px; }
+.mc {
+  border:1px solid var(--border); background:var(--surface);
+  padding:20px; position:relative; overflow:hidden;
+}
+.mc::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:1px;
+  background:linear-gradient(90deg,transparent,var(--cyan),transparent); opacity:.3;
+}
+.mc::after {
+  content:''; position:absolute; bottom:0; right:0;
+  width:50px; height:50px;
+  border-bottom:1px solid var(--border2); border-right:1px solid var(--border2);
+}
+.mc-rank { font-family:var(--mono); font-size:7px; letter-spacing:3px; color:var(--cyan); opacity:.6; text-transform:uppercase; margin-bottom:6px; }
+.mc-name { font-family:var(--ui); font-size:15px; font-weight:600; color:var(--white); margin-bottom:2px; }
+.mc-alias { font-family:var(--serif); font-style:italic; font-size:11px; color:var(--muted); margin-bottom:12px; }
+.mc-line { height:1px; background:var(--border); margin-bottom:12px; }
+.mc-desc { font-size:12px; color:rgba(232,240,244,0.7); line-height:1.72; }
+.mc-status { display:inline-block; margin-top:12px; font-family:var(--mono); font-size:7px; letter-spacing:2px; padding:3px 10px; border:1px solid var(--border); color:var(--muted); text-transform:uppercase; }
+
+/* pillars */
+.pillar-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; }
+.pillar { border:1px solid var(--border); background:var(--surface); padding:16px; }
+.pillar-n { font-family:var(--display); font-size:24px; color:rgba(80,200,240,0.1); line-height:1; margin-bottom:6px; }
+.pillar-t { font-family:var(--mono); font-size:9px; color:var(--cyan2); letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; }
+.pillar-d { font-size:12px; color:rgba(232,240,244,0.65); line-height:1.65; }
+
+/* timeline */
+.tl { position:relative; padding-left:26px; }
+.tl::before { content:''; position:absolute; left:8px; top:0; bottom:0; width:1px; background:linear-gradient(180deg,var(--cyan),transparent); opacity:.15; }
+.tl-i { position:relative; margin-bottom:26px; }
+.tl-i:last-child { margin-bottom:0; }
+.tl-dot { position:absolute; left:-26px; top:5px; width:8px; height:8px; border:1px solid var(--border2); background:var(--bg); border-radius:50%; }
+.tl-label { font-family:var(--mono); font-size:8px; letter-spacing:2px; color:var(--cyan); opacity:.5; text-transform:uppercase; margin-bottom:4px; }
+.tl-text { font-size:12.5px; color:rgba(232,240,244,0.75); line-height:1.75; }
+
+.udiv { height:1px; background:linear-gradient(90deg,transparent,var(--border2),transparent); margin:38px 0; }
+
+/* ── MEMBER CARDS (expandable roster) ── */
+.mc-filter {
+  font-family:var(--mono); font-size:8px; letter-spacing:3px;
+  padding:5px 12px; border:1px solid var(--border); background:var(--surface);
+  color:var(--muted); text-transform:uppercase; cursor:pointer; transition:all .2s;
+}
+.mc-filter.on, .mc-filter:hover { border-color:var(--border2); color:var(--cyan2); background:var(--cyan-dim); }
+.mcard { border:1px solid var(--border); margin-bottom:8px; overflow:hidden; transition:opacity .25s; }
+.mcard.hidden { display:none; }
+.mcard-head {
+  display:flex; align-items:center; gap:14px; padding:14px 18px;
+  background:var(--surface2); cursor:pointer; user-select:none;
+  border-bottom:1px solid transparent; transition:background .2s;
+}
+.mcard-head:hover { background:rgba(80,200,240,0.04); }
+.mcard-head.open { background:rgba(80,200,240,0.06); border-bottom-color:var(--border); }
+.mcard-num {
+  font-family:var(--mono); font-size:11px; color:rgba(80,200,240,0.3);
+  letter-spacing:1px; flex-shrink:0; width:24px;
+}
+.mcard-info { flex:1; min-width:0; }
+.mcard-name { font-family:var(--ui); font-size:13px; font-weight:600; color:var(--white); letter-spacing:1px; }
+.mcard-alias { font-family:var(--serif); font-style:italic; font-size:10px; color:var(--muted); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.mcard-tags { display:flex; gap:5px; flex-shrink:0; }
+.mctag { font-family:var(--mono); font-size:7px; letter-spacing:2px; padding:2px 7px; border:1px solid var(--border); color:var(--muted); text-transform:uppercase; }
+.mctag.red { border-color:rgba(200,60,60,0.3); color:rgba(220,100,100,0.8); background:rgba(200,60,60,0.05); }
+.mcard-chev { font-family:var(--mono); font-size:9px; color:var(--muted); transition:transform .3s; flex-shrink:0; }
+.mcard-head.open .mcard-chev { transform:rotate(90deg); }
+.mcard-body { display:block; max-height:0; overflow:hidden; padding:0 20px; background:rgba(5,6,10,0.75); opacity:0; transition:max-height .38s cubic-bezier(.4,0,.2,1), padding .35s cubic-bezier(.4,0,.2,1), opacity .3s ease; }
+.mcard-body.open { max-height:900px; padding:20px 20px 24px; opacity:1; }
+/* top section: photo + fields */
+.mcard-top { display:grid; grid-template-columns:110px 1fr; gap:18px; margin-bottom:18px; }
+.mcard-photo {
+  width:110px; aspect-ratio:3/4;
+  border:1px solid var(--border2);
+  background:var(--surface2); overflow:hidden; flex-shrink:0; position:relative;
+}
+.mcard-photo img { width:100%; height:100%; object-fit:cover; object-position:top; filter:grayscale(15%) contrast(1.05); display:block; }
+.mcard-photo .mp-fallback {
+  width:100%; height:100%; display:none;
+  flex-direction:column; align-items:center; justify-content:center; gap:6px;
+  background:linear-gradient(160deg,#0a0e14,#060810);
+}
+.mcard-photo .mp-fallback .mp-k { font-size:30px; color:rgba(80,200,240,0.07); }
+.mcard-photo .mp-fallback .mp-t { font-family:var(--mono); font-size:7px; color:var(--muted); letter-spacing:2px; }
+.mcard-photo::before { content:''; position:absolute; top:0; left:0; width:10px; height:10px; border-top:1px solid var(--cyan); border-left:1px solid var(--cyan); z-index:2; }
+.mcard-photo::after  { content:''; position:absolute; bottom:0; right:0; width:10px; height:10px; border-bottom:1px solid var(--cyan); border-right:1px solid var(--cyan); z-index:2; }
+.mcard-grid { display:grid; grid-template-columns:1fr 1fr; gap:0 24px; }
+.mcard-col { display:flex; flex-direction:column; }
+.mcard-field { display:flex; flex-direction:column; padding:5px 0; border-bottom:1px solid rgba(80,200,240,0.05); }
+.mf-l { font-family:var(--mono); font-size:7.5px; letter-spacing:2px; color:var(--muted); text-transform:uppercase; margin-bottom:2px; }
+.mf-v { font-family:var(--serif); font-size:12.5px; color:rgba(232,240,244,0.88); line-height:1.4; }
+.mf-v.cyan { color:var(--cyan2); }
+.mf-v.red  { color:rgba(220,100,100,0.9); }
+/* lore block — much more readable */
+.mcard-lore {
+  font-family:var(--serif); font-size:13px; font-style:normal;
+  color:rgba(232,240,244,0.82); line-height:1.9;
+  background:rgba(80,200,240,0.03);
+  border:1px solid rgba(80,200,240,0.08);
+  border-left:2px solid rgba(80,200,240,0.25);
+  padding:14px 16px;
+  margin-top:2px;
+}
+@media(max-width:640px){
+  .mcard-top { grid-template-columns:1fr; }
+  .mcard-photo { width:80px; aspect-ratio:1; }
+  .mcard-grid { grid-template-columns:1fr; }
+  .mcard-tags { display:none; }
+}
+
+@media(max-width:600px){
+  .res-grid { grid-template-columns:1fr 1fr; }
+  .member-grid { grid-template-columns:1fr; }
+  .pillar-grid { grid-template-columns:1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="pt-canvas"></canvas>
+<div id="pt-scan"></div>
+<div id="pt-corners-l"></div>
+<div id="pt-corners-r"></div>
+<div class="scan-line" id="scan-line"></div>
+<div class="tab-bar">
+  <button class="tab-btn on" onclick="goTab('ficha',this)">◈ Ficha — Yagami Gojo</button>
+  <button class="tab-btn" onclick="goTab('ss',this)">⛩ Soul Society — Arquivo</button>
+</div>
+
+<!-- ══ PAGE 1 ══ -->
+<div id="page-ficha" class="page on">
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="photo-frame">
+      <img src="membros/yagami.png" alt="Yagami Gojo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="photo-fallback" style="display:none">
+        <div class="kanji">獄</div>
+        <div class="ph-text">sem imagem</div>
+      </div>
+      <div class="photo-overlay">
+        <div class="photo-hud">
+          <span class="ph-hud-tag">⬡ Grau Especial</span>
+          <span class="ph-hud-tag hi">EA 300</span>
+          <span class="ph-hud-tag hi">Nível 1</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-info">
+      <div class="hero-society">⛩ Soul Society · Clã Gojo · Registro Selado</div>
+      <div class="hero-name">Yagami<br>Gojo</div>
+      <div class="hero-epithet">O Arauto do Purgatório</div>
+      <div class="hero-line"></div>
+      <div class="hero-tags">
+        <span class="htag hi">Nível 1</span>
+        <span class="htag hi">EA 300</span>
+        <span class="htag hi">Feiticeiro</span>
+        <span class="htag">Kyoto</span>
+        <span class="htag">Clã Gojo</span>
+        <span class="htag">Grau IV</span>
+        <span class="htag">Percepção 15</span>
+      </div>
+      <div class="hero-quote">
+        Quando ele nasceu, maldições ao redor do mundo sentiram. Algumas fugiram.<br>
+        Lys Gojo caiu de joelhos — não de desespero, mas de êxtase.<br>
+        O Abismo havia enviado sua resposta.
+      </div>
+    </div>
+  </div>
+
+  <!-- RECURSOS -->
+  <div class="slabel" data-n="01">Recursos</div>
+  <div class="res-grid">
+    <div class="res-card">
+      <div class="rc-label">Vida</div>
+      <div class="rc-val">25</div>
+      <div class="rc-sub">HP Total</div>
+    </div>
+    <div class="res-card">
+      <div class="rc-label">Defesa</div>
+      <div class="rc-val">10</div>
+      <div class="rc-sub">Valor Base</div>
+    </div>
+    <div class="res-card">
+      <div class="rc-label">Energia Amaldiçoada</div>
+      <div class="rc-val cyan" id="ea-val">300</div>
+      <div class="rc-sub">EA Máximo · Primordial</div>
+      <div class="ea-bar-wrap">
+        <div class="ea-bar-track">
+          <div class="ea-bar-fill" id="ea-fill" style="width:100%"></div>
+        </div>
+        <div class="ea-bar-labels">
+          <span class="mono" style="font-size:7px;color:var(--muted);letter-spacing:1px">0</span>
+          <span class="mono" style="font-size:7px;color:var(--muted);letter-spacing:1px">300</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ATRIBUTOS -->
+  <div class="slabel" data-n="02">Atributos</div>
+  <div class="attr-block">
+    <div class="attr-row">
+      <div class="attr-name">Força</div>
+      <div class="attr-track">
+        <div class="attr-pip"></div><div class="attr-pip"></div><div class="attr-pip"></div><div class="attr-pip"></div><div class="attr-pip"></div>
+      </div>
+      <div class="attr-num">0</div>
+    </div>
+    <div class="attr-row">
+      <div class="attr-name">Agilidade</div>
+      <div class="attr-track">
+        <div class="attr-pip filled"></div><div class="attr-pip filled"></div><div class="attr-pip filled"></div><div class="attr-pip filled"></div><div class="attr-pip filled"></div>
+      </div>
+      <div class="attr-num">5</div>
+    </div>
+    <div class="attr-row">
+      <div class="attr-name">Constituição</div>
+      <div class="attr-track">
+        <div class="attr-pip"></div><div class="attr-pip"></div><div class="attr-pip"></div><div class="attr-pip"></div><div class="attr-pip"></div>
+      </div>
+      <div class="attr-num">0</div>
+    </div>
+    <div class="attr-row">
+      <div class="attr-name">Inteligência</div>
+      <div class="attr-track">
+        <div class="attr-pip"></div><div class="attr-pip"></div><div class="attr-pip"></div><div class="attr-pip"></div><div class="attr-pip"></div>
+      </div>
+      <div class="attr-num">0</div>
+    </div>
+    <div class="attr-row">
+      <div class="attr-name">Presença</div>
+      <div class="attr-track">
+        <div class="attr-pip filled"></div><div class="attr-pip filled"></div><div class="attr-pip filled"></div><div class="attr-pip filled"></div><div class="attr-pip filled"></div>
+      </div>
+      <div class="attr-num">5</div>
+    </div>
+  </div>
+
+  <!-- HABILIDADES DE ORIGEM -->
+  <div class="slabel" data-n="03">Habilidades de Origem</div>
+
+  <div class="ab-desktop" id="ab-desktop">
+    <div class="ab-icon" onclick="selectAbility(this,'ab-0')">
+      <div class="ab-icon-glyph">⚡</div>
+      <div class="ab-icon-label">Energia Primordial</div>
+      <div class="ab-icon-type">Passiva</div>
+    </div>
+    <div class="ab-icon" onclick="selectAbility(this,'ab-1')">
+      <div class="ab-icon-glyph">🛡</div>
+      <div class="ab-icon-label">Imunidade Intimidação</div>
+      <div class="ab-icon-type">Passiva</div>
+    </div>
+    <div class="ab-icon" onclick="selectAbility(this,'ab-2')">
+      <div class="ab-icon-glyph">👁</div>
+      <div class="ab-icon-label">Presença Carnal</div>
+      <div class="ab-icon-type">Ambiental</div>
+    </div>
+    <div class="ab-icon" onclick="selectAbility(this,'ab-3')">
+      <div class="ab-icon-glyph">💀</div>
+      <div class="ab-icon-label">Tamashī Kui</div>
+      <div class="ab-icon-type">Ativa</div>
+    </div>
+    <div class="ab-icon" onclick="selectAbility(this,'ab-4')">
+      <div class="ab-icon-glyph">🩻</div>
+      <div class="ab-icon-label">Rengoku-tai</div>
+      <div class="ab-icon-type">Passiva</div>
+    </div>
+  </div>
+
+  <div class="ab-detail-panel" id="ab-0">
+    <div class="ab-detail-name">Energia Primordial</div>
+    <div class="ab-detail-type">Passiva</div>
+    <div class="ab-detail-desc">300 EA base — estrutural, não aprendida. Faz parte do que ele é biologicamente. Não foi concedida. Nasceu com ela.</div>
+  </div>
+  <div class="ab-detail-panel" id="ab-1">
+    <div class="ab-detail-name">Imunidade à Intimidação</div>
+    <div class="ab-detail-kanji">+5d20 em Intimidação</div>
+    <div class="ab-detail-type">Passiva</div>
+    <div class="ab-detail-desc">Nasceu onde o medo mora. Não pode ser intimidado. Quando ele intimida, são cinco dados extras de d20.</div>
+  </div>
+  <div class="ab-detail-panel" id="ab-2">
+    <div class="ab-detail-name">Presença Carnal</div>
+    <div class="ab-detail-type">Passiva · Ambiental</div>
+    <div class="ab-detail-desc">Provoca reações primais em qualquer ser consciente próximo. Inimigos sentem ódio irracional ou atração perturbadora. O jogador escolhe por alvo. Não é magia. É natureza.</div>
+  </div>
+  <div class="ab-detail-panel" id="ab-3">
+    <div class="ab-detail-name">魂喰い Tamashī Kui</div>
+    <div class="ab-detail-kanji">Devorador de Almas</div>
+    <div class="ab-detail-type">Ativa</div>
+    <div class="ab-detail-desc">Ao participar da morte de um inimigo, rouba um atributo dele. Quando todos atingem 5, eleva um para 6. Repete-se infinitamente. Não há teto.</div>
+  </div>
+  <div class="ab-detail-panel" id="ab-4">
+    <div class="ab-detail-name">煉獄体 Rengoku-tai</div>
+    <div class="ab-detail-kanji">Carne do Abismo</div>
+    <div class="ab-detail-type">Passiva</div>
+    <div class="ab-detail-desc">Não morre sem cabeça, sem membros, sem órgãos. O corpo continua funcionando enquanto o HP não zerar. A biologia convencional não se aplica.</div>
+  </div>
+
+  <!-- TÉCNICAS -->
+  <div class="slabel" data-n="04">Técnicas Inatas</div>
+
+  <!-- I -->
+  <div class="tech-module" data-tc="I">
+    <div class="tech-module-header">
+      <span class="tech-index">I</span>
+      <div>
+        <div class="tech-module-name">獄口 Gokuguchi — Boca do Abismo</div>
+        <div class="tech-module-sub">Técnica central · canal para o Purgatório</div>
+      </div>
+      <span class="tech-module-dmg">9d6+2d4+5</span>
+    </div>
+    <div class="sub-grid">
+      <div class="sub-card" onclick="toggleSubCard(this)">
+        <span class="sub-card-chevron">▶</span>
+        <div class="sub-card-id">GKG-01</div>
+        <div class="sub-card-name">Sutura</div>
+        <span class="sub-card-kanji">縫合 Hōgō</span>
+        <div class="sub-card-sep"></div>
+        <div class="sub-card-body">
+        <div class="sub-card-desc">Fixa um contrato com o Purgatório sobre o campo. Ninguém escapa — sem fuga, teletransporte ou barreira. O combate só termina quando um lado for incapacitado. O Purgatório não escolhe lados.</div>
+        <span class="sub-card-tag">Ritual de Combate</span>
+        </div>
+      </div>
+      <div class="sub-card" onclick="toggleSubCard(this)">
+        <span class="sub-card-chevron">▶</span>
+        <div class="sub-card-id">GKG-02</div>
+        <div class="sub-card-name">Infiltração</div>
+        <span class="sub-card-kanji">滲み Shimi</span>
+        <div class="sub-card-body">
+        <div class="sub-card-sep"></div>
+        <div class="sub-card-desc">O corpo escoa pelo Abismo e emerge em outro ponto sem percorrer o espaço real. Não provoca ataques de oportunidade. Não pode ser interceptado.</div>
+        <span class="sub-card-tag">Ação Bônus</span>
+        </div>
+      </div>
+      <div class="sub-card" onclick="toggleSubCard(this)">
+        <span class="sub-card-chevron">▶</span>
+        <div class="sub-card-id">GKG-03</div>
+        <div class="sub-card-name">Pacto de Oferenda</div>
+        <span class="sub-card-kanji">贄約 Nieyaku</span>
+        <div class="sub-card-body">
+        <div class="sub-card-sep"></div>
+        <div class="sub-card-desc">Negocia diretamente com entidades confinadas no Purgatório. Os termos são livres. A única regra: o contrato é honrado. O Purgatório cobra o que foi prometido.</div>
+        <span class="sub-card-tag">Ritual</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- II -->
+  <div class="tech-module" data-tc="II">
+    <div class="tech-module-header">
+      <span class="tech-index">II</span>
+      <div>
+        <div class="tech-module-name">黒焔 Kokuen — Fogo Negro</div>
+        <div class="tech-module-sub">Fogo adaptativo que escala com resistência do alvo</div>
+      </div>
+    </div>
+    <div class="sub-grid">
+      <div class="sub-card" onclick="toggleSubCard(this)">
+        <span class="sub-card-chevron">▶</span>
+        <div class="sub-card-id">KKN-01</div>
+        <div class="sub-card-name">Calor Invasivo</div>
+        <span class="sub-card-kanji">侵熱 Shin-netsu</span>
+        <div class="sub-card-body">
+        <div class="sub-card-sep"></div>
+        <div class="sub-card-desc">O fogo adapta-se à resistência. Quanto mais o alvo resiste, mais quente fica.</div>
+        <div style="margin-top:7px;font-family:var(--mono);font-size:8px;color:var(--cyan);letter-spacing:1px;line-height:1.8">EA &lt;100 → +3d<br>EA 100–300 → +6d<br>EA 300+ → +10d</div>
+        <span class="sub-card-tag">Ação Padrão</span>
+        </div>
+      </div>
+      <div class="sub-card" onclick="toggleSubCard(this)">
+        <span class="sub-card-chevron">▶</span>
+        <div class="sub-card-id">KKN-02</div>
+        <div class="sub-card-name">Contato Corrosivo</div>
+        <span class="sub-card-kanji">腐触 Fushoku</span>
+        <div class="sub-card-body">
+        <div class="sub-card-sep"></div>
+        <div class="sub-card-desc">O fogo entra pelo toque e queima de dentro pra fora. Aplica Queimadura Infernal — incurável por meios convencionais enquanto ativa.</div>
+        <span class="sub-card-tag red">Queimadura Infernal</span>
+        </div>
+      </div>
+      <div class="sub-card" onclick="toggleSubCard(this)">
+        <span class="sub-card-chevron">▶</span>
+        <div class="sub-card-id">KKN-03</div>
+        <div class="sub-card-name">Secção Térmica</div>
+        <span class="sub-card-kanji">熱截 Nessai</span>
+        <div class="sub-card-body">
+        <div class="sub-card-sep"></div>
+        <div class="sub-card-desc">EA condensada em corte adaptativo. Corta barreiras, armaduras, técnicas, corpos.</div>
+        <span class="sub-card-tag">Ação Padrão</span>
+        </div>
+      </div>
+      <div class="sub-card" onclick="toggleSubCard(this)">
+        <span class="sub-card-chevron">▶</span>
+        <div class="sub-card-id">KKN-04</div>
+        <div class="sub-card-name">Calor que Persegue</div>
+        <span class="sub-card-kanji">追熱 Oi-netsu</span>
+        <div class="sub-card-body">
+        <div class="sub-card-sep"></div>
+        <div class="sub-card-desc">Segue a assinatura de EA do alvo. Dobra ao redor de obstáculos. Não pode ser bloqueado por interposição.</div>
+        <span class="sub-card-tag">Ação Bônus</span>
+        </div>
+      </div>
+      <div class="sub-card" onclick="toggleSubCard(this)">
+        <span class="sub-card-chevron">▶</span>
+        <div class="sub-card-id">KKN-05</div>
+        <div class="sub-card-name">Pele Queimada</div>
+        <span class="sub-card-kanji">外皮焼 Gaihi-yaki</span>
+        <div class="sub-card-body">
+        <div class="sub-card-sep"></div>
+        <div class="sub-card-desc">Ao receber ataque, envolve o corpo em fogo negro. Absorve parte do dano. Atacante em contato físico recebe parte de volta.</div>
+        <span class="sub-card-tag">Reação</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- III -->
+  <div class="tech-module" data-tc="III">
+    <div class="tech-module-header">
+      <span class="tech-index">III</span>
+      <div>
+        <div class="tech-module-name">脱肉 Datsu-niku — Descarne</div>
+        <div class="tech-module-sub">Osso infernal subdérmico e construção óssea</div>
+      </div>
+    </div>
+    <div class="sub-grid">
+      <div class="sub-card" onclick="toggleSubCard(this)">
+        <span class="sub-card-chevron">▶</span>
+        <div class="sub-card-id">DTN-01</div>
+        <div class="sub-card-name">Veste de Osso</div>
+        <span class="sub-card-kanji">骨衣 Hone-goromo</span>
+        <div class="sub-card-body">
+        <div class="sub-card-sep"></div>
+        <div class="sub-card-desc">Fragmentos de osso infernal subdérmicos redistribuem e absorvem dano de impacto constantemente. Sem sinal externo visível.</div>
+        <span class="sub-card-tag">Passiva</span>
+        </div>
+      </div>
+      <div class="sub-card" onclick="toggleSubCard(this)">
+        <span class="sub-card-chevron">▶</span>
+        <div class="sub-card-id">DTN-02</div>
+        <div class="sub-card-name">Gestação Óssea</div>
+        <span class="sub-card-kanji">骨胎 Kontai</span>
+        <div class="sub-card-body">
+        <div class="sub-card-sep"></div>
+        <div class="sub-card-desc">Constrói qualquer estrutura de osso infernal — criatura, fortaleza, arma, prótese. Imune a veneno e dano psíquico.</div>
+        <span class="sub-card-tag">Ação Padrão</span>
+        </div>
+      </div>
+      <div class="sub-card" onclick="toggleSubCard(this)">
+        <span class="sub-card-chevron">▶</span>
+        <div class="sub-card-id">DTN-03</div>
+        <div class="sub-card-name">Prego de Osso</div>
+        <span class="sub-card-kanji">骨釘 Hone-kugi</span>
+        <div class="sub-card-body">
+        <div class="sub-card-sep"></div>
+        <div class="sub-card-desc">Projeta osso infernal em velocidade e trajetória calculadas. Adapta-se à estrutura do alvo na penetração.</div>
+        <span class="sub-card-tag">Ação Bônus</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IV -->
+  <div class="tech-module" data-tc="IV">
+    <div class="tech-module-header">
+      <span class="tech-index">IV</span>
+      <div>
+        <div class="tech-module-name">肉 Niku — Carne</div>
+        <div class="tech-module-sub">Regeneração infernal e convocação</div>
+      </div>
+    </div>
+    <div class="sub-grid">
+      <div class="sub-card" onclick="toggleSubCard(this)">
+        <span class="sub-card-chevron">▶</span>
+        <div class="sub-card-id">NKU-01</div>
+        <div class="sub-card-name">Autocanibalismo</div>
+        <span class="sub-card-kanji">自食 Jishoku</span>
+        <div class="sub-card-body">
+        <div class="sub-card-sep"></div>
+        <div class="sub-card-desc">O organismo se reconstrói passivamente a cada round. Pode ser forçada como ação para acelerar a custo de EA.</div>
+        <span class="sub-card-tag">Passiva / Ativa</span>
+        </div>
+      </div>
+      <div class="sub-card" onclick="toggleSubCard(this)">
+        <span class="sub-card-chevron">▶</span>
+        <div class="sub-card-id">NKU-02</div>
+        <div class="sub-card-name">Convocação de Carne Morta</div>
+        <span class="sub-card-kanji">死肉召 Shiniku-shō</span>
+        <div class="sub-card-body">
+        <div class="sub-card-sep"></div>
+        <div class="sub-card-desc">Convoca ou modela um aglomerado de carne morta e fragmentos de espíritos. A forma é livre. Age por comando simples no turno dele.</div>
+        <span class="sub-card-tag">Ação Padrão</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PERÍCIAS -->
+  <div class="slabel" data-n="05">Perícias</div>
+  <div class="skills-desktop">
+    <div class="skills-desktop-bar">◈ <span>Perícias</span> · proficiente em destaque</div>
+    <div class="sk-grid">
+      <div class="sk-group-head">Força</div>
+      <div class="sk-row p"><span class="sk-row-name">Luta</span><span class="sk-row-val">+5</span></div>
+      <div class="sk-row p"><span class="sk-row-name">Tankar</span><span class="sk-row-val">+5</span></div>
+
+      <div class="sk-group-head">Agilidade</div>
+      <div class="sk-row p"><span class="sk-row-name">Esquiva</span><span class="sk-row-val">+5</span></div>
+      <div class="sk-row p"><span class="sk-row-name">Iniciativa</span><span class="sk-row-val">+5</span></div>
+      <div class="sk-row p"><span class="sk-row-name">Furtividade</span><span class="sk-row-val">+5</span></div>
+      <div class="sk-row"><span class="sk-row-name">Rastreamento</span><span class="sk-row-val">—</span></div>
+
+      <div class="sk-group-head">Inteligência</div>
+      <div class="sk-row p"><span class="sk-row-name">Feitiçaria</span><span class="sk-row-val">+5</span></div>
+      <div class="sk-row p"><span class="sk-row-name">Ocultismo</span><span class="sk-row-val">+5</span></div>
+      <div class="sk-row"><span class="sk-row-name">Investigação</span><span class="sk-row-val">—</span></div>
+      <div class="sk-row"><span class="sk-row-name">História</span><span class="sk-row-val">—</span></div>
+      <div class="sk-row"><span class="sk-row-name">Aprendizado</span><span class="sk-row-val">—</span></div>
+
+      <div class="sk-group-head">Presença</div>
+      <div class="sk-row p"><span class="sk-row-name">Intimidação</span><span class="sk-row-val">+5 · +5d20</span></div>
+      <div class="sk-row p"><span class="sk-row-name">Intuição</span><span class="sk-row-val">+5</span></div>
+      <div class="sk-row"><span class="sk-row-name">Percepção passiva</span><span class="sk-row-val">15</span></div>
+      <div class="sk-row"><span class="sk-row-name">Persuasão</span><span class="sk-row-val">—</span></div>
+      <div class="sk-row"><span class="sk-row-name">Enganação</span><span class="sk-row-val">—</span></div>
+
+      <div class="sk-group-head">Constituição</div>
+      <div class="sk-row"><span class="sk-row-name">Sobrevivência</span><span class="sk-row-val">—</span></div>
+      <div class="sk-row"><span class="sk-row-name">Medicina</span><span class="sk-row-val">—</span></div>
+      <div class="sk-row"><span class="sk-row-name">Disciplina</span><span class="sk-row-val">—</span></div>
+      <div class="sk-row"><span class="sk-row-name">Fortitude</span><span class="sk-row-val">—</span></div>
+    </div>
+  </div>
+
+  <!-- ITEM -->
+  <div class="slabel" data-n="06">Item Exclusivo</div>
+  <div class="item-card">
+    <div class="item-name">Uniforme da Soul Society</div>
+    <div class="item-desc">Uniforme com acessório especial concedido pela Soul Society. Permanentemente equipado. A confecção não tem origem registrada — nenhum alfaiate do mundo Jujutsu foi consultado.</div>
+    <div><span class="item-stat">+2d4 dano · todos os ataques</span> <span class="item-stat">+5 EA proficiente</span></div>
+  </div>
+
+  <!-- LORE -->
+  <div class="slabel" data-n="07">Origem · Soul Society</div>
+  <div class="lore-timeline">
+    <div class="lore-spine"></div>
+    <div class="lore-entries">
+      <div class="lore-entry">
+        <div class="lore-marker"></div>
+        <div class="lore-content">
+          <div class="lore-event">Nascimento · O Canal</div>
+          <div class="lore-text">Yagami não foi gerado. Foi invocado pela natureza. Enquanto os anciãos do clã Gojo debatiam técnicas e linhagens, Lys Gojo aguardava — não com esperança, mas com certeza. O Purgatório precisava de um canal. E então ele nasceu.</div>
+        </div>
+      </div>
+      <div class="lore-entry">
+        <div class="lore-marker"></div>
+        <div class="lore-content">
+          <div class="lore-event">Reconhecimento · O Tremor</div>
+          <div class="lore-text">Maldições sentiram. O equilíbrio de energia amaldiçoada do mundo tremeu por um instante imperceptível — mas os antigos notaram. Lys caiu de joelhos no momento do nascimento, não de desespero, mas de êxtase. Não era uma criança. Era uma abertura.</div>
+        </div>
+      </div>
+      <div class="lore-entry">
+        <div class="lore-marker"></div>
+        <div class="lore-content">
+          <div class="lore-event">Posicionamento · Campo livre</div>
+          <div class="lore-text">O mais jovem dos pilares da Soul Society. Enviado ao campo com um propósito declarado: fortalecer. O propósito real é mais longo. Enquanto o mundo vê um feiticeiro grau 4, o Purgatório vê seu arauto se posicionando.</div>
+        </div>
+      </div>
+      <div class="lore-entry">
+        <div class="lore-marker"></div>
+        <div class="lore-content">
+          <div class="lore-event">Função Final · A Sentença</div>
+          <div class="lore-text">Takero Zenin, o intocável, terá uma sentença. Yagami é a única entidade no mundo capaz de tornar essa sentença permanente — não a morte, mas o confinamento eterno dentro do Abismo, de onde nenhum poder externo alcança e nenhuma reencarnação é possível.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pg-footer">
+    <div class="footer-sigil">◈</div>
+    <div class="footer-text">Soul Society · Registro Confidencial · Nível Omega · Clã Gojo</div>
+  </div>
+
+</div>
+</div><!-- /page-ficha -->
+
+<!-- ══ PAGE 2 ══ -->
+<div id="page-ss" class="page">
+<div class="wrap">
+
+  <div class="ss-hero">
+    <div class="ss-eye"><span class="ss-eye-inner">◈</span></div>
+    <div class="ss-classified">// Arquivo Selado — Nível Omega //</div>
+    <div class="ss-title">Soul Society</div>
+    <div class="ss-sub">Clã Gojo · Sociedade da Alma</div>
+  </div>
+
+  <div class="tags-row">
+    <span class="itag hi">Classificação: Ômega</span>
+    <span class="itag hi">Status: Ativa</span>
+    <span class="itag">Sede: Não localizada</span>
+    <span class="itag">Membros confirmados: 10</span>
+    <span class="itag">Conhecimento externo: Inexistente</span>
+  </div>
+
+  <!-- O QUE É -->
+  <div class="slabel" style="margin-top:36px">O que é a Soul Society</div>
+  <div class="acc">
+    <div class="acc-h" onclick="toggleAcc(this)"><span class="acc-ico">▶</span><span class="acc-t">Origem e Natureza</span><span class="acc-m">Fundamentos</span></div>
+    <div class="acc-b">
+      <p>A Soul Society não é uma organização criada. É uma convergência — o nome dado ao momento em que os membros mais aberrantes do Clã Gojo reconheceram uns aos outros não como aliados, mas como categorias. Cada membro é uma anomalia irrepetível que escapa da lógica convencional do Jujutsu.</p>
+      <p>O Clã Gojo é publicamente reconhecido pelo Infinito e pelos Olhos do Céu. A Soul Society existe na camada abaixo disso — membros que nasceram dentro do clã mas pertencem a algo anterior ao clã, algo que o clã apenas canalizou por acidente genético ou por vontade deliberada de Lys.</p>
+      <p>Não há hierarquia formal. Há função. Cada membro ocupa um papel que não pode ser preenchido por ninguém mais. A organização opera por convergência de interesses — e por um reconhecimento mútuo de que só aqui existe um igual.</p>
+    </div>
+  </div>
+  <div class="acc">
+    <div class="acc-h" onclick="toggleAcc(this)"><span class="acc-ico">▶</span><span class="acc-t">Papel Político no Clã Gojo</span><span class="acc-m">Estrutura interna</span></div>
+    <div class="acc-b">
+      <p>Para os anciãos do Clã Gojo, a Soul Society não existe. Nenhum registro, nenhuma menção, nenhum rumor confirmado. Lys Gojo é a única ponte — e ela não faz essa ponte voluntariamente. A Soul Society não responde ao Clã Gojo. O Clã Gojo, no plano de longo prazo de Lys, eventualmente responderá à Soul Society.</p>
+      <p>O projeto real é uma dinastia espiritual: a unificação dos grandes clãs sob uma nova ordem, com a Soul Society como seu núcleo invisível. Os clãs pensarão que estão governando. Não estarão. Estarão sendo sustentados por uma estrutura que eles nunca enxergarão e que não podem destruir porque não sabem onde está.</p>
+    </div>
+  </div>
+
+  <div class="udiv"></div>
+
+  <!-- DOUTRINA -->
+  <div class="slabel">Os Quatro Pilares — Doutrina Interna</div>
+  <div class="pillar-grid">
+    <div class="pillar"><div class="pillar-n">I</div><div class="pillar-t">Existência como Prova</div><div class="pillar-d">Nenhum membro precisa justificar o que é. Sua existência já é argumento suficiente. Poder não se explica — se demonstra.</div></div>
+    <div class="pillar"><div class="pillar-n">II</div><div class="pillar-t">Sem Lealdade à Forma</div><div class="pillar-d">Clãs, escolas, regras do Jujutsu — estruturas temporárias. A Soul Society serve a algo anterior. Nenhuma instituição merece lealdade incondicional.</div></div>
+    <div class="pillar"><div class="pillar-n">III</div><div class="pillar-t">O Segredo é a Arma</div><div class="pillar-d">A organização é invisível por escolha. O desconhecido é o campo de batalha mais favorável. Ninguém combate o que não consegue nomear.</div></div>
+    <div class="pillar"><div class="pillar-n">IV</div><div class="pillar-t">Convergência, não Hierarquia</div><div class="pillar-d">Não há líder absoluto. Há papéis. Cada membro é insubstituível em sua função. A força vem da complementaridade.</div></div>
+  </div>
+
+  <div class="udiv"></div>
+
+  <!-- MEMBROS -->
+  <div class="slabel">Membros Confirmados</div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px" id="mc-filters">
+    <button class="mc-filter on" onclick="filterMC('all',this)">Todos</button>
+    <button class="mc-filter" onclick="filterMC('combate',this)">Combate</button>
+    <button class="mc-filter" onclick="filterMC('suporte',this)">Suporte</button>
+    <button class="mc-filter" onclick="filterMC('operacao',this)">Operação</button>
+    <button class="mc-filter" onclick="filterMC('anomalia',this)">Anomalia</button>
+  </div>
+
+  <!-- ① YAGAMI GOJO — highlighted (esta ficha) -->
+  <div class="mcard" data-cat="anomalia combate" style="border-color:rgba(80,200,240,0.3)">
+    <div class="mcard-head" onclick="toggleMC(this)" style="background:rgba(80,200,240,0.06)">
+      <div class="mcard-num" style="color:var(--cyan2)">01</div>
+      <div class="mcard-info"><div class="mcard-name" style="color:var(--cyan2)">Yagami Gojo</div><div class="mcard-alias">O Arauto do Purgatório · O Abismo com Forma</div></div>
+      <div class="mcard-tags"><span class="mctag hi">Esta Ficha</span><span class="mctag red">Anomalia</span></div>
+      <div class="mcard-chev">▶</div>
+    </div>
+    <div class="mcard-body">
+      <div class="mcard-top">
+        <div class="mcard-photo"><img src="membros/yagami.png" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="mp-fallback"><div class="mp-k">獄</div><div class="mp-t">yagami</div></div></div>
+        <div class="mcard-grid">
+          <div class="mcard-col">
+            <div class="mcard-field"><span class="mf-l">Status</span><span class="mf-v cyan">Ativo · Campo livre</span></div>
+            <div class="mcard-field"><span class="mf-l">Técnica</span><span class="mf-v">獄口 Gokuguchi — Boca do Abismo</span></div>
+            <div class="mcard-field"><span class="mf-l">Grau</span><span class="mf-v red">Grau Especial · Não catalogado</span></div>
+            <div class="mcard-field"><span class="mf-l">Função na SS</span><span class="mf-v">Executor Final · Sentença de Takero</span></div>
+          </div>
+          <div class="mcard-col">
+            <div class="mcard-field"><span class="mf-l">Ameaça</span><span class="mf-v red">Existencial</span></div>
+            <div class="mcard-field"><span class="mf-l">EA Base</span><span class="mf-v">300 · Primordial</span></div>
+            <div class="mcard-field"><span class="mf-l">Capacidade única</span><span class="mf-v red">Confinamento eterno no Abismo</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="mcard-lore">Não foi gerado — foi invocado pela natureza. Quando ele nasceu, maldições ao redor do mundo sentiram. O Purgatório não o reconhece como usuário: reconhece como extensão de si mesmo. Sua função dentro da Soul Society é a única que nenhum outro membro pode cumprir: selar Takero Zenin não em morte, mas em desaparecimento permanente — dentro do Abismo, de onde nenhum ciclo de reencarnação, nenhuma técnica de ressurreição e nenhum poder externo alcança.</div>
+    </div>
+  </div>
+
+  <!-- ② JOHN ZENIN -->
+  <div class="mcard" data-cat="anomalia combate">
+    <div class="mcard-head" onclick="toggleMC(this)">
+      <div class="mcard-num">02</div>
+      <div class="mcard-info"><div class="mcard-name">John Zenin</div><div class="mcard-alias">A Presença que Não Deveria Ser</div></div>
+      <div class="mcard-tags"><span class="mctag red">Anomalia</span><span class="mctag">Combate</span></div>
+      <div class="mcard-chev">▶</div>
+    </div>
+    <div class="mcard-body">
+      <div class="mcard-top">
+        <div class="mcard-photo"><img src="membros/john.png" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="mp-fallback"><div class="mp-k">恐</div><div class="mp-t">john</div></div></div>
+        <div class="mcard-grid">
+          <div class="mcard-col">
+            <div class="mcard-field"><span class="mf-l">Status</span><span class="mf-v cyan">Ativo · Localização desconhecida</span></div>
+            <div class="mcard-field"><span class="mf-l">Técnica</span><span class="mf-v">Inata do Medo — sem nome catalogado</span></div>
+            <div class="mcard-field"><span class="mf-l">Grau</span><span class="mf-v red">Grau Especial · Inclassificável</span></div>
+            <div class="mcard-field"><span class="mf-l">Função na SS</span><span class="mf-v">Dissuasão Absoluta · Supressão de Campo</span></div>
+          </div>
+          <div class="mcard-col">
+            <div class="mcard-field"><span class="mf-l">Ameaça</span><span class="mf-v red">Existencial</span></div>
+            <div class="mcard-field"><span class="mf-l">Natureza</span><span class="mf-v">Creepypasta · instinto primário reescrito</span></div>
+            <div class="mcard-field"><span class="mf-l">Efeito de campo</span><span class="mf-v">Reescreve instinto de sobrevivência</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="mcard-lore">De linhagem Zenin, alma Gojo — a contradição que o define. Sua técnica inata não tem nome formal porque não é técnica: ele simplesmente é o medo. A presença física de John reescreve o instinto de sobrevivência de qualquer ser consciente ao redor. Maldições param. Feiticeiros treinados recuam sem processar o motivo. Alvos morrem antes de entenderem o que os matou. Uma aberração que o mundo Jujutsu nunca catalogou.</div>
+    </div>
+  </div>
+
+  <!-- ③ KAITO GOJO -->
+  <div class="mcard" data-cat="combate operacao">
+    <div class="mcard-head" onclick="toggleMC(this)">
+      <div class="mcard-num">03</div>
+      <div class="mcard-info"><div class="mcard-name">Kaito Gojo</div><div class="mcard-alias">O Prometido · O Geômetra do Vazio</div></div>
+      <div class="mcard-tags"><span class="mctag">Combate</span><span class="mctag">Operação</span></div>
+      <div class="mcard-chev">▶</div>
+    </div>
+    <div class="mcard-body">
+      <div class="mcard-top">
+        <div class="mcard-photo"><img src="membros/kaito.png" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="mp-fallback"><div class="mp-k">反</div><div class="mp-t">kaito</div></div></div>
+        <div class="mcard-grid">
+          <div class="mcard-col">
+            <div class="mcard-field"><span class="mf-l">Status</span><span class="mf-v cyan">Ativo · Campo livre</span></div>
+            <div class="mcard-field"><span class="mf-l">Técnica</span><span class="mf-v">反物質 Han-busshitsu — Antimatéria</span></div>
+            <div class="mcard-field"><span class="mf-l">Campo</span><span class="mf-v">対消滅界 — aniquilação passiva em raio constante</span></div>
+            <div class="mcard-field"><span class="mf-l">Grau</span><span class="mf-v red">Grau Especial · Não registrado</span></div>
+          </div>
+          <div class="mcard-col">
+            <div class="mcard-field"><span class="mf-l">Função na SS</span><span class="mf-v">Negação de Campo · Execução · Estratégia</span></div>
+            <div class="mcard-field"><span class="mf-l">Habilidade única</span><span class="mf-v red">Intocável por definição física</span></div>
+            <div class="mcard-field"><span class="mf-l">Kogan</span><span class="mf-v">Ponto Zero — ignora domínios e reversões</span></div>
+            <div class="mcard-field"><span class="mf-l">Relação com Lys</span><span class="mf-v">Criado por ela · herdeiro planejado</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="mcard-lore">Nasceu enxergando antimatéria onde outros enxergam espaço vazio. O Campo de Aniquilação não é técnica — é o que ele é. Intocável por definição física. Frio por escolha. Quando a organização precisa de alguém que o inimigo simplesmente não consiga alcançar — é Kaito que está lá, parado, esperando.</div>
+    </div>
+  </div>
+
+  <!-- ④ QUATRO -->
+  <div class="mcard" data-cat="anomalia suporte">
+    <div class="mcard-head" onclick="toggleMC(this)">
+      <div class="mcard-num">04</div>
+      <div class="mcard-info"><div class="mcard-name">Quatro</div><div class="mcard-alias">Maldição · O Arquivo de Carne · Shi</div></div>
+      <div class="mcard-tags"><span class="mctag red">Anomalia</span><span class="mctag">Suporte</span></div>
+      <div class="mcard-chev">▶</div>
+    </div>
+    <div class="mcard-body">
+      <div class="mcard-top">
+        <div class="mcard-photo"><img src="membros/quatro.png" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="mp-fallback"><div class="mp-k">四</div><div class="mp-t">quatro</div></div></div>
+        <div class="mcard-grid">
+          <div class="mcard-col">
+            <div class="mcard-field"><span class="mf-l">Status</span><span class="mf-v cyan">Ativo · Campo livre</span></div>
+            <div class="mcard-field"><span class="mf-l">Grau</span><span class="mf-v red">Grau Especial · Indefinido</span></div>
+            <div class="mcard-field"><span class="mf-l">Técnica</span><span class="mf-v">Maldição — Bruxaria, Ocultismo, Alquimia</span></div>
+            <div class="mcard-field"><span class="mf-l">Selagem</span><span class="mf-v">烙印 Rakuin — sistema de Estigmas</span></div>
+          </div>
+          <div class="mcard-col">
+            <div class="mcard-field"><span class="mf-l">Shikigami</span><span class="mf-v">Murakusa — o cão de carne podre</span></div>
+            <div class="mcard-field"><span class="mf-l">Natureza física</span><span class="mf-v red">4 corpos em 1 · Shi, o único que respirou</span></div>
+            <div class="mcard-field"><span class="mf-l">Função na SS</span><span class="mf-v">Guerra de Atrito · Controle de Campo</span></div>
+            <div class="mcard-field"><span class="mf-l">EA Máximo</span><span class="mf-v">Ilimitado</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="mcard-lore">Nasceu como o quarto experimento de um feiticeiro sem nome — Shi, o número do azar, o único que respirou. Seus braços vieram de "O Que Vê". Suas pernas, de "O Que Não Fala". Os dedos invertidos, de "O Que Implora". Três natimortos incorporados ao único sobrevivente, suturados com lâminas de obsidiana e agulhas de osso. O corpo aceitou tudo sem rejeição. Quatro não possui uma técnica amaldiçoada — ele é a técnica. EA ilimitada. Pele cinza. Olhos negros com pupilas roxas. Monossilábico. Inocente mas não burro.</div>
+    </div>
+  </div>
+
+  <!-- ⑤ SABLE -->
+  <div class="mcard" data-cat="operacao suporte">
+    <div class="mcard-head" onclick="toggleMC(this)">
+      <div class="mcard-num">05</div>
+      <div class="mcard-info"><div class="mcard-name">Sable Gojo</div><div class="mcard-alias">A Sombra Cartógrafa · O Olho que Não Aparece</div></div>
+      <div class="mcard-tags"><span class="mctag">Operação</span><span class="mctag">Suporte</span></div>
+      <div class="mcard-chev">▶</div>
+    </div>
+    <div class="mcard-body">
+      <div class="mcard-top">
+        <div class="mcard-photo"><img src="membros/sable.png" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="mp-fallback"><div class="mp-k">影</div><div class="mp-t">sable</div></div></div>
+        <div class="mcard-grid">
+          <div class="mcard-col">
+            <div class="mcard-field"><span class="mf-l">Status</span><span class="mf-v cyan">Ativa · Localização variável</span></div>
+            <div class="mcard-field"><span class="mf-l">Técnica</span><span class="mf-v">影図 Kage-zu — Cartografia de Sombras</span></div>
+            <div class="mcard-field"><span class="mf-l">Função na SS</span><span class="mf-v">Inteligência · Infiltração · Mapeamento</span></div>
+          </div>
+          <div class="mcard-col">
+            <div class="mcard-field"><span class="mf-l">Ameaça</span><span class="mf-v">Alta — invisível antes do golpe</span></div>
+            <div class="mcard-field"><span class="mf-l">Capacidade única</span><span class="mf-v">Viaja e se comunica via sombras projetadas</span></div>
+            <div class="mcard-field"><span class="mf-l">Grau</span><span class="mf-v red">Grau Especial · Não reconhecida</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="mcard-lore">Sable não combate como os outros — ela não precisa. Sua técnica converte qualquer sombra em um ponto de entrada ou saída. Mais do que isso: ela pode enviar percepção — visão e audição — através das sombras, transformando paredes, tetos e chãos em uma rede de câmeras vivas. A Soul Society sabe o que sabe porque Sable esteve em todos os lugares onde ninguém notou. Seus alvos costumam descobrir que foram monitorados apenas quando já não há nada a fazer com essa informação.</div>
+    </div>
+  </div>
+
+  <!-- ⑥ SOUSUKE -->
+  <div class="mcard" data-cat="anomalia operacao">
+    <div class="mcard-head" onclick="toggleMC(this)">
+      <div class="mcard-num">06</div>
+      <div class="mcard-info"><div class="mcard-name">Sousuke</div><div class="mcard-alias">O Parasita · Aquele que Opera Abaixo da Superfície</div></div>
+      <div class="mcard-tags"><span class="mctag red">Anomalia</span><span class="mctag">Operação</span></div>
+      <div class="mcard-chev">▶</div>
+    </div>
+    <div class="mcard-body">
+      <div class="mcard-top">
+        <div class="mcard-photo"><img src="membros/sousuke.png" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="mp-fallback"><div class="mp-k">寄</div><div class="mp-t">sousuke</div></div></div>
+        <div class="mcard-grid">
+          <div class="mcard-col">
+            <div class="mcard-field"><span class="mf-l">Status</span><span class="mf-v cyan">Ativo · Kyoto — vetor em expansão</span></div>
+            <div class="mcard-field"><span class="mf-l">Técnica</span><span class="mf-v">寄生術式 Kisei Jutsu — Arte do Parasitismo</span></div>
+            <div class="mcard-field"><span class="mf-l">Origem</span><span class="mf-v">Übermensch · Síntese Kamo + Zenin</span></div>
+            <div class="mcard-field"><span class="mf-l">Grau</span><span class="mf-v red">Grau Especial · Protocolo de Extinção ativo</span></div>
+          </div>
+          <div class="mcard-col">
+            <div class="mcard-field"><span class="mf-l">Função na SS</span><span class="mf-v">Infiltração · Controle de Campo · Guerra Biológica</span></div>
+            <div class="mcard-field"><span class="mf-l">Intimidação</span><span class="mf-v red">+20 · +5d20 — Reconhecimento Primordial</span></div>
+            <div class="mcard-field"><span class="mf-l">Parasitados</span><span class="mf-v">Zumbi → Gasha → Tirano · ilimitados</span></div>
+            <div class="mcard-field"><span class="mf-l">Kill switch</span><span class="mf-v red">Morte física → emerge Las Plagas (Grau Especial)</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="mcard-lore">Sousuke não foi gerado — foi cultivado. Amon Kamo, consumido pelo luto e pela obsessão, fundiu material genético Zenin, o molde de Maki Kamo, o veneno de Naizen e uma maldição de Grau Especial nascida do medo coletivo de contaminação. O resultado rejeitou a alma humana que tentaram inserir nele e emergiu com algo próprio: curiosidade gentil, nenhuma afetividade, e a presença passiva de uma força da natureza. Sousuke não destrói — a destruição acontece ao redor dele como consequência natural. Takero Zenin foi pessoalmente investigar, ficou parado no limite do perímetro, e voltou sem travar combate. Nunca arquivou o relatório.</div>
+    </div>
+  </div>
+
+  <!-- ⑦ FOO -->
+  <div class="mcard" data-cat="anomalia combate">
+    <div class="mcard-head" onclick="toggleMC(this)">
+      <div class="mcard-num">07</div>
+      <div class="mcard-info"><div class="mcard-name">Foo</div><div class="mcard-alias">O Maior Fazendeiro da História · O Ceifador</div></div>
+      <div class="mcard-tags"><span class="mctag red">Anomalia</span><span class="mctag">Combate</span></div>
+      <div class="mcard-chev">▶</div>
+    </div>
+    <div class="mcard-body">
+      <div class="mcard-top">
+        <div class="mcard-photo"><img src="membros/foo.png" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="mp-fallback"><div class="mp-k">農</div><div class="mp-t">foo</div></div></div>
+        <div class="mcard-grid">
+          <div class="mcard-col">
+            <div class="mcard-field"><span class="mf-l">Status</span><span class="mf-v cyan">Ativo · Campo livre</span></div>
+            <div class="mcard-field"><span class="mf-l">Técnica</span><span class="mf-v">固有技法・農場掌握 — Domínio da Fazenda</span></div>
+            <div class="mcard-field"><span class="mf-l">Semente</span><span class="mf-v">Toshigami · raízes douradas até as extremidades</span></div>
+            <div class="mcard-field"><span class="mf-l">Grau</span><span class="mf-v red">Grau Especial · Indefinido</span></div>
+          </div>
+          <div class="mcard-col">
+            <div class="mcard-field"><span class="mf-l">Função na SS</span><span class="mf-v">Destruição Estrutural · Controle de Campo</span></div>
+            <div class="mcard-field"><span class="mf-l">Dano base</span><span class="mf-v">6d6+2d4+5 · escala com HP do alvo</span></div>
+            <div class="mcard-field"><span class="mf-l">Origem</span><span class="mf-v red">Família Saibaishin · Semente transferida no parto</span></div>
+            <div class="mcard-field"><span class="mf-l">Passiva</span><span class="mf-v">Recupera EA em cada golpe acertado</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="mcard-lore">Foo não deveria existir da forma que existe. A Semente de Toshigami transferiu-se para ele de forma completa no momento do parto, matando a mãe no processo. O Domínio da Fazenda não trata de plantas — trata de ciclos. Planta qualquer coisa: técnicas, armas, conceitos. Dentro da Soul Society, é o ciclo final — quando algo precisa parar de existir de forma estrutural e permanente, é Foo que planta o fim e espera ele brotar. A fazenda prospera quando as coisas morrem na hora certa.</div>
+    </div>
+  </div>
+
+  <!-- ⑧ KAORU -->
+  <div class="mcard" data-cat="combate operacao">
+    <div class="mcard-head" onclick="toggleMC(this)">
+      <div class="mcard-num">08</div>
+      <div class="mcard-info"><div class="mcard-name">Kaoru</div><div class="mcard-alias">O Carniceiro Silencioso · Grau Único</div></div>
+      <div class="mcard-tags"><span class="mctag">Combate</span><span class="mctag">Operação</span></div>
+      <div class="mcard-chev">▶</div>
+    </div>
+    <div class="mcard-body">
+      <div class="mcard-top">
+        <div class="mcard-photo"><img src="membros/kaoru.png" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="mp-fallback"><div class="mp-k">無</div><div class="mp-t">kaoru</div></div></div>
+        <div class="mcard-grid">
+          <div class="mcard-col">
+            <div class="mcard-field"><span class="mf-l">Status</span><span class="mf-v cyan">Ativo · Campo livre</span></div>
+            <div class="mcard-field"><span class="mf-l">Técnica</span><span class="mf-v">無音 Muon — Ausência de Som</span></div>
+            <div class="mcard-field"><span class="mf-l">Função na SS</span><span class="mf-v">Eliminação · Remoção de Obstáculos</span></div>
+          </div>
+          <div class="mcard-col">
+            <div class="mcard-field"><span class="mf-l">Grau</span><span class="mf-v red">Grau Especial · Sem registro em lugar algum</span></div>
+            <div class="mcard-field"><span class="mf-l">Histórico</span><span class="mf-v">Zero missões falhas · Zero testemunhas</span></div>
+            <div class="mcard-field"><span class="mf-l">Natureza</span><span class="mf-v">Apaga o som da própria existência em campo</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="mcard-lore">Kaoru não tem registro em nenhum colégio Jujutsu. Não existe em nenhum banco de dados de clã. Quando a Soul Society precisa que algo desapareça — uma pessoa, uma informação, um testemunho — ela manda Kaoru. Sua técnica remove o som de tudo que ele toca, incluindo a si mesmo. Em combate, ele é apenas resultado. A única razão pela qual a Soul Society sabe que ele existe é porque Lys o encontrou antes que qualquer clã o catalogasse. Ele recusou o recrutamento duas vezes. Na terceira, simplesmente apareceu.</div>
+    </div>
+  </div>
+
+  <!-- ⑨ VÉIO -->
+  <div class="mcard" data-cat="anomalia suporte">
+    <div class="mcard-head" onclick="toggleMC(this)">
+      <div class="mcard-num">09</div>
+      <div class="mcard-info"><div class="mcard-name">Véio</div><div class="mcard-alias">O Ancião Sem Idade · A Memória Viva</div></div>
+      <div class="mcard-tags"><span class="mctag red">Anomalia</span><span class="mctag">Suporte</span></div>
+      <div class="mcard-chev">▶</div>
+    </div>
+    <div class="mcard-body">
+      <div class="mcard-top">
+        <div class="mcard-photo"><img src="membros/veio.png" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="mp-fallback"><div class="mp-k">記</div><div class="mp-t">veio</div></div></div>
+        <div class="mcard-grid">
+          <div class="mcard-col">
+            <div class="mcard-field"><span class="mf-l">Status</span><span class="mf-v cyan">Ativo · Sede da SS</span></div>
+            <div class="mcard-field"><span class="mf-l">Técnica</span><span class="mf-v">記憶食 Kioku-shoku — Devorador de Memórias</span></div>
+            <div class="mcard-field"><span class="mf-l">Função na SS</span><span class="mf-v">Arquivo Vivo · Repositório de Segredos</span></div>
+          </div>
+          <div class="mcard-col">
+            <div class="mcard-field"><span class="mf-l">Grau</span><span class="mf-v red">Grau Especial · Impossível de datar</span></div>
+            <div class="mcard-field"><span class="mf-l">Capacidade única</span><span class="mf-v">Absorve e revive memórias de qualquer ser vivo</span></div>
+            <div class="mcard-field"><span class="mf-l">Condição</span><span class="mf-v red">Não envelhece. Motivo desconhecido.</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="mcard-lore">Véio tem aparência de homem de 60 anos que não envelhece há décadas — ninguém sabe quantas. Sua técnica absorve memórias de qualquer ser tocado: não cópias — as memórias originais, arrancadas e transferidas. O alvo esquece. Véio lembra. Sabe o que o Clã Zenin esconde. Sabe o que o Clã Kamo enterrou. A Soul Society não seria metade do que é sem o que Véio contém.</div>
+    </div>
+  </div>
+
+  <!-- ⑩ NAOMI -->
+  <div class="mcard" data-cat="combate anomalia">
+    <div class="mcard-head" onclick="toggleMC(this)">
+      <div class="mcard-num">10</div>
+      <div class="mcard-info"><div class="mcard-name">Naomi Gojo</div><div class="mcard-alias">A Inversão · O Que Não Pode Ser Curado</div></div>
+      <div class="mcard-tags"><span class="mctag">Combate</span><span class="mctag red">Anomalia</span></div>
+      <div class="mcard-chev">▶</div>
+    </div>
+    <div class="mcard-body">
+      <div class="mcard-top">
+        <div class="mcard-photo"><img src="membros/naomi.png" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="mp-fallback"><div class="mp-k">逆</div><div class="mp-t">naomi</div></div></div>
+        <div class="mcard-grid">
+          <div class="mcard-col">
+            <div class="mcard-field"><span class="mf-l">Status</span><span class="mf-v cyan">Ativa · Campo livre</span></div>
+            <div class="mcard-field"><span class="mf-l">Técnica</span><span class="mf-v">逆治 Gyaku-ji — Cura Invertida Permanente</span></div>
+            <div class="mcard-field"><span class="mf-l">Função na SS</span><span class="mf-v">Negar recursos ao inimigo · Contra-cura</span></div>
+          </div>
+          <div class="mcard-col">
+            <div class="mcard-field"><span class="mf-l">Grau</span><span class="mf-v red">Grau Especial · Risco Alto</span></div>
+            <div class="mcard-field"><span class="mf-l">Anomalia</span><span class="mf-v">Inata de cura que funciona ao contrário em tudo</span></div>
+            <div class="mcard-field"><span class="mf-l">Condição passiva</span><span class="mf-v red">Não pode ser curada por nenhum meio</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="mcard-lore">Naomi nasceu com a técnica de cura dos Gojo — mas ela funciona ao contrário. Ao tocar qualquer tecido vivo com intenção de curar, ela desfaz: regeneração regride, ferimentos que estavam fechando reabrem, e qualquer técnica de reversão se converte em dano adicional. O efeito se aplica passivamente a ela mesma — nenhum feiticeiro pode curar Naomi. Descobriu aos 8 anos quando curou um ferimento no braço da tutora e ela perdeu o membro. Lys a encontrou antes que o clã decidisse o que fazer com ela.</div>
+    </div>
+  </div>
+  <div class="udiv"></div>
+
+  <!-- OBJETIVO MACRO -->
+  <div class="slabel">Objetivos de Longo Prazo</div>
+  <div class="acc">
+    <div class="acc-h" onclick="toggleAcc(this)"><span class="acc-ico">▶</span><span class="acc-t">A Dinastia Espiritual</span><span class="acc-m">Projeto Macro</span></div>
+    <div class="acc-b">
+      <p>O objetivo não é poder visível. Poder visível atrai resistência. O objetivo é uma estrutura invisível que sustenta todos os grandes clãs sem que eles saibam que estão sendo sustentados — e portanto controlados.</p>
+      <p>A Soul Society pretende submeter os clãs maiores a uma convergência forçada: não pela conquista militar, mas pelo posicionamento estratégico. Quando os momentos críticos chegarem — crises de sucessão, guerras entre clãs, ameaças externas — a Soul Society já estará nos pontos certos, com os recursos certos, com as informações certas.</p>
+      <p>Os clãs acreditarão que escolheram se aliar. Não saberão que as opções disponíveis foram as únicas deixadas abertas.</p>
+    </div>
+  </div>
+  <div class="acc">
+    <div class="acc-h" onclick="toggleAcc(this)"><span class="acc-ico">▶</span><span class="acc-t">A Sentença de Takero Zenin</span><span class="acc-m">Operação prioritária</span></div>
+    <div class="acc-b">
+      <p>Takero Zenin é o obstáculo mais imediato ao projeto maior. Ele é intocável pelos meios convencionais — nenhum feiticeiro pode garantir que sua morte seja permanente, e a linhagem Zenin tem meios de preservação espiritual que a maioria desconhece.</p>
+      <p>Yagami Gojo é a solução. O Abismo que ele carrega é o único lugar no plano espiritual de onde nenhuma alma retorna — nem pelo ciclo de reencarnação, nem por técnicas de ressurreição, nem por intervenção externa. Selar Takero dentro do Abismo não é uma execução. É um desaparecimento permanente de tudo que ele é, foi e poderia ser.</p>
+      <p>Esta operação aguarda o fortalecimento de Yagami. Quando ele estiver pronto, Takero Zenin deixará de existir em qualquer sentido que importe.</p>
+    </div>
+  </div>
+
+  <div class="udiv"></div>
+
+  <!-- TIMELINE -->
+  <div class="slabel">Linha do Tempo — Eventos Internos</div>
+  <div class="tl">
+    <div class="tl-i">
+      <div class="tl-dot"></div>
+      <div class="tl-label">Antecedente · Fundação</div>
+      <div class="tl-text">Lys Gojo, em isolamento, escreve os fundamentos do que viria a ser a Soul Society. Não como manifesto — como cálculo.</div>
+    </div>
+    <div class="tl-i">
+      <div class="tl-dot"></div>
+      <div class="tl-label">Incorporação · John Zenin</div>
+      <div class="tl-text">Lys identifica John Zenin como a anomalia que buscava: algo cujo poder não pode ser sistematizado, treinado ou replicado. Ele é recrutado — ou reconhecido. A distinção é irrelevante.</div>
+    </div>
+    <div class="tl-i">
+      <div class="tl-dot"></div>
+      <div class="tl-label">Nascimento · Yagami Gojo</div>
+      <div class="tl-text">O equilíbrio de energia amaldiçoada do mundo estremece por uma fração de segundo. Lys cai de joelhos. O terceiro pilar havia chegado — e com ele, a confirmação de que o projeto era viável.</div>
+    </div>
+    <div class="tl-i">
+      <div class="tl-dot"></div>
+      <div class="tl-label">Presente · Posicionamento</div>
+      <div class="tl-text">Yagami é enviado ao Colégio de Kyoto. A organização aguarda. O mundo Jujutsu não sabe que o relógio está correndo.</div>
+    </div>
+  </div>
+
+  <div class="udiv"></div>
+  <div style="text-align:center;padding:10px 0 20px">
+    <div class="ss-classified" style="opacity:.25">// fim do arquivo · acesso acima de grau 4 requer autorização de Lys Gojo //</div>
+  </div>
+
+</div>
+</div><!-- /page-ss -->
+
+<script>
+function goTab(page, btn){
+  if (document.getElementById('page-'+page).classList.contains('on')) return;
+
+  const canvas   = document.getElementById('pt-canvas');
+  const scanEl   = document.getElementById('pt-scan');
+  const cL       = document.getElementById('pt-corners-l');
+  const cR       = document.getElementById('pt-corners-r');
+  const incoming = document.getElementById('page-'+page);
+  const outgoing = document.querySelector('.page.on');
+
+  const vh = window.innerHeight;
+  const vw = window.innerWidth;
+  const DURATION = 500;
+  let startTs = null;
+  let done    = false;
+
+  function ease(t){ return t<0.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2; }
+
+  // ── Step 1: screenshot the current page onto canvas ──
+  // We use html2canvas-free approach: draw via CSS paint into an offscreen canvas.
+  // Since html2canvas isn't available, we use a simpler trick:
+  // the canvas just shows the bg color — the outgoing page stays in normal flow
+  // BEHIND the canvas overlay, the incoming page swaps in normal flow,
+  // and the canvas clips away top-down revealing the incoming page.
+
+  // Set canvas size
+  canvas.width  = vw;
+  canvas.height = vh;
+  const ctx = canvas.getContext('2d');
+
+  // Fill canvas with bg color (hides the incoming page underneath during swap)
+  ctx.fillStyle = '#05060a';
+  ctx.fillRect(0, 0, vw, vh);
+
+  // Show canvas overlay and scan
+  canvas.style.display = 'block';
+  scanEl.style.display = 'block';
+  cL.style.display     = 'block';
+  cR.style.display     = 'block';
+  scanEl.style.transform = 'translateY(-3px)';
+  cL.style.transform     = 'translateY(-12px)';
+  cR.style.transform     = 'translateY(-12px)';
+
+  // ── Step 2: swap page content immediately (hidden under canvas) ──
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  outgoing.classList.remove('on');
+  incoming.classList.add('on');
+  window.scrollTo(0, 0);
+
+  // ── Step 3: animate canvas clip erasing from top down ──
+  // Each frame we clear a horizontal strip from the top,
+  // revealing the real incoming page underneath.
+  function frame(ts){
+    if (done) return;
+    if (!startTs) startTs = ts;
+    const raw = Math.min((ts - startTs) / DURATION, 1);
+    const t   = ease(raw);
+    const y   = Math.round(t * vh);
+
+    // Erase the top `y` pixels of the canvas (revealing the real page)
+    ctx.clearRect(0, 0, vw, y);
+
+    // Scan line rides the leading edge
+    scanEl.style.transform = `translateY(${y - 2}px)`;
+    cL.style.transform     = `translateY(${y - 12}px)`;
+    cR.style.transform     = `translateY(${y - 12}px)`;
+
+    if (raw < 1){
+      requestAnimationFrame(frame);
+      return;
+    }
+
+    // Done — hide all transition elements
+    done = true;
+    canvas.style.display = 'none';
+    scanEl.style.display = 'none';
+    cL.style.display     = 'none';
+    cR.style.display     = 'none';
+    ctx.clearRect(0, 0, vw, vh);
+  }
+
+  requestAnimationFrame(frame);
+}
+
+function toggleTech(head){
+  head.classList.toggle('open');
+  head.nextElementSibling.classList.toggle('open');
+}
+function toggleMC(head){
+  head.classList.toggle('open');
+  head.nextElementSibling.classList.toggle('open');
+}
+
+/* ── Ability desktop icons ── */
+let _activeAb = null;
+function selectAbility(icon, panelId) {
+  const panel = document.getElementById(panelId);
+  const alreadyOpen = panel.classList.contains('open');
+  document.querySelectorAll('.ab-detail-panel').forEach(p => p.classList.remove('open'));
+  document.querySelectorAll('.ab-icon').forEach(i => i.classList.remove('selected'));
+  if (!alreadyOpen) {
+    panel.classList.add('open');
+    icon.classList.add('selected');
+    _activeAb = panelId;
+  } else {
+    _activeAb = null;
+  }
+}
+
+/* ── Sub-card expand ── */
+function toggleSubCard(card) {
+  card.classList.toggle('open');
+}
+function filterMC(cat, btn){
+  document.querySelectorAll('.mc-filter').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.mcard').forEach(c=>{
+    if(cat==='all'){ c.classList.remove('hidden'); return; }
+    const cats = c.dataset.cat||'';
+    cats.includes(cat) ? c.classList.remove('hidden') : c.classList.add('hidden');
+  });
+}
+function toggleAcc(head){
+  head.classList.toggle('open');
+  head.nextElementSibling.classList.toggle('open');
+}
+</script>
+</body>
+</html>

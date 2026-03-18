@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kaito — 反物質</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600;900&family=Cinzel+Decorative:wght@900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080608;--s1:#0e0a12;--s2:#120e18;--s3:#160f1e;
+  --void:#6b21a8;--void2:#9333ea;--void3:#c084fc;--void4:#e9d5ff;
+  --vdim:rgba(147,51,234,0.12);--vglow:rgba(147,51,234,0.25);
+  --vb:rgba(107,33,168,0.3);--vb2:rgba(147,51,234,0.45);
+  --ink:#f0e8ff;--ink2:#c8b8e0;--muted:#6b5880;--dim:#3d2d54;
+  --mono:'Share Tech Mono',monospace;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --ui:'Cinzel',serif;--disp:'Cinzel Decorative',serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{background:var(--bg);color:var(--ink);font-family:var(--serif);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:
+  radial-gradient(ellipse 60% 40% at 50% -10%,rgba(107,33,168,.18) 0%,transparent 55%),
+  radial-gradient(ellipse 80% 60% at 0% 100%,rgba(107,33,168,.06) 0%,transparent 50%),
+  linear-gradient(180deg,#0c0810 0%,#080608 40%,#050408 100%);}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  background-size:200px;}
+#void-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;}
+#pt-canvas{position:fixed;inset:0;z-index:500;pointer-events:none;display:none;}
+#pt-scan{position:fixed;left:0;right:0;height:2px;z-index:501;pointer-events:none;display:none;top:0;
+  background:linear-gradient(90deg,transparent,rgba(147,51,234,.2) 10%,var(--void2) 35%,var(--void3) 50%,var(--void2) 65%,rgba(147,51,234,.2) 90%,transparent);
+  box-shadow:0 0 10px var(--void2),0 0 24px var(--vglow),0 1px 10px rgba(147,51,234,.3);}
+#pt-scan::after{content:'';position:absolute;left:0;right:0;top:2px;height:16px;background:linear-gradient(180deg,rgba(147,51,234,.1),transparent);}
+#pt-corners-l,#pt-corners-r{position:fixed;width:10px;height:10px;z-index:501;pointer-events:none;display:none;top:0;}
+#pt-corners-l{left:0;border-left:1px solid var(--void3);border-bottom:1px solid var(--void3);}
+#pt-corners-r{right:0;border-right:1px solid var(--void3);border-bottom:1px solid var(--void3);}
+.tab-bar{position:sticky;top:0;z-index:100;display:flex;background:rgba(8,6,8,.97);border-bottom:1px solid var(--vb2);backdrop-filter:blur(12px);box-shadow:0 2px 30px rgba(107,33,168,.15);}
+.tab-btn{flex:1;padding:16px 0;font-family:var(--mono);font-size:9px;letter-spacing:5px;text-transform:uppercase;background:none;border:none;cursor:pointer;color:var(--muted);transition:all .3s;border-bottom:2px solid transparent;}
+.tab-btn.on{color:var(--void3);border-bottom-color:var(--void2);}
+.tab-btn:hover:not(.on){color:var(--ink2);}
+.page{display:none;}.page.on{display:block;}
+.wrap{max-width:960px;margin:0 auto;padding:40px 28px 80px;position:relative;z-index:1;}
+.vdiv{display:flex;align-items:center;gap:16px;margin:28px 0 14px;}
+.vdiv::before,.vdiv::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--vb2),transparent);}
+.vdiv-text{font-family:var(--mono);font-size:8px;letter-spacing:6px;text-transform:uppercase;color:var(--void2);white-space:nowrap;}
+.vdiv:first-child{margin-top:0;}.vdiv+*{margin-top:0;}
+/* HERO */
+.hero{display:grid;grid-template-columns:260px 1fr;gap:40px;align-items:start;margin-bottom:32px;}
+@media(max-width:640px){.hero{grid-template-columns:1fr;}}
+.photo-frame{position:relative;aspect-ratio:2.5/4;border:1px solid var(--vb2);background:var(--s1);overflow:hidden;box-shadow:0 0 40px rgba(107,33,168,.2),inset 0 0 40px rgba(0,0,0,.5);}
+.photo-frame img{width:100%;height:100%;object-fit:cover;object-position:top;filter:grayscale(20%) contrast(1.1) brightness(.9);display:block;}
+.photo-fallback{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:linear-gradient(160deg,#0e0a14,#080608);}
+.photo-fallback .kanji{font-size:80px;color:rgba(147,51,234,.12);line-height:1;}
+.photo-fallback .ph-text{font-family:var(--mono);font-size:7px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
+.photo-frame::before{content:'';position:absolute;top:0;left:0;width:14px;height:14px;border-top:1px solid var(--void2);border-left:1px solid var(--void2);z-index:2;}
+.photo-frame::after{content:'';position:absolute;bottom:0;right:0;width:14px;height:14px;border-bottom:1px solid var(--void2);border-right:1px solid var(--void2);z-index:2;}
+.photo-void{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 110%,rgba(107,33,168,.3) 0%,transparent 60%);pointer-events:none;z-index:1;}
+.photo-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(0deg,rgba(8,6,8,.95),transparent);padding:12px 14px;z-index:2;}
+.ph-hud{display:flex;flex-wrap:wrap;gap:4px;}
+.ph-hud-tag{font-family:var(--mono);font-size:7px;letter-spacing:2px;text-transform:uppercase;padding:2px 7px;background:rgba(8,6,8,.8);color:rgba(192,132,252,.6);border:1px solid rgba(107,33,168,.3);}
+.ph-hud-tag.hi{color:var(--void3);border-color:var(--vb2);background:rgba(107,33,168,.1);}
+.hero-klass{font-family:var(--mono);font-size:8px;letter-spacing:5px;text-transform:uppercase;color:var(--muted);margin-bottom:18px;display:flex;align-items:center;gap:10px;}
+.hero-klass::after{content:'';flex:1;height:1px;background:var(--vb);}
+.hero-name{font-family:var(--disp);font-weight:900;font-size:clamp(26px,4.5vw,46px);letter-spacing:3px;color:var(--white);line-height:1.05;margin-bottom:8px;text-shadow:0 0 40px rgba(80,200,240,0.15);}
+.hero-kanji{font-family:var(--serif);font-size:13px;letter-spacing:4px;color:var(--void2);margin-bottom:6px;font-style:italic;opacity:.8;}
+.hero-epithet{font-size:15px;font-style:italic;line-height:2;color:var(--ink2);opacity:.7;margin-bottom:28px;border-left:2px solid var(--vb2);padding-left:18px;}
+.hero-tags{display:flex;flex-wrap:wrap;gap:6px;}
+.htag{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border:1px solid var(--vb);color:var(--muted);background:var(--s1);}
+.htag.hi{border-color:var(--vb2);color:var(--void3);background:var(--vdim);}
+/* PANELS */
+.stat-panel{border:1px solid var(--vb);background:var(--s1);padding:16px 20px;position:relative;overflow:hidden;}
+.stat-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--void2),transparent);opacity:.4;}
+.res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.res-card{border:1px solid var(--vb);background:var(--s2);padding:12px 16px;position:relative;text-align:center;}
+.res-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--void),transparent);opacity:.3;}
+.rc-label{font-family:var(--mono);font-size:8px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;}
+.rc-val{font-family:var(--disp);font-size:24px;color:var(--ink);font-weight:900;line-height:1;}
+.rc-val.v{color:var(--void3);}
+.rc-sub{font-family:var(--mono);font-size:8px;color:var(--muted);margin-top:6px;letter-spacing:1px;}
+.ea-bar-wrap{margin-top:10px;}
+.ea-bar-track{width:100%;height:2px;background:rgba(107,33,168,.1);border:1px solid rgba(107,33,168,.15);}
+.ea-bar-fill{height:100%;background:linear-gradient(90deg,rgba(107,33,168,.5),var(--void2));position:relative;}
+.ea-bar-fill::after{content:'';position:absolute;right:0;top:0;bottom:0;width:3px;background:var(--void3);box-shadow:0 0 6px var(--void2);}
+.ea-bar-labels{display:flex;justify-content:space-between;margin-top:3px;}
+/* ATTRS */
+.attr-block{display:flex;flex-direction:column;}
+.attr-row{display:flex;align-items:center;gap:14px;padding:7px 0;border-bottom:1px solid rgba(107,33,168,.1);}
+.attr-row:last-child{border-bottom:none;}
+.attr-name{font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);width:110px;flex-shrink:0;}
+.attr-track{display:flex;gap:4px;flex:1;}
+.attr-pip{width:18px;height:18px;border:1px solid rgba(107,33,168,.2);background:transparent;position:relative;}
+.attr-pip.f{background:rgba(107,33,168,.15);border-color:var(--vb2);}
+.attr-pip.f::after{content:'';position:absolute;inset:3px;background:var(--void2);opacity:.65;}
+.attr-num{font-family:var(--disp);font-size:18px;color:var(--ink);width:28px;text-align:right;}
+.attr-num.hi{color:var(--void3);}
+/* ABILITY ICONS */
+.ab-desktop{display:grid;grid-template-columns:repeat(auto-fill,minmax(105px,1fr));gap:8px;margin-bottom:4px;}
+.ab-icon{display:flex;flex-direction:column;align-items:center;padding:10px 8px 8px;border:1px solid var(--vb);background:var(--s2);cursor:pointer;transition:all .2s;text-align:center;user-select:none;}
+.ab-icon:hover{background:var(--vdim);border-color:var(--vb2);}
+.ab-icon.selected{background:rgba(107,33,168,.15);border-color:var(--vb2);box-shadow:0 0 16px rgba(107,33,168,.2);}
+.ab-icon-glyph{font-size:22px;line-height:1;margin-bottom:7px;filter:drop-shadow(0 0 6px rgba(147,51,234,.3));}
+.ab-icon-label{font-family:var(--mono);font-size:7.5px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;line-height:1.4;}
+.ab-icon.selected .ab-icon-label{color:var(--void3);}
+.ab-icon-type{font-family:var(--mono);font-size:6px;letter-spacing:1px;color:rgba(147,51,234,.35);margin-top:3px;text-transform:uppercase;}
+.ab-detail-panel{display:block;max-height:0;overflow:hidden;background:var(--s2);border:0px solid var(--vb2);padding:0 18px;margin-bottom:0;position:relative;opacity:0;transition:max-height .35s cubic-bezier(.4,0,.2,1),padding .35s,margin-bottom .35s,border-width .35s,opacity .3s ease;}
+.ab-detail-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--void2),transparent);opacity:0;transition:opacity .3s ease .1s;}
+.ab-detail-panel.open{max-height:220px;border:1px solid var(--vb2);padding:16px 18px;margin-bottom:8px;opacity:1;}
+.ab-detail-panel.open::before{opacity:.5;}
+.ab-detail-name{font-family:var(--ui);font-size:12px;color:var(--ink);letter-spacing:1px;margin-bottom:3px;}
+.ab-detail-kanji{font-family:var(--serif);font-style:italic;font-size:11px;color:var(--void2);margin-bottom:8px;opacity:.8;}
+.ab-detail-type{font-family:var(--mono);font-size:7px;letter-spacing:2px;padding:2px 8px;border:1px solid var(--vb);color:var(--void2);text-transform:uppercase;display:inline-block;margin-bottom:8px;}
+.ab-detail-desc{font-size:13px;color:var(--ink2);line-height:1.8;opacity:.9;}
+/* TECHNIQUES */
+.tech-module{margin-bottom:16px;position:relative;}
+.tech-module-header{display:flex;align-items:baseline;gap:14px;padding:8px 0 6px;margin-bottom:8px;border-bottom:1px solid rgba(107,33,168,.2);position:relative;}
+.tech-module-header::after{content:'';position:absolute;bottom:-1px;left:0;width:80px;height:1px;background:var(--void2);}
+.tech-index{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:rgba(147,51,234,.4);flex-shrink:0;}
+.tech-module-name{font-family:var(--ui);font-size:13px;font-weight:600;color:var(--ink);letter-spacing:1px;}
+.tech-module-sub{font-family:var(--serif);font-style:italic;font-size:11px;color:var(--muted);}
+.tech-module-dmg{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--void3);flex-shrink:0;border:1px solid var(--vb);padding:3px 10px;background:var(--vdim);}
+/* SUB-CARDS */
+.sub-grid{display:grid;gap:8px;}
+.sub-grid[data-cols="1"]{grid-template-columns:1fr;}
+.sub-grid[data-cols="2"]{grid-template-columns:1fr 1fr;}
+.sub-grid[data-cols="3"]{grid-template-columns:1fr 1fr 1fr;}
+.sub-grid[data-cols="4"]{grid-template-columns:1fr 1fr;}
+@media(max-width:640px){.sub-grid[data-cols="2"],.sub-grid[data-cols="3"],.sub-grid[data-cols="4"]{grid-template-columns:1fr;}}
+.sub-card{background:var(--s2);border:1px solid var(--vb);padding:11px 13px;position:relative;cursor:pointer;transition:border-color .2s,background .2s,box-shadow .2s;}
+.sub-card:hover{border-color:var(--vb2);background:var(--vdim);}
+.sub-card.open{border-color:var(--vb2);background:rgba(107,33,168,.1);box-shadow:0 0 20px rgba(107,33,168,.12);}
+.sub-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--void),transparent);opacity:.5;}
+.sub-card.open::before{opacity:1;background:linear-gradient(90deg,var(--void2),transparent);}
+.sub-card-id{font-family:var(--mono);font-size:7px;letter-spacing:3px;color:rgba(147,51,234,.3);text-transform:uppercase;margin-bottom:5px;}
+.sub-card-name{font-family:var(--ui);font-size:11px;font-weight:600;color:var(--ink);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;}
+.sub-card-kanji{font-family:var(--serif);font-style:italic;font-size:11px;color:var(--void2);margin-bottom:8px;display:block;opacity:.7;}
+.sub-card-sep{height:1px;background:linear-gradient(90deg,var(--vb),transparent);margin-bottom:8px;}
+.sub-card-body{display:block;max-height:0;overflow:hidden;opacity:0;transition:max-height .32s cubic-bezier(.4,0,.2,1),opacity .28s ease;}
+.sub-card.open .sub-card-body{max-height:500px;opacity:1;}
+.sub-card-desc{font-family:var(--serif);font-size:12.5px;color:var(--ink2);line-height:1.75;opacity:.9;}
+.sub-card-tag{display:inline-block;margin-top:8px;font-family:var(--mono);font-size:7px;letter-spacing:2px;padding:2px 8px;border:1px solid var(--vb);color:var(--void2);text-transform:uppercase;}
+.sub-card-tag.red{border-color:rgba(200,60,60,.3);color:rgba(240,100,100,.7);}
+.sub-card-chevron{position:absolute;top:12px;right:12px;font-family:var(--mono);font-size:8px;color:var(--muted);transition:transform .25s;}
+.sub-card.open .sub-card-chevron{transform:rotate(90deg);color:var(--void3);}
+/* SKILLS */
+.skills-wrap{border:1px solid var(--vb);background:var(--s1);overflow:hidden;}
+.skills-bar{display:flex;align-items:center;gap:8px;padding:7px 16px;border-bottom:1px solid var(--vb);background:var(--vdim);}
+.skills-bar-txt{font-family:var(--mono);font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--void2);}
+.sk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:0;background:rgba(107,33,168,.03);}
+.sk-group-head{
+  grid-column:1/-1;background:rgba(107,33,168,.1);
+  padding:4px 14px;font-family:var(--mono);font-size:7px;
+  letter-spacing:4px;color:var(--void2);text-transform:uppercase;
+  border-bottom:1px solid var(--vb);border-top:1px solid var(--vb);
+  display:flex;align-items:center;gap:8px;
+}
+.sk-group-head::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--vb),transparent);}
+.sk-row{
+  background:var(--s1);padding:5px 14px;
+  display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1px solid rgba(107,33,168,.05);
+  border-right:1px solid rgba(107,33,168,.05);
+  transition:background .1s;
+}
+.sk-row:hover{background:var(--vdim);}
+.sk-row-name{font-family:var(--serif);font-size:11.5px;color:var(--muted);}
+.sk-row-val{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:1px;}
+.sk-row.p .sk-row-name{color:var(--ink2);}
+.sk-row.p .sk-row-val{color:var(--void3);}
+.sk-row.pp .sk-row-name{color:var(--ink);font-weight:600;}
+.sk-row.pp .sk-row-val{color:var(--void3);font-weight:bold;}
+/* ITEM */
+.item-card{border:1px solid var(--vb2);background:var(--s2);padding:18px 20px;position:relative;overflow:hidden;}
+.item-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--void2),transparent);opacity:.5;}
+.item-name{font-family:var(--ui);font-size:12px;letter-spacing:1px;color:var(--ink);margin-bottom:6px;}
+.item-desc{font-family:var(--serif);font-size:13px;color:var(--ink2);line-height:1.75;opacity:.85;}
+.item-stat{display:inline-block;font-family:var(--mono);font-size:9px;color:var(--void3);margin-top:10px;padding:3px 10px;border:1px solid var(--vb2);}
+/* LORE */
+
+/* ── ORIGIN CARD ── */
+.origin-card{border:1px solid var(--vb);background:var(--s1);overflow:hidden;position:relative;}
+.origin-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--void2),transparent);opacity:.5;}
+.origin-head{padding:14px 18px;border-bottom:1px solid var(--vb);background:var(--vdim);}
+.origin-name{font-family:var(--ui);font-size:13px;color:var(--ink);letter-spacing:1px;margin-bottom:2px;}
+.origin-kanji{font-family:var(--serif);font-style:italic;font-size:11px;color:var(--void2);opacity:.7;}
+.origin-body{padding:16px 18px;display:flex;flex-direction:column;gap:0;}
+.origin-desc{font-family:var(--serif);font-size:13px;color:var(--ink2);line-height:1.85;padding-bottom:14px;border-bottom:1px solid rgba(107,33,168,.1);margin-bottom:14px;opacity:.9;}
+.origin-block{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;}
+.origin-item{padding:12px 14px;border:1px solid var(--vb);background:var(--s2);position:relative;}
+.origin-item::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--void),transparent);opacity:.4;}
+.origin-item-label{font-family:var(--mono);font-size:7px;letter-spacing:4px;text-transform:uppercase;color:var(--void2);margin-bottom:6px;}
+.origin-item-text{font-family:var(--serif);font-size:12.5px;color:var(--ink2);line-height:1.75;opacity:.88;}
+.origin-item.gancho .origin-item-label{color:rgba(240,100,100,.6);}
+.origin-item.gancho{border-color:rgba(200,60,60,.15);}
+.origin-item.gancho::before{background:linear-gradient(90deg,rgba(200,60,60,.3),transparent);}
+.lore-timeline{display:flex;gap:0;}
+.lore-spine{width:40px;flex-shrink:0;position:relative;padding-top:6px;}
+.lore-spine::before{content:'';position:absolute;left:18px;top:0;bottom:0;width:1px;background:linear-gradient(180deg,var(--void2),rgba(107,33,168,.05));}
+.lore-entries{flex:1;}
+.lore-entry{margin-bottom:20px;position:relative;}
+.lore-entry:last-child{margin-bottom:0;}
+.lore-marker{position:absolute;left:-22px;top:6px;width:8px;height:8px;border:1px solid var(--vb2);background:var(--bg);transition:border-color .3s,box-shadow .3s;}
+.lore-entry:hover .lore-marker{border-color:var(--void2);box-shadow:0 0 8px var(--vglow);}
+.lore-content{padding:0 0 0 26px;border-left:1px solid rgba(107,33,168,.08);transition:border-color .25s;}
+.lore-entry:hover .lore-content{border-left-color:rgba(107,33,168,.25);}
+.lore-event{font-family:var(--mono);font-size:7.5px;letter-spacing:3px;color:rgba(147,51,234,.4);text-transform:uppercase;margin-bottom:5px;}
+.lore-text{font-family:var(--serif);font-size:13.5px;line-height:2;color:var(--ink2);opacity:.9;}
+.lore-text::first-letter{font-size:22px;color:var(--void2);float:left;margin-right:3px;line-height:1;}
+/* FOOTER */
+.pg-footer{text-align:center;margin-top:36px;}
+.footer-sigil{display:inline-flex;width:60px;height:60px;border:1px solid var(--vb);border-radius:50%;align-items:center;justify-content:center;font-size:20px;animation:spin 25s linear infinite;color:rgba(147,51,234,.4);}
+.footer-text{font-family:var(--mono);font-size:8px;letter-spacing:5px;color:var(--muted);margin-top:16px;text-transform:uppercase;opacity:.4;}
+@keyframes spin{to{transform:rotate(360deg);}}
+/* SS */
+.ss-hero{text-align:center;margin-bottom:52px;padding-top:12px;}
+.ss-eye{display:inline-flex;width:72px;height:72px;border:1px solid rgba(200,168,75,.35);border-radius:50%;align-items:center;justify-content:center;font-size:24px;margin-bottom:18px;position:relative;animation:spin 30s linear infinite;}
+.ss-eye::before{content:'';position:absolute;inset:8px;border:1px solid rgba(200,168,75,.2);border-radius:50%;animation:spin 30s linear infinite reverse;}
+.ss-eye-inner{animation:spin 30s linear infinite reverse;}
+.ss-classified{font-family:var(--mono);font-size:8px;letter-spacing:6px;color:#c8a84b;opacity:.4;text-transform:uppercase;margin-bottom:10px;}
+.ss-title{font-family:var(--disp);font-size:clamp(24px,4vw,40px);font-weight:900;letter-spacing:6px;color:#e8f0f4;margin-bottom:6px;}
+.ss-sub{font-family:var(--mono);font-size:9px;letter-spacing:4px;color:#9a8860;text-transform:uppercase;}
+.itag{font-family:var(--mono);font-size:8px;letter-spacing:2px;padding:4px 12px;border:1px solid rgba(200,168,75,.2);color:#9a8860;text-transform:uppercase;}
+.itag.hi{border-color:rgba(200,168,75,.4);color:#e4c46a;background:rgba(200,168,75,.1);}
+.tags-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px;}
+.ss-slabel{font-family:var(--mono);font-size:9px;letter-spacing:5px;text-transform:uppercase;color:#c8a84b;margin-bottom:16px;display:flex;align-items:center;gap:12px;margin-top:38px;}
+.ss-slabel::before{content:'';width:18px;height:1px;background:#c8a84b;}
+.ss-slabel::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(200,168,75,.3),transparent);}
+.acc{border:1px solid rgba(200,168,75,.15);margin-bottom:8px;overflow:hidden;}
+.acc-h{display:flex;align-items:center;gap:14px;padding:14px 18px;background:#0f0d08;cursor:pointer;user-select:none;border-bottom:1px solid transparent;transition:background .2s;}
+.acc-h:hover{background:rgba(200,168,75,.05);}
+.acc-h.open{border-bottom-color:rgba(200,168,75,.2);background:rgba(200,168,75,.06);}
+.acc-ico{font-family:var(--mono);font-size:10px;color:#c8a84b;transition:transform .3s;flex-shrink:0;}
+.acc-h.open .acc-ico{transform:rotate(90deg);}
+.acc-t{font-family:var(--ui);font-size:11.5px;color:#e8f0f4;letter-spacing:1px;}
+.acc-m{font-family:var(--mono);font-size:9px;color:#9a8860;margin-left:auto;letter-spacing:1px;}
+.acc-b{display:block;max-height:0;overflow:hidden;padding:0 22px;background:rgba(8,6,2,.75);opacity:0;transition:max-height .35s cubic-bezier(.4,0,.2,1),padding .32s,opacity .28s ease;}
+.acc-b.open{max-height:600px;padding:20px 22px;opacity:1;}
+.acc-b p{font-size:13px;line-height:1.85;color:rgba(232,240,244,.75);margin-bottom:14px;}
+.acc-b p:last-child{margin-bottom:0;}
+.pillar-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
+.pillar{border:1px solid rgba(200,168,75,.15);background:#0f0d08;padding:16px;}
+.pillar-n{font-family:var(--disp);font-size:24px;color:rgba(200,168,75,.1);line-height:1;margin-bottom:6px;}
+.pillar-t{font-family:var(--mono);font-size:9px;color:#e4c46a;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+.pillar-d{font-size:12px;color:rgba(232,240,244,.65);line-height:1.65;}
+.udiv{height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.3),transparent);margin:38px 0;}
+.mc-filter{font-family:var(--mono);font-size:8px;letter-spacing:3px;padding:5px 12px;border:1px solid rgba(200,168,75,.15);background:#0f0d08;color:#9a8860;text-transform:uppercase;cursor:pointer;transition:all .2s;}
+.mc-filter.on,.mc-filter:hover{border-color:rgba(200,168,75,.35);color:#e4c46a;background:rgba(200,168,75,.1);}
+.mcard{border:1px solid rgba(200,168,75,.15);margin-bottom:8px;overflow:hidden;}
+.mcard.hidden{display:none;}
+.mcard-head{display:flex;align-items:center;gap:14px;padding:14px 18px;background:#0f0d08;cursor:pointer;user-select:none;border-bottom:1px solid transparent;transition:background .2s;}
+.mcard-head:hover{background:rgba(200,168,75,.05);}
+.mcard-head.open{background:rgba(200,168,75,.07);border-bottom-color:rgba(200,168,75,.2);}
+.mcard-num{font-family:var(--mono);font-size:11px;color:rgba(200,168,75,.35);letter-spacing:1px;flex-shrink:0;width:24px;}
+.mcard-info{flex:1;min-width:0;}
+.mcard-name{font-family:var(--ui);font-size:13px;font-weight:600;color:#e8f0f4;letter-spacing:1px;}
+.mcard-alias{font-size:10px;color:#9a8860;margin-top:2px;font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mcard-tags{display:flex;gap:5px;flex-shrink:0;}
+.mctag{font-family:var(--mono);font-size:7px;letter-spacing:2px;padding:2px 7px;border:1px solid rgba(200,168,75,.15);color:#9a8860;text-transform:uppercase;}
+.mctag.red{border-color:rgba(200,60,60,.3);color:rgba(220,100,100,.8);background:rgba(200,60,60,.05);}
+.mctag.hi{border-color:rgba(200,168,75,.35);color:#e4c46a;background:rgba(200,168,75,.1);}
+.mcard-chev{font-family:var(--mono);font-size:9px;color:#9a8860;transition:transform .3s;flex-shrink:0;}
+.mcard-head.open .mcard-chev{transform:rotate(90deg);}
+.mcard-body{display:block;max-height:0;overflow:hidden;padding:0 20px;background:rgba(8,6,2,.8);opacity:0;transition:max-height .38s cubic-bezier(.4,0,.2,1),padding .35s,opacity .3s ease;}
+.mcard-body.open{max-height:900px;padding:20px 20px 24px;opacity:1;}
+.mcard-top{display:grid;grid-template-columns:110px 1fr;gap:18px;margin-bottom:16px;}
+.mcard-photo{width:110px;aspect-ratio:3/4;border:1px solid rgba(200,168,75,.25);background:#0f0d08;overflow:hidden;flex-shrink:0;position:relative;}
+.mcard-photo img{width:100%;height:100%;object-fit:cover;object-position:top;filter:grayscale(15%) contrast(1.05);display:block;}
+.mcard-photo .mp-fallback{width:100%;height:100%;display:none;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:linear-gradient(160deg,#100e06,#080604);}
+.mcard-photo .mp-fallback .mp-k{font-size:30px;color:rgba(200,168,75,.1);}
+.mcard-photo .mp-fallback .mp-t{font-family:var(--mono);font-size:7px;color:#9a8860;letter-spacing:2px;}
+.mcard-photo::before{content:'';position:absolute;top:0;left:0;width:10px;height:10px;border-top:1px solid #c8a84b;border-left:1px solid #c8a84b;z-index:2;}
+.mcard-photo::after{content:'';position:absolute;bottom:0;right:0;width:10px;height:10px;border-bottom:1px solid #c8a84b;border-right:1px solid #c8a84b;z-index:2;}
+.mcard-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 24px;}
+.mcard-col{display:flex;flex-direction:column;}
+.mcard-field{display:flex;flex-direction:column;padding:5px 0;border-bottom:1px solid rgba(200,168,75,.08);}
+.mf-l{font-family:var(--mono);font-size:7.5px;letter-spacing:2px;color:#9a8860;text-transform:uppercase;margin-bottom:2px;}
+.mf-v{font-size:12.5px;color:rgba(232,240,244,.88);line-height:1.4;}
+.mf-v.cyan{color:#e4c46a;}
+.mf-v.red{color:rgba(220,100,100,.9);}
+.mcard-lore{font-size:13px;color:rgba(240,232,210,.85);line-height:1.9;background:rgba(200,168,75,.04);border:1px solid rgba(200,168,75,.1);border-left:2px solid rgba(200,168,75,.35);padding:14px 16px;margin-top:2px;}
+@media(max-width:640px){.hero{grid-template-columns:1fr;}.mcard-top{grid-template-columns:1fr;}.mcard-grid{grid-template-columns:1fr;}.sub-grid{grid-template-columns:1fr;}.res-grid{grid-template-columns:1fr 1fr;}}
+
+/* ── TÉCNICAS — FBI FILE CABINET ── */
+.tech-cabinet {
+  display:flex; gap:0; border:1px solid var(--vb2);
+  background:var(--s1); min-height:320px; overflow:hidden;
+}
+
+/* Coluna de abas verticais */
+.tc-tabs {
+  display:flex; flex-direction:column;
+  width:72px; flex-shrink:0;
+  border-right:1px solid var(--vb2);
+  background:var(--s2);
+}
+.tc-tab {
+  writing-mode:vertical-rl; text-orientation:mixed;
+  transform:rotate(180deg);
+  padding:20px 0;
+  font-family:var(--mono); font-size:9px; letter-spacing:3px;
+  text-transform:uppercase; color:var(--muted);
+  cursor:pointer; user-select:none;
+  border-bottom:1px solid var(--vb);
+  transition:background .2s, color .2s, box-shadow .2s;
+  display:flex; align-items:center; justify-content:center;
+  flex-direction:column; gap:8px;
+  position:relative; min-height:90px;
+  flex:1;
+}
+.tc-tab:last-child { border-bottom:none; }
+.tc-tab:hover { background:var(--vdim); color:var(--ink2); }
+.tc-tab.on {
+  background:rgba(107,33,168,.2);
+  color:var(--void3);
+  box-shadow:inset -2px 0 0 var(--void2);
+  z-index:1;
+}
+.tc-tab-num {
+  font-family:var(--disp); font-size:11px;
+  color:rgba(147,51,234,.3);
+  writing-mode:vertical-rl; transform:rotate(180deg);
+  line-height:1;
+}
+.tc-tab.on .tc-tab-num { color:var(--void2); }
+.tc-tab-label {
+  writing-mode:vertical-rl; transform:rotate(180deg);
+  font-size:8px; letter-spacing:2px;
+}
+
+/* Painel de conteúdo */
+.tc-panels { flex:1; position:relative; overflow:hidden; }
+.tc-panel {
+  display:none; padding:20px 22px;
+  height:100%; overflow-y:auto;
+  opacity:0;
+  animation:none;
+}
+.tc-panel.on {
+  display:block;
+  animation:tcFadeIn .3s ease forwards;
+}
+.tc-panel.out {
+  display:block;
+  animation:tcFadeOut .15s ease forwards;
+}
+@keyframes tcFadeIn {
+  0%   { opacity:0; transform:translateX(8px); }
+  100% { opacity:1; transform:translateX(0); }
+}
+@keyframes tcFadeOut {
+  0%   { opacity:1; transform:translateX(0); }
+  100% { opacity:0; transform:translateX(-6px); }
+}
+
+/* Header dentro do painel */
+.tc-panel-header {
+  margin-bottom:14px; padding-bottom:10px;
+  border-bottom:1px solid rgba(107,33,168,.2);
+  position:relative;
+}
+.tc-panel-header::after {
+  content:''; position:absolute; bottom:-1px; left:0;
+  width:60px; height:1px; background:var(--void2);
+}
+.tc-panel-name {
+  font-family:var(--ui); font-size:14px; font-weight:600;
+  color:var(--ink); letter-spacing:1px; margin-bottom:3px;
+}
+.tc-panel-sub {
+  font-family:var(--serif); font-style:italic;
+  font-size:12px; color:var(--muted);
+}
+.tc-panel-dmg {
+  float:right; font-family:var(--mono); font-size:10px;
+  color:var(--void3); border:1px solid var(--vb);
+  padding:2px 8px; background:var(--vdim);
+  margin-top:2px;
+}
+.tc-panel-desc {
+  font-family:var(--serif); font-size:13.5px;
+  color:var(--ink2); line-height:1.85; opacity:.92;
+  margin-bottom:14px;
+  padding:11px 14px;
+  border:1px solid var(--vb);
+  background:rgba(107,33,168,.05);
+  border-left:2px solid var(--void2);
+}
+
+/* Sub-cards dentro do painel — horizontal row */
+.tc-cards {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:8px;
+}
+.tc-card {
+  background:var(--s2); border:1px solid var(--vb);
+  padding:11px 13px; position:relative;
+}
+.tc-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:1px;
+  background:linear-gradient(90deg,var(--void),transparent); opacity:.5;
+}
+.tc-card-id { font-family:var(--mono); font-size:7px; letter-spacing:3px; color:rgba(147,51,234,.3); text-transform:uppercase; margin-bottom:4px; }
+.tc-card-name { font-family:var(--ui); font-size:11px; font-weight:600; color:var(--ink); letter-spacing:1px; text-transform:uppercase; margin-bottom:3px; }
+.tc-card-kanji { font-family:var(--serif); font-style:italic; font-size:12px; color:var(--void2); opacity:.75; margin-bottom:8px; display:block; }
+.tc-card-sep { height:1px; background:linear-gradient(90deg,var(--vb),transparent); margin-bottom:7px; }
+.tc-card-desc { font-family:var(--serif); font-size:13px; color:var(--ink2); line-height:1.8; opacity:.92; }
+.tc-card-tag { display:inline-block; margin-top:7px; font-family:var(--mono); font-size:7px; letter-spacing:2px; padding:2px 8px; border:1px solid var(--vb); color:var(--void2); text-transform:uppercase; }
+.tc-card-tag.red { border-color:rgba(200,60,60,.3); color:rgba(240,100,100,.7); }
+
+@media(max-width:640px){
+  .tech-cabinet{flex-direction:column;}
+  .tc-tabs{flex-direction:row;width:100%;border-right:none;border-bottom:1px solid var(--vb);}
+  .tc-tab{writing-mode:horizontal-tb;transform:none;min-height:44px;border-bottom:none;border-right:1px solid var(--vb);flex:1;}
+  .tc-tab.on{border-right:1px solid var(--vb);border-bottom:2px solid var(--void2);margin-right:0;margin-bottom:-1px;}
+  .tc-tab-num{writing-mode:horizontal-tb;transform:none;margin-bottom:0;margin-right:4px;}
+}
+
+</style>
+</head>
+<body>
+<canvas id="void-canvas"></canvas>
+<canvas id="pt-canvas"></canvas>
+<div id="pt-scan"></div>
+<div id="pt-corners-l"></div>
+<div id="pt-corners-r"></div>
+
+<div class="tab-bar">
+  <button class="tab-btn on" onclick="goTab('ficha',this)">◈ Ficha — Kaito</button>
+  <button class="tab-btn" onclick="goTab('ss',this)">⛩ Soul Society</button>
+</div>
+
+<div id="page-ficha" class="page on">
+<div class="wrap">
+
+  <div class="hero">
+    <div class="photo-frame">
+      <img src="membros/kaito.png" alt="Kaito" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="photo-fallback"><div class="kanji">反</div><div class="ph-text">kaito</div></div>
+      <div class="photo-void"></div>
+      <div class="photo-overlay">
+        <div class="ph-hud">
+          <span class="ph-hud-tag hi">Grau Especial</span>
+          <span class="ph-hud-tag hi">Antimatéria</span>
+          <span class="ph-hud-tag">Nível 1</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-text">
+      <div class="hero-klass">⛩ Soul Society · Clã Gojo · Registro Selado</div>
+      <div class="hero-name">Kaito<br>Gojo</div>
+      <div class="hero-kanji">反物質 Han-busshitsu · O Prometido · O Geômetra do Vazio</div>
+      <div class="hero-epithet">
+        "Parado. Frio. Calculado.<br>
+        O campo ao redor dele não é defesa —<br>
+        é a física proibindo que você chegue."
+      </div>
+      <div class="hero-tags">
+        <span class="htag hi">Int 4 (+1)</span>
+        <span class="htag hi">Feitiçaria +11</span>
+        <span class="htag hi">Campo Ativo</span>
+        <span class="htag">Clã Gojo</span>
+        <span class="htag">EA 26/300</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vdiv"><span class="vdiv-text">Recursos</span></div>
+  <div class="res-grid">
+    <div class="res-card"><div class="rc-label">Vida</div><div class="rc-val">25</div><div class="rc-sub">HP Total</div></div>
+    <div class="res-card"><div class="rc-label">Defesa</div><div class="rc-val">13</div><div class="rc-sub">Valor Base</div></div>
+    <div class="res-card">
+      <div class="rc-label">Energia Amaldiçoada</div>
+      <div class="rc-val v">26 <span style="font-size:14px;color:var(--muted);font-weight:300">/ 300</span></div>
+      <div class="rc-sub">EA Atual · Máximo</div>
+      <div class="ea-bar-wrap">
+        <div class="ea-bar-track"><div class="ea-bar-fill" style="width:8.7%"></div></div>
+        <div class="ea-bar-labels">
+          <span style="font-family:var(--mono);font-size:7px;color:var(--muted)">0</span>
+          <span style="font-family:var(--mono);font-size:7px;color:var(--muted)">300</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="vdiv"><span class="vdiv-text">Atributos</span></div>
+  <div class="stat-panel">
+    <div class="attr-block">
+      <div class="attr-row"><div class="attr-name">Força</div><div class="attr-track"><div class="attr-pip f"></div><div class="attr-pip"></div><div class="attr-pip"></div><div class="attr-pip"></div><div class="attr-pip"></div></div><div class="attr-num">1</div></div>
+      <div class="attr-row"><div class="attr-name">Agilidade</div><div class="attr-track"><div class="attr-pip f"></div><div class="attr-pip f"></div><div class="attr-pip f"></div><div class="attr-pip"></div><div class="attr-pip"></div></div><div class="attr-num">3</div></div>
+      <div class="attr-row"><div class="attr-name">Constituição</div><div class="attr-track"><div class="attr-pip f"></div><div class="attr-pip"></div><div class="attr-pip"></div><div class="attr-pip"></div><div class="attr-pip"></div></div><div class="attr-num">1</div></div>
+      <div class="attr-row"><div class="attr-name">Inteligência</div><div class="attr-track"><div class="attr-pip f"></div><div class="attr-pip f"></div><div class="attr-pip f"></div><div class="attr-pip f"></div><div class="attr-pip" style="border-color:var(--vb2)"></div></div><div class="attr-num hi">4 <span style="font-size:10px;color:var(--void2)">(+1)</span></div></div>
+      <div class="attr-row"><div class="attr-name">Presença</div><div class="attr-track"><div class="attr-pip f"></div><div class="attr-pip"></div><div class="attr-pip"></div><div class="attr-pip"></div><div class="attr-pip"></div></div><div class="attr-num">1</div></div>
+    </div>
+  </div>
+
+
+
+  <div class="vdiv"><span class="vdiv-text">Técnica Inata — 反物質 Han-busshitsu</span></div>
+
+  <div class="tech-cabinet">
+    <!-- ABAS -->
+    <div class="tc-tabs">
+      <div class="tc-tab on"  onclick="tcSwitch(0,this)"><span class="tc-tab-num">I</span><span class="tc-tab-label">Campo</span></div>
+      <div class="tc-tab"     onclick="tcSwitch(1,this)"><span class="tc-tab-num">II</span><span class="tc-tab-label">Reiten</span></div>
+      <div class="tc-tab"     onclick="tcSwitch(2,this)"><span class="tc-tab-num">III</span><span class="tc-tab-label">Shun</span></div>
+      <div class="tc-tab"     onclick="tcSwitch(3,this)"><span class="tc-tab-num">IV</span><span class="tc-tab-label">Domínio</span></div>
+    </div>
+
+    <!-- PAINÉIS -->
+    <div class="tc-panels">
+
+      <!-- I -->
+      <div class="tc-panel on">
+        <div class="tc-panel-header">
+          <span class="tc-panel-dmg">Passiva</span>
+          <div class="tc-panel-name">対消滅界 Tai-shōmetsu-kai — Campo de Aniquilação</div>
+          <div class="tc-panel-sub">Passiva permanente · defesa por clash · o Mugen da antimatéria</div>
+        </div>
+        <div class="tc-cards">
+          <div class="tc-card">
+            <div class="tc-card-id">TAI-01</div>
+            <div class="tc-card-name">Campo de Aniquilação</div>
+            <span class="tc-card-kanji">対消滅界 · raio constante de 2m</span>
+            <div class="tc-card-sep"></div>
+            <div class="tc-card-desc">Campo constante de antimatéria emanando do corpo em raio de 2m. Qualquer técnica, projétil ou ataque físico que entre no raio inicia aniquilação — <b style="color:var(--void3)">clash automático de Feitiçaria.</b> Se o atacante falha, o que ele mandou é consumido. Se ele mesmo entra no raio com intenção hostil, o perímetro do corpo começa a ser aniquilado. Kaito não precisa reagir. O campo existe independente de atenção ou EA ativa.</div>
+            <span class="tc-card-tag">Permanente · Sem Custo</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- II -->
+      <div class="tc-panel">
+        <div class="tc-panel-header">
+          <span class="tc-panel-dmg">Ignora Defesa</span>
+          <div class="tc-panel-name">零点 Reiten — Ponto Zero</div>
+          <div class="tc-panel-sub">Ataque · remove da existência · sem regeneração · sem reversão</div>
+        </div>
+        <div class="tc-panel-desc">Antimatéria concentrada em ponto único. O que é tocado não é cortado nem destruído — é <b style="color:var(--void3)">removido da existência</b> naquele ponto. Sem ferida visível no impacto. Sem regeneração possível. Sem reversão — não há tecido danificado para restaurar, há ausência onde havia algo.</div>
+        <div class="tc-cards">
+          <div class="tc-card">
+            <div class="tc-card-id">REI-01</div>
+            <div class="tc-card-name">Reiten · Sesshoku</div>
+            <span class="tc-card-kanji">零点・接触 · Contato</span>
+            <div class="tc-card-sep"></div>
+            <div class="tc-card-desc">Toque direto. Máxima concentração de antimatéria — o ponto de aniquilação é cirúrgico e total. <b style="color:var(--void3)">Dano maior.</b> Exige aproximação, o que significa atravessar qualquer campo ativo do inimigo. Sem regeneração, sem reversão no ponto tocado.</div>
+            <span class="tc-card-tag">Ação Padrão · Corpo a Corpo</span>
+          </div>
+          <div class="tc-card">
+            <div class="tc-card-id">REI-02</div>
+            <div class="tc-card-name">Reiten · Hōshutsu</div>
+            <span class="tc-card-kanji">零点・放出 · Emissão</span>
+            <div class="tc-card-sep"></div>
+            <div class="tc-card-desc">Antimatéria lançada em arco de corte à distância. Menos concentrada, <b style="color:var(--void3)">dano menor.</b> Visual: linha invisível no ar — o efeito aparece no alvo instantes depois. O espaço entre Kaito e o alvo foi aniquilado em faixa fina. Não há trajetória visível para desviar.</div>
+            <span class="tc-card-tag">Ação Padrão · Ranged</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- III -->
+      <div class="tc-panel">
+        <div class="tc-panel-header">
+          <span class="tc-panel-dmg">Reação / Mov.</span>
+          <div class="tc-panel-name">瞬 Shun — Piscar</div>
+          <div class="tc-panel-sub">Teleporte · sem rastro, sem som, sem visual</div>
+        </div>
+        <div class="tc-cards">
+          <div class="tc-card">
+            <div class="tc-card-id">SHN-01</div>
+            <div class="tc-card-name">Piscar</div>
+            <span class="tc-card-kanji">瞬 · o espaço entre dois pontos é aniquilado</span>
+            <div class="tc-card-sep"></div>
+            <div class="tc-card-desc">O espaço entre dois pontos é aniquilado instantaneamente — Kaito atravessa o vazio resultante. <b style="color:var(--void3)">Sem visual, sem rastro, sem som.</b> Some e aparece. Como <b style="color:var(--void3)">reação:</b> nega ataques de oportunidade e permite reposicionamento imediato fora do alcance. Como <b style="color:var(--void3)">movimento:</b> não provoca ataques de oportunidade, ignora terreno e obstáculos.</div>
+            <span class="tc-card-tag">Reação · ou Movimento</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- IV -->
+      <div class="tc-panel">
+        <div class="tc-panel-header">
+          <div class="tc-panel-name">対消滅域 Tai-shōmetsu-iki — Domínio de Aniquilação</div>
+          <div class="tc-panel-sub">Domínio Falso · Campo expandido em área · dano garantido por turno</div>
+        </div>
+        <div class="tc-panel-desc">Não é uma prisão criada — é o Campo de Aniquilação <b style="color:var(--void3)">expandido</b> para cobrir um espaço definido ao redor. Kaito não constrói nada. Ele abre o que já existe e deixa consumir.</div>
+        <div class="tc-cards">
+          <div class="tc-card">
+            <div class="tc-card-id">DOM-01</div>
+            <div class="tc-card-name">Expansão do Campo</div>
+            <span class="tc-card-kanji">域展開 · ativação</span>
+            <div class="tc-card-sep"></div>
+            <div class="tc-card-desc">O Campo de Aniquilação expande de 2m para raio grande cobrindo todos os alvos hostis na área. Quem não passa no clash de Feitiçaria começa a ser consumido passivamente — <b style="color:var(--void3)">dano garantido por turno.</b> Kaito não precisa atacar individualmente. Custo alto de EA, duração limitada.</div>
+            <span class="tc-card-tag">Ação Padrão · Alto Custo EA</span>
+          </div>
+          <div class="tc-card">
+            <div class="tc-card-id">DOM-02</div>
+            <div class="tc-card-name">Consumo Passivo</div>
+            <span class="tc-card-kanji">受動消滅 · enquanto ativo</span>
+            <div class="tc-card-sep"></div>
+            <div class="tc-card-desc">Enquanto o domínio está ativo, cada turno sem ação de Kaito ainda causa dano — o campo consome sozinho. Qualquer técnica lançada de dentro passa por clash contra a Feitiçaria de Kaito. Tocar as paredes do domínio por fora para destruí-lo é tocar antimatéria.</div>
+            <span class="tc-card-tag red">Passiva dentro do Domínio</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /tc-panels -->
+  </div><!-- /tech-cabinet -->
+
+    <div class="vdiv"><span class="vdiv-text">Perícias</span></div>
+  <div class="skills-wrap">
+    <div class="skills-bar"><span class="skills-bar-txt">◈ Perícias · roxo = proficiente · negrito = bônus especial</span></div>
+    <div class="sk-grid">
+      <div class="sk-group-head">Força</div>
+      <div class="sk-row p"><span class="sk-row-name">Luta</span><span class="sk-row-val">+5</span></div>
+      <div class="sk-row p"><span class="sk-row-name">Tankar</span><span class="sk-row-val">+5</span></div>
+      <div class="sk-group-head">Agilidade</div>
+      <div class="sk-row p"><span class="sk-row-name">Esquiva</span><span class="sk-row-val">+5</span></div>
+      <div class="sk-row p"><span class="sk-row-name">Iniciativa</span><span class="sk-row-val">+5</span></div>
+      <div class="sk-row"><span class="sk-row-name">Rastreamento</span><span class="sk-row-val">—</span></div>
+      <div class="sk-row"><span class="sk-row-name">Furtividade</span><span class="sk-row-val">—</span></div>
+      <div class="sk-group-head">Inteligência</div>
+      <div class="sk-row pp"><span class="sk-row-name">Feitiçaria</span><span class="sk-row-val">+11 · +1d20</span></div>
+      <div class="sk-row p"><span class="sk-row-name">Aprendizado</span><span class="sk-row-val">+5</span></div>
+      <div class="sk-row"><span class="sk-row-name">Investigação</span><span class="sk-row-val">—</span></div>
+      <div class="sk-row"><span class="sk-row-name">História</span><span class="sk-row-val">—</span></div>
+      <div class="sk-row"><span class="sk-row-name">Ocultismo</span><span class="sk-row-val">—</span></div>
+      <div class="sk-group-head">Presença</div>
+      <div class="sk-row p"><span class="sk-row-name">Intimidação</span><span class="sk-row-val">+5</span></div>
+      <div class="sk-row p"><span class="sk-row-name">Intuição</span><span class="sk-row-val">+5</span></div>
+      <div class="sk-row p"><span class="sk-row-name">Etiqueta</span><span class="sk-row-val">+5</span></div>
+      <div class="sk-row"><span class="sk-row-name">Percepção passiva</span><span class="sk-row-val">11</span></div>
+      <div class="sk-row"><span class="sk-row-name">Persuasão</span><span class="sk-row-val">—</span></div>
+      <div class="sk-group-head">Constituição</div>
+      <div class="sk-row p"><span class="sk-row-name">Disciplina</span><span class="sk-row-val">+5</span></div>
+      <div class="sk-row"><span class="sk-row-name">Medicina</span><span class="sk-row-val">—</span></div>
+      <div class="sk-row"><span class="sk-row-name">Sobrevivência</span><span class="sk-row-val">—</span></div>
+      <div class="sk-row"><span class="sk-row-name">Fortitude</span><span class="sk-row-val">—</span></div>
+    </div>
+  </div>
+
+  <div class="vdiv"><span class="vdiv-text">Equipamento</span></div>
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <div class="item-card"><div class="item-name">Uniforme da Soul Society</div><div class="item-desc">Permanentemente equipado. Confecção sem origem registrada.</div><div><span class="item-stat">+2d4 dano · todos os ataques</span> <span class="item-stat">+5 EA proficiente</span></div></div>
+    <div class="item-card"><div class="item-name">Cáliper de Satetsu — Lâmina Bússola</div><div class="item-desc">Arma de precisão cirúrgica. Ponteiro para o Reiten Sesshoku.</div><div><span class="item-stat">1d8 dano</span> <span class="item-stat">Durabilidade 100</span></div></div>
+  </div>
+
+  <div class="vdiv"><span class="vdiv-text">Origem</span></div>
+  <div class="origin-card">
+    <div class="origin-head">
+      <div class="origin-name">虚眼の誓約 Kogan no Seiyaku — O Juramento do Olho do Vazio</div>
+      <div class="origin-kanji">Nasceu prometido. Cresceu intocável. Nunca teve de escolher ser os dois.</div>
+    </div>
+    <div class="origin-body">
+      <div class="origin-desc">Kaito não desenvolveu uma técnica — nasceu sendo uma. O Campo de Aniquilação existe desde o primeiro dia: não como poder a ser treinado, mas como condição física do que ele é. Os anciãos do Clã Gojo esperavam uma técnica manifesta. Lys Gojo esperava outra coisa — e quando o campo ao redor dele começou a consumir qualquer coisa que chegasse com intenção hostil, ela soube que estava olhando para algo sem precedente. Não um feiticeiro poderoso. Uma lei da natureza com nome.</div>
+      <div class="origin-block">
+        <div class="origin-item">
+          <div class="origin-item-label">⚙ Benefício Mecânico</div>
+          <div class="origin-item-text"><b style="color:var(--void3)">+1 Inteligência · +5 Feitiçaria.</b> O Olho do Vazio lê ausência estrutural — pontos de colapso, trajetórias antes do movimento, EA antes da técnica ser lançada. <b style="color:var(--void3)">Uma vez por combate</b> como ação livre: declara o Ponto Zero de um alvo. O próximo Reiten ignora qualquer defesa ativa, domínios e reversões incluídos.</div>
+        </div>
+        <div class="origin-item">
+          <div class="origin-item-label">◈ Benefício Narrativo</div>
+          <div class="origin-item-text">O campo existe independente de atenção, esforço ou EA ativa. Kaito não pode ser surpreendido por ataques físicos dentro do raio — o campo reage antes da decisão consciente. Em situações sociais de tensão latente, ele sente intenção hostil antes da ação. Não é leitura de mente — é física.</div>
+        </div>
+        <div class="origin-item gancho">
+          <div class="origin-item-label">⚠ Gancho de História</div>
+          <div class="origin-item-text">Lys o criou como peça. O prometido não é título afetivo — é função estratégica, e ela tem planos para essa função que Kaito ainda não conhece completamente. Além disso, um campo que consome passivamente não escolhe aliados descuidados: qualquer pessoa próxima que errar o controle emocional numa hora errada pode ativar o que não deveria.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pg-footer">
+    <div class="footer-sigil">◈</div>
+    <div class="footer-text">Soul Society · Registro Confidencial · Nível Omega · Clã Gojo</div>
+  </div>
+</div>
+</div>
+
+<div id="page-ss" class="page" style="background:#080608;">
+<div class="wrap" style="padding:56px 28px 90px;max-width:960px;margin:0 auto;position:relative;z-index:1;">
+  <div class="ss-hero">
+    <div class="ss-eye"><span class="ss-eye-inner">◈</span></div>
+    <div class="ss-classified">// Arquivo Selado — Nível Omega //</div>
+    <div class="ss-title">Soul Society</div>
+    <div class="ss-sub">A Maçonaria do Jujutsu · Clã Gojo · Fundação Incerta</div>
+  </div>
+  <div class="tags-row"><span class="itag hi">Classificação: Ômega</span><span class="itag hi">Status: Ativa</span><span class="itag">Sede: Não localizada</span><span class="itag">Membros: 10</span><span class="itag">Conhecimento externo: Inexistente</span></div>
+  <div class="ss-slabel">O que é a Soul Society</div>
+  <div class="acc"><div class="acc-h" onclick="toggleAcc(this)"><span class="acc-ico">▶</span><span class="acc-t">Origem e Natureza</span><span class="acc-m">Fundamentos</span></div><div class="acc-b"><p>A Soul Society não é uma organização criada. É uma convergência — o nome dado ao momento em que os membros mais aberrantes do Clã Gojo reconheceram uns aos outros não como aliados, mas como categorias. Cada membro é uma anomalia irrepetível que escapa da lógica convencional do Jujutsu.</p><p>Não há hierarquia formal. Há função. Cada membro ocupa um papel que não pode ser preenchido por ninguém mais.</p></div></div>
+  <div class="acc"><div class="acc-h" onclick="toggleAcc(this)"><span class="acc-ico">▶</span><span class="acc-t">Papel Político no Clã Gojo</span><span class="acc-m">Estrutura interna</span></div><div class="acc-b"><p>Para os anciãos do Clã Gojo, a Soul Society não existe. A Soul Society não responde ao Clã Gojo. O Clã Gojo, no plano de longo prazo de Lys, eventualmente responderá à Soul Society.</p></div></div>
+  <div class="udiv"></div>
+  <div class="ss-slabel">Os Quatro Pilares</div>
+  <div class="pillar-grid">
+    <div class="pillar"><div class="pillar-n">I</div><div class="pillar-t">Existência como Prova</div><div class="pillar-d">Nenhum membro precisa justificar o que é. Sua existência já é argumento suficiente.</div></div>
+    <div class="pillar"><div class="pillar-n">II</div><div class="pillar-t">Sem Lealdade à Forma</div><div class="pillar-d">Clãs, escolas, regras do Jujutsu — estruturas temporárias. A Soul Society serve a algo anterior.</div></div>
+    <div class="pillar"><div class="pillar-n">III</div><div class="pillar-t">O Segredo é a Arma</div><div class="pillar-d">A organização é invisível por escolha. Ninguém combate o que não consegue nomear.</div></div>
+    <div class="pillar"><div class="pillar-n">IV</div><div class="pillar-t">Convergência, não Hierarquia</div><div class="pillar-d">Não há líder absoluto. Há papéis. A força vem da complementaridade.</div></div>
+  </div>
+  <div class="udiv"></div>
+  <div class="ss-slabel">Membros Confirmados</div>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px">
+    <button class="mc-filter on" onclick="filterMC('all',this)">Todos</button>
+    <button class="mc-filter" onclick="filterMC('combate',this)">Combate</button>
+    <button class="mc-filter" onclick="filterMC('suporte',this)">Suporte</button>
+    <button class="mc-filter" onclick="filterMC('operacao',this)">Operação</button>
+    <button class="mc-filter" onclick="filterMC('anomalia',this)">Anomalia</button>
+  </div>
+
+  <div class="mcard" data-cat="anomalia combate"><div class="mcard-head" onclick="toggleMC(this)"><div class="mcard-num">01</div><div class="mcard-info"><div class="mcard-name">Yagami Gojo</div><div class="mcard-alias">O Arauto do Purgatório · O Abismo com Forma</div></div><div class="mcard-tags"><span class="mctag red">Anomalia</span><span class="mctag">Combate</span></div><div class="mcard-chev">▶</div></div><div class="mcard-body"><div class="mcard-top"><div class="mcard-photo"><img src="membros/yagami.png" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="mp-fallback" style="display:none"><div class="mp-k">獄</div><div class="mp-t">yagami</div></div></div><div class="mcard-grid"><div class="mcard-col"><div class="mcard-field"><span class="mf-l">Status</span><span class="mf-v cyan">Ativo · Campo livre</span></div><div class="mcard-field"><span class="mf-l">Técnica</span><span class="mf-v">獄口 Gokuguchi — Boca do Abismo</span></div><div class="mcard-field"><span class="mf-l">Grau</span><span class="mf-v red">Grau Especial · Não catalogado</span></div></div><div class="mcard-col"><div class="mcard-field"><span class="mf-l">Função na SS</span><span class="mf-v">Executor Final · Sentença de Takero</span></div><div class="mcard-field"><span class="mf-l">EA Base</span><span class="mf-v">300 · Primordial</span></div><div class="mcard-field"><span class="mf-l">Capacidade única</span><span class="mf-v red">Confinamento eterno no Abismo</span></div></div></div></div><div class="mcard-lore">Não foi gerado — foi invocado pela natureza. Sua função é selar Takero Zenin não em morte, mas em desaparecimento permanente.</div></div></div>
+
+  <div class="mcard" data-cat="anomalia combate"><div class="mcard-head" onclick="toggleMC(this)"><div class="mcard-num">02</div><div class="mcard-info"><div class="mcard-name">John Zenin</div><div class="mcard-alias">A Presença que Não Deveria Ser</div></div><div class="mcard-tags"><span class="mctag red">Anomalia</span><span class="mctag">Combate</span></div><div class="mcard-chev">▶</div></div><div class="mcard-body"><div class="mcard-top"><div class="mcard-photo"><img src="membros/john.png" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="mp-fallback" style="display:none"><div class="mp-k">恐</div><div class="mp-t">john</div></div></div><div class="mcard-grid"><div class="mcard-col"><div class="mcard-field"><span class="mf-l">Status</span><span class="mf-v cyan">Ativo · Localização desconhecida</span></div><div class="mcard-field"><span class="mf-l">Técnica</span><span class="mf-v">Inata do Medo — sem nome catalogado</span></div><div class="mcard-field"><span class="mf-l">Grau</span><span class="mf-v red">Grau Especial · Inclassificável</span></div></div><div class="mcard-col"><div class="mcard-field"><span class="mf-l">Função na SS</span><span class="mf-v">Dissuasão Absoluta · Supressão</span></div><div class="mcard-field"><span class="mf-l">Natureza</span><span class="mf-v">Instinto primário reescrito pela presença</span></div><div class="mcard-field"><span class="mf-l">Origem</span><span class="mf-v">Linhagem Zenin · Alma Gojo</span></div></div></div></div><div class="mcard-lore">Ele simplesmente é o medo. Maldições param. Feiticeiros treinados recuam sem processar o motivo.</div></div></div>
+
+  <div class="mcard" data-cat="combate operacao" style="border-color:rgba(147,51,234,.4)"><div class="mcard-head" onclick="toggleMC(this)" style="background:rgba(107,33,168,.08)"><div class="mcard-num" style="color:var(--void3)">03</div><div class="mcard-info"><div class="mcard-name" style="color:var(--void3)">Kaito Gojo</div><div class="mcard-alias">O Prometido · O Geômetra do Vazio</div></div><div class="mcard-tags"><span class="mctag hi">Esta Ficha</span><span class="mctag">Combate</span></div><div class="mcard-chev">▶</div></div><div class="mcard-body"><div class="mcard-top"><div class="mcard-photo"><img src="membros/kaito.png" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="mp-fallback" style="display:none"><div class="mp-k">反</div><div class="mp-t">kaito</div></div></div><div class="mcard-grid"><div class="mcard-col"><div class="mcard-field"><span class="mf-l">Status</span><span class="mf-v cyan">Ativo · Campo livre</span></div><div class="mcard-field"><span class="mf-l">Técnica</span><span class="mf-v">反物質 Han-busshitsu — Antimatéria</span></div><div class="mcard-field"><span class="mf-l">Campo</span><span class="mf-v">対消滅界 — aniquilação passiva em raio constante</span></div><div class="mcard-field"><span class="mf-l">Grau</span><span class="mf-v red">Grau Especial · Não registrado</span></div></div><div class="mcard-col"><div class="mcard-field"><span class="mf-l">Função na SS</span><span class="mf-v">Negação de Campo · Execução · Estratégia</span></div><div class="mcard-field"><span class="mf-l">Habilidade única</span><span class="mf-v red">Intocável por definição física</span></div><div class="mcard-field"><span class="mf-l">Kogan</span><span class="mf-v">Ponto Zero — ignora domínios e reversões</span></div><div class="mcard-field"><span class="mf-l">Relação com Lys</span><span class="mf-v">Criado por ela · herdeiro planejado</span></div></div></div></div><div class="mcard-lore">Nasceu enxergando antimatéria onde outros enxergam espaço vazio. O Campo de Aniquilação não é técnica — é o que ele é. Intocável por definição física. Parado, esperando.</div></div></div>
+
+  <div class="mcard" data-cat="anomalia suporte"><div class="mcard-head" onclick="toggleMC(this)"><div class="mcard-num">04</div><div class="mcard-info"><div class="mcard-name">Quatro</div><div class="mcard-alias">O Arquivo de Carne · Shi</div></div><div class="mcard-tags"><span class="mctag red">Anomalia</span><span class="mctag">Suporte</span></div><div class="mcard-chev">▶</div></div><div class="mcard-body"><div class="mcard-top"><div class="mcard-photo"><img src="membros/quatro.png" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="mp-fallback" style="display:none"><div class="mp-k">四</div><div class="mp-t">quatro</div></div></div><div class="mcard-grid"><div class="mcard-col"><div class="mcard-field"><span class="mf-l">Status</span><span class="mf-v cyan">Ativo · Campo livre</span></div><div class="mcard-field"><span class="mf-l">Técnica</span><span class="mf-v">Maldição — Bruxaria, Ocultismo, Alquimia</span></div><div class="mcard-field"><span class="mf-l">Grau</span><span class="mf-v red">Grau Especial · Indefinido</span></div></div><div class="mcard-col"><div class="mcard-field"><span class="mf-l">Shikigami</span><span class="mf-v">Murakusa — cão de carne podre</span></div><div class="mcard-field"><span class="mf-l">Natureza</span><span class="mf-v red">4 corpos em 1 · o único que respirou</span></div><div class="mcard-field"><span class="mf-l">EA Máximo</span><span class="mf-v red">Ilimitado</span></div></div></div></div><div class="mcard-lore">Nasceu como o quarto experimento. Três natimortos incorporados ao único sobrevivente. O corpo aceitou tudo sem rejeição.</div></div></div>
+
+  <div class="mcard" data-cat="operacao suporte"><div class="mcard-head" onclick="toggleMC(this)"><div class="mcard-num">05</div><div class="mcard-info"><div class="mcard-name">Sable Gojo</div><div class="mcard-alias">A Sombra Cartógrafa</div></div><div class="mcard-tags"><span class="mctag">Operação</span></div><div class="mcard-chev">▶</div></div><div class="mcard-body"><div class="mcard-top"><div class="mcard-photo"><img src="membros/sable.png" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="mp-fallback" style="display:none"><div class="mp-k">影</div><div class="mp-t">sable</div></div></div><div class="mcard-grid"><div class="mcard-col"><div class="mcard-field"><span class="mf-l">Status</span><span class="mf-v cyan">Ativa · Localização variável</span></div><div class="mcard-field"><span class="mf-l">Técnica</span><span class="mf-v">影図 Kage-zu — Cartografia de Sombras</span></div><div class="mcard-field"><span class="mf-l">Grau</span><span class="mf-v red">Grau Especial · Não reconhecida</span></div></div><div class="mcard-col"><div class="mcard-field"><span class="mf-l">Função na SS</span><span class="mf-v">Inteligência · Infiltração · Mapeamento</span></div></div></div></div><div class="mcard-lore">A Soul Society sabe o que sabe porque Sable esteve em todos os lugares onde ninguém notou.</div></div></div>
+
+  <div class="mcard" data-cat="anomalia operacao"><div class="mcard-head" onclick="toggleMC(this)"><div class="mcard-num">06</div><div class="mcard-info"><div class="mcard-name">Sousuke</div><div class="mcard-alias">O Parasita</div></div><div class="mcard-tags"><span class="mctag red">Anomalia</span></div><div class="mcard-chev">▶</div></div><div class="mcard-body"><div class="mcard-top"><div class="mcard-photo"><img src="membros/sousuke.png" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="mp-fallback" style="display:none"><div class="mp-k">寄</div><div class="mp-t">sousuke</div></div></div><div class="mcard-grid"><div class="mcard-col"><div class="mcard-field"><span class="mf-l">Status</span><span class="mf-v cyan">Ativo · Kyoto — vetor em expansão</span></div><div class="mcard-field"><span class="mf-l">Técnica</span><span class="mf-v">寄生術式 Kisei Jutsu</span></div><div class="mcard-field"><span class="mf-l">Grau</span><span class="mf-v red">Grau Especial · Protocolo de Extinção ativo</span></div></div><div class="mcard-col"><div class="mcard-field"><span class="mf-l">Função na SS</span><span class="mf-v">Infiltração · Guerra Biológica</span></div><div class="mcard-field"><span class="mf-l">Kill switch</span><span class="mf-v red">Morte → emerge Las Plagas</span></div></div></div></div><div class="mcard-lore">Não foi gerado — foi cultivado. A destruição acontece ao redor dele como consequência natural.</div></div></div>
+
+  <div class="mcard" data-cat="anomalia combate"><div class="mcard-head" onclick="toggleMC(this)"><div class="mcard-num">07</div><div class="mcard-info"><div class="mcard-name">Foo</div><div class="mcard-alias">O Ceifador · O Fazendeiro</div></div><div class="mcard-tags"><span class="mctag">Combate</span><span class="mctag red">Anomalia</span></div><div class="mcard-chev">▶</div></div><div class="mcard-body"><div class="mcard-top"><div class="mcard-photo"><img src="membros/foo.png" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="mp-fallback" style="display:none"><div class="mp-k">農</div><div class="mp-t">foo</div></div></div><div class="mcard-grid"><div class="mcard-col"><div class="mcard-field"><span class="mf-l">Status</span><span class="mf-v cyan">Ativo · Campo livre</span></div><div class="mcard-field"><span class="mf-l">Técnica</span><span class="mf-v">固有技法・農場掌握 — Domínio da Fazenda</span></div><div class="mcard-field"><span class="mf-l">Semente</span><span class="mf-v">Toshigami · raízes douradas até as extremidades</span></div></div><div class="mcard-col"><div class="mcard-field"><span class="mf-l">Função na SS</span><span class="mf-v">Destruição Estrutural · Ciclo Final</span></div><div class="mcard-field"><span class="mf-l">Grau</span><span class="mf-v red">Grau Especial · Indefinido</span></div></div></div></div><div class="mcard-lore">Planta qualquer coisa: técnicas, armas, conceitos. A fazenda prospera quando as coisas morrem na hora certa.</div></div></div>
+
+  <div class="mcard" data-cat="combate operacao"><div class="mcard-head" onclick="toggleMC(this)"><div class="mcard-num">08</div><div class="mcard-info"><div class="mcard-name">Kaoru</div><div class="mcard-alias">O Carniceiro Silencioso</div></div><div class="mcard-tags"><span class="mctag">Combate</span></div><div class="mcard-chev">▶</div></div><div class="mcard-body"><div class="mcard-top"><div class="mcard-photo"><img src="membros/kaoru.png" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="mp-fallback" style="display:none"><div class="mp-k">無</div><div class="mp-t">kaoru</div></div></div><div class="mcard-grid"><div class="mcard-col"><div class="mcard-field"><span class="mf-l">Status</span><span class="mf-v cyan">Ativo · Campo livre</span></div><div class="mcard-field"><span class="mf-l">Técnica</span><span class="mf-v">無音 Muon — Ausência de Som</span></div><div class="mcard-field"><span class="mf-l">Grau</span><span class="mf-v red">Grau Especial · Sem registro</span></div></div><div class="mcard-col"><div class="mcard-field"><span class="mf-l">Histórico</span><span class="mf-v red">Zero missões falhas · Zero testemunhas</span></div><div class="mcard-field"><span class="mf-l">Função na SS</span><span class="mf-v">Eliminação · Remoção de Obstáculos</span></div></div></div></div><div class="mcard-lore">Recusou o recrutamento duas vezes. Na terceira, simplesmente apareceu.</div></div></div>
+
+  <div class="mcard" data-cat="anomalia suporte"><div class="mcard-head" onclick="toggleMC(this)"><div class="mcard-num">09</div><div class="mcard-info"><div class="mcard-name">Véio</div><div class="mcard-alias">O Ancião Sem Idade</div></div><div class="mcard-tags"><span class="mctag red">Anomalia</span><span class="mctag">Suporte</span></div><div class="mcard-chev">▶</div></div><div class="mcard-body"><div class="mcard-top"><div class="mcard-photo"><img src="membros/veio.png" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="mp-fallback" style="display:none"><div class="mp-k">記</div><div class="mp-t">véio</div></div></div><div class="mcard-grid"><div class="mcard-col"><div class="mcard-field"><span class="mf-l">Status</span><span class="mf-v cyan">Ativo · Sede da SS</span></div><div class="mcard-field"><span class="mf-l">Técnica</span><span class="mf-v">記憶食 Kioku-shoku — Devorador de Memórias</span></div><div class="mcard-field"><span class="mf-l">Condição</span><span class="mf-v red">Não envelhece — motivo desconhecido</span></div></div><div class="mcard-col"><div class="mcard-field"><span class="mf-l">Função na SS</span><span class="mf-v">Arquivo Vivo · Repositório de Segredos</span></div><div class="mcard-field"><span class="mf-l">Grau</span><span class="mf-v red">Impossível de datar</span></div></div></div></div><div class="mcard-lore">Absorve memórias originais de qualquer ser tocado. O alvo esquece. Véio lembra. Sabe o que todos os clãs enterraram.</div></div></div>
+
+  <div class="mcard" data-cat="combate anomalia"><div class="mcard-head" onclick="toggleMC(this)"><div class="mcard-num">10</div><div class="mcard-info"><div class="mcard-name">Naomi Gojo</div><div class="mcard-alias">A Inversão</div></div><div class="mcard-tags"><span class="mctag">Combate</span><span class="mctag red">Anomalia</span></div><div class="mcard-chev">▶</div></div><div class="mcard-body"><div class="mcard-top"><div class="mcard-photo"><img src="membros/naomi.png" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="mp-fallback" style="display:none"><div class="mp-k">逆</div><div class="mp-t">naomi</div></div></div><div class="mcard-grid"><div class="mcard-col"><div class="mcard-field"><span class="mf-l">Status</span><span class="mf-v cyan">Ativa · Campo livre</span></div><div class="mcard-field"><span class="mf-l">Técnica</span><span class="mf-v">逆治 Gyaku-ji — Cura Invertida Permanente</span></div><div class="mcard-field"><span class="mf-l">Grau</span><span class="mf-v red">Grau Especial · Risco Alto</span></div></div><div class="mcard-col"><div class="mcard-field"><span class="mf-l">Condição passiva</span><span class="mf-v red">Não pode ser curada por nenhum meio</span></div><div class="mcard-field"><span class="mf-l">Função na SS</span><span class="mf-v">Negar recursos ao inimigo · Contra-cura</span></div></div></div></div><div class="mcard-lore">Nasceu com a técnica de cura dos Gojo — mas ela funciona ao contrário. Lys a encontrou antes que o clã decidisse o que fazer com ela.</div></div></div>
+
+  <div class="udiv"></div>
+  <div class="ss-slabel">Objetivos de Longo Prazo</div>
+  <div class="acc"><div class="acc-h" onclick="toggleAcc(this)"><span class="acc-ico">▶</span><span class="acc-t">A Dinastia Espiritual</span><span class="acc-m">Projeto Macro</span></div><div class="acc-b"><p>O objetivo não é poder visível. O objetivo é uma estrutura invisível que sustenta todos os grandes clãs sem que eles saibam. Os clãs acreditarão que escolheram se aliar. Não saberão que as opções disponíveis foram as únicas deixadas abertas.</p></div></div>
+  <div class="acc"><div class="acc-h" onclick="toggleAcc(this)"><span class="acc-ico">▶</span><span class="acc-t">A Sentença de Takero Zenin</span><span class="acc-m">Operação prioritária</span></div><div class="acc-b"><p>Takero Zenin é intocável pelos meios convencionais. Yagami Gojo é a solução: selar Takero no Abismo — não morte, desaparecimento permanente.</p></div></div>
+  <div class="udiv"></div>
+  <div style="text-align:center;padding:10px 0 20px"><div class="ss-classified" style="opacity:.2">// fim do arquivo · acesso acima de grau 4 requer autorização de Lys Gojo //</div></div>
+</div>
+</div>
+
+<script>
+(function(){
+  const c=document.getElementById('void-canvas');if(!c)return;
+  const ctx=c.getContext('2d');let W,H,pts=[];
+  function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;}
+  window.addEventListener('resize',resize);resize();
+  function Pt(){this.x=Math.random()*W;this.y=H+20;this.r=.5+Math.random()*1.5;this.s=.15+Math.random()*.35;this.a=.03+Math.random()*.12;this.d=(Math.random()-.5)*.3;this.p=Math.random()*Math.PI*2;this.ps=.005+Math.random()*.01;}
+  Pt.prototype.tick=function(){this.y-=this.s;this.x+=this.d;this.p+=this.ps;if(this.y<-10)Object.assign(this,new Pt());};
+  Pt.prototype.draw=function(){const a=this.a*(.6+.4*Math.sin(this.p));ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fillStyle=`rgba(147,51,234,${a})`;ctx.fill();};
+  for(let i=0;i<60;i++){const p=new Pt();p.y=Math.random()*H;pts.push(p);}
+  function loop(){ctx.clearRect(0,0,W,H);if(document.getElementById('page-ficha').classList.contains('on'))pts.forEach(p=>{p.tick();p.draw();});requestAnimationFrame(loop);}
+  loop();
+})();
+
+function goTab(page,btn){
+  if(document.getElementById('page-'+page).classList.contains('on'))return;
+  const cv=document.getElementById('pt-canvas'),sc=document.getElementById('pt-scan'),cL=document.getElementById('pt-corners-l'),cR=document.getElementById('pt-corners-r');
+  const inc=document.getElementById('page-'+page),out=document.querySelector('.page.on');
+  const vh=window.innerHeight,vw=window.innerWidth,DUR=500;let ts=null,done=false;
+  function ease(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;}
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+  window.scrollTo(0,0);cv.width=vw;cv.height=vh;
+  const ctx=cv.getContext('2d');ctx.fillStyle='#080608';ctx.fillRect(0,0,vw,vh);
+  cv.style.display='block';sc.style.display='block';cL.style.display='block';cR.style.display='block';
+  sc.style.transform='translateY(-3px)';cL.style.transform='translateY(-12px)';cR.style.transform='translateY(-12px)';
+  out.classList.remove('on');inc.classList.add('on');
+  function frame(t){if(done)return;if(!ts)ts=t;const raw=Math.min((t-ts)/DUR,1),y=Math.round(ease(raw)*vh);ctx.clearRect(0,0,vw,y);sc.style.transform=`translateY(${y-2}px)`;cL.style.transform=`translateY(${y-12}px)`;cR.style.transform=`translateY(${y-12}px)`;if(raw<1){requestAnimationFrame(frame);return;}done=true;cv.style.display='none';sc.style.display='none';cL.style.display='none';cR.style.display='none';}
+  requestAnimationFrame(frame);
+}
+
+/* Set sub-grid columns based on child count */
+document.querySelectorAll('.sub-grid').forEach(g => {
+  const n = g.querySelectorAll('.sub-card').length;
+  g.dataset.cols = Math.min(n, n === 1 ? 1 : n <= 2 ? 2 : 3);
+});
+
+
+function tcSwitch(idx, tab) {
+  const cabinet  = tab.closest('.tech-cabinet');
+  const tabs     = cabinet.querySelectorAll('.tc-tab');
+  const panels   = cabinet.querySelectorAll('.tc-panel');
+  const current  = cabinet.querySelector('.tc-panel.on');
+  const next     = panels[idx];
+  if (current === next) return;
+
+  tabs.forEach(t => t.classList.remove('on'));
+  tab.classList.add('on');
+
+  // Fade out current, then fade in next
+  if (current) {
+    current.classList.add('out');
+    current.classList.remove('on');
+    setTimeout(() => {
+      current.classList.remove('out');
+      current.style.display = 'none';
+      next.style.display = 'block';
+      // Force reflow
+      void next.offsetWidth;
+      next.classList.add('on');
+    }, 150);
+  } else {
+    next.classList.add('on');
+  }
+}
+
+function selectAbility(icon,id){const p=document.getElementById(id),o=p.classList.contains('open');document.querySelectorAll('.ab-detail-panel').forEach(x=>x.classList.remove('open'));document.querySelectorAll('.ab-icon').forEach(x=>x.classList.remove('selected'));if(!o){p.classList.add('open');icon.classList.add('selected');}}
+function toggleSubCard(c){c.classList.toggle('open');}
+function toggleAcc(h){h.classList.toggle('open');h.nextElementSibling.classList.toggle('open');}
+function toggleMC(h){h.classList.toggle('open');h.nextElementSibling.classList.toggle('open');}
+function filterMC(cat,btn){document.querySelectorAll('.mc-filter').forEach(b=>b.classList.remove('on'));btn.classList.add('on');document.querySelectorAll('.mcard').forEach(c=>{if(cat==='all'){c.classList.remove('hidden');return;}(c.dataset.cat||'').includes(cat)?c.classList.remove('hidden'):c.classList.add('hidden');});}
+</script>
+</body>
+</html>
