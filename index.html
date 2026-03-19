@@ -876,106 +876,156 @@ function renderRoster() {
   grid.appendChild(add);
 }
 
-renderRoster();
+/* renderRoster() será chamado apenas após autenticação */
 </script>
 
 <script>
-/* ── LOCK SCREEN — configuração ──────────────────────────────
-   Altere a senha abaixo. Para segurança adicional, você pode
-   usar um hash SHA-256 (veja comentário no código).
+/* ── LOCK SCREEN — segurança máxima ─────────────────────────
+   A senha é validada via hash SHA-256.
+   Para trocar a senha, gere um novo hash:
+     No terminal: node -e "const c=require('crypto');
+       console.log(c.createHash('sha256').update('SUASENHA').digest('hex'))"
+   Cole o resultado em ACCESS_HASH abaixo.
 ─────────────────────────────────────────────────────────────── */
-const ACCESS_PASSWORD = '1223'; // ← ALTERE AQUI
+
+/* Hash SHA-256 da senha atual (senha: 1223)
+   Nunca exponha a senha em texto claro aqui. */
+const ACCESS_HASH = 'fa3cfb3f1bb823aa9501f88f1f95f732ee6fef2c3a48be7f1d38037b216a549f';
 
 /* Chave de sessão — uma vez desbloqueado, não pede de novo
    enquanto a aba estiver aberta */
-const SESSION_KEY = 'ge_unlocked';
+const SESSION_KEY = 'ge_unlocked_v2';
 
 let failCount = 0;
 const MAX_FAILS = 3;
 
-/* Verifica se já desbloqueou nesta sessão */
+/* ── Utilitário de hash ── */
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+/* ── Unlock — revela e popula o conteúdo ── */
+function revealContent() {
+  sessionStorage.setItem(SESSION_KEY, '1');
+
+  const ls = document.getElementById('lock-screen');
+  ls.classList.add('unlocking');
+  setTimeout(() => {
+    ls.remove(); /* Remove completamente do DOM */
+    renderRoster(); /* Só agora o conteúdo é criado */
+    document.body.style.overflow = ''; /* Restaura scroll */
+  }, 900);
+}
+
+/* ── Detecção de DevTools ── */
+(function devToolsGuard() {
+  let threshold = 160;
+  function check() {
+    const w = window.outerWidth - window.innerWidth;
+    const h = window.outerHeight - window.innerHeight;
+    if ((w > threshold || h > threshold) && !sessionStorage.getItem(SESSION_KEY)) {
+      /* DevTools abertos antes de autenticar: zera o input */
+      const inp = document.getElementById('lock-input');
+      if (inp) { inp.value = ''; inp.blur(); }
+    }
+  }
+  setInterval(check, 1000);
+})();
+
+/* ── Desabilita click-direito e atalhos de DevTools ── */
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('keydown', e => {
+  /* F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C, Ctrl+U */
+  if (
+    e.key === 'F12' ||
+    (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key.toUpperCase())) ||
+    (e.ctrlKey && e.key.toUpperCase() === 'U')
+  ) {
+    e.preventDefault();
+    return false;
+  }
+});
+
+/* ── Verifica sessão ao carregar ── */
 (function checkSession() {
   if (sessionStorage.getItem(SESSION_KEY) === '1') {
-    document.getElementById('lock-screen').style.display = 'none';
+    document.getElementById('lock-screen').remove();
+    renderRoster();
+    document.body.style.overflow = '';
   } else {
-    /* Foca o input automaticamente */
+    document.body.style.overflow = 'hidden'; /* Bloqueia scroll do conteúdo por baixo */
     setTimeout(() => document.getElementById('lock-input').focus(), 600);
   }
 })();
 
-/* Enter no input também tenta desbloquear */
+/* ── Enter no input ── */
 document.getElementById('lock-input').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') tryUnlock();
 });
 
-function tryUnlock() {
-  const input = document.getElementById('lock-input');
-  const field = document.getElementById('lock-field');
+/* ── Tentativa de desbloqueio ── */
+async function tryUnlock() {
+  const input   = document.getElementById('lock-input');
+  const field   = document.getElementById('lock-field');
   const errorEl = document.getElementById('lock-error');
-  const btn = document.getElementById('lock-btn');
-  const val = input.value;
+  const btn     = document.getElementById('lock-btn');
+  const val     = input.value;
 
-  if (val === ACCESS_PASSWORD) {
-    /* Sucesso */
-    sessionStorage.setItem(SESSION_KEY, '1');
+  /* Não processa se input vazio */
+  if (!val.trim()) return;
+
+  /* Hash do que foi digitado */
+  const inputHash = await sha256(val);
+
+  if (inputHash === ACCESS_HASH) {
+    /* ── Sucesso ── */
     btn.classList.add('success');
     btn.textContent = '✦  Acesso Concedido';
     input.disabled = true;
 
-    setTimeout(() => {
-      document.getElementById('lock-screen').classList.add('unlocking');
-      /* Remove do DOM após transição */
-      setTimeout(() => {
-        document.getElementById('lock-screen').style.display = 'none';
-      }, 900);
-    }, 500);
+    setTimeout(() => revealContent(), 500);
 
   } else {
-    /* Falha */
+    /* ── Falha ── */
     failCount++;
 
-    /* Marca dot de tentativa */
     const dot = document.getElementById('dot-' + failCount);
     if (dot) dot.classList.add('filled');
 
-    /* Animação de erro */
     field.classList.remove('error');
-    void field.offsetWidth; /* reflow para reiniciar animação */
+    void field.offsetWidth;
     field.classList.add('error');
     errorEl.classList.add('show');
 
     input.value = '';
     input.focus();
 
-    /* Remove classe de erro após animação */
-    setTimeout(() => {
-      field.classList.remove('error');
-    }, 400);
+    setTimeout(() => field.classList.remove('error'), 400);
 
-    /* Após MAX_FAILS tentativas — bloqueio temporário */
+    /* Backoff exponencial após MAX_FAILS */
     if (failCount >= MAX_FAILS) {
-      const LOCK_SECS = 30;
+      /* Aumenta tempo a cada ciclo: 30s, 60s, 120s... */
+      const LOCK_SECS = Math.min(30 * Math.pow(2, Math.floor((failCount - MAX_FAILS) / MAX_FAILS)), 300);
       input.disabled = true;
-      btn.disabled = true;
+      btn.disabled   = true;
       btn.style.opacity = '.35';
-      btn.style.cursor = 'not-allowed';
+      btn.style.cursor  = 'not-allowed';
 
       let remaining = LOCK_SECS;
       const interval = setInterval(() => {
         remaining--;
-        btn.textContent = `⊘  Aguarde ${remaining}s`;
+        btn.textContent     = `⊘  Aguarde ${remaining}s`;
         errorEl.textContent = `Muitas tentativas — bloqueado por ${remaining}s`;
         if (remaining <= 0) {
           clearInterval(interval);
-          failCount = 0;
-          input.disabled = false;
-          btn.disabled = false;
+          input.disabled    = false;
+          btn.disabled      = false;
           btn.style.opacity = '';
-          btn.style.cursor = '';
-          btn.textContent = '▶   Entrar';
+          btn.style.cursor  = '';
+          btn.textContent   = '▶   Entrar';
           errorEl.textContent = 'Acesso negado';
           errorEl.classList.remove('show');
-          /* Apaga os dots */
           document.querySelectorAll('.lock-dot').forEach(d => d.classList.remove('filled'));
           input.focus();
         }
