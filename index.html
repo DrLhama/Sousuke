@@ -452,9 +452,251 @@ footer {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: .01ms !important; }
 }
+
+/* ── LOCK SCREEN ── */
+#lock-screen {
+  position: fixed; inset: 0; z-index: 9999;
+  background: #030200;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  transition: opacity .8s ease, visibility .8s ease;
+}
+#lock-screen.unlocking {
+  opacity: 0; visibility: hidden; pointer-events: none;
+}
+
+/* grain */
+#lock-screen::before {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none; opacity: .022;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px;
+}
+
+/* radial vignette */
+#lock-screen::after {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 70% 70% at 50% 50%, transparent 30%, rgba(2,1,0,.85) 100%);
+}
+
+.lock-inner {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 0;
+  animation: lock-appear 1.2s ease both;
+}
+@keyframes lock-appear {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Decorative top rule */
+.lock-rule-top {
+  width: 1px; height: 60px;
+  background: linear-gradient(180deg, transparent, rgba(140,110,40,.25));
+  margin-bottom: 36px;
+}
+
+/* Seal / glyph */
+.lock-seal {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 3.8rem;
+  color: rgba(180,155,70,.12);
+  line-height: 1;
+  margin-bottom: 28px;
+  animation: seal-pulse 6s ease-in-out infinite;
+  letter-spacing: .05em;
+}
+@keyframes seal-pulse {
+  0%, 100% { color: rgba(180,155,70,.10); }
+  50%       { color: rgba(180,155,70,.22); }
+}
+
+/* Title */
+.lock-title {
+  font-family: 'shuriken', serif;
+  font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+  letter-spacing: .22em;
+  color: rgba(200,175,90,.2);
+  margin-bottom: 6px;
+}
+.lock-subtitle {
+  font-family: 'Inconsolata', monospace;
+  font-size: .48rem; letter-spacing: .55em; text-transform: uppercase;
+  color: rgba(140,110,40,.22);
+  margin-bottom: 48px;
+}
+
+/* Divider */
+.lock-divider {
+  width: 180px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(140,110,40,.18), transparent);
+  margin-bottom: 40px;
+}
+
+/* Input group */
+.lock-field {
+  position: relative;
+  width: 260px;
+  margin-bottom: 18px;
+}
+.lock-label {
+  font-family: 'Inconsolata', monospace;
+  font-size: .44rem; letter-spacing: .5em; text-transform: uppercase;
+  color: rgba(120,95,40,.3);
+  margin-bottom: 10px;
+  display: block;
+  text-align: center;
+}
+.lock-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(100,80,30,.22);
+  padding: 10px 14px;
+  font-family: 'Inconsolata', monospace;
+  font-size: .9rem;
+  letter-spacing: .3em;
+  color: rgba(200,175,90,.55);
+  text-align: center;
+  outline: none;
+  transition: border-color .3s, color .3s;
+  caret-color: rgba(200,175,90,.4);
+}
+.lock-input::placeholder {
+  color: rgba(100,80,30,.2);
+  letter-spacing: .3em;
+}
+.lock-input:focus {
+  border-color: rgba(160,130,55,.45);
+  color: rgba(220,195,110,.75);
+}
+
+/* Underline glow on focus */
+.lock-field::after {
+  content: '';
+  position: absolute; bottom: 0; left: 50%; right: 50%;
+  height: 1px;
+  background: rgba(180,155,70,.5);
+  transition: left .3s, right .3s;
+}
+.lock-field:focus-within::after {
+  left: 0; right: 0;
+}
+
+/* Error shake */
+.lock-field.error .lock-input {
+  animation: lock-shake .35s ease;
+  border-color: rgba(180,60,60,.5);
+  color: rgba(200,100,100,.7);
+}
+@keyframes lock-shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-8px); }
+  40%       { transform: translateX(8px); }
+  60%       { transform: translateX(-6px); }
+  80%       { transform: translateX(4px); }
+}
+
+/* Error message */
+.lock-error {
+  font-family: 'Inconsolata', monospace;
+  font-size: .44rem; letter-spacing: .3em; text-transform: uppercase;
+  color: rgba(200,80,80,.0);
+  text-align: center;
+  transition: color .3s;
+  height: 16px;
+  margin-bottom: 28px;
+}
+.lock-error.show { color: rgba(200,80,80,.55); }
+
+/* Enter button */
+.lock-btn {
+  font-family: 'Inconsolata', monospace;
+  font-size: .48rem; letter-spacing: .55em; text-transform: uppercase;
+  color: rgba(140,110,40,.35);
+  background: none; border: 1px solid rgba(100,80,30,.18);
+  padding: 12px 36px; cursor: pointer;
+  transition: border-color .3s, color .3s, background .3s;
+  width: 260px;
+}
+.lock-btn:hover {
+  border-color: rgba(160,130,55,.4);
+  color: rgba(200,175,90,.65);
+  background: rgba(80,60,10,.06);
+}
+.lock-btn:active {
+  background: rgba(80,60,10,.12);
+}
+
+/* Success flash */
+.lock-btn.success {
+  border-color: rgba(140,110,40,.5);
+  color: rgba(200,175,90,.8);
+  background: rgba(80,60,10,.1);
+}
+
+/* Bottom rule */
+.lock-rule-bottom {
+  width: 1px; height: 60px;
+  background: linear-gradient(180deg, rgba(140,110,40,.25), transparent);
+  margin-top: 44px;
+}
+
+/* Attempts indicator dots */
+.lock-dots {
+  display: flex; gap: 8px;
+  margin-top: 24px;
+}
+.lock-dot {
+  width: 4px; height: 4px;
+  border: 1px solid rgba(100,80,30,.2);
+  border-radius: 50%;
+  transition: background .3s, border-color .3s;
+}
+.lock-dot.filled {
+  background: rgba(200,80,80,.4);
+  border-color: rgba(200,80,80,.4);
+}
 </style>
 </head>
 <body>
+
+<!-- ── LOCK SCREEN ── -->
+<div id="lock-screen">
+  <div class="lock-inner">
+    <div class="lock-rule-top"></div>
+    <div class="lock-seal">⛩</div>
+    <div class="lock-title">Golden Era</div>
+    <div class="lock-subtitle">Arquivo Classificado</div>
+    <div class="lock-divider"></div>
+
+    <label class="lock-label" for="lock-input">Código de Acesso</label>
+    <div class="lock-field" id="lock-field">
+      <input
+        class="lock-input"
+        id="lock-input"
+        type="password"
+        placeholder="· · · · · · · ·"
+        autocomplete="off"
+        spellcheck="false"
+        maxlength="32"
+      />
+    </div>
+    <div class="lock-error" id="lock-error">Acesso negado</div>
+
+    <button class="lock-btn" id="lock-btn" onclick="tryUnlock()">▶ &nbsp; Entrar</button>
+
+    <div class="lock-dots" id="lock-dots">
+      <div class="lock-dot" id="dot-1"></div>
+      <div class="lock-dot" id="dot-2"></div>
+      <div class="lock-dot" id="dot-3"></div>
+    </div>
+
+    <div class="lock-rule-bottom"></div>
+  </div>
+</div>
 
 <div class="bg"></div>
 <div class="bg-grain"></div>
@@ -635,6 +877,112 @@ function renderRoster() {
 }
 
 renderRoster();
+</script>
+
+<script>
+/* ── LOCK SCREEN — configuração ──────────────────────────────
+   Altere a senha abaixo. Para segurança adicional, você pode
+   usar um hash SHA-256 (veja comentário no código).
+─────────────────────────────────────────────────────────────── */
+const ACCESS_PASSWORD = '1223'; // ← ALTERE AQUI
+
+/* Chave de sessão — uma vez desbloqueado, não pede de novo
+   enquanto a aba estiver aberta */
+const SESSION_KEY = 'ge_unlocked';
+
+let failCount = 0;
+const MAX_FAILS = 3;
+
+/* Verifica se já desbloqueou nesta sessão */
+(function checkSession() {
+  if (sessionStorage.getItem(SESSION_KEY) === '1') {
+    document.getElementById('lock-screen').style.display = 'none';
+  } else {
+    /* Foca o input automaticamente */
+    setTimeout(() => document.getElementById('lock-input').focus(), 600);
+  }
+})();
+
+/* Enter no input também tenta desbloquear */
+document.getElementById('lock-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') tryUnlock();
+});
+
+function tryUnlock() {
+  const input = document.getElementById('lock-input');
+  const field = document.getElementById('lock-field');
+  const errorEl = document.getElementById('lock-error');
+  const btn = document.getElementById('lock-btn');
+  const val = input.value;
+
+  if (val === ACCESS_PASSWORD) {
+    /* Sucesso */
+    sessionStorage.setItem(SESSION_KEY, '1');
+    btn.classList.add('success');
+    btn.textContent = '✦  Acesso Concedido';
+    input.disabled = true;
+
+    setTimeout(() => {
+      document.getElementById('lock-screen').classList.add('unlocking');
+      /* Remove do DOM após transição */
+      setTimeout(() => {
+        document.getElementById('lock-screen').style.display = 'none';
+      }, 900);
+    }, 500);
+
+  } else {
+    /* Falha */
+    failCount++;
+
+    /* Marca dot de tentativa */
+    const dot = document.getElementById('dot-' + failCount);
+    if (dot) dot.classList.add('filled');
+
+    /* Animação de erro */
+    field.classList.remove('error');
+    void field.offsetWidth; /* reflow para reiniciar animação */
+    field.classList.add('error');
+    errorEl.classList.add('show');
+
+    input.value = '';
+    input.focus();
+
+    /* Remove classe de erro após animação */
+    setTimeout(() => {
+      field.classList.remove('error');
+    }, 400);
+
+    /* Após MAX_FAILS tentativas — bloqueio temporário */
+    if (failCount >= MAX_FAILS) {
+      const LOCK_SECS = 30;
+      input.disabled = true;
+      btn.disabled = true;
+      btn.style.opacity = '.35';
+      btn.style.cursor = 'not-allowed';
+
+      let remaining = LOCK_SECS;
+      const interval = setInterval(() => {
+        remaining--;
+        btn.textContent = `⊘  Aguarde ${remaining}s`;
+        errorEl.textContent = `Muitas tentativas — bloqueado por ${remaining}s`;
+        if (remaining <= 0) {
+          clearInterval(interval);
+          failCount = 0;
+          input.disabled = false;
+          btn.disabled = false;
+          btn.style.opacity = '';
+          btn.style.cursor = '';
+          btn.textContent = '▶   Entrar';
+          errorEl.textContent = 'Acesso negado';
+          errorEl.classList.remove('show');
+          /* Apaga os dots */
+          document.querySelectorAll('.lock-dot').forEach(d => d.classList.remove('filled'));
+          input.focus();
+        }
+      }, 1000);
+    }
+  }
+}
 </script>
 </body>
 </html>

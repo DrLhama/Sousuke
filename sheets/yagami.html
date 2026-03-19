@@ -4,18 +4,34 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Yagami Gojo — Soul Society</title>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;900&family=Share+Tech+Mono&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;900&family=Share+Tech+Mono&family=IM+Fell+English:ital@0;1&family=Uncial+Antiqua&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg:        #05060a;
   --surface:   #0a0c10;
   --surface2:  #0f1218;
-  --border:    rgba(80,200,240,0.12);
-  --border2:   rgba(80,200,240,0.22);
-  --cyan:      #50c8f0;
-  --cyan2:     #8ae0ff;
-  --cyan-dim:  rgba(80,200,240,0.08);
-  --cyan-glow: rgba(80,200,240,0.18);
+  --border:    rgba(100,180,240,0.13);
+  --border2:   rgba(140,140,255,0.25);
+  --cyan:      #60c0f0;
+  --cyan2:     #a0c8ff;
+  --cyan-dim:  rgba(80,180,240,0.08);
+  --cyan-glow: rgba(120,140,255,0.18);
+  /* Mixed cyan→violet palette */
+  --mix1:      #50c8f0; /* ciano puro */
+  --mix2:      #5ab8f8; /* ciano-azul */
+  --mix3:      #6ea8f5; /* azul médio */
+  --mix4:      #8090f0; /* azul-violeta */
+  --mix5:      #9b78f5; /* violeta médio */
+  --mix6:      #b060f0; /* violeta-púrpura */
+  --mix7:      #c048e8; /* púrpura */
+  --grad-cv: linear-gradient(90deg, #50c8f0, #7a9af5, #9b6fff, #c048e8);
+  --grad-cv-v: linear-gradient(180deg, #50c8f0, #7a9af5, #9b6fff, #c048e8);
+  /* Expanded abyss palette */
+  --void:      #0b0d14;
+  --teal:      #38e8c8;
+  --teal-dim:  rgba(56,232,200,0.07);
+  --violet:    #9b6fff;
+  --violet-dim:rgba(155,111,255,0.07);
   --white:     #e8f0f4;
   --muted:     #5a6a72;
   --dim:       #2a3840;
@@ -23,6 +39,7 @@
   --serif:     'IM Fell English', Georgia, serif;
   --display:   'Cinzel Decorative', serif;
   --ui:        'Cinzel', serif;
+  --cursive:   'IM Fell English', cursive;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{background:var(--bg);color:var(--white);font-family:var(--serif);min-height:100vh;overflow-x:hidden;}
@@ -39,10 +56,10 @@ html,body{background:var(--bg);color:var(--white);font-family:var(--serif);min-h
   pointer-events:none; display:none; top:0;
   background:linear-gradient(90deg,
     transparent 0%, rgba(80,200,240,0.1) 8%,
-    #50c8f0 30%, #8ae0ff 50%, #50c8f0 70%,
-    rgba(80,200,240,0.1) 92%, transparent 100%
+    #50c8f0 20%, #7a9af5 40%, #9b6fff 60%, #c048e8 80%,
+    rgba(155,111,255,0.1) 92%, transparent 100%
   );
-  box-shadow: 0 0 8px #50c8f0, 0 0 20px rgba(80,200,240,0.5), 0 2px 12px rgba(80,200,240,0.3);
+  box-shadow: 0 0 8px #9b6fff, 0 0 20px rgba(155,111,255,0.5), 0 2px 12px rgba(80,200,240,0.3);
 }
 #pt-scan::after {
   content:''; position:absolute; left:0; right:0; top:3px;
@@ -79,7 +96,7 @@ body::after {
 }
 .tab-btn::before {
   content:''; position:absolute; bottom:-1px; left:50%; right:50%;
-  height:2px; background:var(--cyan);
+  height:2px; background: var(--grad-cv);
   transition:all .3s; opacity:0;
 }
 .tab-btn.on { color:var(--cyan2); }
@@ -95,21 +112,30 @@ body::after {
 /* ─── SECTION LABEL ─── */
 .slabel {
   font-family:var(--mono); font-size:9px; letter-spacing:5px;
-  text-transform:uppercase; color:var(--cyan); margin-bottom:18px;
+  text-transform:uppercase; color: var(--mix3);
+  margin-bottom:18px;
   display:flex; align-items:center; gap:12px; margin-top:40px;
   position:relative;
 }
-.slabel::before { content:''; width:18px; height:1px; background:var(--cyan); }
-.slabel::after  { content:''; flex:1; height:1px; background:linear-gradient(90deg,var(--border2),transparent); }
+.slabel::before {
+  content:''; width:18px; height:1px;
+  background: var(--grad-cv);
+  flex-shrink:0;
+}
+.slabel::after { content:''; flex:1; height:1px; background:linear-gradient(90deg, rgba(155,111,255,0.22), transparent); }
 .slabel:first-child { margin-top:0; }
-/* Ghost section number */
+/* Ghost section number — fully overrides ::before */
 .slabel[data-n]::before {
   content: attr(data-n);
   font-family:var(--display); font-size:80px; font-weight:900;
-  color:rgba(80,200,240,0.04); letter-spacing:-2px; line-height:1;
+  color: rgba(120,100,255,0.05);
+  letter-spacing:-2px; line-height:1;
   position:absolute; right:0; top:50%; transform:translateY(-50%);
-  width:auto; height:auto; background:none; pointer-events:none;
+  width:auto; height:auto;
+  background: none !important;
+  pointer-events:none;
   z-index:0;
+  flex-shrink: unset;
 }
 
 /* ─── UTILITY ─── */
@@ -163,8 +189,8 @@ body::after {
 .photo-frame::before, .photo-frame::after {
   content:''; position:absolute; width:16px; height:16px; z-index:2;
 }
-.photo-frame::before { top:0; left:0; border-top:2px solid var(--cyan); border-left:2px solid var(--cyan); }
-.photo-frame::after  { bottom:0; right:0; border-bottom:2px solid var(--cyan); border-right:2px solid var(--cyan); }
+.photo-frame::before { top:0; left:0; border-top:2px solid var(--mix2); border-left:2px solid var(--mix2); }
+.photo-frame::after  { bottom:0; right:0; border-bottom:2px solid var(--mix6); border-right:2px solid var(--mix6); }
 .photo-overlay {
   position:absolute; bottom:0; left:0; right:0;
   background:linear-gradient(0deg,rgba(5,6,10,0.9),transparent);
@@ -172,7 +198,7 @@ body::after {
 }
 .photo-grau {
   font-family:var(--mono); font-size:8px; letter-spacing:4px;
-  color:var(--cyan); text-transform:uppercase;
+  color:var(--mix3); text-transform:uppercase;
 }
 
 .hero-info { display:flex; flex-direction:column; justify-content:flex-end; }
@@ -250,7 +276,7 @@ body::after {
 }
 .ab::before {
   content:''; position:absolute; left:0; top:0; bottom:0; width:2px;
-  background:linear-gradient(180deg,var(--cyan),transparent); opacity:.4;
+  background:linear-gradient(180deg,var(--mix2),var(--mix5),var(--mix7)); opacity:.5;
 }
 .ab-head { display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:6px; }
 .ab-name { font-family:var(--ui); font-size:11.5px; font-weight:600; color:var(--white); letter-spacing:1px; }
@@ -313,7 +339,7 @@ body::after {
 }
 .ab-detail-panel::before {
   content:''; position:absolute; top:0; left:0; right:0; height:1px;
-  background:linear-gradient(90deg,var(--cyan),transparent);
+  background: var(--grad-cv);
   opacity:0; transition:opacity .3s ease .1s;
 }
 .ab-detail-panel.open {
@@ -347,7 +373,7 @@ body::after {
 }
 .tech-module-header::before {
   content:''; position:absolute; bottom:-1px; left:0;
-  width:60px; height:1px; background:var(--cyan);
+  width:60px; height:1px; background: var(--grad-cv);
 }
 .tech-index {
   font-family:var(--mono); font-size:9px; letter-spacing:3px;
@@ -650,7 +676,7 @@ body::after {
   color:rgba(232,240,244,0.75);
 }
 .lore-text::first-letter {
-  font-size:20px; color:var(--cyan); float:left;
+  font-size:20px; color:var(--mix5); float:left;
   margin-right:3px; line-height:1;
 }
 
@@ -658,16 +684,16 @@ body::after {
 .lore-block { border:1px solid var(--border); background:var(--surface); padding:26px 28px; }
 .lore-block p { font-size:13px; line-height:1.95; color:rgba(232,240,244,0.75); margin-bottom:16px; }
 .lore-block p:last-child { margin-bottom:0; }
-.lore-block p::first-letter { font-size:20px; color:var(--cyan); float:left; margin-right:3px; line-height:1; }
+.lore-block p::first-letter { font-size:20px; color:var(--mix5); float:left; margin-right:3px; line-height:1; }
 
 /* ─ FOOTER ─ */
 .pg-footer { text-align:center; margin-top:60px; }
 .footer-sigil {
   display:inline-block; width:60px; height:60px;
-  border:1px solid var(--border); border-radius:50%;
+  border:1px solid rgba(155,111,255,0.22); border-radius:50%;
   display:inline-flex; align-items:center; justify-content:center;
   font-size:20px; animation:spin 25s linear infinite;
-  color:rgba(80,200,240,0.4);
+  color:rgba(155,111,255,0.6);
 }
 .footer-text { font-family:var(--mono); font-size:8px; letter-spacing:5px; color:var(--muted); margin-top:16px; text-transform:uppercase; opacity:.4; }
 @keyframes spin{to{transform:rotate(360deg);}}
@@ -831,18 +857,227 @@ body::after {
   .member-grid { grid-template-columns:1fr; }
   .pillar-grid { grid-template-columns:1fr 1fr; }
 }
+
+/* ══════════════════════════════════════════
+   CURSIVE ANCIENT FONT — epitáfios, lore, quotes
+══════════════════════════════════════════ */
+.hero-quote,
+.mcard-lore,
+.ab-detail-desc,
+.sub-card-desc {
+  font-family: var(--cursive) !important;
+  font-style: normal !important;
+  letter-spacing: 0.02em;
+  line-height: 1.95;
+}
+/* hero-epithet: legível, elegante, NÃO cursiva pesada */
+.hero-epithet {
+  font-family: 'IM Fell English', Georgia, serif !important;
+  font-style: italic !important;
+  font-size: 15px;
+  opacity: 1;
+  color: var(--cyan);
+  letter-spacing: 0.5px;
+}
+.hero-quote { font-size: 13.5px; }
+.mcard-lore { font-size: 12.5px; }
+
+/* ══════════════════════════════════════════
+   FULL-PAGE VOID CANVAS — vórtex de fundo
+══════════════════════════════════════════ */
+#void-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.18;
+  mix-blend-mode: screen;
+}
+
+/* ══════════════════════════════════════════
+   DRAMATIC GLOW — nome, técnica principal
+══════════════════════════════════════════ */
+.hero-name {
+  text-shadow:
+    0 0 12px rgba(80,200,240,0.55),
+    0 0 40px rgba(155,111,255,0.28),
+    0 0 90px rgba(192,72,232,0.10);
+  animation: hero-name-breathe 7s ease-in-out infinite;
+}
+@keyframes hero-name-breathe {
+  0%,100% {
+    text-shadow:
+      0 0 10px rgba(80,200,240,0.45),
+      0 0 35px rgba(122,154,245,0.25),
+      0 0 80px rgba(155,111,255,0.12);
+  }
+  50% {
+    text-shadow:
+      0 0 18px rgba(80,200,240,0.55),
+      0 0 40px rgba(155,111,255,0.45),
+      0 0 90px rgba(192,72,232,0.25),
+      0 0 200px rgba(56,232,200,0.08);
+  }
+}
+
+/* Section labels que pulsam levemente em violeta nas seções de técnica */
+.slabel[data-n="03"],
+.slabel[data-n="04"] {
+  color: var(--teal);
+}
+.slabel[data-n="03"]::before,
+.slabel[data-n="04"]::before { background: var(--teal); }
+
+/* Técnica principal — destaque violáceo */
+.tech-module-dmg {
+  color: var(--violet);
+  border-color: rgba(155,111,255,0.22);
+  background: rgba(155,111,255,0.06);
+  text-shadow: 0 0 12px rgba(155,111,255,0.4);
+}
+
+/* ══════════════════════════════════════════
+   VÓRTEX NO PHOTO FALLBACK
+══════════════════════════════════════════ */
+.photo-fallback {
+  position: relative;
+  background: radial-gradient(ellipse 70% 70% at 50% 50%, #060c14 0%, #030508 100%) !important;
+  overflow: hidden;
+}
+
+/* Canvas do vórtex — injetado via JS */
+#vortex-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.75;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.photo-fallback .kanji,
+.photo-fallback .ph-text {
+  position: relative;
+  z-index: 2;
+}
+
+/* ══════════════════════════════════════════
+   NOISE PARTICLES — body background layer
+══════════════════════════════════════════ */
+#noise-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.22;
+  mix-blend-mode: screen;
+}
+
+/* ══════════════════════════════════════════
+   COLOR ZONE SHIFTS — teal e violeta em regiões
+══════════════════════════════════════════ */
+
+/* EA bar — cyan→violet */
+.ea-bar-fill {
+  background: linear-gradient(90deg, var(--mix1), var(--mix3), var(--mix5), var(--mix7)) !important;
+  box-shadow: 0 0 8px rgba(155,111,255,0.4) !important;
+}
+
+/* Attr pips preenchidos — alternam ciano/teal */
+.attr-pip.filled:nth-child(4n+3)::after { background: var(--teal) !important; opacity: .8; }
+.attr-pip.filled:nth-child(5n)::after   { background: var(--violet) !important; opacity: .65; }
+
+/* Sub-card selecionado — violeta */
+.sub-card.open {
+  border-color: rgba(155,111,255,0.35) !important;
+  background: rgba(155,111,255,0.05) !important;
+}
+.sub-card.open .sub-card-name { color: var(--violet) !important; }
+
+/* mcard lore — teal borda */
+.mcard-lore {
+  border-left-color: rgba(56,232,200,0.3) !important;
+}
+
+/* item-card — glow assimétrico violeta */
+.item-card::before {
+  background: radial-gradient(ellipse 60% 80% at 100% 0%, rgba(155,111,255,0.07), transparent) !important;
+}
+
+/* Pillar cards — shift de cor nas bordas */
+.pillar:nth-child(2) { border-color: rgba(56,232,200,0.18) !important; }
+.pillar:nth-child(3) { border-color: rgba(155,111,255,0.18) !important; }
+.pillar:nth-child(2) .pillar-label { color: var(--teal) !important; }
+.pillar:nth-child(3) .pillar-label { color: var(--violet) !important; }
+
+/* Timeline dots — teal */
+.tl-dot {
+  background: var(--teal) !important;
+  box-shadow: 0 0 8px rgba(56,232,200,0.5) !important;
+}
+.tl::before { background: linear-gradient(180deg, var(--mix1), var(--mix3), var(--mix5), var(--mix7)) !important; }
+
+/* ══════════════════════════════════════════
+   VOID SCAN LINE — via canvas only, no pseudo
+══════════════════════════════════════════ */
+
+/* ── ABILITY ICON SVGs ── */
+.ab-icon-glyph svg {
+  width: 26px; height: 26px;
+  display: block; margin: 0 auto;
+  filter: drop-shadow(0 0 5px currentColor);
+}
+
+/* ── CUSTOM SIGIL ICONS (substitutos de emoji) ── */
+.sigil-icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em; height: 1em;
+  position: relative; top: -0.05em;
+}
+.sigil-icon svg {
+  width: 100%; height: 100%;
+  display: block;
+}
+/* Versão grande para ss-eye e footer-sigil */
+.sigil-eye {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 100%; height: 100%;
+}
+.sigil-eye svg { width: 36px; height: 36px; }
+.footer-sigil .sigil-eye svg { width: 28px; height: 28px; }
+
+/* Violet fire particles layer */
+#fire-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.55;
+  mix-blend-mode: screen;
+}
 </style>
 </head>
 <body>
 
 <canvas id="pt-canvas"></canvas>
+<canvas id="noise-canvas"></canvas>
+<canvas id="void-canvas"></canvas>
+<canvas id="fire-canvas"></canvas>
 <div id="pt-scan"></div>
 <div id="pt-corners-l"></div>
 <div id="pt-corners-r"></div>
 <div class="scan-line" id="scan-line"></div>
 <div class="tab-bar">
-  <button class="tab-btn on" onclick="goTab('ficha',this)">◈ Ficha — Yagami Gojo</button>
-  <button class="tab-btn" onclick="goTab('ss',this)">⛩ Soul Society — Arquivo</button>
+  <button class="tab-btn on" onclick="goTab('ficha',this)"><span class="sigil-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="3" fill="currentColor" opacity="0.9"/><circle cx="10" cy="10" r="6.5" stroke="currentColor" stroke-width="0.8" opacity="0.5"/><line x1="10" y1="1" x2="10" y2="5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="10" y1="15" x2="10" y2="19" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="1" y1="10" x2="5" y2="10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="15" y1="10" x2="19" y2="10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="3.5" y1="3.5" x2="6.5" y2="6.5" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" opacity="0.55"/><line x1="13.5" y1="13.5" x2="16.5" y2="16.5" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" opacity="0.55"/><line x1="16.5" y1="3.5" x2="13.5" y2="6.5" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" opacity="0.55"/><line x1="6.5" y1="13.5" x2="3.5" y2="16.5" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" opacity="0.55"/></svg></span> Ficha — Yagami Gojo</button>
+  <button class="tab-btn" onclick="goTab('ss',this)"><span class="sigil-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2 L10 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M4 5 Q10 3 16 5 L17 8 Q10 6 3 8 Z" fill="currentColor" opacity="0.7"/><rect x="5" y="8" width="10" height="8" stroke="currentColor" stroke-width="0.9" opacity="0.6"/><line x1="10" y1="8" x2="10" y2="16" stroke="currentColor" stroke-width="0.8" opacity="0.4"/><path d="M7 16 L7 13 Q10 12 13 13 L13 16" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" opacity="0.7"/><path d="M2 8 L18 8" stroke="currentColor" stroke-width="0.7" opacity="0.3"/></svg></span> Soul Society — Arquivo</button>
 </div>
 
 <!-- ══ PAGE 1 ══ -->
@@ -854,12 +1089,13 @@ body::after {
     <div class="photo-frame">
       <img src="membros/yagami.png" alt="Yagami Gojo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
       <div class="photo-fallback" style="display:none">
+        <canvas id="vortex-canvas"></canvas>
         <div class="kanji">獄</div>
         <div class="ph-text">sem imagem</div>
       </div>
       <div class="photo-overlay">
         <div class="photo-hud">
-          <span class="ph-hud-tag">⬡ Grau Especial</span>
+          <span class="ph-hud-tag"><span class="sigil-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="10,2 17,6 17,14 10,18 3,14 3,6" stroke="currentColor" stroke-width="1" fill="none" opacity="0.8"/><polygon points="10,5 14.5,7.5 14.5,12.5 10,15 5.5,12.5 5.5,7.5" stroke="currentColor" stroke-width="0.6" fill="none" opacity="0.4"/></svg></span> Grau Especial</span>
           <span class="ph-hud-tag hi">EA 300</span>
           <span class="ph-hud-tag hi">Nível 1</span>
         </div>
@@ -867,7 +1103,7 @@ body::after {
     </div>
 
     <div class="hero-info">
-      <div class="hero-society">⛩ Soul Society · Clã Gojo · Registro Selado</div>
+      <div class="hero-society"><span class="sigil-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2 L10 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M4 5 Q10 3 16 5 L17 8 Q10 6 3 8 Z" fill="currentColor" opacity="0.7"/><rect x="5" y="8" width="10" height="8" stroke="currentColor" stroke-width="0.9" opacity="0.6"/><line x1="10" y1="8" x2="10" y2="16" stroke="currentColor" stroke-width="0.8" opacity="0.4"/><path d="M7 16 L7 13 Q10 12 13 13 L13 16" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" opacity="0.7"/></svg></span> Soul Society · Clã Gojo · Registro Selado</div>
       <div class="hero-name">Yagami<br>Gojo</div>
       <div class="hero-epithet">O Arauto do Purgatório</div>
       <div class="hero-line"></div>
@@ -882,7 +1118,6 @@ body::after {
       </div>
       <div class="hero-quote">
         Quando ele nasceu, maldições ao redor do mundo sentiram. Algumas fugiram.<br>
-        Lys Gojo caiu de joelhos — não de desespero, mas de êxtase.<br>
         O Abismo havia enviado sua resposta.
       </div>
     </div>
@@ -961,61 +1196,127 @@ body::after {
   <div class="slabel" data-n="03">Habilidades de Origem</div>
 
   <div class="ab-desktop" id="ab-desktop">
-    <div class="ab-icon" onclick="selectAbility(this,'ab-0')">
-      <div class="ab-icon-glyph">⚡</div>
-      <div class="ab-icon-label">Energia Primordial</div>
-      <div class="ab-icon-type">Passiva</div>
+      <div class="ab-icon" onclick="selectAbility(this,'ab-0')">
+        <div class="ab-icon-glyph" style="color:rgba(80,200,240,0.8)">
+          <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="13" cy="13" r="3.5" fill="currentColor" opacity="0.9"/>
+            <circle cx="13" cy="13" r="6.5" stroke="currentColor" stroke-width="0.8" opacity="0.4"/>
+            <line x1="13" y1="1" x2="13" y2="6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="13" y1="20" x2="13" y2="25" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="1" y1="13" x2="6" y2="13" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="20" y1="13" x2="25" y2="13" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="4.5" y1="4.5" x2="8" y2="8" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" opacity="0.6"/>
+            <line x1="18" y1="18" x2="21.5" y2="21.5" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" opacity="0.6"/>
+            <line x1="21.5" y1="4.5" x2="18" y2="8" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" opacity="0.6"/>
+            <line x1="8" y1="18" x2="4.5" y2="21.5" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" opacity="0.6"/>
+          </svg>
+        </div>
+        <div class="ab-icon-label">Energia Primordial</div>
+        <div class="ab-icon-type">Passiva</div>
+      </div>
+      <div class="ab-icon" onclick="selectAbility(this,'ab-1')">
+        <div class="ab-icon-glyph" style="color:rgba(80,200,240,0.7)">
+          <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 13 C4 8 9 4 13 4 C17 4 22 8 22 13 C22 18 17 22 13 22 C9 22 4 18 4 13Z" stroke="currentColor" stroke-width="0.9" opacity="0.5"/>
+            <path d="M7 13 C7 9.5 10 7 13 7 C16 7 19 9.5 19 13" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            <circle cx="13" cy="13" r="2.8" fill="currentColor" opacity="0.85"/>
+            <circle cx="14.2" cy="11.8" r="0.7" fill="rgba(255,255,255,0.4)"/>
+            <path d="M3 13 Q13 6 23 13" stroke="currentColor" stroke-width="0.6" opacity="0.3"/>
+          </svg>
+        </div>
+        <div class="ab-icon-label">Imunidade Intimidação</div>
+        <div class="ab-icon-type">Passiva</div>
+      </div>
+      <div class="ab-icon" onclick="selectAbility(this,'ab-2')">
+        <div class="ab-icon-glyph" style="color:rgba(56,232,200,0.85)">
+          <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="13" cy="13" r="2.2" fill="currentColor"/>
+            <path d="M8 8 Q6 10.5 6 13 Q6 15.5 8 18" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.7"/>
+            <path d="M18 8 Q20 10.5 20 13 Q20 15.5 18 18" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.7"/>
+            <path d="M5 5.5 Q2 9 2 13 Q2 17 5 20.5" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" opacity="0.4"/>
+            <path d="M21 5.5 Q24 9 24 13 Q24 17 21 20.5" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" opacity="0.4"/>
+          </svg>
+        </div>
+        <div class="ab-icon-label">Presença Carnal</div>
+        <div class="ab-icon-type">Ambiental</div>
+      </div>
+      <div class="ab-icon" onclick="selectAbility(this,'ab-3')">
+        <div class="ab-icon-glyph" style="color:rgba(155,111,255,0.85)">
+          <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M13 3 C7 3 3 7.5 3 13 C3 18.5 7 23 13 23 C16 23 18 21.5 19 20" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" opacity="0.8"/>
+            <path d="M13 7 C9.5 7 7 9.5 7 13 C7 16.5 9.5 19 13 19 C15 19 16.5 18 17.5 16.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
+            <circle cx="13" cy="13" r="2.5" stroke="currentColor" stroke-width="0.9" opacity="0.5"/>
+            <circle cx="13" cy="13" r="1" fill="currentColor"/>
+            <path d="M18 5 L22 3 L20 7 Z" fill="currentColor" opacity="0.7"/>
+          </svg>
+        </div>
+        <div class="ab-icon-label">Tamashī Kui</div>
+        <div class="ab-icon-type">Ativa</div>
+      </div>
+      <div class="ab-icon" onclick="selectAbility(this,'ab-4')">
+        <div class="ab-icon-glyph" style="color:rgba(80,200,240,0.75)">
+          <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M13 22 L13 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            <path d="M13 10 L9 6 Q11 9 13 10 Q15 9 17 6 L13 10" stroke="currentColor" stroke-width="0.9" stroke-linejoin="round" opacity="0.8"/>
+            <line x1="9" y1="15" x2="17" y2="15" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+            <line x1="9" y1="18.5" x2="17" y2="18.5" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+            <path d="M9 14.5 Q7 13 8 11 Q9.5 12 9 14.5Z" fill="currentColor" opacity="0.6"/>
+            <path d="M17 14.5 Q19 13 18 11 Q16.5 12 17 14.5Z" fill="currentColor" opacity="0.6"/>
+          </svg>
+        </div>
+        <div class="ab-icon-label">Rengoku-tai</div>
+        <div class="ab-icon-type">Passiva</div>
+      </div>
+      <div class="ab-icon" onclick="selectAbility(this,'ab-5')">
+        <div class="ab-icon-glyph" style="color:rgba(155,111,255,0.8)">
+          <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="13" cy="10" r="6" stroke="currentColor" stroke-width="0.9" opacity="0.7"/>
+            <circle cx="13" cy="10" r="3" stroke="currentColor" stroke-width="0.8" opacity="0.5"/>
+            <path d="M10 15.5 Q10 20 13 23 Q16 20 16 15.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" opacity="0.8"/>
+            <line x1="13" y1="4" x2="13" y2="16" stroke="currentColor" stroke-width="0.7" opacity="0.4"/>
+            <circle cx="13" cy="23.5" r="1" fill="currentColor" opacity="0.7"/>
+            <path d="M9 8 L13 10 L17 8" stroke="currentColor" stroke-width="0.7" opacity="0.4"/>
+          </svg>
+        </div>
+        <div class="ab-icon-label">Tamashī-doku</div>
+        <div class="ab-icon-type">Passiva</div>
+      </div>
     </div>
-    <div class="ab-icon" onclick="selectAbility(this,'ab-1')">
-      <div class="ab-icon-glyph">🛡</div>
-      <div class="ab-icon-label">Imunidade Intimidação</div>
-      <div class="ab-icon-type">Passiva</div>
-    </div>
-    <div class="ab-icon" onclick="selectAbility(this,'ab-2')">
-      <div class="ab-icon-glyph">👁</div>
-      <div class="ab-icon-label">Presença Carnal</div>
-      <div class="ab-icon-type">Ambiental</div>
-    </div>
-    <div class="ab-icon" onclick="selectAbility(this,'ab-3')">
-      <div class="ab-icon-glyph">💀</div>
-      <div class="ab-icon-label">Tamashī Kui</div>
-      <div class="ab-icon-type">Ativa</div>
-    </div>
-    <div class="ab-icon" onclick="selectAbility(this,'ab-4')">
-      <div class="ab-icon-glyph">🩻</div>
-      <div class="ab-icon-label">Rengoku-tai</div>
-      <div class="ab-icon-type">Passiva</div>
-    </div>
-  </div>
 
-  <div class="ab-detail-panel" id="ab-0">
-    <div class="ab-detail-name">Energia Primordial</div>
-    <div class="ab-detail-type">Passiva</div>
-    <div class="ab-detail-desc">300 EA base — estrutural, não aprendida. Faz parte do que ele é biologicamente. Não foi concedida. Nasceu com ela.</div>
-  </div>
-  <div class="ab-detail-panel" id="ab-1">
-    <div class="ab-detail-name">Imunidade à Intimidação</div>
-    <div class="ab-detail-kanji">+5d20 em Intimidação</div>
-    <div class="ab-detail-type">Passiva</div>
-    <div class="ab-detail-desc">Nasceu onde o medo mora. Não pode ser intimidado. Quando ele intimida, são cinco dados extras de d20.</div>
-  </div>
-  <div class="ab-detail-panel" id="ab-2">
-    <div class="ab-detail-name">Presença Carnal</div>
-    <div class="ab-detail-type">Passiva · Ambiental</div>
-    <div class="ab-detail-desc">Provoca reações primais em qualquer ser consciente próximo. Inimigos sentem ódio irracional ou atração perturbadora. O jogador escolhe por alvo. Não é magia. É natureza.</div>
-  </div>
-  <div class="ab-detail-panel" id="ab-3">
-    <div class="ab-detail-name">魂喰い Tamashī Kui</div>
-    <div class="ab-detail-kanji">Devorador de Almas</div>
-    <div class="ab-detail-type">Ativa</div>
-    <div class="ab-detail-desc">Ao participar da morte de um inimigo, rouba um atributo dele. Quando todos atingem 5, eleva um para 6. Repete-se infinitamente. Não há teto.</div>
-  </div>
-  <div class="ab-detail-panel" id="ab-4">
-    <div class="ab-detail-name">煉獄体 Rengoku-tai</div>
-    <div class="ab-detail-kanji">Carne do Abismo</div>
-    <div class="ab-detail-type">Passiva</div>
-    <div class="ab-detail-desc">Não morre sem cabeça, sem membros, sem órgãos. O corpo continua funcionando enquanto o HP não zerar. A biologia convencional não se aplica.</div>
-  </div>
+    <div class="ab-detail-panel" id="ab-0">
+      <div class="ab-detail-name">Energia Primordial</div>
+      <div class="ab-detail-type">Passiva</div>
+      <div class="ab-detail-desc">300 EA base — estrutural, não aprendida. Faz parte do que ele é biologicamente. Não foi concedida. Nasceu com ela.</div>
+    </div>
+    <div class="ab-detail-panel" id="ab-1">
+      <div class="ab-detail-name">Imunidade à Intimidação</div>
+      <div class="ab-detail-kanji">+10 base · +5d20 em Intimidação</div>
+      <div class="ab-detail-type">Passiva</div>
+      <div class="ab-detail-desc">Nasceu onde o medo mora. Não pode ser intimidado. Quando ele intimida, recebe +10 fixo na rolagem base e cinco dados extras de d20 por cima. Mas os números são o menor dos problemas do alvo — porque o que ele realmente sente não é pressão social. É o mundo quebrando ao redor dele. O espaço se distorce. O ar pesa como pedra. Yagami deixa de parecer humano: vira algo anterior à linguagem, anterior ao nome, anterior à forma. O alvo vê a morte se aproximando com rosto, vê o inferno se erguendo do chão, ouve o silêncio que vem antes do fim. Dependendo da intensidade da intimidação — de quão punido ele vai ser — o céu muda de cor, a gravidade parece diferente, e a única certeza que resta é que aquilo que está na frente dele não deveria existir neste plano. Não é magia. Não é ilusão. É o Abismo reconhecendo um inimigo e deixando isso ser visto.</div>
+    </div>
+    <div class="ab-detail-panel" id="ab-2">
+      <div class="ab-detail-name">Presença Carnal</div>
+      <div class="ab-detail-type">Passiva · Ambiental</div>
+      <div class="ab-detail-desc">Provoca reações primais em qualquer ser consciente próximo. Inimigos sentem ódio irracional ou atração perturbadora. O jogador escolhe por alvo. Não é magia. É natureza.</div>
+    </div>
+    <div class="ab-detail-panel" id="ab-3">
+      <div class="ab-detail-name">魂喰い Tamashī Kui</div>
+      <div class="ab-detail-kanji">Devorador de Almas</div>
+      <div class="ab-detail-type">Ativa</div>
+      <div class="ab-detail-desc">Ao participar da morte de um inimigo, rouba um atributo dele. Quando todos atingem 5, eleva um para 6. Repete-se infinitamente. Não há teto.</div>
+    </div>
+    <div class="ab-detail-panel" id="ab-4">
+      <div class="ab-detail-name">煉獄体 Rengoku-tai</div>
+      <div class="ab-detail-kanji">Carne do Abismo</div>
+      <div class="ab-detail-type">Passiva</div>
+      <div class="ab-detail-desc">Não morre sem cabeça, sem membros, sem órgãos. O corpo continua funcionando enquanto o HP não zerar. A biologia convencional não se aplica.</div>
+    </div>
+    <div class="ab-detail-panel" id="ab-5">
+      <div class="ab-detail-name">魂毒 Tamashī-doku</div>
+      <div class="ab-detail-kanji">Veneno de Alma</div>
+      <div class="ab-detail-type">Passiva</div>
+      <div class="ab-detail-desc">Todo dano causado contra maldições recebe +3d6 adicional. O Abismo reconhece a natureza corrompida e amplifica o impacto instintivamente. Não é técnica — é rejeição.</div>
+    </div>
 
   <!-- TÉCNICAS -->
   <div class="slabel" data-n="04">Técnicas Inatas</div>
@@ -1038,8 +1339,8 @@ body::after {
         <span class="sub-card-kanji">縫合 Hōgō</span>
         <div class="sub-card-sep"></div>
         <div class="sub-card-body">
-        <div class="sub-card-desc">Fixa um contrato com o Purgatório sobre o campo. Ninguém escapa — sem fuga, teletransporte ou barreira. O combate só termina quando um lado for incapacitado. O Purgatório não escolhe lados.</div>
-        <span class="sub-card-tag">Ritual de Combate</span>
+        <div class="sub-card-desc">Fixa um contrato com o Purgatório entre dois combatentes. Funciona exclusivamente em 1v1 — os dois participantes originais ficam presos ao campo sem fuga, teletransporte ou barreira. Se terceiros entrarem no combate, o contrato não é desfeito: os combatentes originais continuam presos. Os novos entrantes não são afetados pelo contrato. O Purgatório não escolhe lados.</div>
+        <span class="sub-card-tag">Ritual de Combate · 1v1</span>
         </div>
       </div>
       <div class="sub-card" onclick="toggleSubCard(this)">
@@ -1153,8 +1454,8 @@ body::after {
         <span class="sub-card-kanji">骨衣 Hone-goromo</span>
         <div class="sub-card-body">
         <div class="sub-card-sep"></div>
-        <div class="sub-card-desc">Fragmentos de osso infernal subdérmicos redistribuem e absorvem dano de impacto constantemente. Sem sinal externo visível.</div>
-        <span class="sub-card-tag">Passiva</span>
+        <div class="sub-card-desc">Fragmentos de osso infernal subdérmicos redistribuem e absorvem dano de impacto constantemente. Reduz <strong>7 pontos de dano</strong> por acerto. Sem sinal externo visível.</div>
+        <span class="sub-card-tag">Passiva · −7 dano</span>
         </div>
       </div>
       <div class="sub-card" onclick="toggleSubCard(this)">
@@ -1199,8 +1500,8 @@ body::after {
         <span class="sub-card-kanji">自食 Jishoku</span>
         <div class="sub-card-body">
         <div class="sub-card-sep"></div>
-        <div class="sub-card-desc">O organismo se reconstrói passivamente a cada round. Pode ser forçada como ação para acelerar a custo de EA.</div>
-        <span class="sub-card-tag">Passiva / Ativa</span>
+        <div class="sub-card-desc">O organismo se reconstrói passivamente a cada round, curando <strong>5 HP</strong> automaticamente. Não pode ser forçada ou suprimida.</div>
+        <span class="sub-card-tag">Passiva · +5 HP/round</span>
         </div>
       </div>
       <div class="sub-card" onclick="toggleSubCard(this)">
@@ -1220,7 +1521,7 @@ body::after {
   <!-- PERÍCIAS -->
   <div class="slabel" data-n="05">Perícias</div>
   <div class="skills-desktop">
-    <div class="skills-desktop-bar">◈ <span>Perícias</span> · proficiente em destaque</div>
+    <div class="skills-desktop-bar"><span class="sigil-icon" style="font-size:14px"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="3" fill="currentColor" opacity="0.9"/><circle cx="10" cy="10" r="6.5" stroke="currentColor" stroke-width="0.8" opacity="0.5"/><line x1="10" y1="1" x2="10" y2="5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="10" y1="15" x2="10" y2="19" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="1" y1="10" x2="5" y2="10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="15" y1="10" x2="19" y2="10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span> <span>Perícias</span> · proficiente em destaque</div>
     <div class="sk-grid">
       <div class="sk-group-head">Força</div>
       <div class="sk-row p"><span class="sk-row-name">Luta</span><span class="sk-row-val">+5</span></div>
@@ -1263,43 +1564,58 @@ body::after {
   </div>
 
   <!-- LORE -->
-  <div class="slabel" data-n="07">Origem · Soul Society</div>
-  <div class="lore-timeline">
-    <div class="lore-spine"></div>
-    <div class="lore-entries">
-      <div class="lore-entry">
-        <div class="lore-marker"></div>
-        <div class="lore-content">
-          <div class="lore-event">Nascimento · O Canal</div>
-          <div class="lore-text">Yagami não foi gerado. Foi invocado pela natureza. Enquanto os anciãos do clã Gojo debatiam técnicas e linhagens, Lys Gojo aguardava — não com esperança, mas com certeza. O Purgatório precisava de um canal. E então ele nasceu.</div>
+    <div class="slabel" data-n="07">Origem · Soul Society</div>
+    <div class="lore-timeline">
+      <div class="lore-spine"></div>
+      <div class="lore-entries">
+        <div class="lore-entry">
+          <div class="lore-marker"></div>
+          <div class="lore-content">
+            <div class="lore-event">Nascimento · O Canal</div>
+            <div class="lore-text">Yagami não foi gerado. Foi invocado pela natureza. No momento em que nasceu, maldições fracas fugiram da região sem razão aparente — o Purgatório ficou mais presente naquele ponto do mundo. Os anciãos do Clã Gojo não souberam nomear o que sentiram. Lys soube. Não era uma criança. Era uma abertura que o mundo não havia visto antes e não estava preparado para fechar.</div>
+          </div>
         </div>
-      </div>
-      <div class="lore-entry">
-        <div class="lore-marker"></div>
-        <div class="lore-content">
-          <div class="lore-event">Reconhecimento · O Tremor</div>
-          <div class="lore-text">Maldições sentiram. O equilíbrio de energia amaldiçoada do mundo tremeu por um instante imperceptível — mas os antigos notaram. Lys caiu de joelhos no momento do nascimento, não de desespero, mas de êxtase. Não era uma criança. Era uma abertura.</div>
+        <div class="lore-entry">
+          <div class="lore-marker"></div>
+          <div class="lore-content">
+            <div class="lore-event">A Carruagem · Takero Zenin</div>
+            <div class="lore-text">Anos depois do nascimento, Takero Zenin — líder do Clã Zenin, o homem mais perigoso do mundo Jujutsu — interceptou pessoalmente uma carruagem dos Gojo em trânsito. Dentro estava Yagami, ainda criança. Takero olhou. Foi embora sem dizer uma palavra. Não foi misericórdia. Foi curiosidade — ele reservou a luta para quando o adversário valesse. Yagami não ficou com medo. Ficou confuso. E desde aquele dia carrega uma convicção silenciosa: Takero não merece morte. Merece o Abismo.</div>
+          </div>
         </div>
-      </div>
-      <div class="lore-entry">
-        <div class="lore-marker"></div>
-        <div class="lore-content">
-          <div class="lore-event">Posicionamento · Campo livre</div>
-          <div class="lore-text">O mais jovem dos pilares da Soul Society. Enviado ao campo com um propósito declarado: fortalecer. O propósito real é mais longo. Enquanto o mundo vê um feiticeiro grau 4, o Purgatório vê seu arauto se posicionando.</div>
+        <div class="lore-entry">
+          <div class="lore-marker"></div>
+          <div class="lore-content">
+            <div class="lore-event">Ameaça · O que o Jujutsu não Catalogou</div>
+            <div class="lore-text">Não há precedente. O mundo Jujutsu tem mecanismos para lidar com feiticeiros fortes — graus, registros, sentenças de contenção. Nenhum deles se aplica a Yagami. Ele não é forte. É estruturalmente incompatível com o que o Jujutsu conhece: um ser cuja existência força o Purgatório para mais perto da realidade, cujo corpo não obedece biologia convencional, e cuja técnica pode apagar permanentemente qualquer alma do plano espiritual. Se o mundo soubesse o que ele é, não enviaria feiticeiros. Encerraria a missão antes de começar.</div>
+          </div>
         </div>
-      </div>
-      <div class="lore-entry">
-        <div class="lore-marker"></div>
-        <div class="lore-content">
-          <div class="lore-event">Função Final · A Sentença</div>
-          <div class="lore-text">Takero Zenin, o intocável, terá uma sentença. Yagami é a única entidade no mundo capaz de tornar essa sentença permanente — não a morte, mas o confinamento eterno dentro do Abismo, de onde nenhum poder externo alcança e nenhuma reencarnação é possível.</div>
+        <div class="lore-entry">
+          <div class="lore-marker"></div>
+          <div class="lore-content">
+            <div class="lore-event">Posicionamento · Campo Livre</div>
+            <div class="lore-text">O mais jovem dos pilares da Soul Society. Enviado ao campo com um propósito declarado: fortalecer. O propósito real é mais longo. Enquanto o mundo vê um feiticeiro grau 4, o Purgatório vê seu arauto se posicionando. A sentença de Takero Zenin aguarda. Quando Yagami estiver pronto, o líder do Clã Zenin deixará de existir em qualquer sentido que importe — sem morte, sem reencarnação, sem rastro no plano espiritual.</div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
   <div class="pg-footer">
-    <div class="footer-sigil">◈</div>
+    <div class="footer-sigil">
+      <span class="sigil-eye"><svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="18" cy="18" r="5" fill="currentColor" opacity="0.85"/>
+        <circle cx="18" cy="18" r="9.5" stroke="currentColor" stroke-width="0.9" opacity="0.45"/>
+        <circle cx="18" cy="18" r="14" stroke="currentColor" stroke-width="0.6" opacity="0.2"/>
+        <line x1="18" y1="1" x2="18" y2="7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        <line x1="18" y1="29" x2="18" y2="35" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        <line x1="1" y1="18" x2="7" y2="18" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        <line x1="29" y1="18" x2="35" y2="18" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        <line x1="5.5" y1="5.5" x2="9.5" y2="9.5" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" opacity="0.5"/>
+        <line x1="26.5" y1="26.5" x2="30.5" y2="30.5" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" opacity="0.5"/>
+        <line x1="30.5" y1="5.5" x2="26.5" y2="9.5" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" opacity="0.5"/>
+        <line x1="9.5" y1="26.5" x2="5.5" y2="30.5" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" opacity="0.5"/>
+        <circle cx="18" cy="18" r="2" fill="var(--mix6)" opacity="0.9"/>
+      </svg></span>
+    </div>
     <div class="footer-text">Soul Society · Registro Confidencial · Nível Omega · Clã Gojo</div>
   </div>
 
@@ -1311,7 +1627,23 @@ body::after {
 <div class="wrap">
 
   <div class="ss-hero">
-    <div class="ss-eye"><span class="ss-eye-inner">◈</span></div>
+    <div class="ss-eye">
+      <span class="ss-eye-inner">
+        <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:30px;height:30px">
+          <circle cx="18" cy="18" r="4.5" fill="currentColor" opacity="0.9"/>
+          <circle cx="18" cy="18" r="9" stroke="currentColor" stroke-width="0.9" opacity="0.45"/>
+          <line x1="18" y1="2" x2="18" y2="7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="18" y1="29" x2="18" y2="34" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="2" y1="18" x2="7" y2="18" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="29" y1="18" x2="34" y2="18" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="6" y1="6" x2="10" y2="10" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" opacity="0.5"/>
+          <line x1="26" y1="26" x2="30" y2="30" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" opacity="0.5"/>
+          <line x1="30" y1="6" x2="26" y2="10" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" opacity="0.5"/>
+          <line x1="10" y1="26" x2="6" y2="30" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" opacity="0.5"/>
+          <circle cx="18" cy="18" r="1.8" fill="var(--mix5)"/>
+        </svg>
+      </span>
+    </div>
     <div class="ss-classified">// Arquivo Selado — Nível Omega //</div>
     <div class="ss-title">Soul Society</div>
     <div class="ss-sub">Clã Gojo · Sociedade da Alma</div>
@@ -1320,7 +1652,8 @@ body::after {
   <div class="tags-row">
     <span class="itag hi">Classificação: Ômega</span>
     <span class="itag hi">Status: Ativa</span>
-    <span class="itag">Sede: Não localizada</span>
+    <span class="itag hi">Também conhecida como: Clã dos Anjos</span>
+    <span class="itag">Sede: Soul Society — Cidade</span>
     <span class="itag">Membros confirmados: 10</span>
     <span class="itag">Conhecimento externo: Inexistente</span>
   </div>
@@ -1330,16 +1663,18 @@ body::after {
   <div class="acc">
     <div class="acc-h" onclick="toggleAcc(this)"><span class="acc-ico">▶</span><span class="acc-t">Origem e Natureza</span><span class="acc-m">Fundamentos</span></div>
     <div class="acc-b">
-      <p>A Soul Society não é uma organização criada. É uma convergência — o nome dado ao momento em que os membros mais aberrantes do Clã Gojo reconheceram uns aos outros não como aliados, mas como categorias. Cada membro é uma anomalia irrepetível que escapa da lógica convencional do Jujutsu.</p>
-      <p>O Clã Gojo é publicamente reconhecido pelo Infinito e pelos Olhos do Céu. A Soul Society existe na camada abaixo disso — membros que nasceram dentro do clã mas pertencem a algo anterior ao clã, algo que o clã apenas canalizou por acidente genético ou por vontade deliberada de Lys.</p>
-      <p>Não há hierarquia formal. Há função. Cada membro ocupa um papel que não pode ser preenchido por ninguém mais. A organização opera por convergência de interesses — e por um reconhecimento mútuo de que só aqui existe um igual.</p>
+      <p>A Soul Society — também chamada de <strong>Clã dos Anjos</strong> — não é uma organização criada por ambição política. É uma convergência fundada por <strong>Yūhabahha</strong>, o Rei das Almas, em torno de um princípio único: a transcendência da humanidade. Enquanto figuras como Sukuna perseguem a fusão com a maldição — a dissolução do humano no corrompido — os membros do Clã dos Anjos perseguem o caminho oposto: elevar o que é humano além dos seus limites naturais, moldando a alma até que ela ultrapasse a forma.</p>
+      <p>A Soul Society existe numa cidade de mesmo nome, cujo paradeiro é desconhecido para o mundo Jujutsu. Seus membros são anomalias irrepetíveis — cada um ocupa uma função que nenhum outro pode preencher. A organização opera por convergência de propósito, não por hierarquia rígida.</p>
+      <p>Lys Gojo mantém aliança com a Soul Society e com Yūhabahha — mas essa relação carrega uma camada de preocupação: Yūhabahha possui alianças com entidades e clãs de peso considerável. O alcance dele é amplo. E o que ele faz com esse alcance, a longo prazo, é uma equação que Lys ainda está calculando.</p>
     </div>
   </div>
   <div class="acc">
     <div class="acc-h" onclick="toggleAcc(this)"><span class="acc-ico">▶</span><span class="acc-t">Papel Político no Clã Gojo</span><span class="acc-m">Estrutura interna</span></div>
     <div class="acc-b">
-      <p>Para os anciãos do Clã Gojo, a Soul Society não existe. Nenhum registro, nenhuma menção, nenhum rumor confirmado. Lys Gojo é a única ponte — e ela não faz essa ponte voluntariamente. A Soul Society não responde ao Clã Gojo. O Clã Gojo, no plano de longo prazo de Lys, eventualmente responderá à Soul Society.</p>
-      <p>O projeto real é uma dinastia espiritual: a unificação dos grandes clãs sob uma nova ordem, com a Soul Society como seu núcleo invisível. Os clãs pensarão que estão governando. Não estarão. Estarão sendo sustentados por uma estrutura que eles nunca enxergarão e que não podem destruir porque não sabem onde está.</p>
+      <p>A Soul Society age única e exclusivamente em prol de si mesma e do projeto de Yūhabahha. Três eixos operacionais definem toda ação: <strong>coletar informações</strong>, <strong>formar alianças obedientes</strong> e <strong>eliminar inimigos</strong>.</p>
+      <p>O primeiro movimento é sempre a imposição de regras. As regras já existem — ninguém de fora sabe quais são.</p>
+      <p>Os alvos com sentença de eliminação são conhecidos internamente: <strong>Takero Zenin</strong> (líder do Clã Zenin), <strong>Maki Kamo</strong> (líder do Clã Kamo), a <strong>escola</strong>, e qualquer entidade que se recuse a se aliar. Não há negociação depois da recusa. Há apenas a execução da sentença.</p>
+      <p>Para o Clã Gojo externo, a Soul Society não existe. Lys Gojo é a única ponte — e a relação dela com Yūhabahha é de aliança, não de subordinação. O que isso significa a longo prazo, nenhum dos dois declarou abertamente.</p>
     </div>
   </div>
 
@@ -1348,10 +1683,10 @@ body::after {
   <!-- DOUTRINA -->
   <div class="slabel">Os Quatro Pilares — Doutrina Interna</div>
   <div class="pillar-grid">
-    <div class="pillar"><div class="pillar-n">I</div><div class="pillar-t">Existência como Prova</div><div class="pillar-d">Nenhum membro precisa justificar o que é. Sua existência já é argumento suficiente. Poder não se explica — se demonstra.</div></div>
+    <div class="pillar"><div class="pillar-n">I</div><div class="pillar-t">Transcendência, não Corrupção</div><div class="pillar-d">Enquanto outros perseguem a maldição como poder máximo, o Clã dos Anjos persegue o inverso: elevar a alma além da forma humana. O caminho é ascensão, não dissolução.</div></div>
     <div class="pillar"><div class="pillar-n">II</div><div class="pillar-t">Sem Lealdade à Forma</div><div class="pillar-d">Clãs, escolas, regras do Jujutsu — estruturas temporárias. A Soul Society serve a algo anterior. Nenhuma instituição merece lealdade incondicional.</div></div>
-    <div class="pillar"><div class="pillar-n">III</div><div class="pillar-t">O Segredo é a Arma</div><div class="pillar-d">A organização é invisível por escolha. O desconhecido é o campo de batalha mais favorável. Ninguém combate o que não consegue nomear.</div></div>
-    <div class="pillar"><div class="pillar-n">IV</div><div class="pillar-t">Convergência, não Hierarquia</div><div class="pillar-d">Não há líder absoluto. Há papéis. Cada membro é insubstituível em sua função. A força vem da complementaridade.</div></div>
+    <div class="pillar"><div class="pillar-n">III</div><div class="pillar-t">O Segredo é a Arma</div><div class="pillar-d">A organização é invisível por escolha. As regras existem — ninguém de fora sabe quais são. O desconhecido é o campo de batalha mais favorável.</div></div>
+    <div class="pillar"><div class="pillar-n">IV</div><div class="pillar-t">Convergência, não Hierarquia</div><div class="pillar-d">Yūhabahha é o Rei das Almas — mas cada membro é insubstituível em sua função. A força vem da complementaridade de anomalias irrepetíveis.</div></div>
   </div>
 
   <div class="udiv"></div>
@@ -1365,6 +1700,36 @@ body::after {
     <button class="mc-filter" onclick="filterMC('suporte',this)">Suporte</button>
     <button class="mc-filter" onclick="filterMC('operacao',this)">Operação</button>
     <button class="mc-filter" onclick="filterMC('anomalia',this)">Anomalia</button>
+  </div>
+
+  <!-- ⓪ YŪHABAHHA — Líder -->
+  <div class="mcard" data-cat="anomalia" style="border-color:rgba(255,220,120,0.3)">
+    <div class="mcard-head" onclick="toggleMC(this)" style="background:rgba(255,220,120,0.04)">
+      <div class="mcard-num" style="color:rgba(255,220,120,0.7)">00</div>
+      <div class="mcard-info"><div class="mcard-name" style="color:rgba(255,220,120,0.9)">Yūhabahha</div><div class="mcard-alias">O Rei das Almas · O Fundador · Clã dos Anjos</div></div>
+      <div class="mcard-tags"><span class="mctag" style="border-color:rgba(255,220,120,0.3);color:rgba(255,220,120,0.7)">Líder</span><span class="mctag red">Anomalia</span></div>
+      <div class="mcard-chev">▶</div>
+    </div>
+    <div class="mcard-body">
+      <div class="mcard-top">
+        <div class="mcard-photo"><img src="membros/yuhababha.png" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="mp-fallback"><div class="mp-k">王</div><div class="mp-t">yūhabahha</div></div></div>
+        <div class="mcard-grid">
+          <div class="mcard-col">
+            <div class="mcard-field"><span class="mf-l">Status</span><span class="mf-v cyan">Ativo · Soul Society — Cidade</span></div>
+            <div class="mcard-field"><span class="mf-l">Técnica</span><span class="mf-v red">Desconhecida · Classificação: Omega</span></div>
+            <div class="mcard-field"><span class="mf-l">Título</span><span class="mf-v" style="color:rgba(255,220,120,0.85)">Rei das Almas</span></div>
+            <div class="mcard-field"><span class="mf-l">Clã</span><span class="mf-v">Clã dos Anjos · Fundador</span></div>
+          </div>
+          <div class="mcard-col">
+            <div class="mcard-field"><span class="mf-l">Capacidade única</span><span class="mf-v">Cura moldando alma · único no mundo</span></div>
+            <div class="mcard-field"><span class="mf-l">Efeito de campo</span><span class="mf-v red">Quem ficava perto dele transcendia — passado</span></div>
+            <div class="mcard-field"><span class="mf-l">Estado atual</span><span class="mf-v red">Dividiu a alma demais · enfraquecido</span></div>
+            <div class="mcard-field"><span class="mf-l">Filho</span><span class="mf-v">Identidade desconhecida · localizado em Kyoto</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="mcard-lore">Yūhabahha é o arquiteto e fundador da Soul Society. Não há registro da sua técnica — o que se sabe é que ele cura moldando alma, e que era o único ser no mundo com esse conhecimento. Quem ficava suficientemente perto dele transcendia: ultrapassava os limites da forma humana de uma maneira que nenhum treinamento convencional jamais alcançaria. Hoje esse efeito não se manifesta mais. Dividiu a própria alma em demasia ao longo dos anos — e o custo foi o enfraquecimento. O Rei das Almas está presente, mas não no auge. Tem um filho em Kyoto que carrega a mesma técnica, com menos domínio. Ninguém sabe quem é. Lys Gojo mantém aliança com ele — e monitora o alcance crescente das suas alianças externas com atenção que ela não nomeia como preocupação, mas é.</div>
+    </div>
   </div>
 
   <!-- ① YAGAMI GOJO — highlighted (esta ficha) -->
@@ -1662,16 +2027,17 @@ body::after {
   <div class="acc">
     <div class="acc-h" onclick="toggleAcc(this)"><span class="acc-ico">▶</span><span class="acc-t">A Dinastia Espiritual</span><span class="acc-m">Projeto Macro</span></div>
     <div class="acc-b">
-      <p>O objetivo não é poder visível. Poder visível atrai resistência. O objetivo é uma estrutura invisível que sustenta todos os grandes clãs sem que eles saibam que estão sendo sustentados — e portanto controlados.</p>
-      <p>A Soul Society pretende submeter os clãs maiores a uma convergência forçada: não pela conquista militar, mas pelo posicionamento estratégico. Quando os momentos críticos chegarem — crises de sucessão, guerras entre clãs, ameaças externas — a Soul Society já estará nos pontos certos, com os recursos certos, com as informações certas.</p>
-      <p>Os clãs acreditarão que escolheram se aliar. Não saberão que as opções disponíveis foram as únicas deixadas abertas.</p>
+      <p>O objetivo não é poder visível. Poder visível atrai resistência. O objetivo é uma estrutura que sustenta — e portanto controla — sem que os controlados saibam que estão sendo controlados.</p>
+      <p>A Soul Society age em três eixos exclusivos: <strong>coletar informações</strong>, <strong>formar alianças obedientes</strong> e <strong>eliminar quem não se alinhar</strong>. O primeiro passo é sempre a imposição de regras. As regras já existem. Ninguém de fora sabe quais são.</p>
+      <p>Os clãs que se aliarem acreditarão que escolheram fazê-lo. Não saberão que as opções disponíveis foram as únicas deixadas abertas.</p>
     </div>
   </div>
   <div class="acc">
-    <div class="acc-h" onclick="toggleAcc(this)"><span class="acc-ico">▶</span><span class="acc-t">A Sentença de Takero Zenin</span><span class="acc-m">Operação prioritária</span></div>
+    <div class="acc-h" onclick="toggleAcc(this)"><span class="acc-ico">▶</span><span class="acc-t">A Sentença dos Alvos</span><span class="acc-m">Operação prioritária</span></div>
     <div class="acc-b">
-      <p>Takero Zenin é o obstáculo mais imediato ao projeto maior. Ele é intocável pelos meios convencionais — nenhum feiticeiro pode garantir que sua morte seja permanente, e a linhagem Zenin tem meios de preservação espiritual que a maioria desconhece.</p>
-      <p>Yagami Gojo é a solução. O Abismo que ele carrega é o único lugar no plano espiritual de onde nenhuma alma retorna — nem pelo ciclo de reencarnação, nem por técnicas de ressurreição, nem por intervenção externa. Selar Takero dentro do Abismo não é uma execução. É um desaparecimento permanente de tudo que ele é, foi e poderia ser.</p>
+      <p>A sentença da Soul Society é eliminação. Não há negociação depois da recusa de aliança — há execução. Os alvos confirmados são: <strong>Takero Zenin</strong> (líder do Clã Zenin), <strong>Maki Kamo</strong> (líder do Clã Kamo), a <strong>escola</strong> enquanto estrutura institucional, e qualquer entidade que se recuse a se aliar.</p>
+      <p>Takero Zenin é o obstáculo mais imediato. Intocável pelos meios convencionais — nenhum feiticeiro pode garantir que sua morte seja permanente, e a linhagem Zenin tem meios de preservação espiritual que a maioria desconhece.</p>
+      <p>Yagami Gojo é a solução. O Abismo que ele carrega é o único lugar no plano espiritual de onde nenhuma alma retorna — nem pelo ciclo de reencarnação, nem por técnicas de ressurreição, nem por intervenção externa. Selar Takero dentro do Abismo não é execução. É desaparecimento permanente de tudo que ele é, foi e poderia ser.</p>
       <p>Esta operação aguarda o fortalecimento de Yagami. Quando ele estiver pronto, Takero Zenin deixará de existir em qualquer sentido que importe.</p>
     </div>
   </div>
@@ -1684,7 +2050,7 @@ body::after {
     <div class="tl-i">
       <div class="tl-dot"></div>
       <div class="tl-label">Antecedente · Fundação</div>
-      <div class="tl-text">Lys Gojo, em isolamento, escreve os fundamentos do que viria a ser a Soul Society. Não como manifesto — como cálculo.</div>
+      <div class="tl-text">Yūhabahha, o Rei das Almas, funda a Soul Society — não como manifesto, mas como projeto de transcendência. A organização existe porque ele decidiu que existiria. Lys Gojo reconhece o que ele está construindo e forma aliança.</div>
     </div>
     <div class="tl-i">
       <div class="tl-dot"></div>
@@ -1839,6 +2205,377 @@ function toggleAcc(head){
   head.classList.toggle('open');
   head.nextElementSibling.classList.toggle('open');
 }
+</script>
+
+<script>
+/* ══════════════════════════════════════
+   VÓRTEX — photo fallback canvas
+══════════════════════════════════════ */
+(function initVortex(){
+  const canvas = document.getElementById('vortex-canvas');
+  if (!canvas) return;
+  const parent = canvas.parentElement;
+  function resize(){
+    canvas.width  = parent.offsetWidth  || 280;
+    canvas.height = parent.offsetHeight || 420;
+  }
+  resize();
+
+  const ctx = canvas.getContext('2d');
+  let t = 0;
+  const RINGS = 9, THREADS = 48;
+
+  /* Fire particles */
+  const FIRE_COUNT = 38;
+  const fireParticles = Array.from({length: FIRE_COUNT}, (_, i) => resetFire(i, true));
+
+  function resetFire(i, init) {
+    const W = canvas.width, H = canvas.height;
+    const cx = W * 0.5, cy = H * 0.5;
+    const spread = W * 0.14;
+    return {
+      x:       cx + (Math.random() - 0.5) * spread * 2,
+      y:       init ? cy - Math.random() * H * 0.5 : cy + 8,
+      vx:      (Math.random() - 0.5) * 0.5,
+      vy:      -(0.6 + Math.random() * 1.4),
+      life:    0,
+      maxLife: 40 + Math.random() * 60,
+      size:    2.5 + Math.random() * 4,
+      baseHue: 265 + Math.random() * 40,  /* violet range */
+    };
+  }
+
+  function draw(){
+    const W = canvas.width, H = canvas.height;
+    const cx = W * 0.5, cy = H * 0.5;
+    ctx.clearRect(0, 0, W, H);
+
+    /* Radial void base */
+    const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.min(W,H)*0.52);
+    grd.addColorStop(0,   'rgba(0,180,255,0.07)');
+    grd.addColorStop(0.3, 'rgba(56,232,200,0.04)');
+    grd.addColorStop(0.7, 'rgba(80,60,180,0.06)');
+    grd.addColorStop(1,   'rgba(0,0,0,0)');
+    ctx.fillStyle = grd;
+    ctx.fillRect(0, 0, W, H);
+
+    /* ── FIRE — drawn behind vortex ── */
+    fireParticles.forEach((p, i) => {
+      p.life++;
+      if (p.life > p.maxLife) { fireParticles[i] = resetFire(i, false); return; }
+      const prog = p.life / p.maxLife;
+      const fade = Math.sin(prog * Math.PI);
+      p.x += p.vx + Math.sin(t * 0.03 + p.y * 0.02) * 0.3;
+      p.y += p.vy;
+      p.size *= 0.993;
+      /* orange→violet as it rises */
+      const hue   = p.baseHue + prog * 230;
+      const sat   = 90 - prog * 30;
+      const light = 55 + prog * 20;
+      const alpha = fade * (0.55 - prog * 0.3);
+      const fg = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 2.5);
+      fg.addColorStop(0,   `hsla(${hue},${sat}%,${light}%,${(alpha * 0.9).toFixed(3)})`);
+      fg.addColorStop(0.5, `hsla(${hue+20},${sat}%,${light-10}%,${(alpha * 0.4).toFixed(3)})`);
+      fg.addColorStop(1,   'rgba(0,0,0,0)');
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.size * 2.5, 0, Math.PI*2);
+      ctx.fillStyle = fg; ctx.fill();
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.size * 0.5, 0, Math.PI*2);
+      ctx.fillStyle = `hsla(${hue-10},100%,80%,${(fade*0.7).toFixed(3)})`; ctx.fill();
+    });
+
+    /* ── VORTEX SPIRAL THREADS ── */
+    for (let i = 0; i < THREADS; i++){
+      const phase  = (i / THREADS) * Math.PI * 2;
+      const speed  = 0.008 + (i % 3) * 0.003;
+      const angle  = t * speed + phase;
+      const radius = (0.08 + 0.38 * (i / THREADS)) * Math.min(W,H) * 0.5;
+      const wobble = Math.sin(t * 0.012 + phase * 2) * 0.08;
+      const r2     = radius * (1 + wobble);
+      const x      = cx + Math.cos(angle) * r2;
+      const y      = cy + Math.sin(angle) * r2 * 0.62;
+      const hue    = (190 + 130 * Math.sin(phase + t * 0.005)) | 0;  /* cyan→violet */
+      const sat    = 80 + 20 * Math.cos(phase);
+      const alpha  = 0.08 + 0.22 * Math.abs(Math.sin(phase + t * 0.007));
+      ctx.beginPath(); ctx.arc(x, y, 1.1, 0, Math.PI*2);
+      ctx.fillStyle = `hsla(${hue},${sat}%,72%,${alpha.toFixed(3)})`; ctx.fill();
+    }
+
+    /* ── CONCENTRIC RINGS ── */
+    for (let r = 0; r < RINGS; r++){
+      const phase = (r / RINGS);
+      const pulse = Math.sin(t * 0.018 - phase * Math.PI * 2) * 0.5 + 0.5;
+      const maxR  = Math.min(W,H) * 0.48;
+      const rad   = maxR * (phase + pulse * 0.04);
+      const alpha = 0.03 + 0.06 * (1 - phase) * pulse;
+      const hue   = 185 + 90 * phase;
+      ctx.beginPath(); ctx.ellipse(cx, cy, rad, rad * 0.6, 0, 0, Math.PI*2);
+      ctx.strokeStyle = `hsla(${hue},85%,65%,${alpha.toFixed(3)})`;
+      ctx.lineWidth = 0.8; ctx.stroke();
+    }
+
+    /* ── CENTRAL VOID GLOW ── */
+    const cg = ctx.createRadialGradient(cx, cy, 0, cx, cy, 60);
+    const pulse = Math.sin(t * 0.022) * 0.5 + 0.5;
+    cg.addColorStop(0,   `rgba(155,111,255,${(0.14 + 0.10*pulse).toFixed(3)})`);
+    cg.addColorStop(0.4, `rgba(80,200,240,${(0.04*pulse).toFixed(3)})`);
+    cg.addColorStop(1,   'rgba(0,0,0,0)');
+    ctx.fillStyle = cg;
+    ctx.beginPath(); ctx.ellipse(cx, cy, 60, 40, 0, 0, Math.PI*2); ctx.fill();
+
+    t++;
+    requestAnimationFrame(draw);
+  }
+  draw();
+  window.addEventListener('resize', resize);
+})();
+
+/* ══════════════════════════════════════
+   NOISE PARTICLES — fixed background
+══════════════════════════════════════ */
+(function initNoise(){
+  const canvas = document.getElementById('noise-canvas');
+  if (!canvas) return;
+
+  function resize(){
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const ctx = canvas.getContext('2d');
+  let t = 0;
+
+  /* Sparse drifting particles — tiny, well faded */
+  const COUNT = 40;
+  const particles = Array.from({length: COUNT}, () => mkParticle(true));
+
+  function mkParticle(scatter) {
+    const W = canvas.width, H = canvas.height;
+    return {
+      x:       Math.random() * W,
+      y:       scatter ? Math.random() * H : H + 10,
+      vx:      (Math.random() - 0.5) * 0.15,
+      vy:      -(0.06 + Math.random() * 0.12),
+      size:    Math.random() * 1.2 + 0.3,
+      alpha:   Math.random() * 0.18 + 0.04,
+      hue:     185 + Math.random() * 90,
+      life:    scatter ? Math.random() * 300 : 0,
+      maxLife: 220 + Math.random() * 180,
+    };
+  }
+
+  function drawNoise(){
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+
+    particles.forEach((p, i) => {
+      p.life++;
+      if (p.life > p.maxLife) { particles[i] = mkParticle(false); return; }
+
+      const fade = Math.sin((p.life / p.maxLife) * Math.PI);
+      p.x += p.vx + Math.sin(t * 0.008 + p.y * 0.01) * 0.1;
+      p.y += p.vy;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${p.hue},75%,68%,${(p.alpha * fade).toFixed(3)})`;
+      ctx.fill();
+    });
+
+    t++;
+    requestAnimationFrame(drawNoise);
+  }
+  drawNoise();
+})();
+
+/* ══════════════════════════════════════
+   VIOLET FIRE PARTICLES — page atmosphere
+══════════════════════════════════════ */
+(function initFireParticles(){
+  const canvas = document.getElementById('fire-canvas');
+  if (!canvas) return;
+
+  function resize(){
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const ctx = canvas.getContext('2d');
+  let t = 0;
+
+  /* Smaller, atmospheric fire particles — violet/purple palette */
+  const COUNT = 28;
+
+  function mkFire(scatter) {
+    const W = canvas.width, H = canvas.height;
+    /* spread across bottom 40% of screen, random x */
+    const zone = Math.random();
+    const x = zone < 0.33
+      ? Math.random() * W * 0.3                    /* left side */
+      : zone < 0.66
+        ? W * 0.35 + Math.random() * W * 0.3       /* center */
+        : W * 0.7 + Math.random() * W * 0.3;       /* right side */
+    return {
+      x,
+      y:       scatter ? H * 0.4 + Math.random() * H * 0.6 : H + 12,
+      vx:      (Math.random() - 0.5) * 0.5,
+      vy:      -(0.3 + Math.random() * 0.7),
+      size:    1.5 + Math.random() * 4.5,
+      life:    scatter ? Math.random() * 200 : 0,
+      maxLife: 100 + Math.random() * 160,
+      /* hue 270–310: violet to magenta */
+      baseHue: 268 + Math.random() * 42,
+      wobble:  Math.random() * Math.PI * 2,
+    };
+  }
+
+  const particles = Array.from({length: COUNT}, () => mkFire(true));
+
+  function drawFire(){
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+
+    particles.forEach((p, i) => {
+      p.life++;
+      if (p.life > p.maxLife) { particles[i] = mkFire(false); return; }
+
+      const prog = p.life / p.maxLife;
+      const fade = Math.sin(prog * Math.PI);
+
+      /* gentle horizontal flicker */
+      p.x += p.vx + Math.sin(t * 0.03 + p.wobble) * 0.35;
+      p.y += p.vy;
+      p.size *= 0.994; /* slight shrink as it rises */
+
+      /* hue shifts from violet toward pink as it rises */
+      const hue   = p.baseHue + prog * 30;
+      const sat   = 85 + prog * 10;
+      const light = 55 + prog * 22;
+      const alpha = fade * 0.38;
+
+      /* soft radial glow */
+      const r = p.size * 2.2;
+      const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r);
+      g.addColorStop(0,   `hsla(${hue},${sat}%,${light}%,${(alpha).toFixed(3)})`);
+      g.addColorStop(0.5, `hsla(${hue+15},${sat}%,${light-8}%,${(alpha*0.4).toFixed(3)})`);
+      g.addColorStop(1,   'rgba(0,0,0,0)');
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+      ctx.fillStyle = g;
+      ctx.fill();
+
+      /* tiny bright core */
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size * 0.35, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${hue-10},100%,80%,${(fade * 0.55).toFixed(3)})`;
+      ctx.fill();
+    });
+
+    t++;
+    requestAnimationFrame(drawFire);
+  }
+  drawFire();
+})();
+
+
+(function initVoid(){
+  const canvas = document.getElementById('void-canvas');
+  if (!canvas) return;
+
+  function resize(){
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const ctx = canvas.getContext('2d');
+  let t = 0;
+
+  /* Fire wisps rising from bottom center */
+  const WISP_COUNT = 22;
+  const wisps = Array.from({length: WISP_COUNT}, () => mkWisp(true));
+
+  function mkWisp(scatter) {
+    const W = canvas.width, H = canvas.height;
+    const cx = W * 0.5;
+    return {
+      x:       cx + (Math.random() - 0.5) * W * 0.35,
+      y:       scatter ? H * 0.5 + Math.random() * H * 0.5 : H + 20,
+      vx:      (Math.random() - 0.5) * 0.4,
+      vy:      -(0.35 + Math.random() * 0.65),
+      size:    3 + Math.random() * 7,
+      life:    scatter ? Math.random() * 180 : 0,
+      maxLife: 120 + Math.random() * 140,
+      baseHue: 18 + Math.random() * 18,
+    };
+  }
+
+  /* Spiral threads — very sparse, large scale */
+  const THREADS = 28;
+
+  function drawVoid(){
+    const W = canvas.width, H = canvas.height;
+    const cx = W * 0.5, cy = H * 0.55; /* anchor slightly below center */
+    ctx.clearRect(0, 0, W, H);
+
+    /* ── Distant orbital threads ── */
+    for (let i = 0; i < THREADS; i++){
+      const phase  = (i / THREADS) * Math.PI * 2;
+      const speed  = 0.004 + (i % 4) * 0.0015;
+      const angle  = t * speed + phase;
+      const radius = (0.15 + 0.55 * (i / THREADS)) * Math.min(W, H) * 0.42;
+      const wobble = Math.sin(t * 0.009 + phase * 1.5) * 0.06;
+      const r2     = radius * (1 + wobble);
+      const x      = cx + Math.cos(angle) * r2;
+      const y      = cy + Math.sin(angle) * r2 * 0.55;
+      const hue    = (195 + 75 * Math.sin(phase + t * 0.004)) | 0;
+      const alpha  = 0.04 + 0.10 * Math.abs(Math.sin(phase + t * 0.006));
+      ctx.beginPath(); ctx.arc(x, y, 1.5, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${hue},80%,70%,${alpha.toFixed(3)})`; ctx.fill();
+    }
+
+    /* ── Concentric void rings ── */
+    for (let r = 0; r < 5; r++){
+      const phase = r / 5;
+      const pulse = Math.sin(t * 0.014 - phase * Math.PI * 2) * 0.5 + 0.5;
+      const maxR  = Math.min(W, H) * 0.38;
+      const rad   = maxR * (phase * 0.8 + 0.2 + pulse * 0.03);
+      const alpha = 0.015 + 0.025 * (1 - phase) * pulse;
+      const hue   = 190 + 80 * phase;
+      ctx.beginPath(); ctx.ellipse(cx, cy, rad, rad * 0.55, 0, 0, Math.PI * 2);
+      ctx.strokeStyle = `hsla(${hue},80%,62%,${alpha.toFixed(3)})`;
+      ctx.lineWidth = 0.7; ctx.stroke();
+    }
+
+    /* ── Fire wisps ── */
+    wisps.forEach((p, i) => {
+      p.life++;
+      if (p.life > p.maxLife) { wisps[i] = mkWisp(false); return; }
+      const prog  = p.life / p.maxLife;
+      const fade  = Math.sin(prog * Math.PI);
+      p.x += p.vx + Math.sin(t * 0.025 + p.y * 0.008) * 0.25;
+      p.y += p.vy;
+      p.size *= 0.996;
+      const hue   = p.baseHue + prog * 210;
+      const alpha = fade * 0.28;
+      const fg = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 2);
+      fg.addColorStop(0,   `hsla(${hue},90%,60%,${alpha.toFixed(3)})`);
+      fg.addColorStop(0.6, `hsla(${hue+30},80%,50%,${(alpha*0.3).toFixed(3)})`);
+      fg.addColorStop(1,   'rgba(0,0,0,0)');
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.size * 2, 0, Math.PI * 2);
+      ctx.fillStyle = fg; ctx.fill();
+    });
+
+    t++;
+    requestAnimationFrame(drawVoid);
+  }
+  drawVoid();
+})();
 </script>
 </body>
 </html>
