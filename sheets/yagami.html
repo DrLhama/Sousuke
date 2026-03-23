@@ -1052,6 +1052,103 @@ body::after {
 .sigil-eye svg { width: 36px; height: 36px; }
 .footer-sigil .sigil-eye svg { width: 28px; height: 28px; }
 
+/* ══ CALCULADORA EA ══ */
+.cea { border:1px solid var(--border2); background:var(--surface); overflow:hidden; }
+.cea-bar { height:2px; background:var(--grad-cv); }
+.cea-body { padding:18px 20px; display:flex; flex-direction:column; gap:14px; }
+.cea-rule { font-family:var(--mono); font-size:8px; letter-spacing:2px; color:var(--muted); }
+.cea-rule span { color:var(--cyan2); }
+/* estoque */
+.cea-stock { display:flex; align-items:center; gap:10px; }
+.cea-stock-val {
+  font-family:var(--display); font-size:32px; color:var(--cyan2); min-width:80px;
+}
+.cea-stock-val.low { color:#d06060; }
+.cea-stock-sub { font-family:var(--mono); font-size:8px; color:var(--muted); letter-spacing:2px; line-height:1.8; }
+.cea-stock-sub span { color:var(--white); }
+.cea-btns { display:flex; gap:6px; flex-wrap:wrap; }
+.cea-btn {
+  font-family:var(--mono); font-size:9px; letter-spacing:2px;
+  padding:6px 14px; border:1px solid var(--border2);
+  background:var(--surface2); color:var(--cyan2); cursor:pointer;
+  transition:background .15s; user-select:none; white-space:nowrap;
+}
+.cea-btn:hover { background:var(--cyan-dim); }
+.cea-btn.reset { border-color:rgba(80,200,240,0.2); color:var(--muted); }
+.cea-btn.reset:hover { color:var(--cyan2); border-color:var(--border2); }
+/* barra */
+.cea-track { height:6px; background:var(--dim); position:relative; border:1px solid var(--border); }
+.cea-fill { position:absolute; left:0; top:0; height:100%; background:var(--grad-cv); transition:width .35s cubic-bezier(.4,0,.2,1); }
+.cea-fill.low { background:linear-gradient(90deg,#8a2020,#d05050); }
+/* formula */
+.cea-result { display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
+.cea-dice {
+  font-family:var(--display); font-size:clamp(18px,3vw,26px); font-weight:900;
+  background:var(--grad-cv); -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent; background-clip:text;
+}
+.cea-cost { font-family:var(--mono); font-size:9px; color:var(--muted); letter-spacing:1px; }
+.cea-cost span { color:var(--cyan2); }
+/* extra input row */
+.cea-extra-row { display:flex; align-items:center; gap:8px; }
+.cea-extra-label { font-family:var(--mono); font-size:8px; color:var(--muted); letter-spacing:2px; white-space:nowrap; }
+.cea-extra-input {
+  width:70px; background:var(--bg); border:1px solid var(--border2);
+  color:var(--white); font-family:var(--mono); font-size:16px;
+  padding:5px 8px; outline:none; text-align:center;
+}
+.cea-extra-input:focus { border-color:var(--cyan); }
+.cea-extra-input::-webkit-inner-spin-button { -webkit-appearance:none; }
+.cea-ibtn {
+  width:28px; height:28px; background:var(--surface); border:1px solid var(--border2);
+  color:var(--cyan2); font-size:16px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.cea-ibtn:hover { background:var(--cyan-dim); }
+.cea-rows { display:flex; flex-direction:column; gap:6px; }
+.cea-row {
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  padding:10px 14px; border:1px solid var(--border); background:var(--surface2);
+}
+.cea-row.hi { border-color:var(--border2); background:var(--cyan-dim); }
+.cea-row-label { font-family:var(--mono); font-size:8px; letter-spacing:2px; color:var(--muted); text-transform:uppercase; min-width:110px; }
+.cea-row-fixed { font-family:var(--mono); font-size:11px; color:var(--muted); white-space:nowrap; }
+.cea-row-ctrl { display:flex; align-items:center; gap:6px; }
+.cea-row-ctrl span:not(.cea-row-unit) { font-family:var(--display); font-size:18px; color:var(--white); min-width:28px; text-align:center; }
+.cea-row-unit { font-family:var(--mono); font-size:8px; color:var(--muted); letter-spacing:1px; }
+.cea-row-dice { font-family:var(--display); font-size:13px; color:var(--muted); margin-left:auto; white-space:nowrap; }
+.cea-row-dice.hi { font-size:16px; background:var(--grad-cv); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.cea-cost-line { font-family:var(--mono); font-size:9px; color:var(--muted); letter-spacing:1px; flex:1; }
+.cea-cost-line span { color:var(--cyan2); }
+.cea-warn { font-family:var(--mono); font-size:9px; color:#d07070; letter-spacing:1px; display:none; }
+.cea-warn.show { display:block; }
+.calc-fb-piece em { font-style:normal; color:var(--muted); margin-left:4px; font-size:8px; }
+.calc-fb-piece.base  { color:var(--cyan2); border-color:var(--border2); background:var(--cyan-dim); }
+.calc-fb-piece.extra { color:#b060f0; border-color:rgba(176,96,240,0.25); background:rgba(176,96,240,0.06); }
+.calc-fb-piece.fixed { color:var(--muted); }
+.calc-fb-op { font-family:var(--mono); font-size:14px; color:var(--muted); }
+.calc-avg-row { display:flex; gap:8px; }
+.calc-avg {
+  flex:1; border:1px solid var(--border); background:var(--bg);
+  padding:12px 10px; text-align:center; display:flex; flex-direction:column; gap:4px;
+}
+.calc-avg.hi { border-color:var(--border2); background:var(--cyan-dim); }
+.calc-avg-l   { font-family:var(--mono); font-size:7px; letter-spacing:2px; color:var(--muted); text-transform:uppercase; }
+.calc-avg-v   { font-family:var(--display); font-size:clamp(16px,2.5vw,24px); color:var(--white); }
+.calc-avg.hi .calc-avg-v { color:var(--cyan2); }
+.calc-avg-sub { font-family:var(--mono); font-size:7px; color:var(--muted); letter-spacing:1px; opacity:.7; }
+.calc-warn {
+  font-family:var(--mono); font-size:9px; letter-spacing:1px;
+  color:#d07070; padding:8px 14px;
+  border:1px solid rgba(180,40,40,0.25); background:rgba(180,40,40,0.06); display:none;
+}
+.calc-warn.show { display:block; }
+@media(max-width:520px){
+  .calc-avg-sub { display:none; }
+  .calc-breakdown { gap:6px; }
+  .calc-bd-sep { display:none; }
+}
+
 /* Violet fire particles layer */
 #fire-canvas {
   position: fixed;
@@ -1351,7 +1448,7 @@ body::after {
         <div class="sub-card-body">
         <div class="sub-card-sep"></div>
         <div class="sub-card-desc">O corpo escoa pelo Abismo e emerge em outro ponto sem percorrer o espaço real. Não provoca ataques de oportunidade. Não pode ser interceptado.</div>
-        <span class="sub-card-tag">Ação Bônus / Ação de Movimentação</span>
+        <span class="sub-card-tag">Ação Bônus, Ação de Movimentação ou Ação de Reação</span>
         </div>
       </div>
       <div class="sub-card" onclick="toggleSubCard(this)">
@@ -1387,7 +1484,7 @@ body::after {
         <div class="sub-card-sep"></div>
         <div class="sub-card-desc">O fogo adapta-se à resistência. Quanto mais o alvo resiste, mais quente fica.</div>
         <div style="margin-top:7px;font-family:var(--mono);font-size:8px;color:var(--cyan);letter-spacing:1px;line-height:1.8">EA &lt;100 → +3d<br>EA 100–300 → +6d<br>EA 300+ → +10d</div>
-        <span class="sub-card-tag">Ação Padrão e Ação Bônus</span>
+        <span class="sub-card-tag">Ação Padrão ou Ação Bônus</span>
         </div>
       </div>
       <div class="sub-card" onclick="toggleSubCard(this)">
@@ -1398,7 +1495,7 @@ body::after {
         <div class="sub-card-body">
         <div class="sub-card-sep"></div>
         <div class="sub-card-desc">O fogo entra pelo toque e queima de dentro pra fora. Aplica Queimadura Infernal — incurável por meios convencionais enquanto ativa.</div>
-        <span class="sub-card-tag red">Ação de Ataque / Ação Bônus</span>
+        <span class="sub-card-tag red">Ação de Ataque ou Ação Bônus</span>
         </div>
       </div>
       <div class="sub-card" onclick="toggleSubCard(this)">
@@ -1420,7 +1517,7 @@ body::after {
         <div class="sub-card-body">
         <div class="sub-card-sep"></div>
         <div class="sub-card-desc">Segue a assinatura de EA do alvo. Dobra ao redor de obstáculos. Não pode ser bloqueado por interposição.</div>
-        <span class="sub-card-tag">Ação Bônus</span>
+        <span class="sub-card-tag">Ação Padrão ou Ação Bônus</span>
         </div>
       </div>
       <div class="sub-card" onclick="toggleSubCard(this)">
@@ -1466,7 +1563,7 @@ body::after {
         <div class="sub-card-body">
         <div class="sub-card-sep"></div>
         <div class="sub-card-desc">Constrói qualquer estrutura de osso infernal — criatura, fortaleza, arma, prótese. Imune a veneno e dano psíquico.</div>
-        <span class="sub-card-tag">Ação Padrão</span>
+        <span class="sub-card-tag">Ação Padrão ou Ação de Reação</span>
         </div>
       </div>
       <div class="sub-card" onclick="toggleSubCard(this)">
@@ -1512,14 +1609,59 @@ body::after {
         <div class="sub-card-body">
         <div class="sub-card-sep"></div>
         <div class="sub-card-desc">Convoca ou modela um aglomerado de carne morta e fragmentos de espíritos. A forma é livre. Age por comando simples no turno dele.</div>
-        <span class="sub-card-tag">Ação de Ataque ou Ação Bônus</span>
+        <span class="sub-card-tag">Ação de Ataque, Ação Bônus ou Ação de Movimentação</span>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- CALCULADORA EA -->
+  <div class="slabel" data-n="05">EA — Estoque & Gokuguchi</div>
+  <div class="cea">
+    <div class="cea-bar"></div>
+    <div class="cea-body">
+
+      <!-- estoque -->
+      <div class="cea-stock">
+        <div class="cea-stock-val" id="ea-stk">300</div>
+        <div class="cea-stock-sub">
+          EA restante · <span id="ea-stk-pct">100%</span>
+        </div>
+      </div>
+      <div class="cea-track"><div class="cea-fill" id="cea-fill" style="width:100%"></div></div>
+
+      <!-- linhas de gasto -->
+      <div class="cea-rows">
+        <div class="cea-row">
+          <span class="cea-row-label">Base da técnica</span>
+          <span class="cea-row-fixed">5 EA</span>
+          <span class="cea-row-dice">9d6 + 2d4 + 5</span>
+        </div>
+        <div class="cea-row hi">
+          <span class="cea-row-label">+1d6 por</span>
+          <div class="cea-row-ctrl">
+            <button class="cea-ibtn" onclick="eaAdj(-3)">−</button>
+            <span id="ea-extra-val">0</span>
+            <button class="cea-ibtn" onclick="eaAdj(3)">+</button>
+            <span class="cea-row-unit">EA extra</span>
+          </div>
+          <span class="cea-row-dice hi" id="ea-dice">9d6 + 2d4 + 5</span>
+        </div>
+      </div>
+
+      <!-- custo + ações -->
+      <div class="cea-extra-row">
+        <span class="cea-cost-line">custo total: <span id="ea-next-cost">5 EA</span> · restaria <span id="ea-next-rest">295</span></span>
+        <button class="cea-btn" onclick="eaUsar()">usar</button>
+        <button class="cea-btn reset" onclick="eaReset()">↺</button>
+      </div>
+      <div class="cea-warn" id="ea-warn">⚠ EA insuficiente.</div>
+
+    </div>
+  </div>
+
   <!-- PERÍCIAS -->
-  <div class="slabel" data-n="05">Perícias</div>
+  <div class="slabel" data-n="06">Perícias</div>
   <div class="skills-desktop">
     <div class="skills-desktop-bar"><span class="sigil-icon" style="font-size:14px"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="3" fill="currentColor" opacity="0.9"/><circle cx="10" cy="10" r="6.5" stroke="currentColor" stroke-width="0.8" opacity="0.5"/><line x1="10" y1="1" x2="10" y2="5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="10" y1="15" x2="10" y2="19" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="1" y1="10" x2="5" y2="10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="15" y1="10" x2="19" y2="10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span> <span>Perícias</span> · proficiente em destaque</div>
     <div class="sk-grid">
@@ -1556,7 +1698,7 @@ body::after {
   </div>
 
   <!-- ITEM -->
-  <div class="slabel" data-n="06">Item Exclusivo</div>
+  <div class="slabel" data-n="07">Item Exclusivo</div>
   <div class="item-card">
     <div class="item-name">Uniforme da Soul Society</div>
     <div class="item-desc">Uniforme com acessório especial concedido pela Soul Society. Permanentemente equipado. A confecção não tem origem registrada — nenhum alfaiate do mundo Jujutsu foi consultado.</div>
@@ -1564,7 +1706,7 @@ body::after {
   </div>
 
   <!-- LORE -->
-    <div class="slabel" data-n="07">Origem · Soul Society</div>
+    <div class="slabel" data-n="08">Origem · Soul Society</div>
     <div class="lore-timeline">
       <div class="lore-spine"></div>
       <div class="lore-entries">
@@ -2576,6 +2718,44 @@ function toggleAcc(head){
   }
   drawVoid();
 })();
-</script>
-</body>
+/* ══ CALCULADORA EA ══ */
+(function(){
+  const MAX=300, BASE_COST=5, BASE_D6=9, BASE_D4=2, BASE_BONUS=5;
+  let stock=MAX, extra=0;
+
+  function render(){
+    const addedD6 = extra/3;
+    const custo   = BASE_COST + extra;
+    const totalD6 = BASE_D6 + addedD6;
+    const restaria = stock - custo;
+    const ok = restaria >= 0;
+    const pct = Math.max(0, stock/MAX*100);
+    const low = stock < MAX*0.25;
+
+    document.getElementById('ea-stk').textContent = stock;
+    document.getElementById('ea-stk').className = 'cea-stock-val'+(low?' low':'');
+    document.getElementById('ea-stk-pct').textContent = pct.toFixed(0)+'%';
+    const fill = document.getElementById('cea-fill');
+    fill.style.width = pct+'%';
+    fill.className = 'cea-fill'+(low?' low':'');
+
+    document.getElementById('ea-extra-val').textContent = extra;
+    document.getElementById('ea-dice').textContent = totalD6+'d6 + '+BASE_D4+'d4 + '+BASE_BONUS;
+    document.getElementById('ea-next-cost').textContent = custo+' EA';
+    document.getElementById('ea-next-rest').textContent = ok ? restaria : '—';
+    document.getElementById('ea-warn').classList.toggle('show', !ok);
+  }
+
+  window.eaAdj = function(d){
+    extra = Math.max(0, extra+d); render();
+  };
+  window.eaUsar = function(){
+    const custo = BASE_COST + extra;
+    if(stock - custo < 0){ document.getElementById('ea-warn').classList.add('show'); return; }
+    stock -= custo; extra = 0; render();
+  };
+  window.eaReset = function(){ stock=MAX; extra=0; render(); };
+  render();
+})();
+</script></body>
 </html>
