@@ -3364,6 +3364,7 @@ function maldRenderSheet() {
     return;
   }
 
+
   const grauOpts  = Object.keys(GRAU_CONFIG).map(k=>`<option value="${k}"${m.grau===k?' selected':''}>${GRAU_CONFIG[k].label}</option>`).join('');
   const classeOpts= CLASSE_OPTS.map(c=>`<option value="${c}"${m.classe===c?' selected':''}>${c}</option>`).join('');
   const tipoOpts  = TIPO_OPTS.map(t=>`<option value="${t}"${m.tipo===t?' selected':''}>${t}</option>`).join('');
