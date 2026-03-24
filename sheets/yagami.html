@@ -250,13 +250,17 @@ body::after {
 .attr-row { display:flex; align-items:center; gap:14px; margin-bottom:14px; }
 .attr-row:last-child { margin-bottom:0; }
 .attr-name { font-family:var(--mono); font-size:9px; letter-spacing:3px; text-transform:uppercase; color:var(--muted); width:110px; flex-shrink:0; }
-.attr-track { display:flex; gap:5px; flex:1; }
+
+/* ─ ATTR INTERACTIVE ─ */
+.attr-row { cursor:default; }
+.attr-track { flex:1; display:flex; gap:5px; flex-wrap:wrap; align-items:center; }
 .attr-pip {
   width:22px; height:22px;
   border:1px solid var(--dim);
   background:transparent; position:relative; flex-shrink:0;
-  transition:all .3s;
+  transition:all .2s; cursor:pointer;
 }
+.attr-pip:hover { border-color:var(--border2); background:rgba(80,200,240,0.06); }
 .attr-pip.filled {
   background:var(--cyan-dim);
   border-color:var(--border2);
@@ -266,7 +270,40 @@ body::after {
   content:''; position:absolute; inset:4px;
   background:var(--cyan); opacity:.7;
 }
-.attr-num { font-family:var(--display); font-size:20px; color:var(--white); width:32px; text-align:right; }
+.attr-pip.overflow {
+  border-color:rgba(155,111,255,0.5);
+  background:rgba(155,111,255,0.08);
+  box-shadow:0 0 8px rgba(155,111,255,0.3);
+}
+.attr-pip.overflow.filled {
+  background:rgba(155,111,255,0.18);
+  border-color:rgba(155,111,255,0.7);
+  box-shadow:0 0 10px rgba(155,111,255,0.4);
+}
+.attr-pip.overflow.filled::after {
+  background:var(--violet); opacity:.85;
+}
+.attr-num {
+  font-family:var(--display); font-size:20px; color:var(--white);
+  width:32px; text-align:right; cursor:default;
+  transition: color .2s;
+}
+.attr-num.over { color:var(--violet); }
+/* +/- controls that appear on hover over the row */
+.attr-controls {
+  display:flex; gap:4px; margin-left:6px; opacity:0;
+  transition:opacity .2s;
+}
+.attr-row:hover .attr-controls { opacity:1; }
+.attr-btn {
+  width:20px; height:20px; border:1px solid var(--border);
+  background:var(--surface2); color:var(--muted);
+  font-family:var(--mono); font-size:11px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:all .15s; line-height:1; padding:0;
+  flex-shrink:0;
+}
+.attr-btn:hover { border-color:var(--border2); color:var(--cyan2); background:var(--cyan-dim); }
 
 /* ─ ABILITY CARDS ─ */
 .ab-list { display:flex; flex-direction:column; gap:8px; }
@@ -1160,6 +1197,605 @@ body::after {
   opacity: 0.55;
   mix-blend-mode: screen;
 }
+
+/* ══════════════════════════════════════════
+   PAGE 3 — PSIQUE
+══════════════════════════════════════════ */
+
+/* HERO */
+.psq-hero {
+  text-align:center;
+  margin-bottom: 52px;
+  padding-top: 12px;
+}
+.psq-sigil {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  animation: spin 40s linear infinite;
+}
+.psq-classified {
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 6px;
+  color: var(--violet);
+  opacity: .4;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.psq-title {
+  font-family: var(--display);
+  font-size: clamp(28px, 5vw, 52px);
+  font-weight: 900;
+  letter-spacing: 10px;
+  color: var(--white);
+  margin-bottom: 8px;
+  text-shadow:
+    0 0 12px rgba(155,111,255,0.45),
+    0 0 40px rgba(192,72,232,0.2),
+    0 0 90px rgba(80,200,240,0.08);
+  animation: hero-name-breathe 9s ease-in-out infinite;
+}
+.psq-sub {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 4px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 22px;
+}
+.psq-epigraph {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.9;
+  border-left: 2px solid var(--border2);
+  padding-left: 16px;
+  max-width: 540px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+/* DIAGNÓSTICO GRID */
+.psq-diag-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 4px;
+}
+@media(max-width:640px){ .psq-diag-grid { grid-template-columns: 1fr; } }
+
+.psq-diag-card {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  padding: 20px 22px;
+  position: relative;
+  overflow: hidden;
+}
+.psq-diag-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--violet), transparent);
+  opacity: .3;
+}
+.psq-diag-card.void { border-color: rgba(155,111,255,0.25); }
+.psq-diag-card.void::before { opacity: .5; }
+.psq-diag-card.void-intense { border-color: rgba(192,72,232,0.2); }
+
+.psq-dc-label {
+  font-family: var(--ui);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: var(--white);
+  margin-bottom: 5px;
+}
+.psq-dc-score {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.psq-dc-score span { color: var(--violet); }
+.psq-dc-desc {
+  font-size: 12.5px;
+  color: rgba(232,240,244,0.7);
+  line-height: 1.8;
+}
+
+/* FREUD BLOCK */
+.psq-freud-block {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.psq-freud-model {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  padding: 22px 24px;
+}
+.psq-fm-title {
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 4px;
+  color: var(--cyan);
+  text-transform: uppercase;
+  margin-bottom: 18px;
+  opacity: .7;
+}
+.psq-fm-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+@media(max-width:640px){ .psq-fm-row { grid-template-columns: 1fr; } }
+
+.psq-fm-inst {
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  position: relative;
+}
+.psq-fm-inst.absent { border-color: rgba(100,100,100,0.15); }
+.psq-fm-inst.active {
+  border-color: rgba(155,111,255,0.3);
+  background: rgba(155,111,255,0.05);
+}
+.psq-fm-name {
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 4px;
+  opacity: .5;
+}
+.psq-fm-inst.active .psq-fm-name { opacity: 1; color: var(--violet); }
+.psq-fm-status {
+  font-family: var(--mono);
+  font-size: 7px;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.psq-fm-inst.active .psq-fm-status { color: rgba(155,111,255,0.8); }
+.psq-fm-desc {
+  font-size: 11.5px;
+  color: rgba(232,240,244,0.55);
+  line-height: 1.75;
+}
+.psq-fm-inst.active .psq-fm-desc { color: rgba(232,240,244,0.75); }
+
+.psq-lacan-block {
+  border: 1px solid rgba(56,232,200,0.15);
+  background: rgba(56,232,200,0.03);
+  border-left: 2px solid rgba(56,232,200,0.3);
+  padding: 20px 24px;
+}
+.psq-lacan-text {
+  font-size: 13px;
+  color: rgba(232,240,244,0.78);
+  line-height: 1.9;
+}
+.psq-lacan-text em { color: var(--teal); font-style: italic; }
+
+/* VOID SECTION */
+.psq-void-main {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 28px 28px 24px;
+  position: relative;
+  overflow: hidden;
+}
+.psq-void-main::after {
+  content: '∅';
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--display);
+  font-size: 120px;
+  color: rgba(155,111,255,0.035);
+  line-height: 1;
+  pointer-events: none;
+}
+.psq-void-quote {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.9;
+  text-align: center;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.psq-void-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+@media(max-width:640px){ .psq-void-cols { grid-template-columns: 1fr; } }
+
+.psq-vc-head {
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 14px;
+  opacity: .6;
+}
+.psq-vc-item {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 14px;
+  font-size: 12.5px;
+  color: rgba(232,240,244,0.72);
+  line-height: 1.75;
+}
+.psq-vc-item:last-child { margin-bottom: 0; }
+.psq-vc-marker {
+  flex-shrink: 0;
+  width: 16px;
+  padding-top: 2px;
+  font-size: 10px;
+}
+.psq-vc-item.no .psq-vc-marker { color: var(--muted); }
+.psq-vc-item.yes .psq-vc-marker { color: var(--violet); }
+
+/* DUAL COLAPSOS */
+.psq-dual-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+@media(max-width:680px){ .psq-dual-grid { grid-template-columns: 1fr; } }
+
+.psq-dual-card {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  overflow: hidden;
+}
+.psq-dual-card.evil { border-color: rgba(192,72,232,0.2); }
+.psq-dual-card.good { border-color: rgba(56,232,200,0.2); }
+
+.psq-dual-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 22px 16px;
+  text-align: center;
+  position: relative;
+}
+.psq-dual-card.evil .psq-dual-header { background: rgba(192,72,232,0.04); border-bottom: 1px solid rgba(192,72,232,0.12); }
+.psq-dual-card.good .psq-dual-header { background: rgba(56,232,200,0.03); border-bottom: 1px solid rgba(56,232,200,0.1); }
+
+.psq-dual-glyph { margin-bottom: 12px; }
+.psq-dual-name {
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+.psq-dual-card.evil .psq-dual-name { color: rgba(192,72,232,0.9); }
+.psq-dual-card.good .psq-dual-name { color: rgba(56,232,200,0.9); }
+.psq-dual-nature {
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.psq-dual-body {
+  padding: 18px 22px 20px;
+}
+.psq-dual-body p {
+  font-size: 12.5px;
+  color: rgba(232,240,244,0.75);
+  line-height: 1.82;
+  margin-bottom: 12px;
+}
+.psq-dual-body p:last-child { margin-bottom: 0; }
+.psq-dual-note {
+  margin-top: 14px;
+  padding: 10px 14px;
+  border-left: 2px solid rgba(192,72,232,0.35);
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 12px;
+  color: rgba(232,240,244,0.55);
+  line-height: 1.75;
+  background: rgba(192,72,232,0.04);
+}
+.psq-dual-note.evil-note {
+  border-left-color: rgba(56,232,200,0.35);
+  background: rgba(56,232,200,0.03);
+}
+
+/* MODUS OPERANDI */
+.psq-modus-block {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  overflow: hidden;
+}
+.psq-modus-header {
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-align: center;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--border);
+  font-style: italic;
+}
+.psq-modus-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+@media(max-width:680px){ .psq-modus-grid { grid-template-columns: 1fr; } }
+
+.psq-modus-item {
+  padding: 18px 20px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.psq-modus-item:nth-child(3n) { border-right: none; }
+.psq-modus-item:nth-last-child(-n+3) { border-bottom: none; }
+@media(max-width:680px){
+  .psq-modus-item { border-right: none; }
+  .psq-modus-item:last-child { border-bottom: none; }
+}
+
+.psq-mi-num {
+  font-family: var(--display);
+  font-size: 32px;
+  font-weight: 900;
+  color: rgba(155,111,255,0.07);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.psq-mi-title {
+  font-family: var(--ui);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+.psq-mi-desc {
+  font-size: 12px;
+  color: rgba(232,240,244,0.62);
+  line-height: 1.78;
+}
+
+/* TABLE */
+.psq-table-wrap {
+  overflow-x: auto;
+}
+.psq-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.psq-table thead tr {
+  border-bottom: 1px solid var(--border2);
+}
+.psq-table th {
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: left;
+  padding: 10px 16px;
+  background: var(--surface2);
+}
+.psq-table tbody tr {
+  border-bottom: 1px solid rgba(80,200,240,0.05);
+  transition: background .15s;
+}
+.psq-table tbody tr:hover { background: rgba(80,200,240,0.03); }
+.psq-table tbody tr:last-child { border-bottom: none; }
+.psq-table td {
+  padding: 12px 16px;
+  color: rgba(232,240,244,0.65);
+  line-height: 1.5;
+  vertical-align: top;
+}
+.psq-table td:first-child {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--muted);
+  width: 200px;
+}
+.psq-td-hi { color: rgba(232,240,244,0.88) !important; }
+.psq-td-violet { color: var(--violet) !important; }
+.psq-td-teal { color: var(--teal) !important; }
+.psq-td-danger { color: rgba(220,80,80,0.85) !important; }
+.psq-td-void { color: var(--muted) !important; font-style: italic; }
+
+/* FINAL NOTE */
+.psq-final-note {
+  display: flex;
+  gap: 22px;
+  align-items: flex-start;
+  background: var(--surface);
+  border: 1px solid rgba(155,111,255,0.2);
+  padding: 24px 26px;
+  position: relative;
+  overflow: hidden;
+}
+.psq-final-note::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 5% 50%, rgba(155,111,255,0.05), transparent);
+  pointer-events: none;
+}
+.psq-fn-sigil {
+  font-family: var(--display);
+  font-size: 52px;
+  color: rgba(155,111,255,0.25);
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: -4px;
+}
+.psq-fn-text {
+  font-size: 13px;
+  color: rgba(232,240,244,0.72);
+  line-height: 1.9;
+}
+.psq-fn-text em { color: var(--cyan); font-style: italic; }
+
+/* ══════════════════════════════════════════
+   PAGE 4 — PACTO DE MALDIÇÕES
+══════════════════════════════════════════ */
+.mald-layout{display:flex;height:100vh;overflow:hidden;background:var(--bg);}
+
+/* Sidebar */
+/* ── Sidebar ── */
+.mald-sidebar{width:210px;flex-shrink:0;border-right:1px solid var(--border);display:flex;flex-direction:column;background:var(--void);}
+.mald-sidebar-header{padding:12px 12px 8px;border-bottom:1px solid var(--border);}
+.mald-sidebar-title{font-family:var(--mono);font-size:7px;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.mald-search{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--white);font-family:var(--mono);font-size:10px;padding:5px 8px;outline:none;transition:border-color .2s;}
+.mald-search:focus{border-color:var(--violet);}
+.mald-search::placeholder{color:var(--muted);}
+.mald-list{flex:1;overflow-y:auto;}
+.mald-item{padding:8px 12px;cursor:pointer;border-bottom:1px solid rgba(100,180,240,0.06);display:flex;align-items:center;gap:8px;transition:background .15s;}
+.mald-item:hover{background:rgba(155,111,255,0.06);}
+.mald-item.active{background:rgba(155,111,255,0.1);border-left:2px solid var(--violet);padding-left:10px;}
+.mald-item-av{width:30px;height:30px;flex-shrink:0;border:1px solid var(--border);background:var(--surface2);overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted);}
+.mald-item-av img{width:100%;height:100%;object-fit:cover;}
+.mald-item-info{flex:1;min-width:0;}
+.mald-item-name{font-family:var(--ui);font-size:11px;font-weight:600;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mald-item-sub{font-family:var(--mono);font-size:7px;color:var(--muted);margin-top:1px;letter-spacing:1px;}
+.mald-grau-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.grau-v{background:#e8e8e8;}.grau-iv{background:#4a9a60;}
+.mald-add-btn{margin:6px 8px;padding:7px;background:transparent;border:1px dashed var(--border);color:var(--muted);font-family:var(--mono);font-size:8px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:all .2s;width:calc(100% - 16px);}
+.mald-add-btn:hover{border-color:var(--violet);color:var(--violet);background:rgba(155,111,255,0.05);}
+.mald-json-bar{display:flex;gap:5px;margin:3px 8px 8px;}
+.mald-json-btn{flex:1;padding:5px 3px;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:var(--mono);font-size:7px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .2s;text-align:center;display:block;}
+.mald-json-btn:hover{border-color:var(--cyan);color:var(--cyan2);background:var(--cyan-dim);}
+
+/* ── Main pane ── */
+.mald-pane{flex:1;overflow-y:auto;background:var(--bg);}
+.mald-empty{height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:var(--muted);}
+.mald-empty-icon{font-size:2rem;opacity:.2;}
+.mald-empty-text{font-family:var(--mono);font-size:9px;letter-spacing:4px;text-transform:uppercase;}
+
+/* ── Sheet layout — single column ── */
+.mald-sheet{padding:28px 36px 56px;max-width:680px;}
+.mald-top{display:flex;gap:22px;align-items:flex-start;margin-bottom:0;}
+.mald-photo-wrap{width:160px;height:220px;flex-shrink:0;border:1px solid var(--border2);background:var(--surface);cursor:pointer;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;transition:border-color .2s;}
+.mald-photo-wrap:hover{border-color:var(--violet);}
+.mald-photo-wrap img{width:100%;height:100%;object-fit:cover;object-position:top;}
+.mald-photo-hint{font-family:var(--mono);font-size:7px;letter-spacing:2px;color:var(--muted);text-align:center;padding:5px;line-height:1.6;}
+.mald-photo-wrap input[type=file]{display:none;}
+
+/* ── LIGHTBOX ── */
+#mald-lightbox{
+  position:fixed;inset:0;z-index:9999;
+  background:rgba(3,4,8,0.96);
+  display:none;align-items:center;justify-content:center;flex-direction:column;
+  cursor:pointer;
+}
+#mald-lightbox.open{display:flex;}
+#mald-lightbox-img{
+  max-width:min(88vw,700px);
+  max-height:80vh;
+  object-fit:contain;
+  display:block;
+  filter:grayscale(10%) contrast(1.08);
+  position:relative;
+  z-index:1;
+}
+#mald-lightbox-scanlines{
+  position:absolute;inset:0;pointer-events:none;z-index:2;
+  background:repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.28) 3px, rgba(0,0,0,0.28) 4px);
+}
+#mald-lightbox-label{
+  margin-top:18px;
+  font-family:var(--mono);font-size:9px;letter-spacing:6px;text-transform:uppercase;
+  color:var(--violet);opacity:.8;z-index:3;position:relative;
+  text-shadow:0 0 14px rgba(155,111,255,0.5);
+}
+#mald-lightbox-close{
+  position:absolute;top:20px;right:24px;
+  font-family:var(--mono);font-size:10px;letter-spacing:3px;color:var(--muted);
+  z-index:4;opacity:.5;transition:opacity .2s;
+}
+#mald-lightbox-close:hover{opacity:1;color:var(--violet);}
+/* corner accents */
+#mald-lightbox-img-wrap{position:relative;display:inline-block;}
+#mald-lightbox-img-wrap::before,#mald-lightbox-img-wrap::after{
+  content:'';position:absolute;width:18px;height:18px;z-index:3;
+}
+#mald-lightbox-img-wrap::before{top:0;left:0;border-top:1px solid var(--mix2);border-left:1px solid var(--mix2);}
+#mald-lightbox-img-wrap::after{bottom:0;right:0;border-bottom:1px solid var(--mix6);border-right:1px solid var(--mix6);}
+.mald-top-info{flex:1;display:flex;flex-direction:column;gap:8px;padding-top:4px;}
+
+/* ── Chip strip ── */
+.mald-chips{display:flex;gap:6px;flex-wrap:wrap;margin:18px 0 0;}
+.mald-chip{display:flex;flex-direction:column;gap:3px;padding:7px 12px;border:1px solid var(--border);background:var(--surface);flex:1;min-width:120px;}
+.mald-chip-lbl{font-family:var(--mono);font-size:6px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);}
+.mald-chip-in{background:transparent;border:none;color:var(--white);font-family:var(--serif);font-size:11.5px;outline:none;width:100%;padding:0;resize:none;overflow:hidden;line-height:1.5;}
+.mald-chip-in:focus{color:var(--violet);}
+.mald-chip-in::placeholder{color:var(--dim);}
+
+/* ── Divider ── */
+.mald-div{height:1px;background:linear-gradient(90deg,var(--border2),transparent);margin:22px 0;}
+
+/* ── Body single col ── */
+.mald-body{display:flex;flex-direction:column;gap:20px;margin-top:20px;}
+
+/* ── Inputs ── */
+.mald-in{background:var(--surface);border:1px solid var(--border);color:var(--white);font-family:var(--serif);font-size:12px;padding:5px 8px;outline:none;transition:border-color .2s;width:100%;}
+.mald-in:focus{border-color:var(--violet);}
+.mald-in::placeholder{color:var(--muted);}
+.mald-in.big{font-family:var(--ui);font-size:18px;font-weight:700;letter-spacing:1px;color:var(--white);background:transparent;border:none;border-bottom:1px solid var(--border);padding:3px 0;border-radius:0;}
+.mald-in.big:focus{border-bottom-color:var(--violet);}
+.mald-ta{background:var(--surface);border:1px solid var(--border);color:var(--white);font-family:var(--serif);font-size:12.5px;padding:10px 12px;outline:none;resize:vertical;line-height:1.8;min-height:60px;transition:border-color .2s;width:100%;}
+.mald-ta:focus{border-color:var(--violet);}
+.mald-ta::placeholder{color:var(--muted);font-style:italic;}
+select.mald-in{cursor:pointer;}
+select.mald-in option{background:var(--void);}
+.mald-row{display:flex;gap:6px;align-items:center;}
+.mald-lbl{font-family:var(--mono);font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);flex-shrink:0;white-space:nowrap;}
+
+/* ── Section label ── */
+.mald-sec{display:flex;flex-direction:column;gap:8px;}
+.mald-sec-lbl{font-family:var(--mono);font-size:7px;letter-spacing:5px;text-transform:uppercase;color:var(--mix3);display:flex;align-items:center;gap:8px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.mald-sec-lbl::before{content:'';width:12px;height:1px;background:var(--grad-cv);flex-shrink:0;}
+
+/* ── Inata ── */
+.mald-inata-block{background:var(--surface);border:1px solid var(--border2);padding:14px 16px;position:relative;overflow:hidden;}
+.mald-inata-block::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(155,111,255,0.05) 0%,transparent 55%);pointer-events:none;}
+.mald-inata-name{font-family:var(--ui);font-size:13px;font-weight:700;color:var(--violet);letter-spacing:1px;border-bottom:1px solid rgba(155,111,255,0.2);padding-bottom:7px;margin-bottom:10px;background:transparent;border-top:none;border-left:none;border-right:none;width:100%;outline:none;transition:color .2s;}
+.mald-inata-name:focus{color:var(--cyan);}
+.mald-inata-name::placeholder{color:var(--muted);font-weight:400;}
+
+/* ── Misc ── */
+.mald-del{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:10px;padding:0 3px;flex-shrink:0;transition:color .1s;}
+.mald-del:hover{color:#c04040;}
+.mald-footer{display:flex;gap:8px;justify-content:flex-end;padding-top:12px;border-top:1px solid var(--border);margin-top:8px;}
+.mald-btn-del{padding:5px 12px;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:var(--mono);font-size:8px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:all .2s;}
+.mald-btn-del:hover{border-color:#c04040;color:#c04040;}
+.mald-btn-save{padding:5px 16px;background:rgba(155,111,255,0.15);border:1px solid var(--violet);color:var(--violet);font-family:var(--mono);font-size:8px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:all .2s;}
+.mald-btn-save:hover{background:rgba(155,111,255,0.25);}
 </style>
 </head>
 <body>
@@ -1175,6 +1811,8 @@ body::after {
 <div class="tab-bar">
   <button class="tab-btn on" onclick="goTab('ficha',this)"><span class="sigil-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="3" fill="currentColor" opacity="0.9"/><circle cx="10" cy="10" r="6.5" stroke="currentColor" stroke-width="0.8" opacity="0.5"/><line x1="10" y1="1" x2="10" y2="5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="10" y1="15" x2="10" y2="19" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="1" y1="10" x2="5" y2="10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="15" y1="10" x2="19" y2="10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="3.5" y1="3.5" x2="6.5" y2="6.5" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" opacity="0.55"/><line x1="13.5" y1="13.5" x2="16.5" y2="16.5" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" opacity="0.55"/><line x1="16.5" y1="3.5" x2="13.5" y2="6.5" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" opacity="0.55"/><line x1="6.5" y1="13.5" x2="3.5" y2="16.5" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" opacity="0.55"/></svg></span> Ficha — Yagami Gojo</button>
   <button class="tab-btn" onclick="goTab('ss',this)"><span class="sigil-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2 L10 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M4 5 Q10 3 16 5 L17 8 Q10 6 3 8 Z" fill="currentColor" opacity="0.7"/><rect x="5" y="8" width="10" height="8" stroke="currentColor" stroke-width="0.9" opacity="0.6"/><line x1="10" y1="8" x2="10" y2="16" stroke="currentColor" stroke-width="0.8" opacity="0.4"/><path d="M7 16 L7 13 Q10 12 13 13 L13 16" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" opacity="0.7"/><path d="M2 8 L18 8" stroke="currentColor" stroke-width="0.7" opacity="0.3"/></svg></span> Soul Society — Arquivo</button>
+  <button class="tab-btn" onclick="goTab('psique',this)"><span class="sigil-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="8" r="4.5" stroke="currentColor" stroke-width="0.9" opacity="0.7"/><circle cx="10" cy="8" r="1.8" fill="currentColor" opacity="0.85"/><path d="M10 12.5 L10 18" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.6"/><path d="M7 15.5 L13 15.5" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" opacity="0.4"/><path d="M5 5 Q3 8 5 11" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" opacity="0.35"/><path d="M15 5 Q17 8 15 11" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" opacity="0.35"/></svg></span> Psique — Dissecação</button>
+  <button class="tab-btn" onclick="goTab('maldicoes',this)"><span class="sigil-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2 L12 7 L18 7 L13.5 10.5 L15.5 16 L10 12.5 L4.5 16 L6.5 10.5 L2 7 L8 7 Z" stroke="currentColor" stroke-width="0.9" stroke-linejoin="round" opacity="0.7" fill="none"/><circle cx="10" cy="9" r="2" fill="currentColor" opacity="0.6"/><path d="M7 17 Q10 15 13 17" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" opacity="0.4"/></svg></span> Pacto — Maldições</button>
 </div>
 
 <!-- ══ PAGE 1 ══ -->
@@ -1251,40 +1889,30 @@ body::after {
 
   <!-- ATRIBUTOS -->
   <div class="slabel" data-n="02">Atributos</div>
-  <div class="attr-block">
-    <div class="attr-row">
+  <div class="attr-block" id="attr-block">
+    <div class="attr-row" data-attr="forca"        data-val="0" data-max="5">
       <div class="attr-name">Força</div>
-      <div class="attr-track">
-        <div class="attr-pip"></div><div class="attr-pip"></div><div class="attr-pip"></div><div class="attr-pip"></div><div class="attr-pip"></div>
-      </div>
+      <div class="attr-track"></div>
       <div class="attr-num">0</div>
     </div>
-    <div class="attr-row">
+    <div class="attr-row" data-attr="agilidade"    data-val="5" data-max="5">
       <div class="attr-name">Agilidade</div>
-      <div class="attr-track">
-        <div class="attr-pip filled"></div><div class="attr-pip filled"></div><div class="attr-pip filled"></div><div class="attr-pip filled"></div><div class="attr-pip filled"></div>
-      </div>
+      <div class="attr-track"></div>
       <div class="attr-num">5</div>
     </div>
-    <div class="attr-row">
+    <div class="attr-row" data-attr="constituicao" data-val="0" data-max="5">
       <div class="attr-name">Constituição</div>
-      <div class="attr-track">
-        <div class="attr-pip"></div><div class="attr-pip"></div><div class="attr-pip"></div><div class="attr-pip"></div><div class="attr-pip"></div>
-      </div>
+      <div class="attr-track"></div>
       <div class="attr-num">0</div>
     </div>
-    <div class="attr-row">
+    <div class="attr-row" data-attr="inteligencia" data-val="0" data-max="5">
       <div class="attr-name">Inteligência</div>
-      <div class="attr-track">
-        <div class="attr-pip"></div><div class="attr-pip"></div><div class="attr-pip"></div><div class="attr-pip"></div><div class="attr-pip"></div>
-      </div>
+      <div class="attr-track"></div>
       <div class="attr-num">0</div>
     </div>
-    <div class="attr-row">
+    <div class="attr-row" data-attr="presenca"     data-val="5" data-max="5">
       <div class="attr-name">Presença</div>
-      <div class="attr-track">
-        <div class="attr-pip filled"></div><div class="attr-pip filled"></div><div class="attr-pip filled"></div><div class="attr-pip filled"></div><div class="attr-pip filled"></div>
-      </div>
+      <div class="attr-track"></div>
       <div class="attr-num">5</div>
     </div>
   </div>
@@ -2219,6 +2847,657 @@ body::after {
 </div>
 </div><!-- /page-ss -->
 
+<!-- ══ PAGE 3 — PSIQUE ══ -->
+<div id="page-psique" class="page">
+<div class="wrap">
+
+  <!-- HERO PSIQUE -->
+  <div class="psq-hero">
+    <div class="psq-sigil">
+      <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Outer void ring -->
+        <circle cx="40" cy="40" r="36" stroke="rgba(155,111,255,0.15)" stroke-width="0.6"/>
+        <circle cx="40" cy="40" r="28" stroke="rgba(80,200,240,0.10)" stroke-width="0.5"/>
+        <circle cx="40" cy="40" r="18" stroke="rgba(155,111,255,0.20)" stroke-width="0.6"/>
+        <!-- Cross axis — void compass -->
+        <line x1="40" y1="4"  x2="40" y2="18" stroke="rgba(80,200,240,0.35)" stroke-width="0.8" stroke-linecap="round"/>
+        <line x1="40" y1="62" x2="40" y2="76" stroke="rgba(80,200,240,0.35)" stroke-width="0.8" stroke-linecap="round"/>
+        <line x1="4"  y1="40" x2="18" y2="40" stroke="rgba(80,200,240,0.35)" stroke-width="0.8" stroke-linecap="round"/>
+        <line x1="62" y1="40" x2="76" y2="40" stroke="rgba(80,200,240,0.35)" stroke-width="0.8" stroke-linecap="round"/>
+        <!-- Diagonal axis — fainter -->
+        <line x1="12" y1="12" x2="22" y2="22" stroke="rgba(155,111,255,0.18)" stroke-width="0.6" stroke-linecap="round"/>
+        <line x1="58" y1="58" x2="68" y2="68" stroke="rgba(155,111,255,0.18)" stroke-width="0.6" stroke-linecap="round"/>
+        <line x1="68" y1="12" x2="58" y2="22" stroke="rgba(155,111,255,0.18)" stroke-width="0.6" stroke-linecap="round"/>
+        <line x1="22" y1="58" x2="12" y2="68" stroke="rgba(155,111,255,0.18)" stroke-width="0.6" stroke-linecap="round"/>
+        <!-- Core void — pure black center -->
+        <circle cx="40" cy="40" r="7" fill="#05060a"/>
+        <circle cx="40" cy="40" r="4" fill="#030408"/>
+        <circle cx="40" cy="40" r="1.8" fill="rgba(155,111,255,0.6)"/>
+      </svg>
+    </div>
+    <div class="psq-classified">// Dissecação Psicológica — Acesso Restrito //</div>
+    <div class="psq-title">YAGAMI</div>
+    <div class="psq-sub">Perfil Psíquico · Estrutura Interna · Modus Operandi</div>
+    <div class="psq-epigraph">
+      Ele não é um monstro que se disfarça de homem.<br>
+      Ele é o espaço entre os dois — onde nenhum dos dois existe.
+    </div>
+  </div>
+
+  <!-- DIAGNÓSTICO -->
+  <div class="slabel" data-n="Ι">Diagnóstico Estrutural</div>
+  <div class="psq-diag-grid">
+
+    <div class="psq-diag-card void">
+      <div class="psq-dc-label">Psicopatia Primária Idiopática</div>
+      <div class="psq-dc-score">PCL-R · <span>40/40</span></div>
+      <div class="psq-dc-desc">Nível máximo absoluto na escala de Hare. Ausência total de resposta afetiva ao sofrimento alheio — não como bloqueio, mas como ausência ontológica. A amígdala está estruturalmente desconectada do córtex pré-frontal, não por lesão, mas por uma configuração neural que nunca se formou. Ver alguém sofrer é, para Yagami, neurologicamente equivalente a ver uma pedra cair.</div>
+    </div>
+
+    <div class="psq-diag-card">
+      <div class="psq-dc-label">Alexitimia Estrutural</div>
+      <div class="psq-dc-score">Total · <span>não bloqueio</span></div>
+      <div class="psq-dc-desc">Incapacidade absoluta de reconhecer ou processar emoções próprias. Distingue-se do bloqueio traumático: ele não reprimiu afetos. Eles simplesmente nunca existiram. Não há camada inconsciente a ser acessada. A ausência é a estrutura.</div>
+    </div>
+
+    <div class="psq-diag-card">
+      <div class="psq-dc-label">Self Vazio Estrutural</div>
+      <div class="psq-dc-score">Kernberg · <span>nível primitivo</span></div>
+      <div class="psq-dc-desc">Ausência de objetos internos — as representações emocionais que formamos de nós mesmos e dos outros desde a infância. Não é identidade fragmentada, como no borderline. É a ausência do processo que cria a identidade. Um prédio que nunca foi construído. Não desabou. Nunca foi.</div>
+    </div>
+
+    <div class="psq-diag-card void-intense">
+      <div class="psq-dc-label">Estrutura Anankástica Invertida</div>
+      <div class="psq-dc-score">Operacional · <span>sem conflito</span></div>
+      <div class="psq-dc-desc">Rigidez e foco obsessivo característicos do anankástico — mas sem o custo interno. Nenhuma culpa, nenhuma ambivalência, nenhum critério moral que precise ser reconciliado. Apenas a missão e os meios. O modus operandi é a única realidade que existe para ele.</div>
+    </div>
+
+  </div>
+
+  <!-- LENTE PSICANALÍTICA -->
+  <div class="slabel" data-n="ΙΙ">Lente Psicanalítica</div>
+
+  <div class="psq-freud-block">
+    <div class="psq-freud-model">
+      <div class="psq-fm-title">Modelo Freudiano</div>
+      <div class="psq-fm-row">
+        <div class="psq-fm-inst absent">
+          <div class="psq-fm-name">Superego</div>
+          <div class="psq-fm-status">Ausente</div>
+          <div class="psq-fm-desc">Nenhuma internalização de norma moral. Não foi reprimida — nunca foi formada. Não há lei interna, culpa, ou ideal do Eu.</div>
+        </div>
+        <div class="psq-fm-inst absent">
+          <div class="psq-fm-name">Ego</div>
+          <div class="psq-fm-status">Não mediaçor</div>
+          <div class="psq-fm-desc">Não há mediação entre impulso e ação. O ego existe como função calculadora — pura avaliação de meios e fins — sem conflito interno para resolver.</div>
+        </div>
+        <div class="psq-fm-inst active">
+          <div class="psq-fm-name">Id</div>
+          <div class="psq-fm-status">Presente · latente</div>
+          <div class="psq-fm-desc">A única estrutura ativa. Pré-linguística, pré-civilizatória. Manifesta-se apenas em violência extrema — como descarga bruta de um circuito que nunca recebeu corrente.</div>
+        </div>
+      </div>
+    </div>
+    <div class="psq-lacan-block">
+      <div class="psq-fm-title">Leitura Lacaniana</div>
+      <div class="psq-lacan-text">A bondade de Yagami é o que Lacan chamaria de <em>performance do Outro</em> — ele imita o que a ordem simbólica chama de bem, sem nenhum significante interno que sustente esse gesto. É uma máscara que não esconde um rosto. Esconde o vazio. O que perturba não é a falsidade — é a perfeição da falsidade. Uma performance que não contém erro humano.</div>
+    </div>
+  </div>
+
+  <div class="udiv"></div>
+
+  <!-- O VAZIO -->
+  <div class="slabel" data-n="ΙΙΙ">A Natureza do Vazio</div>
+
+  <div class="psq-void-main">
+    <div class="psq-void-quote">
+      Não é ausência que dói. É a descoberta de que nunca houve nada para ausência alguma.
+    </div>
+
+    <div class="psq-void-cols">
+      <div class="psq-void-col">
+        <div class="psq-vc-head">O que ele não é</div>
+        <div class="psq-vc-item no">
+          <span class="psq-vc-marker">✕</span>
+          <div><strong>Não é trauma</strong> — Trauma pressupõe um antes. Yagami não tem antes. Ele não foi danificado. Simplesmente não foi construído da maneira que os outros são.</div>
+        </div>
+        <div class="psq-vc-item no">
+          <span class="psq-vc-marker">✕</span>
+          <div><strong>Não é dissociação</strong> — Dissociação é a fragmentação de um eu que existe. Não há eu para fragmentar. O estado que outros alcançam por dissociação é, para ele, o único estado que conhece.</div>
+        </div>
+        <div class="psq-vc-item no">
+          <span class="psq-vc-marker">✕</span>
+          <div><strong>Não é frieza calculada</strong> — A frieza calculada implica supressão ativa do afeto. Ele não suprime nada. Não há afeto a suprimir. A frieza é a temperatura natural do seu interior.</div>
+        </div>
+        <div class="psq-vc-item no">
+          <span class="psq-vc-marker">✕</span>
+          <div><strong>Não é niilismo</strong> — Niilismo é uma posição filosófica assumida. Ele não escolheu o vazio como perspectiva. O vazio é simplesmente o que ele é por constituição.</div>
+        </div>
+      </div>
+      <div class="psq-void-col">
+        <div class="psq-vc-head">O que ele é</div>
+        <div class="psq-vc-item yes">
+          <span class="psq-vc-marker">◆</span>
+          <div><strong>Ausência com presença</strong> — Como um buraco negro: não visível, mas perceptível pelo colapso ao redor. Sua existência força o ambiente a reagir. Ele permanece imóvel.</div>
+        </div>
+        <div class="psq-vc-item yes">
+          <span class="psq-vc-marker">◆</span>
+          <div><strong>Antônimo de conceito</strong> — Para a ausência existir, precisaria ter havido algo antes. Nele nunca houve. Ele é menos que ausência. O nulo puro — a negação do processo que cria o ser.</div>
+        </div>
+        <div class="psq-vc-item yes">
+          <span class="psq-vc-marker">◆</span>
+          <div><strong>Fenômeno, não pessoa</strong> — Ele não ocupa o espaço de um indivíduo. Ocupa o espaço de uma força. Como a gravidade: sem forma, sem face, com efeito absoluto sobre tudo ao redor.</div>
+        </div>
+        <div class="psq-vc-item yes">
+          <span class="psq-vc-marker">◆</span>
+          <div><strong>Id sem Superego sem Ego mediador</strong> — A estrutura freudiana mais primitiva que pode existir num ser funcional. A pulsão bruta sem filtro, mas sem também o prazer contínuo da pulsão. Apenas o silêncio.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="udiv"></div>
+
+  <!-- MALDADE E BONDADE -->
+  <div class="slabel" data-n="ΙV">Os Dois Colapsos</div>
+
+  <div class="psq-dual-grid">
+
+    <div class="psq-dual-card evil">
+      <div class="psq-dual-header">
+        <div class="psq-dual-glyph">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="16" cy="16" r="13" stroke="rgba(192,72,232,0.3)" stroke-width="0.7"/>
+            <path d="M16 4 L18 12 L26 10 L20 16 L26 22 L18 20 L16 28 L14 20 L6 22 L12 16 L6 10 L14 12 Z" stroke="rgba(192,72,232,0.7)" stroke-width="0.9" fill="rgba(192,72,232,0.08)" stroke-linejoin="round"/>
+            <circle cx="16" cy="16" r="2.5" fill="rgba(192,72,232,0.6)"/>
+          </svg>
+        </div>
+        <div class="psq-dual-name">A Maldade</div>
+        <div class="psq-dual-nature">Primitiva · Carnal · Momentânea</div>
+      </div>
+      <div class="psq-dual-body">
+        <p>A maldade de Yagami não é uma escolha, uma inclinação, nem uma estratégia. É o único momento em que algo acontece dentro dele — e mesmo assim, dura a fração de um segundo.</p>
+        <p>Neurologicamente, é uma descarga dopaminérgica anômala — não prazer, mas voltagem. Um circuito que passou a existência sem corrente e de repente recebe uma carga absurda. O que outros chamam de prazer na violência é, para ele, a única confirmação de que existe.</p>
+        <p>A sensação é primitiva. Carnal. Quase possessiva. Como garras entrando no peito de quem está perto. E depois: nada. Retorno ao silêncio. Ao zero.</p>
+        <div class="psq-dual-note">Para ele, a maldade não é prazer. É prova de existência. O único sinal interno de que ele está ali.</div>
+      </div>
+    </div>
+
+    <div class="psq-dual-card good">
+      <div class="psq-dual-header">
+        <div class="psq-dual-glyph">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="16" cy="16" r="13" stroke="rgba(56,232,200,0.3)" stroke-width="0.7"/>
+            <circle cx="16" cy="16" r="8" stroke="rgba(56,232,200,0.4)" stroke-width="0.6"/>
+            <circle cx="16" cy="16" r="4" stroke="rgba(56,232,200,0.6)" stroke-width="0.8"/>
+            <circle cx="16" cy="16" r="1.5" fill="rgba(56,232,200,0.9)"/>
+            <line x1="16" y1="2" x2="16" y2="8" stroke="rgba(56,232,200,0.25)" stroke-width="0.6" stroke-linecap="round"/>
+            <line x1="16" y1="24" x2="16" y2="30" stroke="rgba(56,232,200,0.25)" stroke-width="0.6" stroke-linecap="round"/>
+            <line x1="2" y1="16" x2="8" y2="16" stroke="rgba(56,232,200,0.25)" stroke-width="0.6" stroke-linecap="round"/>
+            <line x1="24" y1="16" x2="30" y2="16" stroke="rgba(56,232,200,0.25)" stroke-width="0.6" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="psq-dual-name">A Bondade</div>
+        <div class="psq-dual-nature">Artificial · Perfeita · Mais perturbadora</div>
+      </div>
+      <div class="psq-dual-body">
+        <p>A bondade de Yagami é o fenômeno mais perturbador do seu perfil — mais que a maldade — porque a maldade tem forma, nome, categoria. O mal é reconhecível. Mas bondade sem origem, sem amor, sem propósito genuíno: essa não tem nome.</p>
+        <p>Ele possui empatia cognitiva sem empatia afetiva — consegue calcular com precisão cirúrgica exatamente o que alguém precisa emocionalmente, sem sentir absolutamente nada a respeito. E por não sentir, não hesita. Entrega a dose máxima calculada para o efeito máximo.</p>
+        <p>O resultado é bondade tecnicamente perfeita — mais intensa que a bondade genuína, que sempre contém o ruído humano da hesitação, do medo de errar, do custo emocional. A de Yagami não contém nada disso. É absoluta. E por ser absoluta, é insuportável.</p>
+        <div class="psq-dual-note evil-note">O receptor sabe que é de mentira. Mesmo sem poder nomear o porquê. O cérebro humano detecta a ausência do ruído humano e o interpreta como ameaça existencial.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="udiv"></div>
+
+  <!-- MODUS OPERANDI -->
+  <div class="slabel" data-n="V">Modus Operandi</div>
+
+  <div class="psq-modus-block">
+    <div class="psq-modus-header">
+      A missão existe. Os meios são irrelevantes.
+    </div>
+
+    <div class="psq-modus-grid">
+      <div class="psq-modus-item">
+        <div class="psq-mi-num">01</div>
+        <div class="psq-mi-title">Nenhuma Hierarquia Moral</div>
+        <div class="psq-mi-desc">Matar, salvar, trair, proteger — são opções de igual peso. Ele escolhe a que serve ao objetivo. Não há custo emocional em nenhuma delas. A moral não existe como filtro, apenas como dado observável no comportamento dos outros.</div>
+      </div>
+      <div class="psq-modus-item">
+        <div class="psq-mi-num">02</div>
+        <div class="psq-mi-title">Indetectável por Leitura Emocional</div>
+        <div class="psq-mi-desc">Feiticeiros com capacidade de ler emoções e maldade encontram em Yagami um abismo de neutralidade — literalmente zero. Não há sinal a ser lido porque não há sinal a ser emitido. Ele não bloqueia a leitura. Simplesmente não há nada para ler.</div>
+      </div>
+      <div class="psq-modus-item">
+        <div class="psq-mi-num">03</div>
+        <div class="psq-mi-title">Calculador por Padrão</div>
+        <div class="psq-mi-desc">Todo momento é modus operandi. Não há estado de repouso emocional porque não existe estado emocional de espécie alguma. Ele está sempre operando — não porque seja disciplinado, mas porque não há outra configuração disponível.</div>
+      </div>
+      <div class="psq-modus-item">
+        <div class="psq-mi-num">04</div>
+        <div class="psq-mi-title">Previsível e Incontrolável</div>
+        <div class="psq-mi-desc">O paradoxo central: ele é perfeitamente previsível em termos de objetivo, e completamente incontrolável em termos de meios. Saber o que ele quer não ajuda a detê-lo — porque os meios que ele está disposto a usar não têm limite.</div>
+      </div>
+      <div class="psq-modus-item">
+        <div class="psq-mi-num">05</div>
+        <div class="psq-mi-title">Funcional na Sociedade</div>
+        <div class="psq-mi-desc">O que o torna genuinamente aterrorizante não é a violência. É a funcionalidade. Psicopatia primária de alta função é adaptativa — produz indivíduos que tomam decisões sem o custo emocional que paralisa os outros. Ele não está nas sombras. Está na sala.</div>
+      </div>
+      <div class="psq-modus-item">
+        <div class="psq-mi-num">06</div>
+        <div class="psq-mi-title">Sem Gatilho Identificável</div>
+        <div class="psq-mi-desc">A explosão — o único momento de sentimento — não é provocada por raiva, ameaça ou insulto. É ativada por violência extrema de forma quase aleatória em relação a estímulos externos. Não há como antecipar porque não há causa emocional para antecipar.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="udiv"></div>
+
+  <!-- SÍNTESE CLÍNICA -->
+  <div class="slabel" data-n="VΙ">Síntese Clínica</div>
+
+  <div class="psq-table-wrap">
+    <table class="psq-table">
+      <thead>
+        <tr>
+          <th>Dimensão</th>
+          <th>Classificação</th>
+          <th>Nota Clínica</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Estrutura de personalidade</td>
+          <td class="psq-td-hi">Psicopatia primária idiopática — grau máximo</td>
+          <td>PCL-R 40/40 · além do espectro catalogado</td>
+        </tr>
+        <tr>
+          <td>Funcionamento afetivo</td>
+          <td class="psq-td-hi">Alexitimia estrutural total</td>
+          <td>Ausência de afeto · não bloqueio · não repressão</td>
+        </tr>
+        <tr>
+          <td>Mecanismo de ação</td>
+          <td>Modus operandi puro</td>
+          <td>Sem conflito interno · sem ambivalência · sem custo</td>
+        </tr>
+        <tr>
+          <td>Único gatilho emocional</td>
+          <td class="psq-td-violet">Violência extrema — descarga dopaminérgica anômala</td>
+          <td>Não prazer · confirmação de existência</td>
+        </tr>
+        <tr>
+          <td>Bondade</td>
+          <td class="psq-td-teal">Empatia cognitiva sem afetiva · execução sem limite</td>
+          <td>Mais perturbadora que a maldade · inominável</td>
+        </tr>
+        <tr>
+          <td>Identidade</td>
+          <td class="psq-td-hi">Self vazio estrutural — ausência de formação</td>
+          <td>Não colapso · nunca foi construído</td>
+        </tr>
+        <tr>
+          <td>Perigo real</td>
+          <td class="psq-td-danger">Perfeitamente previsível · completamente incontrolável</td>
+          <td>Funcional · invisível · na sala de reuniões</td>
+        </tr>
+        <tr>
+          <td>Diagnóstico formal</td>
+          <td class="psq-td-void">Nenhum sistema diagnóstico se aplica completamente</td>
+          <td>Além da baseline clínica · zona sem mapa</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="udiv"></div>
+
+  <!-- NOTA FINAL -->
+  <div class="psq-final-note">
+    <div class="psq-fn-sigil">∅</div>
+    <div class="psq-fn-text">
+      O problema do diagnóstico é este: os sistemas existentes foram construídos para mapear <em>desvios</em> de uma baseline humana. Yagami não desvia. Ele está num ponto onde a baseline nunca existiu. Isso o coloca numa zona que a psiquiatria chama informalmente de <em>além do espectro clínico</em> — onde os casos mais próximos são estudados não em consultórios, mas em autópsias psicológicas póstumas.<br><br>
+      Ele não é imprevisível. Ele é o pior tipo de ameaça: aquela cujo próximo passo você entende completamente, e não há nada que você possa fazer a respeito.
+    </div>
+  </div>
+
+  <div class="udiv"></div>
+  <div style="text-align:center;padding:10px 0 20px">
+    <div class="ss-classified" style="opacity:.25">// dissecação psicológica · classificação omega · uso interno · Soul Society //</div>
+  </div>
+
+</div>
+</div><!-- /page-psique -->
+
+<!-- ══ PAGE 4 — PACTO DE MALDIÇÕES ══ -->
+<div id="page-maldicoes" class="page">
+<div class="mald-layout">
+
+  <!-- SIDEBAR -->
+  <div class="mald-sidebar">
+    <div class="mald-sidebar-header">
+      <div class="mald-sidebar-title">贄約 Nieyaku · Pacto de Oferenda</div>
+      <input class="mald-search" type="text" placeholder="Buscar maldição..." oninput="maldSearch(this.value)" id="mald-search-in">
+    </div>
+    <div class="mald-list" id="mald-list"></div>
+    <button class="mald-add-btn" onclick="maldNew()">+ Nova Maldição</button>
+    <div class="mald-json-bar">
+      <button class="mald-json-btn" onclick="maldExportJSON()" title="Exportar maldições como JSON">⬇ Exportar JSON</button>
+      <label class="mald-json-btn" title="Importar maldições de um JSON">⬆ Importar JSON<input type="file" accept=".json" style="display:none" onchange="maldImportJSON(this)"></label>
+    </div>
+  </div>
+
+  <!-- PANE -->
+  <div class="mald-pane" id="mald-pane">
+    <div class="mald-empty" id="mald-empty">
+      <div class="mald-empty-icon">☠</div>
+      <div class="mald-empty-text">Selecione ou crie uma maldição</div>
+    </div>
+  </div>
+
+</div>
+</div><!-- /page-maldicoes -->
+
+<!-- LIGHTBOX -->
+<div id="mald-lightbox" onclick="maldLightboxClose()">
+  <div id="mald-lightbox-close">ESC / FECHAR ✕</div>
+  <div id="mald-lightbox-img-wrap">
+    <img id="mald-lightbox-img" src="" alt="">
+    <div id="mald-lightbox-scanlines"></div>
+  </div>
+  <div id="mald-lightbox-label"></div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════
+   MALDIÇÕES — Estado
+══════════════════════════════════════════ */
+const MALD_KEY = 'yagami-maldicoes-v1';
+let maldState = { maldicoes: [], nextId: 1 };
+let maldActiveId = null;
+
+function maldSave() {
+  // Dados persistidos em maldicoes/maldicoes.json — use Exportar JSON para salvar alterações
+}
+async function maldLoad() {
+  try {
+    const r = await fetch('maldicoes/maldicoes.json');
+    if(r.ok) { const d = await r.json(); if(d && Array.isArray(d.maldicoes)) maldState = d; }
+  } catch(e){}
+}
+
+function maldFolderPath(nome) {
+  // tenta extensões comuns em ordem
+  // retorna o primeiro caminho — onerror cuida do fallback
+  return 'maldicoes/' + nome + '.jpeg';
+}
+
+function maldTryFolder(img, nome) {
+  // cicla extensões: png -> jpg -> jpeg -> webp -> fallback
+  const exts = ['jpeg','jpg','png','webp'];
+  const current = img.src;
+  const match = current.match(/\.(\w+)$/);
+  const curExt = match ? match[1].toLowerCase() : '';
+  const idx = exts.indexOf(curExt);
+  if (idx >= 0 && idx < exts.length - 1) {
+    img.onerror = function(){ maldTryFolder(img, nome); };
+    img.src = 'maldicoes/' + nome + '.' + exts[idx + 1];
+  } else {
+    // todas extensões falharam — mostra hint
+    img.style.display = 'none';
+    const hint = img.nextElementSibling;
+    if (hint) hint.style.display = 'flex';
+  }
+}
+
+function maldExportJSON() {
+  const blob = new Blob([JSON.stringify(maldState, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'maldicoes.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function maldImportJSON(input) {
+  const file = input.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      if(data && Array.isArray(data.maldicoes)) {
+        maldState = data;
+        maldActiveId = null;
+        maldSave();
+        const listEl = document.getElementById('mald-list');
+        if(listEl) {
+          listEl.innerHTML = maldState.maldicoes.length === 0
+            ? '<div style="padding:16px 14px;font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:2px;">Nenhuma maldição</div>'
+            : maldState.maldicoes.map(function(m){ return '<div class="mald-item" data-id="'+m.id+'" onclick="maldSelect('+m.id+')"><div class="mald-item-name">'+(m.nome||'—')+'</div><div class="mald-item-sub">'+(m.titulo||'')+'</div></div>'; }).join('');
+        }
+        const pane = document.getElementById('mald-pane');
+        if(pane) pane.innerHTML = '<div class="mald-empty" id="mald-empty"><div class="mald-empty-icon">☠</div><div class="mald-empty-text">Selecione ou crie uma maldição</div></div>';
+        alert('✓ ' + maldState.maldicoes.length + ' maldições carregadas!');
+      } else {
+        alert('JSON inválido: estrutura não reconhecida.');
+      }
+    } catch(err) {
+      alert('Erro ao processar: ' + err.message);
+    }
+    input.value = '';
+  };
+  reader.onerror = function(){ alert('Erro ao ler o arquivo.'); };
+  reader.readAsText(file, 'UTF-8');
+}
+
+/* Grau helpers */
+const GRAU_CONFIG = {
+  'V':       { dot:'grau-v',  label:'⚪ Grau V',   color:'#e8e8e8' },
+  'IV':      { dot:'grau-iv', label:'🟢 Grau IV',  color:'#4a9a60' },
+  'III':     { dot:'',        label:'🔵 Grau III', color:'#5090d0' },
+  'II':      { dot:'',        label:'🟣 Grau II',  color:'#9060c0' },
+  'I':       { dot:'',        label:'🔴 Grau I',   color:'#c04040' },
+  'Especial':{ dot:'',        label:'⚫ Especial',  color:'#303030' },
+};
+
+const CLASSE_OPTS = ['Espírito Rancoroso','Espírito Vingativo','Espírito Mitológico','Espírito Abissal','Espírito de Catástrofe'];
+const TIPO_OPTS   = ['Dano Bruto','Tank / Absorção','Zona / Área','Debuff','Controle Mental','Dano Sustentado','Invocação','Suporte / Coringa','Utilidade','Pressão Física','Predição'];
+
+function maldDefaultNPC() {
+  return {
+    id: maldState.nextId++,
+    nome: 'Nova Maldição', titulo: '',
+    grau: 'V', classe: 'Espírito Abissal', tipo: '',
+    personalidade: '', image: '',
+    origem: '', comportamento: '', gatilho: '',
+    inataNome: 'Inata', inataDesc: '', 
+    notas: '',
+  };
+}
+
+/* ── Render sidebar list ── */
+function maldRenderList(filter='') {
+  const list = document.getElementById('mald-list'); if(!list) return;
+  const f = filter.toLowerCase();
+  const items = maldState.maldicoes.filter(m =>
+    !f || m.nome.toLowerCase().includes(f) || m.grau.toLowerCase().includes(f)
+  );
+  list.innerHTML = items.map(m => {
+    const cfg = GRAU_CONFIG[m.grau] || GRAU_CONFIG['V'];
+    return `<div class="mald-item${m.id===maldActiveId?' active':''}" onclick="maldSelect(${m.id})">
+      <div class="mald-item-av">
+        ${m.image ? `<img src="${m.image}" onerror="maldTryFolder(this,'${m.nome}')">` : `<img src="${maldFolderPath(m.nome)}" onerror="maldTryFolder(this,'${m.nome}')">`}
+      </div>
+      <div class="mald-item-info">
+        <div class="mald-item-name">${esc2(m.nome)}</div>
+        <div class="mald-item-sub">${cfg.label}</div>
+      </div>
+      <div class="mald-grau-dot ${cfg.dot}" style="background:${cfg.color}"></div>
+    </div>`;
+  }).join('') || `<div style="padding:16px 14px;font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:2px;">Nenhuma maldição</div>`;
+}
+
+function maldSearch(v) { maldRenderList(v); }
+
+function maldSelect(id) {
+  maldActiveId = id;
+  maldRenderList(document.getElementById('mald-search-in')?.value||'');
+  maldRenderSheet();
+}
+
+function maldNew() {
+  const m = maldDefaultNPC();
+  maldState.maldicoes.push(m);
+  maldSave();
+  maldSelect(m.id);
+}
+
+/* ── Render sheet ── */
+function maldRenderSheet() {
+  const pane = document.getElementById('mald-pane'); if(!pane) return;
+  const m = maldState.maldicoes.find(x => x.id === maldActiveId);
+  if(!m) {
+    pane.innerHTML = `<div class="mald-empty"><div class="mald-empty-icon">☠</div><div class="mald-empty-text">Selecione ou crie uma maldição</div></div>`;
+    return;
+  }
+
+  const grauOpts  = Object.keys(GRAU_CONFIG).map(k=>`<option value="${k}"${m.grau===k?' selected':''}>${GRAU_CONFIG[k].label}</option>`).join('');
+  const classeOpts= CLASSE_OPTS.map(c=>`<option value="${c}"${m.classe===c?' selected':''}>${c}</option>`).join('');
+  const tipoOpts  = TIPO_OPTS.map(t=>`<option value="${t}"${m.tipo===t?' selected':''}>${t}</option>`).join('');
+
+  pane.innerHTML = `<div class="mald-sheet">
+
+    <!-- TOPO: foto + identidade -->
+    <div class="mald-top">
+      <div class="mald-photo-wrap" onclick="maldLightboxOpen(this,'${esc2(m.nome)}')">
+        ${m.image
+          ? `<img src="${m.image}" onerror="maldTryFolder(this,'${esc2(m.nome)}')">`
+          : `<img src="${maldFolderPath(m.nome)}" onerror="maldTryFolder(this,'${esc2(m.nome)}')"><div class="mald-photo-hint" style="display:none">☠<br>foto</div>`}
+      </div>
+      <div class="mald-top-info">
+        <input class="mald-in big" value="${esc2(m.nome)}" placeholder="Nome" oninput="maldF(${m.id},'nome',this.value)">
+        <input class="mald-in" style="font-style:italic;color:var(--muted);font-size:11px;" value="${esc2(m.titulo)}" placeholder="Título / Epíteto" oninput="maldF(${m.id},'titulo',this.value)">
+        <div class="mald-row" style="flex-wrap:wrap;gap:6px;margin-top:4px;">
+          <select class="mald-in" style="width:130px;" onchange="maldF(${m.id},'grau',this.value);maldRenderList();maldRenderSheet();">${grauOpts}</select>
+          <select class="mald-in" style="width:175px;" onchange="maldF(${m.id},'classe',this.value)">${classeOpts}</select>
+          <select class="mald-in" style="width:155px;" onchange="maldF(${m.id},'tipo',this.value)">${tipoOpts}</select>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHIPS: leitura rápida -->
+    <div class="mald-chips">
+      <div class="mald-chip">
+        <span class="mald-chip-lbl">Origem</span>
+        <textarea class="mald-chip-in" rows="1" placeholder="De onde nasceu..." oninput="maldF(${m.id},'origem',this.value);maldAR(this)">${esc2(m.origem||'')}</textarea>
+      </div>
+      <div class="mald-chip">
+        <span class="mald-chip-lbl">Comportamento</span>
+        <textarea class="mald-chip-in" rows="1" placeholder="Territorial, predatório..." oninput="maldF(${m.id},'comportamento',this.value);maldAR(this)">${esc2(m.comportamento||'')}</textarea>
+      </div>
+      <div class="mald-chip">
+        <span class="mald-chip-lbl">Gatilho</span>
+        <textarea class="mald-chip-in" rows="1" placeholder="O que a ativa..." oninput="maldF(${m.id},'gatilho',this.value);maldAR(this)">${esc2(m.gatilho||'')}</textarea>
+      </div>
+    </div>
+
+    <div class="mald-div"></div>
+
+    <!-- CORPO: coluna única -->
+    <div class="mald-body">
+
+      <!-- COMO CAÇA -->
+      <div class="mald-sec">
+        <div class="mald-sec-lbl">Como Caça</div>
+        <textarea class="mald-ta" rows="3" placeholder="Instinto de combate. Como age quando encontra feiticeiros. O que muda seu comportamento na luta..." oninput="maldF(${m.id},'personalidade',this.value);maldAR(this)">${esc2(m.personalidade)}</textarea>
+      </div>
+
+      <!-- INATA -->
+      <div class="mald-sec">
+        <div class="mald-sec-lbl">Técnica Inata</div>
+        <div class="mald-inata-block">
+          <input class="mald-inata-name" value="${esc2(m.inataNome)}" placeholder="Nome da Técnica" oninput="maldF(${m.id},'inataNome',this.value)">
+          <textarea class="mald-ta" style="background:transparent;border-color:rgba(155,111,255,0.15);" rows="3" placeholder="O que essa técnica faz — em uma frase direta. O mestre precisa entender na mesa." oninput="maldF(${m.id},'inataDesc',this.value);maldAR(this)">${esc2(m.inataDesc)}</textarea>
+        </div>
+      </div>
+
+      <!-- LORE -->
+      <div class="mald-sec">
+        <div class="mald-sec-lbl">Lore</div>
+        <textarea class="mald-ta" rows="4" placeholder="A história por trás. O que a prende aqui. Contexto narrativo para o mestre dar voz à criatura..." oninput="maldF(${m.id},'notas',this.value);maldAR(this)">${esc2(m.notas)}</textarea>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="mald-footer">
+        <button class="mald-btn-del" onclick="maldDelete(${m.id})">Deletar</button>
+        <button class="mald-btn-save" onclick="maldSave();maldShowSaved()">Salvar</button>
+      </div>
+
+    </div><!-- /mald-body -->
+  </div>`;
+
+  setTimeout(()=>{ pane.querySelectorAll('.mald-ta,.mald-app-ta,.mald-chip-in').forEach(maldAR); },0);
+}
+
+/* ── Field update ── */
+function maldF(id, field, val) {
+  const m = maldState.maldicoes.find(x=>x.id===id); if(!m) return;
+  m[field] = val; maldSave();
+  if(field==='nome') maldRenderList(document.getElementById('mald-search-in')?.value||'');
+}
+/* ── Lightbox ── */
+function maldLightboxOpen(wrap, nome) {
+  const img = wrap.querySelector('img');
+  if (!img || !img.src || img.style.display === 'none') return;
+  const lb = document.getElementById('mald-lightbox');
+  const lbImg = document.getElementById('mald-lightbox-img');
+  const lbLabel = document.getElementById('mald-lightbox-label');
+  lbImg.src = img.src;
+  lbLabel.textContent = nome || '';
+  lb.classList.add('open');
+}
+function maldLightboxClose() {
+  document.getElementById('mald-lightbox').classList.remove('open');
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape') maldLightboxClose(); });
+/* ── Photo ── */
+function maldHandlePhoto(e,id) {
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=ev=>{ maldF(id,'image',ev.target.result); maldRenderList(); maldRenderSheet(); };
+  r.readAsDataURL(f); e.target.value='';
+}
+
+/* ── Delete ── */
+function maldDelete(id) {
+  if(!confirm('Deletar esta maldição do pacto?')) return;
+  maldState.maldicoes = maldState.maldicoes.filter(x=>x.id!==id);
+  maldActiveId = null; maldSave(); maldRenderList(); maldRenderSheet();
+}
+
+/* ── Auto-resize textarea ── */
+function maldAR(el) { el.style.height='auto'; el.style.height=el.scrollHeight+'px'; }
+
+/* ── Saved toast ── */
+function maldShowSaved() {
+  const m=document.getElementById('status-msg');
+  if(m){ m.classList.add('show'); setTimeout(()=>m.classList.remove('show'),2200); }
+}
+
+/* ── Escape helper (local, safe) ── */
+function esc2(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+/* ── Init when tab opens ── */
+async function maldInit() {
+  await maldLoad();
+  maldRenderList();
+  if(maldActiveId) maldRenderSheet();
+}
+</script>
+
 <script>
 function goTab(page, btn){
   if (document.getElementById('page-'+page).classList.contains('on')) return;
@@ -2269,6 +3548,7 @@ function goTab(page, btn){
   outgoing.classList.remove('on');
   incoming.classList.add('on');
   window.scrollTo(0, 0);
+  if(page === 'maldicoes') maldInit();
 
   // ── Step 3: animate canvas clip erasing from top down ──
   // Each frame we clear a horizontal strip from the top,
@@ -2718,6 +3998,64 @@ function toggleAcc(head){
   }
   drawVoid();
 })();
+
+/* ══ ATRIBUTOS DINÂMICOS ══ */
+(function initAttrs(){
+  const block = document.getElementById('attr-block');
+  if(!block) return;
+
+  function buildRow(row){
+    const track = row.querySelector('.attr-track');
+    const numEl  = row.querySelector('.attr-num');
+    let val = parseInt(row.dataset.val) || 0;
+    let max = parseInt(row.dataset.max) || 5;
+
+    function render(){
+      row.dataset.val = val;
+      numEl.textContent = val;
+      numEl.className = 'attr-num' + (val > max ? ' over' : '');
+
+      // Show at least `max` pips, expand if val exceeds max
+      const total = Math.max(max, val);
+      track.innerHTML = '';
+      for(let i = 0; i < total; i++){
+        const pip = document.createElement('div');
+        const isOverflow = i >= max;
+        pip.className = 'attr-pip'
+          + (i < val ? ' filled' : '')
+          + (isOverflow ? ' overflow' : '');
+        pip.addEventListener('click', () => {
+          // Toggle: clicking the last filled pip removes it
+          val = (val === i + 1) ? i : i + 1;
+          render();
+        });
+        track.appendChild(pip);
+      }
+
+      // +/- buttons (appended once, then reused)
+      let ctrl = row.querySelector('.attr-controls');
+      if(!ctrl){
+        ctrl = document.createElement('div');
+        ctrl.className = 'attr-controls';
+        const btnM = document.createElement('button');
+        btnM.className = 'attr-btn'; btnM.textContent = '−';
+        btnM.title = 'Diminuir';
+        btnM.addEventListener('click', e => { e.stopPropagation(); if(val>0){val--;render();} });
+        const btnP = document.createElement('button');
+        btnP.className = 'attr-btn'; btnP.textContent = '+';
+        btnP.title = 'Aumentar';
+        btnP.addEventListener('click', e => { e.stopPropagation(); val++; render(); });
+        ctrl.appendChild(btnM);
+        ctrl.appendChild(btnP);
+        numEl.insertAdjacentElement('afterend', ctrl);
+      }
+    }
+    render();
+  }
+
+  block.querySelectorAll('.attr-row[data-attr]').forEach(buildRow);
+})();
+
 /* ══ CALCULADORA EA ══ */
 (function(){
   const MAX=300, BASE_COST=5, BASE_D6=9, BASE_D4=2, BASE_BONUS=5;
