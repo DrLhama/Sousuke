@@ -121,8 +121,8 @@
       "id": 5,
       "nome": "Kanetsugu",
       "titulo": "O Observador dos Mil Selos",
-      "grau": "IV",
-      "classe": "Espírito Vingativo",
+      "grau": "V",
+      "classe": "Espírito Mitológico",
       "tipo": "Suporte / Coringa",
       "origem": "Registros fragmentados de antigos praticantes que dedicaram a vida à observação e catalogação de entidades espirituais. Com o tempo, a prática de observar, classificar e se proteger através de selos gerou uma consciência própria, que passou a existir para compreender e intervir.",
       "comportamento": "Observador ativo — raramente inicia, mas constantemente intervém",
@@ -149,7 +149,129 @@
           "label": "Camada III"
         }
       ]
+    },
+    {
+      "id": 6,
+      "nome": "Zenigata",
+      "titulo": "O Olho que Pesa a Fortuna de Todos",
+      "grau": "IV",
+      "classe": "Espírito Rancoroso",
+      "tipo": "Predição",
+      "origem": "Ele foi, em vida, um apostador compulsivo que nunca soube parar. Mesmo afundado em dívidas e derrotas, acreditava que a próxima jogada mudaria tudo.",
+      "comportamento": "Imprevisível e caprichoso — intervém quando menos se espera, sempre que detecta desequilíbrio de fortuna",
+      "gatilho": "Vantagem clara de um lado — seja em combate, número ou poder. Quanto mais óbvio o favorito, mais ele reage",
+      "personalidade": "Não tem conceito de aliado ou inimigo, apenas de probabilidade. Ri de tudo. Quando algo impossível acontece, ele está satisfeito. Quando o resultado era previsível, ele se entedia e intervém. Não é malévolo — é insuportavelmente justo à sua maneira torta.",
+      "inataNome": "Inversão de Probabilidade",
+      "inataDesc": "A técnica dele manifesta a própria incerteza como arma, transformando o combate em uma sequência de probabilidades instáveis. Sempre que alguém executa uma ação — atacar, defender, avançar — o resultado deixa de ser absoluto e passa a ser “julgado” por um desfecho imprevisível, como se o destino estivesse sendo apostado em tempo real.",
+      "notas": "Na sua última noite, sem mais nada para oferecer, apostou a própria vida — e perdeu. Foi então que encontrou Yagami, uma entidade que via valor não no dinheiro, mas no desespero humano. Diante da proposta de continuar jogando para sempre, ele aceitou sem hesitar: renasceria como uma maldição, livre para apostar e manipular o destino, mas condenado à servidão eterna. Sempre que Yagami o chamasse, ele teria que obedecer.\n\nO que retornou não foi mais humano, mas a personificação da aposta infinita: um corpo distorcido com múltiplos braços, um único olho sempre girando e moedas amaldiçoadas orbitando ao seu redor, cada uma representando jogos passados que nunca realmente terminaram. Agora, ele vaga oferecendo “uma última chance” a quem cruza seu caminho — porque, para ele, o jogo nunca acaba. Exceto quando Yagami chama… e, por um breve momento, o jogador volta a ser apenas a aposta.",
+      "image": "",
+      "hpCamadas": [
+        {
+          "max": 150,
+          "atual": 150,
+          "label": "Camada I"
+        },
+        {
+          "max": 150,
+          "atual": 150,
+          "label": "Camada II"
+        },
+        {
+          "max": 150,
+          "atual": 150,
+          "label": "Camada III"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "nome": "Moekasu",
+      "titulo": "A Cólera que Não Encontrou Cinzas",
+      "grau": "V",
+      "classe": "Espírito Rancoroso",
+      "tipo": "Combate Direto / Dano",
+      "origem": "Residual de um incêndio provocado — não acidental. Alguém ateou fogo a algo que não devia, e a raiva dos que morreram sem entender o porquê gerou uma presença que nunca esfriou.",
+      "comportamento": "Agressivo constante — avança sem recuo, sem estratégia, sem piedade",
+      "gatilho": "Qualquer presença que demonstre hesitação ou medo. Recuar diante de Moekasu é o mesmo que convidá-lo",
+      "personalidade": "Não pensa — arde. Não há conversa, negociação ou pausa. Cada segundo de inatividade é uma afronta à sua natureza. Não persegue por ódio pessoal: está em chamas e tudo ao redor deveria estar também.",
+      "inataNome": "Fumaça Sufocante",
+      "inataDesc": "Moekasu não usa chamas como projéteis — ele as expele como pressão. Sua técnica inata comprime fumaça densa e superaquecida em ondas que desorientam, cegam e consomem o ar ao redor do alvo. Quem respira a fumaça sente a energia cursed queimar por dentro antes de qualquer chama tocar a pele. O fogo visível é o que vem depois.",
+      "notas": "Rosto triangular com pele vermelha intensa na cabeça e nas mãos — o resto do corpo passa de um verde escuro para um tom pálido esverdeado, como carne que não queimou mas tampouco sobreviveu. Olho único, branco e pequeno, sem expressão — não porque seja vazio, mas porque toda emoção está na postura. Boca fechada. Dentes afiados raramente expostos, o que torna os momentos em que aparecem ainda mais perturbadores. Nunca para de se mover.",
+      "image": "",
+      "hpCamadas": [
+        {
+          "max": 180,
+          "atual": 180,
+          "label": "Camada I"
+        },
+        {
+          "max": 180,
+          "atual": 180,
+          "label": "Camada II"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "nome": "Karashogun",
+      "titulo": "O General que Comanda Além da Morte",
+      "grau": "V",
+      "classe": "Espírito Mitológico",
+      "tipo": "Liderança de Campo / Amplificação",
+      "origem": "Era o espírito de um general que recusou a derrota mesmo depois de morto. Não virou fantasma de ódio — virou fantasma de propósito. O campo de batalha é seu elemento natural e ele nunca deixou de comandá-lo.",
+      "comportamento": "Tático e calculado — avança apenas quando a formação está correta. Nunca age sem razão",
+      "gatilho": "Presença de aliados em campo. Sozinho, é formidável. Com outros ao redor, torna-se exponencialmente mais perigoso",
+      "personalidade": "Silencioso. Comunica-se por postura e movimento — um gesto é uma ordem, uma pausa é um aviso. Não demonstra emoção, mas há algo inegável em sua presença: autoridade. Não precisa gritar para ser obedecido. Os que estão ao redor simplesmente entendem o que fazer.",
+      "inataNome": "Vanguarda Eterna",
+      "inataDesc": "Karashogun emite um campo tático invisível ao redor de si. Entidades e aliados dentro desse campo têm seus movimentos 'lidos' por ele — ele antecipa e corrige trajetórias, sincroniza ataques e cobre brechas defensivas como se todos fossem extensões de seu próprio corpo. Quando aponta o tridente para um alvo, todos no campo entendem aquilo como uma ordem: prioridade máxima.",
+      "notas": "Esqueleto completo com crânio e asas de corvo no lugar dos equivalentes humanos. As asas nunca o carregam — existem como símbolo, abertas ou fechadas conforme seu estado tático. Segura um tridente longo que sempre aponta para frente, nunca para baixo. Sua postura nunca muda: ereta, inclinada levemente para frente, como se estivesse sempre no limiar de avançar.",
+      "image": "",
+      "hpCamadas": [
+        {
+          "max": 220,
+          "atual": 220,
+          "label": "Camada I"
+        },
+        {
+          "max": 220,
+          "atual": 220,
+          "label": "Camada II"
+        },
+        {
+          "max": 220,
+          "atual": 220,
+          "label": "Camada III"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "nome": "Kutsuro-Ou",
+      "titulo": "O Rei Cuja Metade Ainda Reina",
+      "grau": "V",
+      "classe": "Espírito Abissal",
+      "tipo": "Debilitação / Controle",
+      "origem": "Um rei que se recusou a morrer quando seu reino desapareceu. Não foi uma morte violenta — foi um apagamento lento. Território perdido, corte abandonada, nome esquecido. A metade que restou é a que ainda acredita que reina.",
+      "comportamento": "Altivo e lento — nunca corre, nunca recua. Age como se o campo de batalha fosse sua corte e todos os outros fossem súditos mal comportados",
+      "gatilho": "Ser ignorado ou tratado como igual. Kutsuro-Ou não tolera indiferença — responde com autoridade crescente até ser reconhecido",
+      "personalidade": "Fala pouco, mas cada palavra carrega peso. Não grita — decreta em tom baixo. Sua arrogância não é performática: ele genuinamente não concebe a possibilidade de perder. A metade destruída de seu corpo não o incomoda; na sua leitura, o que sobrou é o suficiente para reinar.",
+      "inataNome": "Édito da Decadência",
+      "inataDesc": "Kutsuro-Ou emite decretos malditos — comandos verbais curtos que impõem condições ao alvo como se fossem leis. 'Ajoelha' força o sistema muscular do alvo a ceder sob seu próprio peso por instantes. 'Emudece' bloqueia a emissão de técnicas que dependem de vocalização. 'Apodrece' acelera a degeneração de energia cursed no alvo, fazendo com que técnicas consumam mais do que deveriam. Cada decreto funciona uma vez por alvo — o corpo 'memoriza' a lei e cria resistência.",
+      "notas": "Metade do corpo desintegrada — não rasgada nem queimada, simplesmente ausente, como se nunca tivesse existido. A metade que sobrou é podre mas intacta na estrutura. A cabeça se projeta para cima em forma de coroa óssea, pescoço grosso e curto que se funde quase nos ombros. Vestes reais rasgadas, joias antigas presas em carne que não deveria mais sustentá-las. Fino, quase frágil na aparência — mas cada movimento é deliberado e pesado.",
+      "image": "",
+      "hpCamadas": [
+        {
+          "max": 240,
+          "atual": 240,
+          "label": "Camada I"
+        },
+        {
+          "max": 240,
+          "atual": 240,
+          "label": "Camada II"
+        }
+      ]
     }
   ],
-  "nextId": 6
+  "nextId": 10
 }
