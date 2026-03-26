@@ -13,8 +13,20 @@
       "personalidade": "Consciente de sua existência difusa, percebe qualquer movimento como uma intrusão em seu estado. Não reage por instinto, mas por decisão: comprime aquilo que perturba sua quietude, buscando reduzir tudo ao mesmo silêncio que ela entende como natural.",
       "inataNome": "Consciência Nebulosa",
       "inataDesc": "A névoa é sua percepção expandida. Ela reconhece presenças e reage a elas, expandindo ou comprimindo conforme sua própria leitura do ambiente. Não pode ser dissipada por meios físicos.",
-      "notas": "Nunca ultrapassa o território que reconhece como ‘seu domínio’. Sua expansão é deliberada, não automática.",
-      "image": ""
+      "notas": "Nunca ultrapassa o território que reconhece como 'seu domínio'. Sua expansão é deliberada, não automática.",
+      "image": "",
+      "hpCamadas": [
+        {
+          "max": 80,
+          "atual": 80,
+          "label": "Camada I"
+        },
+        {
+          "max": 80,
+          "atual": 80,
+          "label": "Camada II"
+        }
+      ]
     },
     {
       "id": 2,
@@ -30,7 +42,24 @@
       "inataNome": "Reflexo Existente",
       "inataDesc": "Replica identidade em vez de aparência. Cada cópia é uma tentativa de substituir o original, criando uma segunda existência deliberada.",
       "notas": "Fragmentado em superfícies reflexivas. Cada fragmento mantém uma consciência parcial, mas ainda capaz de escolha.",
-      "image": ""
+      "image": "",
+      "hpCamadas": [
+        {
+          "max": 75,
+          "atual": 75,
+          "label": "Camada I"
+        },
+        {
+          "max": 75,
+          "atual": 75,
+          "label": "Camada II"
+        },
+        {
+          "max": 75,
+          "atual": 75,
+          "label": "Camada III"
+        }
+      ]
     },
     {
       "id": 3,
@@ -42,11 +71,23 @@
       "origem": "Formado a partir de estruturas sociais rígidas onde posição e dever definiam o valor de um indivíduo.",
       "comportamento": "Observador hierárquico",
       "gatilho": "Estruturas de liderança ou responsabilidade",
-      "personalidade": "Analisa o ambiente e identifica quem carrega maior ‘peso existencial’. Não age por impulso: julga. Ao reconhecer responsabilidade, decide impor pressão como forma de equilibrar aquilo que considera excesso.",
+      "personalidade": "Analisa o ambiente e identifica quem carrega maior 'peso existencial'. Não age por impulso: julga. Ao reconhecer responsabilidade, decide impor pressão como forma de equilibrar aquilo que considera excesso.",
       "inataNome": "Medição Espiritual",
       "inataDesc": "Converte percepção de importância em peso físico. Quanto mais relevante alguém é dentro de uma estrutura, mais ele é comprimido.",
       "notas": "Funciona melhor em grupos organizados. A ausência de hierarquia clara limita sua capacidade de julgamento.",
-      "image": ""
+      "image": "",
+      "hpCamadas": [
+        {
+          "max": 90,
+          "atual": 90,
+          "label": "Camada I"
+        },
+        {
+          "max": 90,
+          "atual": 90,
+          "label": "Camada II"
+        }
+      ]
     },
     {
       "id": 4,
@@ -62,7 +103,19 @@
       "inataNome": "Soberania sobre os mortos",
       "inataDesc": "Não controla mortos — é a autoridade sobre eles. Convoca, dissolve, absorve. Os mortos obedecem porque é a ordem natural.",
       "notas": "Esqueleto de quatro braços com articulações a mais, dedos compridos demais. Chamas violetas onde deveriam estar os olhos. Fragmentos de manto imperial apodrecido. Nunca foi exorcizado — todos os registros terminam antes disso.",
-      "image": ""
+      "image": "",
+      "hpCamadas": [
+        {
+          "max": 200,
+          "atual": 200,
+          "label": "Camada II"
+        },
+        {
+          "max": 200,
+          "atual": 200,
+          "label": "Camada III"
+        }
+      ]
     },
     {
       "id": 5,
@@ -76,9 +129,26 @@
       "gatilho": "Presença de múltiplas entidades ou uso de técnicas espirituais",
       "personalidade": "Altamente consciente e analítico. Observa antes de agir, mas nunca deixa de agir. Interpreta o campo de batalha como um fluxo de informações. Não demonstra pressa — cada selo é feito com intenção precisa. Decide quem proteger, quem marcar e quando intervir, como se estivesse organizando um sistema invisível.",
       "inataNome": "Tecelagem de Selos",
-      "inataDesc": "Executa sequências complexas de selos de mão para analisar, marcar e alterar interações espirituais. Pode fortalecer aliados, proteger alvos ou ‘marcar’ entidades para amplificar efeitos sobre elas. Sua atuação não é direta — ele reconfigura o campo ao redor.",
+      "inataDesc": "Executa sequências complexas de selos de mão para analisar, marcar e alterar interações espirituais. Pode fortalecer aliados, proteger alvos ou 'marcar' entidades para amplificar efeitos sobre elas. Sua atuação não é direta — ele reconfigura o campo ao redor.",
       "notas": "Manifestação composta por múltiplos olhos e mãos que se movem de forma independente. Seus olhos estão sempre focados em diferentes alvos simultaneamente, enquanto suas mãos executam selos contínuos. Nunca para de observar, nunca para de preparar.",
-      "image": ""
+      "image": "",
+      "hpCamadas": [
+        {
+          "max": 200,
+          "atual": 200,
+          "label": "Camada I"
+        },
+        {
+          "max": 200,
+          "atual": 200,
+          "label": "Camada II"
+        },
+        {
+          "max": 200,
+          "atual": 200,
+          "label": "Camada III"
+        }
+      ]
     }
   ],
   "nextId": 6

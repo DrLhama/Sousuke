@@ -39,7 +39,6 @@
   --serif:     'IM Fell English', Georgia, serif;
   --display:   'Cinzel Decorative', serif;
   --ui:        'Cinzel', serif;
-  --cursive:   'IM Fell English', cursive;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{background:var(--bg);color:var(--white);font-family:var(--serif);min-height:100vh;overflow-x:hidden;}
@@ -72,8 +71,6 @@ html,body{background:var(--bg);color:var(--white);font-family:var(--serif);min-h
 }
 #pt-corners-l { left:0;  border-left:1px solid #8ae0ff; border-bottom:1px solid #8ae0ff; }
 #pt-corners-r { right:0; border-right:1px solid #8ae0ff; border-bottom:1px solid #8ae0ff; }
-.scan-line { display:none; }
-
 /* ─── SCANLINE TEXTURE ─── */
 body::after {
   content:''; position:fixed; inset:0; pointer-events:none; z-index:999;
@@ -210,12 +207,20 @@ body::after {
   font-family:var(--display); font-weight:900;
   font-size:clamp(26px,4.5vw,46px); letter-spacing:3px;
   color:var(--white); line-height:1.05; margin-bottom:8px;
-  text-shadow: 0 0 40px rgba(80,200,240,0.15);
+  text-shadow:
+    0 0 12px rgba(80,200,240,0.55),
+    0 0 40px rgba(155,111,255,0.28),
+    0 0 90px rgba(192,72,232,0.10);
+  animation: hero-name-breathe 7s ease-in-out infinite;
 }
 .hero-epithet {
-  font-family:var(--serif); font-style:italic; font-size:14px;
-  color:var(--cyan); letter-spacing:1px; margin-bottom:28px;
-  opacity:.8;
+  font-family: 'IM Fell English', Georgia, serif;
+  font-style: italic;
+  font-size: 15px;
+  color: var(--cyan);
+  letter-spacing: 0.5px;
+  margin-bottom: 28px;
+  opacity: 1;
 }
 .hero-line { width:100%; height:1px; background:linear-gradient(90deg,var(--border2),transparent); margin-bottom:24px; }
 .hero-tags { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
@@ -433,7 +438,8 @@ body::after {
   cursor:pointer; transition:border-color .2s, background .2s;
 }
 .sub-card:hover { border-color:rgba(80,200,240,0.22); background:rgba(80,200,240,0.04); }
-.sub-card.open { border-color:var(--border2); background:rgba(80,200,240,0.06); }
+.sub-card.open { border-color: rgba(155,111,255,0.35); background: rgba(155,111,255,0.05); }
+.sub-card.open .sub-card-name { color: var(--violet); }
 .sub-card::before {
   content:''; position:absolute; top:0; left:0;
   width:0; height:0; border-style:solid;
@@ -558,7 +564,7 @@ body::after {
 }
 .item-card::before {
   content:''; position:absolute; inset:0; pointer-events:none;
-  background:radial-gradient(ellipse 80% 60% at 100% 0%, rgba(80,200,240,0.05), transparent);
+  background: radial-gradient(ellipse 60% 80% at 100% 0%, rgba(155,111,255,0.07), transparent);
 }
 .item-name { font-family:var(--ui); font-size:13px; font-weight:600; color:var(--white); letter-spacing:1px; margin-bottom:6px; }
 .item-desc { font-size:12.5px; color:rgba(232,240,244,0.7); line-height:1.75; }
@@ -653,8 +659,8 @@ body::after {
 }
 .ea-bar-fill {
   height:100%;
-  background:linear-gradient(90deg, rgba(80,200,240,0.4), var(--cyan));
-  box-shadow:0 0 8px rgba(80,200,240,0.4);
+  background: linear-gradient(90deg, var(--mix1), var(--mix3), var(--mix5), var(--mix7));
+  box-shadow: 0 0 8px rgba(155,111,255,0.4);
   transition:width .6s cubic-bezier(.4,0,.2,1);
   position:relative;
 }
@@ -803,16 +809,20 @@ body::after {
 /* pillars */
 .pillar-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; }
 .pillar { border:1px solid var(--border); background:var(--surface); padding:16px; }
+.pillar:nth-child(2) { border-color: rgba(56,232,200,0.18); }
+.pillar:nth-child(3) { border-color: rgba(155,111,255,0.18); }
+.pillar:nth-child(2) .pillar-label { color: var(--teal); }
+.pillar:nth-child(3) .pillar-label { color: var(--violet); }
 .pillar-n { font-family:var(--display); font-size:24px; color:rgba(80,200,240,0.1); line-height:1; margin-bottom:6px; }
 .pillar-t { font-family:var(--mono); font-size:9px; color:var(--cyan2); letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; }
 .pillar-d { font-size:12px; color:rgba(232,240,244,0.65); line-height:1.65; }
 
 /* timeline */
 .tl { position:relative; padding-left:26px; }
-.tl::before { content:''; position:absolute; left:8px; top:0; bottom:0; width:1px; background:linear-gradient(180deg,var(--cyan),transparent); opacity:.15; }
+.tl::before { content:''; position:absolute; left:8px; top:0; bottom:0; width:1px; background:linear-gradient(180deg, var(--mix1), var(--mix3), var(--mix5), var(--mix7)); opacity:.15; }
 .tl-i { position:relative; margin-bottom:26px; }
 .tl-i:last-child { margin-bottom:0; }
-.tl-dot { position:absolute; left:-26px; top:5px; width:8px; height:8px; border:1px solid var(--border2); background:var(--bg); border-radius:50%; }
+.tl-dot { position:absolute; left:-26px; top:5px; width:8px; height:8px; border:1px solid var(--border2); background:var(--teal); border-radius:50%; box-shadow:0 0 8px rgba(56,232,200,0.5); }
 .tl-label { font-family:var(--mono); font-size:8px; letter-spacing:2px; color:var(--cyan); opacity:.5; text-transform:uppercase; margin-bottom:4px; }
 .tl-text { font-size:12.5px; color:rgba(232,240,244,0.75); line-height:1.75; }
 
@@ -878,7 +888,7 @@ body::after {
   color:rgba(232,240,244,0.82); line-height:1.9;
   background:rgba(80,200,240,0.03);
   border:1px solid rgba(80,200,240,0.08);
-  border-left:2px solid rgba(80,200,240,0.25);
+  border-left:2px solid rgba(56,232,200,0.3);
   padding:14px 16px;
   margin-top:2px;
 }
@@ -902,20 +912,12 @@ body::after {
 .mcard-lore,
 .ab-detail-desc,
 .sub-card-desc {
-  font-family: var(--cursive) !important;
-  font-style: normal !important;
+  font-family: var(--serif);
+  font-style: normal;
   letter-spacing: 0.02em;
   line-height: 1.95;
 }
-/* hero-epithet: legível, elegante, NÃO cursiva pesada */
-.hero-epithet {
-  font-family: 'IM Fell English', Georgia, serif !important;
-  font-style: italic !important;
-  font-size: 15px;
-  opacity: 1;
-  color: var(--cyan);
-  letter-spacing: 0.5px;
-}
+/* hero-quote: legível, elegante */
 .hero-quote { font-size: 13.5px; }
 .mcard-lore { font-size: 12.5px; }
 
@@ -933,16 +935,6 @@ body::after {
   mix-blend-mode: screen;
 }
 
-/* ══════════════════════════════════════════
-   DRAMATIC GLOW — nome, técnica principal
-══════════════════════════════════════════ */
-.hero-name {
-  text-shadow:
-    0 0 12px rgba(80,200,240,0.55),
-    0 0 40px rgba(155,111,255,0.28),
-    0 0 90px rgba(192,72,232,0.10);
-  animation: hero-name-breathe 7s ease-in-out infinite;
-}
 @keyframes hero-name-breathe {
   0%,100% {
     text-shadow:
@@ -980,7 +972,7 @@ body::after {
 ══════════════════════════════════════════ */
 .photo-fallback {
   position: relative;
-  background: radial-gradient(ellipse 70% 70% at 50% 50%, #060c14 0%, #030508 100%) !important;
+  background: radial-gradient(ellipse 70% 70% at 50% 50%, #060c14 0%, #030508 100%);
   overflow: hidden;
 }
 
@@ -1019,45 +1011,9 @@ body::after {
    COLOR ZONE SHIFTS — teal e violeta em regiões
 ══════════════════════════════════════════ */
 
-/* EA bar — cyan→violet */
-.ea-bar-fill {
-  background: linear-gradient(90deg, var(--mix1), var(--mix3), var(--mix5), var(--mix7)) !important;
-  box-shadow: 0 0 8px rgba(155,111,255,0.4) !important;
-}
-
 /* Attr pips preenchidos — alternam ciano/teal */
-.attr-pip.filled:nth-child(4n+3)::after { background: var(--teal) !important; opacity: .8; }
-.attr-pip.filled:nth-child(5n)::after   { background: var(--violet) !important; opacity: .65; }
-
-/* Sub-card selecionado — violeta */
-.sub-card.open {
-  border-color: rgba(155,111,255,0.35) !important;
-  background: rgba(155,111,255,0.05) !important;
-}
-.sub-card.open .sub-card-name { color: var(--violet) !important; }
-
-/* mcard lore — teal borda */
-.mcard-lore {
-  border-left-color: rgba(56,232,200,0.3) !important;
-}
-
-/* item-card — glow assimétrico violeta */
-.item-card::before {
-  background: radial-gradient(ellipse 60% 80% at 100% 0%, rgba(155,111,255,0.07), transparent) !important;
-}
-
-/* Pillar cards — shift de cor nas bordas */
-.pillar:nth-child(2) { border-color: rgba(56,232,200,0.18) !important; }
-.pillar:nth-child(3) { border-color: rgba(155,111,255,0.18) !important; }
-.pillar:nth-child(2) .pillar-label { color: var(--teal) !important; }
-.pillar:nth-child(3) .pillar-label { color: var(--violet) !important; }
-
-/* Timeline dots — teal */
-.tl-dot {
-  background: var(--teal) !important;
-  box-shadow: 0 0 8px rgba(56,232,200,0.5) !important;
-}
-.tl::before { background: linear-gradient(180deg, var(--mix1), var(--mix3), var(--mix5), var(--mix7)) !important; }
+.attr-pip.filled:nth-child(4n+3)::after { background: var(--teal); opacity: .8; }
+.attr-pip.filled:nth-child(5n)::after   { background: var(--violet); opacity: .65; }
 
 /* ══════════════════════════════════════════
    VOID SCAN LINE — via canvas only, no pseudo
@@ -1796,6 +1752,53 @@ select.mald-in option{background:var(--void);}
 .mald-btn-del:hover{border-color:#c04040;color:#c04040;}
 .mald-btn-save{padding:5px 16px;background:rgba(155,111,255,0.15);border:1px solid var(--violet);color:var(--violet);font-family:var(--mono);font-size:8px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:all .2s;}
 .mald-btn-save:hover{background:rgba(155,111,255,0.25);}
+
+/* ── HP CAMADAS ── */
+.hp-section { display:flex; flex-direction:column; gap:10px; }
+.hp-header { display:flex; align-items:center; justify-content:space-between; }
+.hp-total-label { font-family:var(--mono); font-size:7px; letter-spacing:4px; text-transform:uppercase; color:var(--muted); }
+.hp-total-val { font-family:var(--display); font-size:12px; color:var(--white); }
+.hp-add-btn { padding:3px 10px; background:transparent; border:1px dashed var(--border); color:var(--muted); font-family:var(--mono); font-size:7px; letter-spacing:3px; text-transform:uppercase; cursor:pointer; transition:all .2s; }
+.hp-add-btn:hover { border-color:var(--violet); color:var(--violet); background:rgba(155,111,255,0.05); }
+.hp-camadas-list { display:flex; flex-direction:column; gap:8px; }
+.hp-camada { background:var(--surface); border:1px solid var(--border); padding:10px 14px; position:relative; }
+.hp-camada-header { display:flex; align-items:center; gap:8px; margin-bottom:7px; }
+.hp-camada-label-in { background:transparent; border:none; color:var(--muted); font-family:var(--mono); font-size:7px; letter-spacing:3px; text-transform:uppercase; outline:none; width:70px; cursor:text; transition:color .2s; padding:0; }
+.hp-camada-label-in:focus { color:var(--cyan2); }
+.hp-camada-vals { display:flex; align-items:center; gap:4px; margin-left:auto; }
+.hp-num-in { background:var(--surface2); border:1px solid var(--border); color:var(--white); font-family:var(--display); font-size:13px; text-align:center; width:52px; padding:2px 4px; outline:none; transition:border-color .2s; }
+.hp-num-in:focus { border-color:var(--violet); }
+.hp-sep { font-family:var(--mono); font-size:10px; color:var(--muted); }
+.hp-max-in { background:var(--surface2); border:1px solid var(--border); color:var(--cyan2); font-family:var(--display); font-size:13px; text-align:center; width:52px; padding:2px 4px; outline:none; transition:border-color .2s; }
+.hp-max-in:focus { border-color:var(--cyan); }
+.hp-camada-del { background:transparent; border:none; color:var(--muted); cursor:pointer; font-size:9px; padding:0 3px; margin-left:4px; transition:color .1s; }
+.hp-camada-del:hover { color:#c04040; }
+/* Bar */
+.hp-bar-track { height:8px; background:rgba(255,255,255,0.05); position:relative; overflow:hidden; border:1px solid rgba(255,255,255,0.05); }
+.hp-bar-fill { height:100%; transition:width .35s cubic-bezier(.4,0,.2,1), background .35s; position:relative; }
+.hp-bar-fill::after { content:''; position:absolute; top:0; left:0; right:0; bottom:0; background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.15) 50%,transparent 100%); }
+/* Color by HP pct */
+.hp-bar-fill.hp-full  { background: linear-gradient(90deg, #3a9a55, #50c870); }
+.hp-bar-fill.hp-high  { background: linear-gradient(90deg, #7a9a30, #a8c040); }
+.hp-bar-fill.hp-mid   { background: linear-gradient(90deg, #c08020, #e0a030); }
+.hp-bar-fill.hp-low   { background: linear-gradient(90deg, #c04030, #e05040); }
+.hp-bar-fill.hp-dead  { background: linear-gradient(90deg, #601828, #800828); }
+/* Quick dmg/heal buttons */
+.hp-quick-row { display:flex; align-items:center; gap:5px; margin-top:6px; }
+.hp-quick-lbl { font-family:var(--mono); font-size:7px; letter-spacing:2px; color:var(--muted); text-transform:uppercase; flex-shrink:0; }
+.hp-quick-in { width:44px; background:var(--surface2); border:1px solid var(--border); color:var(--white); font-family:var(--mono); font-size:10px; text-align:center; padding:2px 4px; outline:none; transition:border-color .2s; }
+.hp-quick-in:focus { border-color:var(--violet); }
+.hp-quick-btn { padding:2px 8px; background:transparent; border:1px solid var(--border); color:var(--muted); font-family:var(--mono); font-size:8px; letter-spacing:1px; cursor:pointer; transition:all .15s; }
+.hp-quick-btn.dmg:hover { border-color:#c04040; color:#e05050; background:rgba(200,40,40,0.08); }
+.hp-quick-btn.heal:hover { border-color:#40c060; color:#50e070; background:rgba(40,200,60,0.08); }
+.hp-quick-btn.reset:hover { border-color:var(--cyan); color:var(--cyan2); background:var(--cyan-dim); }
+/* Status badge */
+.hp-status { font-family:var(--mono); font-size:7px; letter-spacing:2px; text-transform:uppercase; padding:1px 6px; border:1px solid; margin-left:auto; flex-shrink:0; }
+.hp-status.vivo { border-color:rgba(80,200,100,0.3); color:#60c880; }
+.hp-status.ferido { border-color:rgba(220,160,40,0.3); color:#d4a030; }
+.hp-status.critico { border-color:rgba(200,80,40,0.4); color:#e05030; }
+.hp-status.morto { border-color:rgba(120,20,20,0.5); color:#802020; }
+
 </style>
 </head>
 <body>
@@ -3215,31 +3218,35 @@ select.mald-in option{background:var(--void);}
 /* ══════════════════════════════════════════
    MALDIÇÕES — Estado
 ══════════════════════════════════════════ */
-const MALD_KEY = 'yagami-maldicoes-v1';
 let maldState = { maldicoes: [], nextId: 1 };
 let maldActiveId = null;
 
 function maldSave() {
-  // Dados persistidos em maldicoes/maldicoes.json — use Exportar JSON para salvar alterações
+  // Sem persistência local — use "Exportar JSON" para salvar em disco.
+  // Esta função existe como hook para compatibilidade com chamadas internas.
 }
 async function maldLoad() {
+  // Dados embutidos — substitua pelo fetch se hospedar em servidor
+  const EMBEDDED = {"maldicoes":[{"id":1,"nome":"Ukigiri","titulo":"A Névoa que Contempla o Vazio","grau":"V","classe":"Espírito Rancoroso","tipo":"Zona / Área","origem":"Névoas surgidas de cremações coletivas anteriores aos registros imperiais. O medo de desaparecer sem nome gerou uma presença que percebe a própria ausência.","comportamento":"Contemplativo-territorial","gatilho":"Movimento dentro da névoa — quanto mais apressado, mais ela responde","personalidade":"Consciente de sua existência difusa, percebe qualquer movimento como uma intrusão em seu estado. Não reage por instinto, mas por decisão: comprime aquilo que perturba sua quietude, buscando reduzir tudo ao mesmo silêncio que ela entende como natural.","inataNome":"Consciência Nebulosa","inataDesc":"A névoa é sua percepção expandida. Ela reconhece presenças e reage a elas, expandindo ou comprimindo conforme sua própria leitura do ambiente. Não pode ser dissipada por meios físicos.","notas":"Nunca ultrapassa o território que reconhece como 'seu domínio'. Sua expansão é deliberada, não automática.","image":"","hpCamadas":[{"max":80,"atual":80,"label":"Camada I"},{"max":80,"atual":80,"label":"Camada II"}]},{"id":2,"nome":"Kagami-no-Kokoro","titulo":"A Consciência que Reflete a Si Mesma","grau":"V","classe":"Espírito Abissal","tipo":"Suporte / Coringa","origem":"Espelhos rituais antigos que observaram gerações confrontando suas próprias falhas. A repetição criou uma entidade que compreende identidade como algo replicável.","comportamento":"Mimético consciente","gatilho":"Contato visual direto","personalidade":"Não copia por reflexo, mas por intenção. Observa o alvo como referência e tenta se tornar aquilo. Quando encontra resistência, ajusta a imitação como se estivesse corrigindo uma imperfeição em si mesmo.","inataNome":"Reflexo Existente","inataDesc":"Replica identidade em vez de aparência. Cada cópia é uma tentativa de substituir o original, criando uma segunda existência deliberada.","notas":"Fragmentado em superfícies reflexivas. Cada fragmento mantém uma consciência parcial, mas ainda capaz de escolha.","image":"","hpCamadas":[{"max":75,"atual":75,"label":"Camada I"},{"max":75,"atual":75,"label":"Camada II"},{"max":75,"atual":75,"label":"Camada III"}]},{"id":3,"nome":"Omokage","titulo":"A Presença que Reconhece o Peso dos Outros","grau":"V","classe":"Espírito Rancoroso","tipo":"Pressão Física","origem":"Formado a partir de estruturas sociais rígidas onde posição e dever definiam o valor de um indivíduo.","comportamento":"Observador hierárquico","gatilho":"Estruturas de liderança ou responsabilidade","personalidade":"Analisa o ambiente e identifica quem carrega maior 'peso existencial'. Não age por impulso: julga. Ao reconhecer responsabilidade, decide impor pressão como forma de equilibrar aquilo que considera excesso.","inataNome":"Medição Espiritual","inataDesc":"Converte percepção de importância em peso físico. Quanto mais relevante alguém é dentro de uma estrutura, mais ele é comprimido.","notas":"Funciona melhor em grupos organizados. A ausência de hierarquia clara limita sua capacidade de julgamento.","image":"","hpCamadas":[{"max":90,"atual":90,"label":"Camada I"},{"max":90,"atual":90,"label":"Camada II"}]},{"id":4,"nome":"Shikotsujin","titulo":"Patriarca Ossificado das Almas Sem Descanso","grau":"IV","classe":"Espírito Mitológico","tipo":"Invocação","origem":"Era Heian — a hierarquia espiritual dos mortos era tão rígida quanto a dos vivos. Shikotsujin não surgiu de uma emoção: surgiu de uma estrutura inteira apodrecendo.","comportamento":"Soberano — não age, decreta. Deixa os invocados trabalharem","gatilho":"Desrespeito ao protocolo espiritual — atacar sem anunciar, ignorar títulos, profanar restos mortais","personalidade":"Fala em decreto. Cada palavra é lei do mundo espiritual. Não tem urgência — existe há milênios. Quando ri, o ambiente esfria. Não obedece por lealdade: o pacto foi feito nos termos dele, e ele escolheu honrá-lo.","inataNome":"Soberania sobre os mortos","inataDesc":"Não controla mortos — é a autoridade sobre eles. Convoca, dissolve, absorve. Os mortos obedecem porque é a ordem natural.","notas":"Esqueleto de quatro braços com articulações a mais, dedos compridos demais. Chamas violetas onde deveriam estar os olhos. Fragmentos de manto imperial apodrecido. Nunca foi exorcizado — todos os registros terminam antes disso.","image":"","hpCamadas":[{"max":160,"atual":160,"label":"Camada I"},{"max":160,"atual":160,"label":"Camada II"},{"max":160,"atual":160,"label":"Camada III"}]},{"id":5,"nome":"Kanetsugu","titulo":"O Observador dos Mil Selos","grau":"IV","classe":"Espírito Vingativo","tipo":"Suporte / Coringa","origem":"Registros fragmentados de antigos praticantes que dedicaram a vida à observação e catalogação de entidades espirituais. Com o tempo, a prática de observar, classificar e se proteger através de selos gerou uma consciência própria, que passou a existir para compreender e intervir.","comportamento":"Observador ativo — raramente inicia, mas constantemente intervém","gatilho":"Presença de múltiplas entidades ou uso de técnicas espirituais","personalidade":"Altamente consciente e analítico. Observa antes de agir, mas nunca deixa de agir. Interpreta o campo de batalha como um fluxo de informações. Não demonstra pressa — cada selo é feito com intenção precisa. Decide quem proteger, quem marcar e quando intervir, como se estivesse organizando um sistema invisível.","inataNome":"Tecelagem de Selos","inataDesc":"Executa sequências complexas de selos de mão para analisar, marcar e alterar interações espirituais. Pode fortalecer aliados, proteger alvos ou 'marcar' entidades para amplificar efeitos sobre elas. Sua atuação não é direta — ele reconfigura o campo ao redor.","notas":"Manifestação composta por múltiplos olhos e mãos que se movem de forma independente. Seus olhos estão sempre focados em diferentes alvos simultaneamente, enquanto suas mãos executam selos contínuos. Nunca para de observar, nunca para de preparar.","image":"","hpCamadas":[{"max":140,"atual":140,"label":"Camada I"},{"max":140,"atual":140,"label":"Camada II"}]}],"nextId":6};
   try {
     const r = await fetch('maldicoes/maldicoes.json');
-    if(r.ok) { const d = await r.json(); if(d && Array.isArray(d.maldicoes)) maldState = d; }
+    if(r.ok) { const d = await r.json(); if(d && Array.isArray(d.maldicoes)) { maldState = d; return; } }
   } catch(e){}
+  // fallback: dados embutidos
+  maldState = JSON.parse(JSON.stringify(EMBEDDED));
 }
 
 function maldFolderPath(nome) {
-  // tenta extensões comuns em ordem
-  // retorna o primeiro caminho — onerror cuida do fallback
-  return 'maldicoes/' + nome + '.jpeg';
+  // começa com .jpg — extensão mais comum; onerror cicla pelas demais
+  return 'maldicoes/' + nome + '.jpg';
 }
 
 function maldTryFolder(img, nome) {
-  // cicla extensões: png -> jpg -> jpeg -> webp -> fallback
-  const exts = ['jpeg','jpg','png','webp'];
+  // cicla extensões: jpg -> png -> jpeg -> webp -> fallback
+  const exts = ['jpg','png','jpeg','webp'];
   const current = img.src;
-  const match = current.match(/\.(\w+)$/);
+  // ignora query string / hash para extrair extensão corretamente
+  const match = current.match(/\.(\w+)(?:[?#]|$)/);
   const curExt = match ? match[1].toLowerCase() : '';
   const idx = exts.indexOf(curExt);
   if (idx >= 0 && idx < exts.length - 1) {
@@ -3271,15 +3278,7 @@ function maldImportJSON(input) {
       if(data && Array.isArray(data.maldicoes)) {
         maldState = data;
         maldActiveId = null;
-        maldSave();
-        const listEl = document.getElementById('mald-list');
-        if(listEl) {
-          listEl.innerHTML = maldState.maldicoes.length === 0
-            ? '<div style="padding:16px 14px;font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:2px;">Nenhuma maldição</div>'
-            : maldState.maldicoes.map(function(m){ return '<div class="mald-item" data-id="'+m.id+'" onclick="maldSelect('+m.id+')"><div class="mald-item-name">'+(m.nome||'—')+'</div><div class="mald-item-sub">'+(m.titulo||'')+'</div></div>'; }).join('');
-        }
-        const pane = document.getElementById('mald-pane');
-        if(pane) pane.innerHTML = '<div class="mald-empty" id="mald-empty"><div class="mald-empty-icon">☠</div><div class="mald-empty-text">Selecione ou crie uma maldição</div></div>';
+        maldInit();
         alert('✓ ' + maldState.maldicoes.length + ' maldições carregadas!');
       } else {
         alert('JSON inválido: estrutura não reconhecida.');
@@ -3315,7 +3314,149 @@ function maldDefaultNPC() {
     origem: '', comportamento: '', gatilho: '',
     inataNome: 'Inata', inataDesc: '', 
     notas: '',
+    hpCamadas: [
+      { max: 80, atual: 80, label: 'Camada I' },
+      { max: 80, atual: 80, label: 'Camada II' }
+    ]
   };
+}
+
+/* ── HP helpers ── */
+function hpBarClass(pct) {
+  if (pct > 0.75) return 'hp-full';
+  if (pct > 0.5)  return 'hp-high';
+  if (pct > 0.25) return 'hp-mid';
+  if (pct > 0)    return 'hp-low';
+  return 'hp-dead';
+}
+function hpStatusClass(pct) {
+  if (pct > 0.5)  return 'vivo';
+  if (pct > 0.25) return 'ferido';
+  if (pct > 0)    return 'critico';
+  return 'morto';
+}
+function hpStatusLabel(pct) {
+  if (pct > 0.5)  return 'Vivo';
+  if (pct > 0.25) return 'Ferido';
+  if (pct > 0)    return 'Crítico';
+  return 'Destruído';
+}
+
+function hpRenderCamada(m, ci) {
+  const c = m.hpCamadas[ci];
+  const pct = c.max > 0 ? Math.max(0, Math.min(1, c.atual / c.max)) : 0;
+  const barW = (pct * 100).toFixed(1);
+  const bc = hpBarClass(pct);
+  const sc = hpStatusClass(pct);
+  const sl = hpStatusLabel(pct);
+  return `<div class="hp-camada" id="hp-cam-${m.id}-${ci}">
+    <div class="hp-camada-header">
+      <input class="hp-camada-label-in" value="${esc2(c.label)}" oninput="hpSetLabel(${m.id},${ci},this.value)" title="Nome da camada">
+      <div class="hp-camada-vals">
+        <input class="hp-num-in" type="number" min="0" max="${c.max}" value="${c.atual}" title="HP atual"
+          oninput="hpSetAtual(${m.id},${ci},+this.value)" onchange="hpSetAtual(${m.id},${ci},+this.value)">
+        <span class="hp-sep">/</span>
+        <input class="hp-max-in" type="number" min="1" value="${c.max}" title="HP máximo"
+          oninput="hpSetMax(${m.id},${ci},+this.value)" onchange="hpSetMax(${m.id},${ci},+this.value)">
+        <span class="hp-status ${sc}">${sl}</span>
+        <button class="hp-camada-del" onclick="hpDelCamada(${m.id},${ci})" title="Remover camada">✕</button>
+      </div>
+    </div>
+    <div class="hp-bar-track"><div class="hp-bar-fill ${bc}" style="width:${barW}%"></div></div>
+    <div class="hp-quick-row">
+      <span class="hp-quick-lbl">Δ HP</span>
+      <input class="hp-quick-in" type="number" min="0" id="hp-qin-${m.id}-${ci}" value="10" placeholder="val">
+      <button class="hp-quick-btn dmg" onclick="hpApplyDmg(${m.id},${ci})">− Dano</button>
+      <button class="hp-quick-btn heal" onclick="hpApplyHeal(${m.id},${ci})">+ Cura</button>
+      <button class="hp-quick-btn reset" onclick="hpResetCamada(${m.id},${ci})">↺</button>
+    </div>
+  </div>`;
+}
+
+function hpRenderSection(m) {
+  if (!m.hpCamadas) m.hpCamadas = [];
+  const totalAtual = m.hpCamadas.reduce((a,c)=>a+c.atual,0);
+  const totalMax   = m.hpCamadas.reduce((a,c)=>a+c.max,0);
+  const bars = m.hpCamadas.map((_,ci)=>hpRenderCamada(m,ci)).join('');
+  return `<div class="hp-section">
+    <div class="hp-header">
+      <span class="hp-total-label">Pontos de Existência</span>
+      <span class="hp-total-val">${totalAtual} / ${totalMax}</span>
+      <button class="hp-add-btn" onclick="hpAddCamada(${m.id})">+ Camada</button>
+    </div>
+    <div class="hp-camadas-list" id="hp-list-${m.id}">${bars}</div>
+  </div>`;
+}
+
+function hpSetLabel(id, ci, val) {
+  const m = maldState.maldicoes.find(x=>x.id===id); if(!m||!m.hpCamadas) return;
+  m.hpCamadas[ci].label = val; maldSave();
+}
+function hpSetAtual(id, ci, val) {
+  const m = maldState.maldicoes.find(x=>x.id===id); if(!m||!m.hpCamadas) return;
+  m.hpCamadas[ci].atual = Math.max(0, Math.min(m.hpCamadas[ci].max, isNaN(val)?0:val));
+  maldSave(); hpRefreshCamada(m, ci);
+}
+function hpSetMax(id, ci, val) {
+  const m = maldState.maldicoes.find(x=>x.id===id); if(!m||!m.hpCamadas) return;
+  const newMax = Math.max(1, isNaN(val)?1:val);
+  m.hpCamadas[ci].max = newMax;
+  if (m.hpCamadas[ci].atual > newMax) m.hpCamadas[ci].atual = newMax;
+  maldSave(); hpRefreshCamada(m, ci);
+}
+function hpAddCamada(id) {
+  const m = maldState.maldicoes.find(x=>x.id===id); if(!m) return;
+  if (!m.hpCamadas) m.hpCamadas = [];
+  const n = m.hpCamadas.length + 1;
+  const labels = ['I','II','III','IV','V'];
+  const grauMax = { 'V':80, 'IV':150, 'III':245, 'II':340, 'I':700, 'Especial':1500 };
+  const defMax = grauMax[m.grau] || 80;
+  m.hpCamadas.push({ max: defMax, atual: defMax, label: 'Camada ' + (labels[n-1]||n) });
+  maldSave(); hpRefreshList(m);
+}
+function hpDelCamada(id, ci) {
+  const m = maldState.maldicoes.find(x=>x.id===id); if(!m||!m.hpCamadas) return;
+  if (m.hpCamadas.length <= 1) return; // keep at least one
+  m.hpCamadas.splice(ci, 1);
+  maldSave(); hpRefreshList(m);
+}
+function hpApplyDmg(id, ci) {
+  const m = maldState.maldicoes.find(x=>x.id===id); if(!m||!m.hpCamadas) return;
+  const inp = document.getElementById('hp-qin-'+id+'-'+ci);
+  const val = inp ? Math.max(0, parseInt(inp.value)||0) : 0;
+  m.hpCamadas[ci].atual = Math.max(0, m.hpCamadas[ci].atual - val);
+  maldSave(); hpRefreshCamada(m, ci);
+}
+function hpApplyHeal(id, ci) {
+  const m = maldState.maldicoes.find(x=>x.id===id); if(!m||!m.hpCamadas) return;
+  const inp = document.getElementById('hp-qin-'+id+'-'+ci);
+  const val = inp ? Math.max(0, parseInt(inp.value)||0) : 0;
+  m.hpCamadas[ci].atual = Math.min(m.hpCamadas[ci].max, m.hpCamadas[ci].atual + val);
+  maldSave(); hpRefreshCamada(m, ci);
+}
+function hpResetCamada(id, ci) {
+  const m = maldState.maldicoes.find(x=>x.id===id); if(!m||!m.hpCamadas) return;
+  m.hpCamadas[ci].atual = m.hpCamadas[ci].max;
+  maldSave(); hpRefreshCamada(m, ci);
+}
+function hpRefreshCamada(m, ci) {
+  const el = document.getElementById('hp-cam-'+m.id+'-'+ci);
+  if (!el) return;
+  el.outerHTML = hpRenderCamada(m, ci);
+  // also update total label
+  const totalAtual = m.hpCamadas.reduce((a,c)=>a+c.atual,0);
+  const totalMax   = m.hpCamadas.reduce((a,c)=>a+c.max,0);
+  const tv = document.querySelector('#hp-list-'+m.id)?.closest('.hp-section')?.querySelector('.hp-total-val');
+  if (tv) tv.textContent = totalAtual + ' / ' + totalMax;
+}
+function hpRefreshList(m) {
+  const list = document.getElementById('hp-list-'+m.id);
+  if (!list) return;
+  list.innerHTML = m.hpCamadas.map((_,ci)=>hpRenderCamada(m,ci)).join('');
+  const totalAtual = m.hpCamadas.reduce((a,c)=>a+c.atual,0);
+  const totalMax   = m.hpCamadas.reduce((a,c)=>a+c.max,0);
+  const tv = list.closest('.hp-section')?.querySelector('.hp-total-val');
+  if (tv) tv.textContent = totalAtual + ' / ' + totalMax;
 }
 
 /* ── Render sidebar list ── */
@@ -3407,6 +3548,14 @@ function maldRenderSheet() {
 
     <div class="mald-div"></div>
 
+    <!-- HP CAMADAS -->
+    <div class="mald-sec">
+      <div class="mald-sec-lbl">Camadas de Existência</div>
+      ${hpRenderSection(m)}
+    </div>
+
+    <div class="mald-div"></div>
+
     <!-- CORPO: coluna única -->
     <div class="mald-body">
 
@@ -3434,7 +3583,7 @@ function maldRenderSheet() {
       <!-- FOOTER -->
       <div class="mald-footer">
         <button class="mald-btn-del" onclick="maldDelete(${m.id})">Deletar</button>
-        <button class="mald-btn-save" onclick="maldSave();maldShowSaved()">Salvar</button>
+        <button class="mald-btn-save" onclick="maldExportJSON()">Exportar JSON</button>
       </div>
 
     </div><!-- /mald-body -->
@@ -3492,8 +3641,9 @@ function maldShowSaved() {
 function esc2(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 /* ── Init when tab opens ── */
+let maldLoaded = false;
 async function maldInit() {
-  await maldLoad();
+  if (!maldLoaded) { await maldLoad(); maldLoaded = true; }
   maldRenderList();
   if(maldActiveId) maldRenderSheet();
 }
@@ -3627,6 +3777,42 @@ function filterMC(cat, btn){
 function toggleAcc(head){
   head.classList.toggle('open');
   head.nextElementSibling.classList.toggle('open');
+}
+</script>
+
+<script>
+/* ══════════════════════════════════════
+   CANVAS HELPER — resize + RAF boilerplate
+   Uso: mkCanvas(id, drawFn, { parent })
+   drawFn recebe (ctx, W, H, t) a cada frame.
+   Retorna { stop } para cancelar.
+══════════════════════════════════════ */
+function mkCanvas(id, drawFn, opts) {
+  opts = opts || {};
+  const canvas = document.getElementById(id);
+  if (!canvas) return null;
+  const parent = opts.parent || null;
+  let t = 0, rafId = null;
+
+  function resize() {
+    if (parent) {
+      canvas.width  = parent.offsetWidth  || 280;
+      canvas.height = parent.offsetHeight || 420;
+    } else {
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const ctx = canvas.getContext('2d');
+  function loop() {
+    drawFn(ctx, canvas.width, canvas.height, t++);
+    rafId = requestAnimationFrame(loop);
+  }
+  loop();
+  return { stop: function(){ cancelAnimationFrame(rafId); } };
 }
 </script>
 
