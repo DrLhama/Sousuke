@@ -3236,29 +3236,32 @@ async function maldLoad() {
   maldState = JSON.parse(JSON.stringify(EMBEDDED));
 }
 
-function maldFolderPath(nome) {
-  return 'maldicoes/' + nome.toLowerCase() + '.jpg';
+function maldNorm(s) {
+  return s.normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+          .replace(/[^a-zA-Z0-9-]/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');
 }
 
+function maldCandidates(nome) {
+  const exts = ['png','jpg','jpeg','webp'];
+  const variants = [...new Set([nome, maldNorm(nome), maldNorm(nome).toLowerCase()])];
+  const out = [];
+  variants.forEach(v => exts.forEach(e => out.push('maldicoes/' + v + '.' + e)));
+  return out;
+}
+
+function maldFolderPath(nome) { return maldCandidates(nome)[0]; }
+
 function maldTryFolder(img, nome) {
-  // Gera candidatos: nome original + lowercase, para cada extensão
-  const exts = ['jpg','png','jpeg','webp'];
-  const names = [...new Set([nome, nome.toLowerCase()])];
-  const candidates = [];
-  names.forEach(n => exts.forEach(e => candidates.push('maldicoes/' + n + '.' + e)));
-
-  // Descobre índice atual pela src
-  const base = img.src.replace(/^https?:\/\/[^/]+\//, '').replace(/[?#].*$/, '');
-  let idx = candidates.indexOf(base);
-  if (idx < 0) { // fallback: tenta achar pelo final da URL
-    idx = candidates.findIndex(c => img.src.endsWith('/' + c) || img.src === c);
-  }
-
-  const next = candidates[idx + 1];
+  if (!img._maldCands) img._maldCands = maldCandidates(nome);
+  const cands = img._maldCands;
+  const curPath = decodeURIComponent(img.src).replace(/.*(?=maldicoes\/)/, '');
+  const idx = cands.indexOf(curPath);
+  const next = cands[idx + 1];
   if (next) {
-    img.onerror = function(){ maldTryFolder(img, nome); };
+    img.onerror = () => maldTryFolder(img, nome);
     img.src = next;
   } else {
+    img.onerror = null;
     img.style.display = 'none';
     const hint = img.nextElementSibling;
     if (hint) hint.style.display = 'flex';
