@@ -134,18 +134,18 @@
       "image": "",
       "hpCamadas": [
         {
-          "max": 200,
-          "atual": 200,
+          "max": 100,
+          "atual": 100,
           "label": "Camada I"
         },
         {
-          "max": 200,
-          "atual": 200,
+          "max": 100,
+          "atual": 100,
           "label": "Camada II"
         },
         {
-          "max": 200,
-          "atual": 200,
+          "max": 100,
+          "atual": 100,
           "label": "Camada III"
         }
       ]
