@@ -3237,23 +3237,28 @@ async function maldLoad() {
 }
 
 function maldFolderPath(nome) {
-  // começa com .jpg — extensão mais comum; onerror cicla pelas demais
-  return 'maldicoes/' + nome + '.jpg';
+  return 'maldicoes/' + nome.toLowerCase() + '.jpg';
 }
 
 function maldTryFolder(img, nome) {
-  // cicla extensões: jpg -> png -> jpeg -> webp -> fallback
+  // Gera candidatos: nome original + lowercase, para cada extensão
   const exts = ['jpg','png','jpeg','webp'];
-  const current = img.src;
-  // ignora query string / hash para extrair extensão corretamente
-  const match = current.match(/\.(\w+)(?:[?#]|$)/);
-  const curExt = match ? match[1].toLowerCase() : '';
-  const idx = exts.indexOf(curExt);
-  if (idx >= 0 && idx < exts.length - 1) {
+  const names = [...new Set([nome, nome.toLowerCase()])];
+  const candidates = [];
+  names.forEach(n => exts.forEach(e => candidates.push('maldicoes/' + n + '.' + e)));
+
+  // Descobre índice atual pela src
+  const base = img.src.replace(/^https?:\/\/[^/]+\//, '').replace(/[?#].*$/, '');
+  let idx = candidates.indexOf(base);
+  if (idx < 0) { // fallback: tenta achar pelo final da URL
+    idx = candidates.findIndex(c => img.src.endsWith('/' + c) || img.src === c);
+  }
+
+  const next = candidates[idx + 1];
+  if (next) {
     img.onerror = function(){ maldTryFolder(img, nome); };
-    img.src = 'maldicoes/' + nome + '.' + exts[idx + 1];
+    img.src = next;
   } else {
-    // todas extensões falharam — mostra hint
     img.style.display = 'none';
     const hint = img.nextElementSibling;
     if (hint) hint.style.display = 'flex';
