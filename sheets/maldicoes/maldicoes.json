@@ -271,7 +271,40 @@
           "label": "Camada II"
         }
       ]
+    },
+    {
+      "id": 10,
+      "nome": "Requiem",
+      "titulo": "Soberano Imortal das Marés Eternas e do Tempo Sem Medida, Requiem",
+      "grau": "III",
+      "classe": "Espírito Vingativo",
+      "tipo": "",
+      "personalidade": "Observa o mais forte e avança, impiedoso e imprevisível.",
+      "image": "",
+      "origem": "Víking morto em batalha, volta para buscar sua vingança como uma versão alternada de si.",
+      "comportamento": "Intelectual, completo oposto de sua contraparte humanizada.",
+      "gatilho": "A vontade de batalha.",
+      "inataNome": "Mugen no Ma - O Espaço que Não Termina",
+      "inataDesc": "Ao ativar a técnica, o espaço ao redor passa a existir entre os instantes: o tempo não para, ele se alarga. Cada fração de segundo contém uma eternidade de silêncio. Dentro desse silêncio, a presença de Mugen no Ma pesa como o cosmos inteiro. Quando o intervalo colapsa de volta ao fluxo normal do tempo, toda a energia amaldiçoada acumulada é descarregada de uma vez — não como explosão, mas como apagamento. O alvo não é destruído. Ele simplesmente deixa de ter começado.",
+      "notas": "",
+      "hpCamadas": [
+        {
+          "max": 290,
+          "atual": 290,
+          "label": "Camada I"
+        },
+        {
+          "max": 290,
+          "atual": 290,
+          "label": "Camada II"
+        },
+        {
+          "max": 290,
+          "atual": 290,
+          "label": "Camada III"
+        }
+      ]
     }
   ],
-  "nextId": 10
+  "nextId": 11
 }
