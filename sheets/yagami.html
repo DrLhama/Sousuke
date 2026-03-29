@@ -623,6 +623,144 @@ body::after {
 .tech-module[data-tc="III"] .sub-card-chevron { color:rgba(200,200,190,0.35); }
 .tech-module[data-tc="III"] .sub-card.open .sub-card-chevron { color:#c8c0b0; }
 
+/* ─ DOMAIN BLOCK ─ */
+.domain-block {
+  border:1px solid rgba(155,111,255,0.2);
+  background:var(--surface);
+  position:relative; overflow:hidden;
+  margin-bottom:20px;
+}
+.domain-block::before {
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(ellipse at 50% 0%, rgba(155,111,255,0.06) 0%, transparent 70%);
+}
+/* top accent line that morphs per tab */
+.domain-block::after {
+  content:''; position:absolute; top:0; left:0; right:0; height:1px;
+  background: var(--grad-cv);
+  transition: background .4s ease;
+}
+.domain-block.ctr::after {
+  background: linear-gradient(90deg, #7a3cdc, #c048e8, #7a3cdc);
+}
+
+/* tab bar inside domain */
+.dom-tabs {
+  display:flex; border-bottom:1px solid rgba(155,111,255,0.15);
+  position:relative; z-index:1;
+}
+.dom-tab {
+  flex:1; padding:14px 0; cursor:pointer;
+  font-family:var(--mono); font-size:9px; letter-spacing:4px;
+  text-transform:uppercase; color:var(--muted);
+  background:none; border:none;
+  border-bottom:2px solid transparent;
+  transition:color .25s, border-color .25s;
+  position:relative;
+}
+.dom-tab span { display:block; font-size:7px; letter-spacing:2px; margin-top:3px; opacity:.5; font-style:italic; }
+.dom-tab.on.exp { color:var(--cyan2); border-bottom-color:var(--cyan2); }
+.dom-tab.on.ctr { color:#b880ff; border-bottom-color:#b880ff; }
+.dom-tab:not(.on):hover { color:var(--white); }
+/* separator between tabs */
+.dom-tab:first-child { border-right:1px solid rgba(155,111,255,0.12); }
+
+/* panels */
+.dom-panel { display:none; padding:24px 20px 20px; }
+.dom-panel.on { display:block; }
+
+/* domain header inside panel */
+.dom-header {
+  display:flex; align-items:flex-start; gap:16px;
+  margin-bottom:20px; padding-bottom:16px;
+  border-bottom:1px solid rgba(155,111,255,0.1);
+  position:relative;
+}
+.dom-header::after {
+  content:''; position:absolute; bottom:-1px; left:0;
+  width:80px; height:1px;
+}
+.dom-panel.exp-panel .dom-header::after { background:var(--grad-cv); }
+.dom-panel.ctr-panel .dom-header::after { background:linear-gradient(90deg,#9b6fff,#c048e8); }
+
+.dom-index {
+  font-family:var(--mono); font-size:9px; letter-spacing:3px;
+  padding:4px 10px; border:1px solid rgba(155,111,255,0.2);
+  color:rgba(155,111,255,0.6); flex-shrink:0; margin-top:2px;
+}
+.dom-panel.exp-panel .dom-index { border-color:rgba(80,200,240,0.2); color:rgba(80,200,240,0.5); }
+
+.dom-title { flex:1; }
+.dom-name {
+  font-family:var(--ui); font-size:14px; font-weight:600;
+  letter-spacing:1px; color:var(--white); margin-bottom:3px;
+}
+.dom-panel.exp-panel .dom-name { color:var(--cyan2); }
+.dom-panel.ctr-panel .dom-name { color:#b880ff; }
+.dom-kanji { font-family:var(--serif); font-size:11px; font-style:italic; color:var(--muted); }
+.dom-sub { font-family:var(--mono); font-size:8px; letter-spacing:2px; color:var(--muted); margin-top:4px; }
+
+/* cards inside domain */
+.dom-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:10px; }
+.dom-card {
+  background:var(--surface2); padding:16px 16px 14px;
+  border:1px solid rgba(155,111,255,0.1);
+  position:relative; overflow:hidden; cursor:pointer;
+  transition:border-color .2s, background .2s;
+}
+.dom-panel.exp-panel .dom-card { border-color:rgba(80,200,240,0.09); }
+.dom-card:hover { background:rgba(155,111,255,0.05); border-color:rgba(155,111,255,0.28); }
+.dom-panel.exp-panel .dom-card:hover { background:rgba(80,200,240,0.04); border-color:rgba(80,200,240,0.22); }
+.dom-card.open { border-color:rgba(155,111,255,0.35); background:rgba(155,111,255,0.07); }
+.dom-panel.exp-panel .dom-card.open { border-color:rgba(80,200,240,0.32); background:rgba(80,200,240,0.06); }
+
+/* corner accent */
+.dom-card::before {
+  content:''; position:absolute; top:0; left:0;
+  border-style:solid; border-width:13px 13px 0 0;
+  border-color:rgba(155,111,255,0.18) transparent transparent transparent;
+}
+.dom-panel.exp-panel .dom-card::before {
+  border-color:rgba(80,200,240,0.18) transparent transparent transparent;
+}
+.dom-card-id {
+  font-family:var(--mono); font-size:7px; letter-spacing:3px;
+  color:rgba(155,111,255,0.3); text-transform:uppercase; margin-bottom:6px;
+}
+.dom-panel.exp-panel .dom-card-id { color:rgba(80,200,240,0.28); }
+.dom-card-name {
+  font-family:var(--ui); font-size:10.5px; font-weight:600;
+  color:#a870f0; letter-spacing:1px; text-transform:uppercase; margin-bottom:2px;
+}
+.dom-panel.exp-panel .dom-card-name { color:var(--cyan2); }
+.dom-card-kanji {
+  font-family:var(--serif); font-size:10px; font-style:italic;
+  color:rgba(155,111,255,0.35); display:block; margin-bottom:8px;
+}
+.dom-panel.exp-panel .dom-card-kanji { color:rgba(80,200,240,0.32); }
+.dom-card-chevron {
+  position:absolute; top:12px; right:12px;
+  font-family:var(--mono); font-size:8px; color:var(--muted);
+  transition:transform .25s;
+}
+.dom-card.open .dom-card-chevron { transform:rotate(90deg); color:#9b6fff; }
+.dom-panel.exp-panel .dom-card.open .dom-card-chevron { color:var(--cyan); }
+.dom-card-sep { height:1px; background:linear-gradient(90deg,rgba(155,111,255,0.15),transparent); margin-bottom:10px; }
+.dom-panel.exp-panel .dom-card-sep { background:linear-gradient(90deg,rgba(80,200,240,0.12),transparent); }
+.dom-card-body {
+  max-height:0; overflow:hidden; opacity:0;
+  transition:max-height .32s cubic-bezier(.4,0,.2,1), opacity .28s ease;
+}
+.dom-card.open .dom-card-body { max-height:300px; opacity:1; }
+.dom-card-desc { font-family:var(--serif); font-size:11.5px; color:rgba(232,240,244,0.7); line-height:1.75; }
+.dom-card-tag {
+  display:inline-block; margin-top:9px;
+  font-family:var(--mono); font-size:7px; letter-spacing:2px;
+  padding:2px 8px; border:1px solid rgba(155,111,255,0.18); color:rgba(155,111,255,0.55);
+  text-transform:uppercase;
+}
+.dom-panel.exp-panel .dom-card-tag { border-color:rgba(80,200,240,0.14); color:rgba(80,200,240,0.48); }
+.dom-card-tag.red { border-color:rgba(200,60,60,0.25); color:rgba(220,100,100,0.65); }
 /* IV — Carne: vermelho escuro */
 .tech-module[data-tc="IV"] .tech-module-header { border-bottom-color:rgba(180,40,40,0.2); }
 .tech-module[data-tc="IV"] .tech-module-header::before { background:#a03030; }
@@ -2241,6 +2379,92 @@ select.mald-in option{background:var(--void);}
         <div class="sub-card-sep"></div>
         <div class="sub-card-desc">Convoca ou modela um aglomerado de carne morta e fragmentos de espíritos. A forma é livre. Age por comando simples no turno dele.</div>
         <span class="sub-card-tag">Ação de Ataque, Ação Bônus ou Ação de Movimentação</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- V — DOMÍNIO (Expansão / Contração) -->
+  <div class="domain-block" id="domain-block">
+    <div class="dom-tabs">
+      <button class="dom-tab on exp" onclick="domSwitch('exp')">
+        領域展開
+        <span>Expansão de Domínio</span>
+      </button>
+      <button class="dom-tab ctr" onclick="domSwitch('ctr')">
+        領域収縮
+        <span>Contração de Domínio</span>
+      </button>
+    </div>
+
+    <!-- EXPANSÃO -->
+    <div class="dom-panel exp-panel on">
+      <div class="dom-header">
+        <span class="dom-index">V · EXP</span>
+        <div class="dom-title">
+          <div class="dom-name">Ryōiki Tenkai — Expansão de Domínio</div>
+          <div class="dom-kanji">領域展開</div>
+          <div class="dom-sub">Purgatório manifesto · o mundo dele torna-se o mundo</div>
+        </div>
+      </div>
+      <div class="dom-cards">
+        <div class="dom-card" onclick="toggleDomCard(this)">
+          <span class="dom-card-chevron">▶</span>
+          <div class="dom-card-id">EXP-01</div>
+          <div class="dom-card-name">Sepulcro Sem Fim</div>
+          <span class="dom-card-kanji">無限墓 Mugen-haka</span>
+          <div class="dom-card-body">
+            <div class="dom-card-sep"></div>
+            <div class="dom-card-desc">O Purgatório de Yagami se manifesta ao redor de todos. O espaço converte-se em abismo de osso, carne apodrecida e névoa de energia maldita. O ambiente responde à sua intenção. Cada round dentro impõe <strong>pressão existencial passiva</strong>: sentidos embotam, a noção de tempo fragmenta, a vontade de resistir corrói. O domínio não mata — ele esgota.</div>
+            <span class="dom-card-tag">Ação Padrão · Técnica Inata Garantida</span>
+          </div>
+        </div>
+        <div class="dom-card" onclick="toggleDomCard(this)">
+          <span class="dom-card-chevron">▶</span>
+          <div class="dom-card-id">EXP-02</div>
+          <div class="dom-card-name">Eco do Purgatório</div>
+          <span class="dom-card-kanji">煉獄響 Rengoku-kyō</span>
+          <div class="dom-card-body">
+            <div class="dom-card-sep"></div>
+            <div class="dom-card-desc">Dentro do domínio, Yagami redireciona qualquer técnica através de paredes, chão ou teto como extensões do próprio corpo. Ataques surgem de qualquer superfície do espaço.</div>
+            <span class="dom-card-tag">Passiva dentro do Domínio</span>
+          </div>
+        </div>
+        <div class="dom-card" onclick="toggleDomCard(this)">
+          <span class="dom-card-chevron">▶</span>
+          <div class="dom-card-id">EXP-03</div>
+          <div class="dom-card-name">Arquitetura Infernal</div>
+          <span class="dom-card-kanji">獄構 Goku-kō</span>
+          <div class="dom-card-body">
+            <div class="dom-card-sep"></div>
+            <div class="dom-card-desc">O domínio obedece à sua vontade como matéria. Yagami pode erguer barreiras de osso, abrir abismos, comprimir corredores, convocar carne do ambiente. O custo é mínimo — é o espaço que trabalha por ele.</div>
+            <span class="dom-card-tag">Ação Bônus dentro do Domínio</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTRAÇÃO -->
+    <div class="dom-panel ctr-panel">
+      <div class="dom-header">
+        <span class="dom-index">V · CTR</span>
+        <div class="dom-title">
+          <div class="dom-name">Ryōiki Shūshuku — Contração de Domínio</div>
+          <div class="dom-kanji">領域収縮</div>
+          <div class="dom-sub">Funeral da Ruptura · sentença sem julgamento</div>
+        </div>
+      </div>
+      <div class="dom-cards">
+        <div class="dom-card" onclick="toggleDomCard(this)">
+          <span class="dom-card-chevron">▶</span>
+          <div class="dom-card-id">CTR-01</div>
+          <div class="dom-card-name">Funeral da Ruptura</div>
+          <span class="dom-card-kanji">破断葬 Hadan-sō</span>
+          <div class="dom-card-body">
+            <div class="dom-card-sep"></div>
+            <div class="dom-card-desc">Yagami envia um alvo singular diretamente ao Purgatório — o interior vivo de seu domínio. O alvo não morre: apenas existe. Lá, o tempo não passa, fome e dor não existem, apenas o vazio perpétuo. A sentença é indefinida. Yagami pode remover o alvo a qualquer momento, devolvendo-o ao plano material exatamente onde foi capturado, no instante seguinte ao desaparecimento. Ou não remover nunca.</div>
+            <span class="dom-card-tag red">Ação Padrão · Alvo Singular · Duração: indefinida</span>
+          </div>
         </div>
       </div>
     </div>
@@ -4196,7 +4420,22 @@ function mkCanvas(id, drawFn, opts) {
   drawVoid();
 })();
 
-/* ══ ATRIBUTOS DINÂMICOS ══ */
+/* ══ DOMAIN BLOCK ══ */
+function domSwitch(tab) {
+  const block = document.getElementById('domain-block');
+  block.classList.toggle('ctr', tab === 'ctr');
+  block.querySelectorAll('.dom-tab').forEach(t => {
+    t.classList.toggle('on', t.classList.contains(tab));
+  });
+  block.querySelectorAll('.dom-panel').forEach(p => {
+    p.classList.toggle('on', p.classList.contains(tab + '-panel'));
+  });
+}
+function toggleDomCard(el) {
+  el.classList.toggle('open');
+}
+
+
 (function initAttrs(){
   const block = document.getElementById('attr-block');
   if(!block) return;

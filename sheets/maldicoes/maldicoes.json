@@ -213,33 +213,33 @@
     },
     {
       "id": 8,
-      "nome": "Karashogun",
+      "nome": "Shogunato",
       "titulo": "O General que Comanda Além da Morte",
       "grau": "V",
       "classe": "Espírito Mitológico",
       "tipo": "Liderança de Campo / Amplificação",
-      "origem": "Era o espírito de um general que recusou a derrota mesmo depois de morto. Não virou fantasma de ódio — virou fantasma de propósito. O campo de batalha é seu elemento natural e ele nunca deixou de comandá-lo.",
-      "comportamento": "Tático e calculado — avança apenas quando a formação está correta. Nunca age sem razão",
-      "gatilho": "Presença de aliados em campo. Sozinho, é formidável. Com outros ao redor, torna-se exponencialmente mais perigoso",
-      "personalidade": "Silencioso. Comunica-se por postura e movimento — um gesto é uma ordem, uma pausa é um aviso. Não demonstra emoção, mas há algo inegável em sua presença: autoridade. Não precisa gritar para ser obedecido. Os que estão ao redor simplesmente entendem o que fazer.",
-      "inataNome": "Vanguarda Eterna",
-      "inataDesc": "Karashogun emite um campo tático invisível ao redor de si. Entidades e aliados dentro desse campo têm seus movimentos 'lidos' por ele — ele antecipa e corrige trajetórias, sincroniza ataques e cobre brechas defensivas como se todos fossem extensões de seu próprio corpo. Quando aponta o tridente para um alvo, todos no campo entendem aquilo como uma ordem: prioridade máxima.",
-      "notas": "Esqueleto completo com crânio e asas de corvo no lugar dos equivalentes humanos. As asas nunca o carregam — existem como símbolo, abertas ou fechadas conforme seu estado tático. Segura um tridente longo que sempre aponta para frente, nunca para baixo. Sua postura nunca muda: ereta, inclinada levemente para frente, como se estivesse sempre no limiar de avançar.",
+      "origem": "Nasceu de explosões confinadas — espaços onde o fogo não tinha para onde escapar. Incêndios em salas fechadas, túneis colapsados, lugares onde o ar virou combustível. Não é o medo do fogo… é o medo de não conseguir respirar enquanto ele acontece.",
+      "comportamento": "Agressivo e inevitável — não persegue alvos, transforma o ambiente inteiro em morte.",
+      "gatilho": "Ambientes fechados ou presença de múltiplos alvos. Quanto mais ar disponível, mais ele responde.",
+      "personalidade": "Não grita, não ruge — expande. Sua presença é opressiva, como se o próprio espaço estivesse prestes a colapsar. Não vê indivíduos, apenas volumes de ar a serem consumidos. Para ele, o combate não é contra o inimigo… é contra a atmosfera ao redor dele.",
+      "inataNome": "Ignição Termobárica",
+      "inataDesc": "Shogunato não projeta fogo — ele transforma o ar em combustível. Sua técnica dispersa energia amaldiçoada no ambiente e, em seguida, a ignita de forma instantânea, criando explosões de calor e pressão que consomem oxigênio antes mesmo do impacto físico. O alvo não é queimado primeiro — é esmagado pela onda térmica e sufocado pela ausência de ar. As chamas visíveis são apenas o resíduo do processo.",
+      "notas": "Dizem que Shogunato não nasceu do fogo… mas do momento em que o ar acabou antes dele. Em um espaço fechado, onde não havia saída, algo permaneceu — não dor, nem raiva, mas a memória do sufocamento, da pressão esmagando por dentro, do calor que não queimava… apenas apagava.\n\nEle não tinha forma, apenas expansão. Onde surgia, o ambiente cedia — o ar sumia, o espaço colapsava.\n\nFoi assim que Yagami Gojo o encontrou.\n\nNão tentou exorcizar. Entendeu.\n\nEnquanto outros viam chamas, aquilo já era um fenômeno. Então Yagami impôs um centro ao que não tinha limite — não para controlar, mas para permitir que existisse sem consumir tudo.\n\nDesde então, Shogunato responde.\n\nNão por lealdade…\nmas porque Yagami foi a única coisa que não foi consumida.\n\nE quando ele é chamado—\n\no ar já começou a acabar.",
       "image": "",
       "hpCamadas": [
         {
-          "max": 220,
-          "atual": 220,
+          "max": 100,
+          "atual": 100,
           "label": "Camada I"
         },
         {
-          "max": 220,
-          "atual": 220,
+          "max": 100,
+          "atual": 100,
           "label": "Camada II"
         },
         {
-          "max": 220,
-          "atual": 220,
+          "max": 100,
+          "atual": 100,
           "label": "Camada III"
         }
       ]
@@ -249,26 +249,31 @@
       "nome": "Kutsuro-Ou",
       "titulo": "O Rei Cuja Metade Ainda Reina",
       "grau": "V",
-      "classe": "Espírito Abissal",
+      "classe": "Espírito Rancoroso",
       "tipo": "Debilitação / Controle",
       "origem": "Um rei que se recusou a morrer quando seu reino desapareceu. Não foi uma morte violenta — foi um apagamento lento. Território perdido, corte abandonada, nome esquecido. A metade que restou é a que ainda acredita que reina.",
       "comportamento": "Altivo e lento — nunca corre, nunca recua. Age como se o campo de batalha fosse sua corte e todos os outros fossem súditos mal comportados",
-      "gatilho": "Ser ignorado ou tratado como igual. Kutsuro-Ou não tolera indiferença — responde com autoridade crescente até ser reconhecido",
-      "personalidade": "Fala pouco, mas cada palavra carrega peso. Não grita — decreta em tom baixo. Sua arrogância não é performática: ele genuinamente não concebe a possibilidade de perder. A metade destruída de seu corpo não o incomoda; na sua leitura, o que sobrou é o suficiente para reinar.",
+      "gatilho": "Ser ignorado ou tratado como igual — Kutsuro-Ou não tolera indiferença. Ele responde com autoridade crescente até ser reconhecido, exceto por Yagami Gojo, é claro.",
+      "personalidade": "Fala pouco, mas cada palavra carrega peso. Não grita — decreta em tom baixo. Sua arrogância não é performática: ele genuinamente não concebe a possibilidade de perder. ",
       "inataNome": "Édito da Decadência",
       "inataDesc": "Kutsuro-Ou emite decretos malditos — comandos verbais curtos que impõem condições ao alvo como se fossem leis. 'Ajoelha' força o sistema muscular do alvo a ceder sob seu próprio peso por instantes. 'Emudece' bloqueia a emissão de técnicas que dependem de vocalização. 'Apodrece' acelera a degeneração de energia cursed no alvo, fazendo com que técnicas consumam mais do que deveriam. Cada decreto funciona uma vez por alvo — o corpo 'memoriza' a lei e cria resistência.",
-      "notas": "Metade do corpo desintegrada — não rasgada nem queimada, simplesmente ausente, como se nunca tivesse existido. A metade que sobrou é podre mas intacta na estrutura. A cabeça se projeta para cima em forma de coroa óssea, pescoço grosso e curto que se funde quase nos ombros. Vestes reais rasgadas, joias antigas presas em carne que não deveria mais sustentá-las. Fino, quase frágil na aparência — mas cada movimento é deliberado e pesado.",
+      "notas": "Dizem que ele não caiu por acaso. No instante em que sua existência começou a se apagar, quando metade de si foi simplesmente negada pela realidade, Yagami surgiu — não para salvá-lo, mas para definir o que restaria. Onde havia ausência, Yagami impôs propósito; onde havia fim, decretou continuidade. Kutsuro-Ou não foi reconstruído… foi mantido.\n\nDesde então, ele existe como uma autoridade incompleta, um rei cuja própria forma foi reduzida a um conceito quebrado. Ele exige reconhecimento não por orgulho, mas porque foi assim que Yagami o fixou no mundo: enquanto for reconhecido, ele permanece. E quando Yagami chama… até mesmo essa presença parcial se curva — porque o que ainda existe nele nunca foi realmente seu.",
       "image": "",
       "hpCamadas": [
         {
-          "max": 240,
-          "atual": 240,
+          "max": 100,
+          "atual": 100,
           "label": "Camada I"
         },
         {
-          "max": 240,
-          "atual": 240,
+          "max": 100,
+          "atual": 100,
           "label": "Camada II"
+        },
+        {
+          "max": 100,
+          "atual": 100,
+          "label": "Camada III"
         }
       ]
     },
