@@ -1791,54 +1791,6 @@ body::after {
 .mald-empty-icon{font-size:2rem;opacity:.2;}
 .mald-empty-text{font-family:var(--mono);font-size:9px;letter-spacing:4px;text-transform:uppercase;}
 
-/* ── Contrato ── */
-.scroll-wrap{background:#0a0a0a;padding:0;height:100%;display:flex;flex-direction:column;}
-.scroll-inner{background:#0a0a0a;border:1px solid #5a3e10;padding:40px 48px;flex:1;overflow-y:auto;position:relative;font-family:'IM Fell English',Georgia,serif;}
-.scroll-inner::before,.scroll-inner::after{content:'';display:block;height:2px;background:linear-gradient(90deg,transparent,#c8a84b,#f0d080,#c8a84b,transparent);margin:0;}
-.corner{position:absolute;width:28px;height:28px;border-color:#c8a84b;border-style:solid;opacity:.7;}
-.corner.tl{top:10px;left:10px;border-width:2px 0 0 2px;}
-.corner.tr{top:10px;right:10px;border-width:2px 2px 0 0;}
-.corner.bl{bottom:10px;left:10px;border-width:0 0 2px 2px;}
-.corner.br{bottom:10px;right:10px;border-width:0 2px 2px 0;}
-.diamonds{text-align:center;color:#c8a84b;font-size:18px;letter-spacing:12px;margin:.8rem 0;}
-.title-main{font-family:Cinzel,serif;text-align:center;font-size:28px;font-weight:700;color:#f0d080;letter-spacing:.18em;text-shadow:0 0 20px rgba(240,208,128,.4);margin:.5rem 0 .2rem;line-height:1.3;}
-.subtitle{font-family:Cinzel,serif;text-align:center;font-size:11px;letter-spacing:.25em;color:#8a6a2a;margin-bottom:.3rem;}
-.meta-line{text-align:center;font-size:11px;color:#7a5e28;font-style:italic;margin:.8rem 0 1.5rem;}
-.divider{display:flex;align-items:center;gap:12px;margin:1.5rem 0;opacity:.5;}
-.divider::before,.divider::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,#c8a84b);}
-.divider::after{background:linear-gradient(90deg,#c8a84b,transparent);}
-.divider span{color:#c8a84b;font-size:13px;letter-spacing:4px;}
-.section-title{font-family:Cinzel,serif;font-size:12px;letter-spacing:.22em;color:#f0d080;text-align:center;margin:2rem 0 1.2rem;font-weight:600;}
-.clause-num{font-family:Cinzel,serif;font-size:11px;color:#8a6a2a;letter-spacing:.15em;margin-top:1.3rem;margin-bottom:.35rem;display:block;}
-.scroll-inner p{font-size:13px;line-height:1.85;color:#c8a84b;margin:.5rem 0;text-align:justify;}
-.bold-gold{color:#f0d080;font-style:normal;font-weight:600;}
-.tier-block{border-left:2px solid #5a3e10;padding-left:1.2rem;margin:.8rem 0;}
-.tier-label{font-family:Cinzel,serif;font-size:10px;letter-spacing:.2em;color:#f0d080;margin-bottom:.3rem;}
-.seal-block{text-align:center;margin:2rem 0 .5rem;}
-.seal-circle{width:70px;height:70px;border:1px solid #5a3e10;border-radius:50%;margin:0 auto .8rem;display:flex;align-items:center;justify-content:center;font-size:26px;color:#c8a84b;box-shadow:0 0 20px rgba(200,168,75,.1) inset;}
-.seal-text{font-family:Cinzel,serif;font-size:9px;letter-spacing:.3em;color:#5a3e10;margin:.3rem 0;}
-.sign-row{display:flex;justify-content:space-around;margin-top:1.8rem;gap:2rem;}
-.sign-col{text-align:center;flex:1;}
-.sign-line{border-top:1px solid #5a3e10;padding-top:.4rem;margin-top:.5rem;}
-.sign-name{font-family:Cinzel,serif;font-size:10px;letter-spacing:.15em;color:#8a6a2a;}
-.sign-note{font-size:10px;font-style:italic;color:#5a3e10;margin-top:.2rem;}
-
-/* ── Página Contrato — Fundo e Cores Fixas ── */
-#page-contrato{background:var(--bg);}
-/* ── sub-tabs Contrato ── */
-.ct-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:28px;border-bottom:1px solid var(--border2);padding-bottom:16px;}
-.ct-btn{padding:8px 20px;background:none;border:1px solid var(--border);color:var(--muted);font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:all .25s;}
-.ct-btn:hover{border-color:var(--border2);color:var(--white);}
-.ct-btn.on{border-color:var(--mix4);color:var(--cyan2);background:var(--cyan-dim);}
-.ct-panel{display:none;}
-.ct-panel.on{display:block;animation:fadeIn .3s ease;}
-.ct-body{min-height:400px;}
-.ct-p{font-size:13px;line-height:1.8;color:rgba(232,240,244,0.75);margin-bottom:12px;text-align:justify;}
-.ct-stat{background:var(--surface);border-left:2px solid var(--mix4);padding:12px 18px;margin:16px 0;font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:1px;}
-.ct-stat span{color:var(--cyan2);}
-.ct-ability{border:1px solid var(--border);background:var(--surface);padding:14px 16px;margin:10px 0;}
-.ct-ability strong{font-family:var(--ui);font-size:11px;color:var(--white);letter-spacing:1px;display:block;margin-bottom:4px;}
-
 /* ── Sheet layout — single column ── */
 .mald-sheet{padding:28px 36px 56px;max-width:680px;}
 .mald-top{display:flex;gap:22px;align-items:flex-start;margin-bottom:0;}
@@ -2002,7 +1954,6 @@ select.mald-in option{background:var(--void);}
   <button class="tab-btn" onclick="goTab('ss',this)"><span class="sigil-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2 L10 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M4 5 Q10 3 16 5 L17 8 Q10 6 3 8 Z" fill="currentColor" opacity="0.7"/><rect x="5" y="8" width="10" height="8" stroke="currentColor" stroke-width="0.9" opacity="0.6"/><line x1="10" y1="8" x2="10" y2="16" stroke="currentColor" stroke-width="0.8" opacity="0.4"/><path d="M7 16 L7 13 Q10 12 13 13 L13 16" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" opacity="0.7"/><path d="M2 8 L18 8" stroke="currentColor" stroke-width="0.7" opacity="0.3"/></svg></span> Soul Society — Arquivo</button>
   <button class="tab-btn" onclick="goTab('psique',this)"><span class="sigil-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="8" r="4.5" stroke="currentColor" stroke-width="0.9" opacity="0.7"/><circle cx="10" cy="8" r="1.8" fill="currentColor" opacity="0.85"/><path d="M10 12.5 L10 18" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.6"/><path d="M7 15.5 L13 15.5" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" opacity="0.4"/><path d="M5 5 Q3 8 5 11" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" opacity="0.35"/><path d="M15 5 Q17 8 15 11" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" opacity="0.35"/></svg></span> Psique — Dissecação</button>
   <button class="tab-btn" onclick="goTab('maldicoes',this)"><span class="sigil-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2 L12 7 L18 7 L13.5 10.5 L15.5 16 L10 12.5 L4.5 16 L6.5 10.5 L2 7 L8 7 Z" stroke="currentColor" stroke-width="0.9" stroke-linejoin="round" opacity="0.7" fill="none"/><circle cx="10" cy="9" r="2" fill="currentColor" opacity="0.6"/><path d="M7 17 Q10 15 13 17" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" opacity="0.4"/></svg></span> Pacto — Maldições</button>
-  <button class="tab-btn" onclick="goTab('contrato',this)"><span class="sigil-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="2" width="14" height="16" stroke="currentColor" stroke-width="0.9" opacity="0.7"/><line x1="5" y1="4" x2="15" y2="4" stroke="currentColor" stroke-width="0.7" opacity="0.5"/><line x1="5" y1="7" x2="15" y2="7" stroke="currentColor" stroke-width="0.6" opacity="0.4"/><line x1="5" y1="10" x2="13" y2="10" stroke="currentColor" stroke-width="0.6" opacity="0.4"/><line x1="5" y1="13" x2="12" y2="13" stroke="currentColor" stroke-width="0.6" opacity="0.4"/><path d="M9 15 Q10 16.5 11 15" stroke="currentColor" stroke-width="0.7" opacity="0.5" stroke-linecap="round"/></svg></span> Contrato — Abismo</button>
 </div>
 
 <!-- ══ PAGE 1 ══ -->
@@ -3477,145 +3428,7 @@ select.mald-in option{background:var(--void);}
 </div>
 </div><!-- /page-maldicoes -->
 
-<!-- ══ PAGE 5 — CONTRATO ══ -->
-<div id="page-contrato" class="page">
-<div class="wrap" style="max-width:960px;">
-
-  <!-- sub-tab nav -->
-  <div class="ct-nav">
-    <button class="ct-btn on" onclick="ctTab('ct-soul',this)">Soul Society</button>
-    <button class="ct-btn" onclick="ctTab('ct-psique',this)">Psique</button>
-    <button class="ct-btn" onclick="ctTab('ct-maldicoes',this)">Maldições</button>
-    <button class="ct-btn" onclick="ctTab('ct-contrato',this)">Contrato</button>
-  </div>
-
-  <div class="ct-body">
-
-    <!-- ── SOUL SOCIETY ── -->
-    <div id="ct-soul" class="ct-panel on">
-      <div class="slabel" style="margin-top:0">Posição Cosmológica</div>
-      <p class="ct-p">Yagami existe em um estado paradoxal dentro da estrutura metafísica. Não é nem completamente vivo nem morto, mas um intermediário consciente entre dimensões. Seu ser está ancorado no mundo dos vivos, mas sua essência transcende as limitações convencionais da realidade.</p>
-      <div class="slabel">Conexão com o Purgatório</div>
-      <p class="ct-p">A conexão de Yagami com o Abismo Eterno é primária. Todas as outras afinidades espirituais são secundárias a esta relação fundamental. O reconhecimento pessoal do Abismo o torna um dos poucos seres que podem transitar entre mundos sem sofrer rejeição dimensional.</p>
-      <div class="ct-stat">Nível de Compatibilidade Espiritual — <span>Incalculável · além dos parâmetros convencionais</span></div>
-      <div class="slabel">Poder Espiritual</div>
-      <p class="ct-p">O poder de Yagami não é dele. É emprestado do Abismo através do Portão. Isto significa que sua potência é virtualmente ilimitada enquanto a dimensão existir — mas também significa que ele é fundamentalmente dependente dessa conexão para sua máxima expressão.</p>
-      <div class="slabel">Manifestação no Mundo dos Vivos</div>
-      <p class="ct-p">Yagami se manifesta normalmente entre os seres vivos, mas carrega consigo uma aura perceptível apenas para entidades suficientemente sensíveis espiritualmente. Seres de alto poder reagem à sua presença com cautela, reconhecendo algo anormal nele.</p>
-    </div>
-
-    <!-- ── PSIQUE ── -->
-    <div id="ct-psique" class="ct-panel">
-      <div class="slabel" style="margin-top:0">Estado Mental</div>
-      <p class="ct-p">A mente de Yagami é estruturada de forma única. Não está inteiramente localizada em um único corpo — parte de sua consciência existe sempre em sincronização com o Abismo. Isto lhe permite uma perspectiva que transcende a experiência humana convencional.</p>
-      <div class="slabel">Dualidade de Existência</div>
-      <p class="ct-p">Yagami existe como uma entidade dual: sua forma física está no mundo dos vivos, mas sua consciência central está permanentemente ligada à dimensão infernal. Dormir, desmaiar ou perder a consciência não quebra essa conexão — ela permanece sempre ativa.</p>
-      <div class="ct-stat">Sincronia com o Abismo — <span>100% permanente e automática</span></div>
-      <div class="slabel">Percepção Ampliada</div>
-      <p class="ct-p">Yagami pode acessar o conhecimento acumulado no Purgatório. Isto inclui informações sobre maldições, técnicas esquecidas, histórias de dimensões antigas e padrões metafísicos. Sua compreensão do cosmos é significativamente superior à dos humanos convencionais.</p>
-      <div class="slabel">Identidade Cósmica</div>
-      <p class="ct-p">O Abismo reconhece Yagami pessoalmente — por nome, por essência, por escolha. Esta relação transcende a compreensão contratual. É um reconhecimento ontológico de que Yagami é importante para a estrutura do Purgatório, e o Purgatório é importante para Yagami.</p>
-      <div class="slabel">Resistência Psíquica</div>
-      <p class="ct-p">A mente de Yagami é fortalecida pela conexão constante com uma dimensão consciente. Ataques mentais convencionais têm eficácia reduzida, pois ele pode distribuir dano psíquico pela sua conexão dimensional.</p>
-    </div>
-
-    <!-- ── MALDIÇÕES ── -->
-    <div id="ct-maldicoes" class="ct-panel">
-      <div class="slabel" style="margin-top:0">O Portão do Abismo</div>
-      <p class="ct-p">Yagami não é apenas um usuário de maldições — ele é o Portão através do qual as maldições são acessadas. Sua natureza é simultaneamente técnica e entidade. Isto o coloca em uma categoria única na hierarquia de utilizadores de maldições.</p>
-      <div class="ct-ability"><strong>Invocação de Entidades Infernais</strong><p class="ct-p" style="margin:6px 0 0">Yagami pode convocar maldições diretamente do Abismo para combater ao seu lado. Não existe limite teórico para quantas entidades podem ser invocadas simultaneamente.</p></div>
-      <div class="ct-ability"><strong>Acesso ao Conhecimento do Purgatório</strong><p class="ct-p" style="margin:6px 0 0">Através de sua conexão permanente, Yagami pode acessar informações acumuladas no Abismo sobre maldições, técnicas antigas e padrões metafísicos. Este conhecimento é vasto e constantemente atualizado.</p></div>
-      <div class="ct-ability"><strong>Sincronização Dimensional</strong><p class="ct-p" style="margin:6px 0 0">Yagami recebe avisos e orientação passiva do Abismo. A dimensão, sendo consciente, pode comunicar-se com ele através de intuição, visões ou conhecimento súbito. Esta sincronização é permanente e automática.</p></div>
-      <div class="ct-ability"><strong>Banimento de Entidades</strong><p class="ct-p" style="margin:6px 0 0">Yagami pode enviar maldições e entidades de volta ao Abismo quando necessário. Isso não causa dano à entidade, apenas a retorna à sua dimensão de origem — um processo que apenas o Portão pode facilitar.</p></div>
-      <div class="slabel">Sistema de Débito</div>
-      <p class="ct-p">Cada invocação gera um débito cumulativo no Abismo. O débito é calculado por frequência de invocação, poder e antiguidade da entidade, duração do combate e dano sofrido. Yagami não percebe este débito enquanto vivo, mas ele existe e se acumula constantemente.</p>
-      <div class="ct-stat">Cobrança do Débito — <span>Exclusivamente ao tentar retornar após morte. Negociável em ações e serviços, não em poder ou submissão permanente.</span></div>
-    </div>
-
-    <!-- ── CONTRATO ── -->
-    <div id="ct-contrato" class="ct-panel">
-      <div class="scroll-wrap">
-      <div class="scroll-inner">
-        <div class="corner tl"></div><div class="corner tr"></div>
-        <div class="corner bl"></div><div class="corner br"></div>
-        <div class="diamonds">◆ ◆ ◆</div>
-        <div class="title-main">CONTRATO VINCULANTE</div>
-        <div class="subtitle">Entre o Abismo Eterno e o Portador Yagami</div>
-        <div class="meta-line">Data de Assinatura: ∞ (Anterior ao Tempo) &nbsp;·&nbsp; Dimensão: Purgatório Consciente</div>
-        <div class="divider"><span>✦</span></div>
-        <div class="section-title">I. As Partes</div>
-        <span class="clause-num">PARTE A — O Abismo Eterno</span>
-        <p>Uma dimensão consciente e sentiente que existe além dos planos convencionais da realidade. O Abismo é uma entidade viva, dotada de inteligência, vontade própria e capacidade de reconhecimento. Todas as maldições extintas no mundo dos vivos retornam ao Abismo como sua morada natural e eterna.</p>
-        <span class="clause-num">PARTE B — Yagami, o Portador</span>
-        <p>O intermediário legítimo escolhido pelo Abismo para servir como seu único e exclusivo Portão no mundo dos vivos. O Portador não é proprietário, mas um canal autorizado através do qual o Abismo exerce sua influência.</p>
-        <div class="divider"><span>✦</span></div>
-        <div class="section-title">II. Reconhecimento e Favorecimento</div>
-        <span class="clause-num">1.1 — Reconhecimento</span>
-        <p>O Abismo reconhece Yagami como seu intermediário preferencial e legítimo. Este reconhecimento é <span class="bold-gold">absoluto e irrevogável</span>, transcendendo a compreensão de técnicas malditas convencionais. O Abismo não cobra tributo pelo uso ordinário de seu poder porque Yagami é conhecido por nome e por escolha.</p>
-        <span class="clause-num">1.2 — Favorecimento</span>
-        <p>Enquanto Yagami permanecer vivo e em acordo com os termos deste contrato, o Abismo oferecerá acesso sem cobrança imediata ao seu poder. Yagami pode abrir o Portão e invocar entidades infernais sem incorrer em débito automático, desde que as invocações sirvam aos interesses do próprio Abismo — ou ao menos não o prejudiquem.</p>
-        <div class="divider"><span>✦</span></div>
-        <div class="section-title">III. O Portão do Abismo</div>
-        <span class="clause-num">2.1 — Definição</span>
-        <p>O Portão do Abismo é o canal de comunicação bidirecional entre o mundo dos vivos e o Purgatório. Yagami, por sua natureza como Portador, <span class="bold-gold">é</span> este portão. A técnica não pode ser separada de sua essência — ele e o indivíduo são uma única entidade dual.</p>
-        <span class="clause-num">2.2 — Capacidades Garantidas</span>
-        <p>Através do Portão, Yagami possui direito inalienável de convocar e invocar maldições do Purgatório para combater ao seu lado, acessar o conhecimento acumulado na dimensão infernal, enviar entidades de volta ao Abismo quando necessário, e manter sincronização permanente com a dimensão, recebendo avisos e orientação.</p>
-        <span class="clause-num">2.3 — Sistema de Débito</span>
-        <p>Cada maldição invocada do Abismo gera um débito cumulativo, calculado por: frequência de invocação, poder e antiguidade da entidade convocada, duração do combate ou serviço prestado, e dano sofrido pela entidade. O Abismo registra automaticamente cada transação. Yagami não percebe o débito enquanto vivo — mas ele existe e se acumula.</p>
-        <span class="clause-num">2.4 — Cobrança do Débito</span>
-        <p>O débito é cobrado <span class="bold-gold">exclusivamente</span> quando Yagami morre e deseja retornar à vida. Neste momento, o Abismo apresenta a conta completa. O preço da ressurreição é o próprio débito acumulado — mas o Purgatório não exige poder permanente nem submissão. O que o Abismo quer são <span class="bold-gold">ações</span>: tarefas, favores, serviços realizados em vida no próximo ciclo. O pagamento é sempre negociável em termos de custo, e o Abismo é, acima de tudo, prático. Se Yagami morrer sem tentar retornar, o débito permanece registrado para futuras encarnações.</p>
-        <div class="divider"><span>✦</span></div>
-        <div class="section-title">IV. Soberania de Técnica — Proteção Absoluta</div>
-        <span class="clause-num">3.1 — Princípio Fundamental</span>
-        <p>O Portão do Abismo não é propriedade privada de Yagami. É um direito compartilhado entre o Portador e a dimensão. Qualquer tentativa de violar, roubar, anular ou desativar a técnica constitui uma afronta ao próprio Abismo — que, como entidade consciente, defende automaticamente o que é seu.</p>
-        <span class="clause-num">3.2 — Impossibilidade de Desativação</span>
-        <div class="tier-block"><div class="tier-label">Nível I — Resistência Absoluta</div><p style="margin:0;font-size:0.9rem">A técnica se recusa a ser desativada. Não existem brechas, pontos fracos ou janelas de oportunidade. O Portão permanece funcional enquanto o Abismo existir.</p></div>
-        <div class="tier-block"><div class="tier-label">Nível II — Contra-ataque da Dimensão</div><p style="margin:0;font-size:0.9rem">Ao invés de ser desativada, a técnica reage. O agressor não enfrenta Yagami — enfrenta o Abismo inteiro: sua vontade consciente, toda a energia acumulada no Purgatório e a estrutura metafísica fundamental da dimensão.</p></div>
-        <div class="tier-block"><div class="tier-label">Nível III — Impossibilidade Ontológica</div><p style="margin:0;font-size:0.9rem">Desativar Yagami seria como apagar a gravidade em uma área específica. Não é questão de força ou técnica — é uma impossibilidade de ordem superior. O Portão existe porque o Abismo existe.</p></div>
-        <span class="clause-num">3.3 — Impossibilidade de Roubo</span>
-        <div class="tier-block"><div class="tier-label">Cenário A — Sobrecarga Letal</div><p style="margin:0;font-size:0.9rem">O agressor pode iniciar a absorção, mas o poder do Abismo fluindo para dentro dele é titânico demais. Corpo, mente e espírito não suportam. Resultado: implosão espiritual instantânea.</p></div>
-        <div class="tier-block"><div class="tier-label">Cenário B — Intervenção Direta</div><p style="margin:0;font-size:0.9rem">Mesmo que o agressor resistisse à sobrecarga, o Abismo reconhece a tentativa de roubo como entidade consciente — e simplesmente puxa o ladrão para dentro. O agressor é engolido pelo Purgatório e se torna parte dele, eternamente.</p></div>
-        <div class="tier-block"><div class="tier-label">Cenário C — Inviabilidade de Cópia</div><p style="margin:0;font-size:0.9rem">Técnicas convencionais podem ser copiadas porque são propriedade de indivíduos. Yagami não é — é um serviço oferecido pelo Abismo através de um intermediário. Qualquer cópia é uma cópia morta, sem acesso real ao Purgatório. Tentar usá-la é bater na porta de alguém fingindo ser o dono. O Abismo rejeita o intruso imediatamente.</p></div>
-        <span class="clause-num">3.4 — Automaticidade</span>
-        <p>Yagami não precisa fazer nada para ativar a Soberania. A proteção é <span class="bold-gold">permanente, passiva e automática</span> — funciona durante o sono, inconsciência, confinamento ou qualquer outro estado. O Abismo está sempre lá.</p>
-        <div class="divider"><span>✦</span></div>
-        <div class="section-title">V. Sinergia entre Portão e Soberania</div>
-        <p>O Portão é o mecanismo operacional — como Yagami acessa e usa a técnica. A Soberania é o mecanismo defensivo — como a técnica permanece inviolável. Juntas, formam um sistema hermético perfeito: Yagami abre o portão, invoca entidades, acumula débito — e ninguém pode interferir. Esta sinergia torna Yagami uma ameaça existencial para aqueles que confiam em métodos convencionais de derrota.</p>
-        <div class="divider"><span>✦</span></div>
-        <div class="section-title">VI. Implicações do Acordo</div>
-        <span class="clause-num">5.1 — Persistência</span>
-        <p>Enquanto o Abismo existir, Yagami não pode ser permanentemente derrotado por métodos convencionais. Mesmo morto, pode retornar — pagando o preço. Isto torna Yagami uma ameaça permanente, independente de circunstâncias.</p>
-        <span class="clause-num">5.2 — Identidade Cósmica</span>
-        <p>O Purgatório reconhece Yagami pessoalmente. Outras entidades infernais percebem esta conexão. Yagami não é anônimo — é uma figura de importância cósmica dentro da dimensão.</p>
-        <span class="clause-num">5.3 — O Preço do Acordo</span>
-        <p>Embora praticamente imbatível, Yagami está preso a um contrato vivo. O Abismo pode cobrar qualquer tipo de ação quando Yagami morre e tenta retornar — e este preço cresce com o débito acumulado. Não há limite de ressurreições, mas há sempre um custo a negociar.</p>
-        <span class="clause-num">5.4 — Unicidade Absoluta</span>
-        <p>Ninguém mais pode ter o que Yagami tem. A técnica não é ensinável — é uma concessão pessoal de uma dimensão viva a um único indivíduo escolhido.</p>
-        <div class="divider"><span>✦</span></div>
-        <div class="seal-block">
-          <div class="seal-circle">✦</div>
-          <div class="seal-text">SELADO NO PURGATÓRIO · VÁLIDO EM TODAS AS DIMENSÕES</div>
-          <div class="seal-text">PERPÉTUO · IRREVOGÁVEL · VINCULANTE ALÉM DA MORTE</div>
-        </div>
-        <div class="sign-row">
-          <div class="sign-col">
-            <div style="font-style:italic;color:#3a2a0a;font-size:1.4rem;font-family:'IM Fell English',serif;">~ O Purgatório Consciente ~</div>
-            <div class="sign-line"><div class="sign-name">O Abismo Eterno</div><div class="sign-note">Assinado pela vontade da dimensão</div></div>
-          </div>
-          <div style="border-left:1px solid #2a1a05;margin:0 0.5rem;"></div>
-          <div class="sign-col">
-            <div style="font-style:italic;color:#3a2a0a;font-size:1.4rem;font-family:'IM Fell English',serif;">~ Aceito pelo Uso ~</div>
-            <div class="sign-line"><div class="sign-name">Yagami — O Portador</div><div class="sign-note">Aceitação através do Portão aberto</div></div>
-          </div>
-        </div>
-        <div class="diamonds" style="margin-top:2rem;">◆ ◆ ◆</div>
-      </div>
-      </div>
-    </div>
-
-  </div><!-- /ct-body -->
-</div>
-</div><!-- LIGHTBOX -->
+<!-- LIGHTBOX -->
 <div id="mald-lightbox" onclick="maldLightboxClose()">
   <div id="mald-lightbox-close">ESC / FECHAR ✕</div>
   <div id="mald-lightbox-img-wrap">
@@ -4606,14 +4419,6 @@ function mkCanvas(id, drawFn, opts) {
   }
   drawVoid();
 })();
-
-/* ── sub-tabs Contrato ── */
-function ctTab(id, btn) {
-  document.querySelectorAll('.ct-panel').forEach(p => p.classList.remove('on'));
-  document.querySelectorAll('.ct-btn').forEach(b => b.classList.remove('on'));
-  document.getElementById(id).classList.add('on');
-  btn.classList.add('on');
-}
 
 /* ══ DOMAIN BLOCK ══ */
 function domSwitch(tab) {
