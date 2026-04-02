@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saizo — 無形</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600;900&family=Cinzel+Decorative:wght@900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#040a05;--s1:#060e07;--s2:#081209;--s3:#0a160b;
+  --void:#166534;--void2:#16a34a;--void3:#4ade80;--void4:#bbf7d0;
+  --vdim:rgba(22,163,74,0.10);--vglow:rgba(22,163,74,0.22);
+  --vb:rgba(22,101,52,0.32);--vb2:rgba(22,163,74,0.48);
+  --acid:rgba(74,222,128,0.07);--slime:rgba(22,163,74,0.15);
+  --ink:#e8f5e8;--ink2:#a7c4a7;--muted:#4a7a4a;--dim:#1a3a1a;
+  --mono:'Share Tech Mono',monospace;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --ui:'Cinzel',serif;--disp:'Cinzel Decorative',serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{background:var(--bg);color:var(--ink);font-family:var(--serif);min-height:100vh;overflow-x:hidden;}
+
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:
+  radial-gradient(ellipse 70% 50% at 30% 20%,rgba(22,101,52,.12) 0%,transparent 60%),
+  radial-gradient(ellipse 50% 70% at 80% 90%,rgba(22,163,74,.07) 0%,transparent 55%),
+  radial-gradient(ellipse 40% 30% at 60% 50%,rgba(74,222,128,.04) 0%,transparent 50%),
+  linear-gradient(180deg,#050c06 0%,#040a05 40%,#020602 100%);}
+
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.022'/%3E%3C/svg%3E");
+  background-size:200px;}
+
+#slime-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;}
+#pt-canvas{position:fixed;inset:0;z-index:500;pointer-events:none;display:none;}
+#pt-scan{position:fixed;left:0;right:0;height:2px;z-index:501;pointer-events:none;display:none;top:0;
+  background:linear-gradient(90deg,transparent,rgba(22,163,74,.2) 10%,var(--void2) 35%,var(--void3) 50%,var(--void2) 65%,rgba(22,163,74,.2) 90%,transparent);
+  box-shadow:0 0 10px var(--void2),0 0 24px var(--vglow),0 1px 10px rgba(22,163,74,.3);}
+#pt-scan::after{content:'';position:absolute;left:0;right:0;top:2px;height:16px;background:linear-gradient(180deg,rgba(22,163,74,.1),transparent);}
+
+/* ── TAB BAR ── */
+.tab-bar{position:sticky;top:0;z-index:100;display:flex;background:rgba(4,10,5,.97);border-bottom:1px solid var(--vb2);backdrop-filter:blur(12px);box-shadow:0 2px 30px rgba(22,101,52,.18);}
+.tab-btn{flex:1;padding:16px 0;font-family:var(--mono);font-size:9px;letter-spacing:5px;text-transform:uppercase;background:none;border:none;cursor:pointer;color:var(--muted);transition:all .3s;border-bottom:2px solid transparent;}
+.tab-btn.on{color:var(--void3);border-bottom-color:var(--void2);}
+.tab-btn:hover:not(.on){color:var(--ink2);}
+.page{display:none;}.page.on{display:block;}
+.wrap{max-width:960px;margin:0 auto;padding:40px 28px 80px;position:relative;z-index:1;}
+
+/* ── DIVIDER ── */
+.vdiv{display:flex;align-items:center;gap:16px;margin:28px 0 14px;}
+.vdiv::before,.vdiv::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--vb2),transparent);}
+.vdiv-text{font-family:var(--mono);font-size:8px;letter-spacing:6px;text-transform:uppercase;color:var(--void2);white-space:nowrap;}
+.vdiv:first-child{margin-top:0;}.vdiv+*{margin-top:0;}
+
+/* ── HERO ── */
+.hero{display:grid;grid-template-columns:260px 1fr;gap:40px;align-items:start;margin-bottom:32px;}
+@media(max-width:640px){.hero{grid-template-columns:1fr;}}
+.photo-frame{position:relative;aspect-ratio:2.5/4;border:1px solid var(--vb2);background:var(--s1);overflow:hidden;box-shadow:0 0 40px rgba(22,101,52,.22),inset 0 0 40px rgba(0,0,0,.5);}
+.photo-frame img{width:100%;height:100%;object-fit:cover;object-position:top;filter:grayscale(15%) contrast(1.1) brightness(.88);display:block;}
+.photo-fallback{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:linear-gradient(160deg,#071009,#040a05);position:relative;}
+.photo-fallback .kanji{font-size:80px;color:rgba(22,163,74,.13);line-height:1;z-index:1;}
+.photo-fallback .ph-text{font-family:var(--mono);font-size:7px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;z-index:1;}
+
+/* Slime drip effect on photo */
+.photo-drip{position:absolute;inset:0;pointer-events:none;z-index:2;overflow:hidden;}
+.photo-drip::before{content:'';position:absolute;top:-4px;left:0;right:0;height:60%;background:
+  radial-gradient(ellipse 25% 40% at 20% 0%,rgba(22,163,74,.18) 0%,transparent 60%),
+  radial-gradient(ellipse 15% 50% at 60% -10%,rgba(74,222,128,.12) 0%,transparent 60%),
+  radial-gradient(ellipse 20% 35% at 85% 5%,rgba(22,163,74,.15) 0%,transparent 55%);}
+.photo-drip::after{content:'';position:absolute;bottom:0;left:0;right:0;height:25%;
+  background:linear-gradient(0deg,rgba(4,10,5,.9),transparent);}
+
+.photo-frame::before{content:'';position:absolute;top:0;left:0;width:14px;height:14px;border-top:1px solid var(--void2);border-left:1px solid var(--void2);z-index:3;}
+.photo-frame::after{content:'';position:absolute;bottom:0;right:0;width:14px;height:14px;border-bottom:1px solid var(--void2);border-right:1px solid var(--void2);z-index:3;}
+.photo-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(0deg,rgba(4,10,5,.95),transparent);padding:12px 14px;z-index:4;}
+.ph-hud{display:flex;flex-wrap:wrap;gap:4px;}
+.ph-hud-tag{font-family:var(--mono);font-size:7px;letter-spacing:2px;text-transform:uppercase;padding:2px 7px;background:rgba(4,10,5,.8);color:rgba(74,222,128,.5);border:1px solid rgba(22,101,52,.3);}
+.ph-hud-tag.hi{color:var(--void3);border-color:var(--vb2);background:rgba(22,101,52,.12);}
+
+.hero-klass{font-family:var(--mono);font-size:8px;letter-spacing:5px;text-transform:uppercase;color:var(--muted);margin-bottom:18px;display:flex;align-items:center;gap:10px;}
+.hero-klass::after{content:'';flex:1;height:1px;background:var(--vb);}
+.hero-name{font-family:var(--disp);font-weight:900;font-size:clamp(26px,4.5vw,46px);letter-spacing:3px;color:var(--ink);line-height:1.05;margin-bottom:8px;}
+.hero-kanji{font-family:var(--serif);font-size:13px;letter-spacing:4px;color:var(--void2);margin-bottom:6px;font-style:italic;opacity:.8;}
+.hero-epithet{font-size:15px;font-style:italic;line-height:2;color:var(--ink2);opacity:.7;margin-bottom:28px;border-left:2px solid var(--vb2);padding-left:18px;}
+.hero-tags{display:flex;flex-wrap:wrap;gap:6px;}
+.htag{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border:1px solid var(--vb);color:var(--muted);background:var(--s1);}
+.htag.hi{border-color:var(--vb2);color:var(--void3);background:var(--vdim);}
+
+/* ── PANELS ── */
+.stat-panel{border:1px solid var(--vb);background:var(--s1);padding:16px 20px;position:relative;overflow:hidden;}
+.stat-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--void2),transparent);opacity:.4;}
+
+/* slime blob floating bg in stat panel */
+.stat-panel::after{content:'';position:absolute;bottom:-20px;right:-20px;width:120px;height:120px;border-radius:60% 40% 70% 30%/50% 60% 40% 50%;background:radial-gradient(ellipse,rgba(22,163,74,.04),transparent 70%);pointer-events:none;}
+
+.res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.res-card{border:1px solid var(--vb);background:var(--s2);padding:12px 16px;position:relative;text-align:center;overflow:hidden;}
+.res-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--void),transparent);opacity:.4;}
+.res-card::after{content:'';position:absolute;bottom:-30px;left:50%;transform:translateX(-50%);width:80px;height:80px;border-radius:40% 60% 55% 45%/50% 40% 60% 50%;background:radial-gradient(ellipse,rgba(22,163,74,.06),transparent 70%);pointer-events:none;}
+.rc-label{font-family:var(--mono);font-size:8px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;}
+.rc-val{font-family:var(--disp);font-size:24px;color:var(--ink);font-weight:900;line-height:1;}
+.rc-val.v{color:var(--void3);}
+.rc-sub{font-family:var(--mono);font-size:8px;color:var(--muted);margin-top:6px;letter-spacing:1px;}
+.ea-bar-wrap{margin-top:10px;}
+.ea-bar-track{width:100%;height:3px;background:rgba(22,163,74,.08);border:1px solid rgba(22,163,74,.12);}
+.ea-bar-fill{height:100%;background:linear-gradient(90deg,rgba(22,101,52,.6),var(--void2));position:relative;}
+.ea-bar-fill::after{content:'';position:absolute;right:0;top:0;bottom:0;width:4px;background:var(--void3);box-shadow:0 0 8px var(--void2),0 0 16px rgba(74,222,128,.4);}
+.ea-bar-labels{display:flex;justify-content:space-between;margin-top:3px;}
+
+/* ── ATTRS ── */
+.attr-block{display:flex;flex-direction:column;}
+.attr-row{display:flex;align-items:center;gap:14px;padding:7px 0;border-bottom:1px solid rgba(22,163,74,.08);}
+.attr-row:last-child{border-bottom:none;}
+.attr-name{font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);width:110px;flex-shrink:0;}
+.attr-track{display:flex;gap:4px;flex:1;}
+.attr-pip{width:18px;height:18px;border:1px solid rgba(22,163,74,.18);background:transparent;position:relative;border-radius:2px;}
+.attr-pip.f{background:rgba(22,163,74,.12);border-color:var(--vb2);}
+.attr-pip.f::after{content:'';position:absolute;inset:3px;background:var(--void2);opacity:.6;}
+.attr-num{font-family:var(--disp);font-size:18px;color:var(--ink);width:28px;text-align:right;}
+.attr-num.hi{color:var(--void3);}
+
+/* ── TECH CABINET ── */
+.tech-cabinet{display:flex;gap:0;border:1px solid var(--vb);background:var(--s1);overflow:hidden;position:relative;}
+.tech-cabinet::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--void2),transparent);opacity:.4;}
+.tc-tabs{display:flex;flex-direction:column;width:90px;flex-shrink:0;border-right:1px solid var(--vb);background:var(--s2);}
+.tc-tab{padding:14px 8px;font-family:var(--mono);font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);cursor:pointer;border-bottom:1px solid var(--vb);transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:5px;user-select:none;}
+.tc-tab:last-child{border-bottom:none;}
+.tc-tab:hover:not(.on){background:var(--vdim);color:var(--ink2);}
+.tc-tab.on{background:var(--slime);color:var(--void3);border-right:2px solid var(--void2);margin-right:-1px;}
+.tc-tab-num{font-family:var(--serif);font-style:italic;font-size:16px;color:inherit;line-height:1;}
+.tc-tab-label{writing-mode:vertical-rl;transform:rotate(180deg);font-size:6.5px;letter-spacing:2px;}
+.tc-panels{flex:1;min-width:0;}
+.tc-panel{display:none;padding:18px 20px;opacity:0;transition:opacity .25s ease;}
+.tc-panel.on{display:block;opacity:1;}
+.tc-panel.out{display:block;opacity:0;}
+.tc-panel-header{display:flex;align-items:baseline;gap:12px;padding-bottom:10px;margin-bottom:12px;border-bottom:1px solid rgba(22,163,74,.15);position:relative;}
+.tc-panel-header::after{content:'';position:absolute;bottom:-1px;left:0;width:80px;height:1px;background:var(--void2);}
+.tc-panel-dmg{font-family:var(--mono);font-size:10px;color:var(--void3);flex-shrink:0;border:1px solid var(--vb2);padding:3px 10px;background:var(--vdim);margin-left:auto;white-space:nowrap;}
+.tc-panel-name{font-family:var(--ui);font-size:13px;font-weight:600;color:var(--ink);letter-spacing:1px;}
+.tc-panel-sub{font-family:var(--serif);font-style:italic;font-size:11px;color:var(--muted);}
+.tc-panel-desc{font-family:var(--serif);font-size:13px;color:var(--ink2);line-height:1.82;opacity:.9;margin-bottom:12px;padding:10px 14px;border-left:2px solid var(--vb2);background:rgba(22,163,74,.04);}
+.tc-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;}
+.tc-card{background:var(--s2);border:1px solid var(--vb);padding:11px 13px;position:relative;}
+.tc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--void),transparent);opacity:.5;}
+.tc-card-id{font-family:var(--mono);font-size:7px;letter-spacing:3px;color:rgba(22,163,74,.32);text-transform:uppercase;margin-bottom:4px;}
+.tc-card-name{font-family:var(--ui);font-size:11px;font-weight:600;color:var(--ink);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px;}
+.tc-card-kanji{font-family:var(--serif);font-style:italic;font-size:12px;color:var(--void2);opacity:.75;margin-bottom:8px;display:block;}
+.tc-card-sep{height:1px;background:linear-gradient(90deg,var(--vb),transparent);margin-bottom:7px;}
+.tc-card-desc{font-family:var(--serif);font-size:13px;color:var(--ink2);line-height:1.8;opacity:.92;}
+.tc-card-tag{display:inline-block;margin-top:7px;font-family:var(--mono);font-size:7px;letter-spacing:2px;padding:2px 8px;border:1px solid var(--vb);color:var(--void2);text-transform:uppercase;}
+.tc-card-tag.red{border-color:rgba(200,60,60,.3);color:rgba(240,100,100,.7);}
+
+@media(max-width:640px){
+  .tech-cabinet{flex-direction:column;}
+  .tc-tabs{flex-direction:row;width:100%;border-right:none;border-bottom:1px solid var(--vb);}
+  .tc-tab{writing-mode:horizontal-tb;transform:none;min-height:44px;border-bottom:none;border-right:1px solid var(--vb);flex:1;}
+  .tc-tab.on{border-right:1px solid var(--vb);border-bottom:2px solid var(--void2);margin-right:0;margin-bottom:-1px;}
+  .tc-tab-label{writing-mode:horizontal-tb;transform:none;margin-bottom:0;margin-right:4px;}
+}
+
+/* ── SKILLS ── */
+.skills-wrap{border:1px solid var(--vb);background:var(--s1);overflow:hidden;}
+.skills-bar{display:flex;align-items:center;gap:8px;padding:7px 16px;border-bottom:1px solid var(--vb);background:var(--vdim);}
+.skills-bar-txt{font-family:var(--mono);font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--void2);}
+.sk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:0;background:rgba(22,163,74,.02);}
+.sk-group-head{grid-column:1/-1;background:rgba(22,163,74,.08);padding:4px 14px;font-family:var(--mono);font-size:7px;letter-spacing:4px;color:var(--void2);text-transform:uppercase;border-bottom:1px solid var(--vb);border-top:1px solid var(--vb);display:flex;align-items:center;gap:8px;}
+.sk-group-head::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--vb),transparent);}
+.sk-row{background:var(--s1);padding:5px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(22,163,74,.04);border-right:1px solid rgba(22,163,74,.04);transition:background .1s;}
+.sk-row:hover{background:var(--vdim);}
+.sk-row-name{font-family:var(--serif);font-size:11.5px;color:var(--muted);}
+.sk-row-val{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:1px;}
+.sk-row.p .sk-row-name{color:var(--ink2);}
+.sk-row.p .sk-row-val{color:var(--void3);}
+.sk-row.pp .sk-row-name{color:var(--ink);font-weight:600;}
+.sk-row.pp .sk-row-val{color:var(--void3);font-weight:bold;}
+
+/* ── ITEM CARD ── */
+.item-card{border:1px solid var(--vb2);background:var(--s2);padding:18px 20px;position:relative;overflow:hidden;}
+.item-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--void2),transparent);opacity:.5;}
+.item-name{font-family:var(--ui);font-size:12px;letter-spacing:1px;color:var(--ink);margin-bottom:6px;}
+.item-desc{font-family:var(--serif);font-size:13px;color:var(--ink2);line-height:1.75;opacity:.85;}
+.item-stat{display:inline-block;font-family:var(--mono);font-size:9px;color:var(--void3);margin-top:10px;padding:3px 10px;border:1px solid var(--vb2);}
+
+/* ── ORIGIN CARD ── */
+.origin-card{border:1px solid var(--vb);background:var(--s1);overflow:hidden;position:relative;}
+.origin-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--void2),transparent);opacity:.5;}
+.origin-head{padding:14px 18px;border-bottom:1px solid var(--vb);background:var(--vdim);}
+.origin-name{font-family:var(--ui);font-size:13px;color:var(--ink);letter-spacing:1px;margin-bottom:2px;}
+.origin-kanji{font-family:var(--serif);font-style:italic;font-size:11px;color:var(--void2);opacity:.7;}
+.origin-body{padding:16px 18px;display:flex;flex-direction:column;gap:0;}
+.origin-desc{font-family:var(--serif);font-size:13px;color:var(--ink2);line-height:1.85;padding-bottom:14px;border-bottom:1px solid rgba(22,163,74,.1);margin-bottom:14px;opacity:.9;}
+.origin-block{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;}
+.origin-item{padding:12px 14px;border:1px solid var(--vb);background:var(--s2);position:relative;}
+.origin-item::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--void),transparent);opacity:.4;}
+.origin-item-label{font-family:var(--mono);font-size:7px;letter-spacing:4px;text-transform:uppercase;color:var(--void2);margin-bottom:6px;}
+.origin-item-text{font-family:var(--serif);font-size:12.5px;color:var(--ink2);line-height:1.75;opacity:.88;}
+
+/* ── LORE ── */
+.lore-timeline{display:flex;gap:0;}
+.lore-spine{width:40px;flex-shrink:0;position:relative;padding-top:6px;}
+.lore-spine::before{content:'';position:absolute;left:18px;top:0;bottom:0;width:1px;background:linear-gradient(180deg,var(--void2),rgba(22,163,74,.05));}
+.lore-entries{flex:1;}
+.lore-entry{margin-bottom:20px;position:relative;}
+.lore-entry:last-child{margin-bottom:0;}
+.lore-marker{position:absolute;left:-22px;top:6px;width:8px;height:8px;border:1px solid var(--vb2);background:var(--bg);transition:border-color .3s,box-shadow .3s;}
+.lore-entry:hover .lore-marker{border-color:var(--void2);box-shadow:0 0 8px var(--vglow);}
+.lore-title{font-family:var(--ui);font-size:12px;color:var(--ink);letter-spacing:1px;margin-bottom:6px;}
+.lore-text{font-family:var(--serif);font-size:13.5px;color:var(--ink2);line-height:1.85;opacity:.88;}
+.lore-note{font-family:var(--mono);font-size:8px;color:var(--muted);margin-top:5px;letter-spacing:1px;}
+
+/* ── BLOB SEPARATOR (unique to Saizo) ── */
+.blob-sep{display:flex;align-items:center;gap:12px;margin:24px 0 10px;opacity:.5;}
+.blob-sep::before,.blob-sep::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(22,163,74,.3),transparent);}
+.blob-sep-icon{font-size:10px;color:var(--void2);}
+
+/* ── SLIME DRIP DECO ── */
+.slime-drip-deco{position:relative;height:24px;overflow:hidden;margin:-4px 0 8px;pointer-events:none;}
+.slime-drip-deco svg{width:100%;height:100%;}
+
+/* ── CHARGES ── */
+.charges-row{display:flex;align-items:center;gap:10px;margin-top:8px;}
+.charge-label{font-family:var(--mono);font-size:8px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
+.charge-pip{width:14px;height:14px;border:1px solid var(--vb2);background:var(--vdim);border-radius:50%;position:relative;}
+.charge-pip.full::after{content:'';position:absolute;inset:3px;background:var(--void3);border-radius:50%;box-shadow:0 0 6px var(--void2);}
+
+</style>
+</head>
+<body>
+<canvas id="slime-canvas"></canvas>
+<canvas id="pt-canvas"></canvas>
+<div id="pt-scan"></div>
+
+<div class="tab-bar">
+  <button class="tab-btn on" onclick="goTab('ficha',this)">◈ Ficha — Saizo</button>
+</div>
+
+<div id="page-ficha" class="page on">
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="photo-frame">
+      <img src="membros/saizo.png" alt="Saizo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="photo-fallback" style="display:none">
+        <div class="kanji">無</div>
+        <div class="ph-text">saizo</div>
+      </div>
+      <div class="photo-drip"></div>
+      <div class="photo-overlay">
+        <div class="ph-hud">
+          <span class="ph-hud-tag hi">Amorfo</span>
+          <span class="ph-hud-tag hi">Indefinido</span>
+          <span class="ph-hud-tag">Nível 1</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-text">
+      <div class="hero-klass">⛩ Golden Era · Colégio Kyoto · Ilegível</div>
+      <div class="hero-name">Saizo<br>Takahashi</div>
+      <div class="hero-kanji">無形 Mukei · Sem Forma · A Ausência que Respira</div>
+      <div class="hero-epithet">
+        "Não há intenção para antecipar.<br>
+        Não há emoção para ler.<br>
+        Não há alma para sentir — apenas ausência<br>
+        onde deveria haver presença."
+      </div>
+      <div class="hero-tags">
+        <span class="htag hi">EA 300/300</span>
+        <span class="htag hi">Regeneração Passiva</span>
+        <span class="htag hi">Ilegível</span>
+        <span class="htag">Kyoto</span>
+        <span class="htag">Grau Indefinido</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECURSOS -->
+  <div class="vdiv"><span class="vdiv-text">Recursos</span></div>
+  <div class="res-grid">
+    <div class="res-card"><div class="rc-label">Vida</div><div class="rc-val">25</div><div class="rc-sub">HP Total</div></div>
+    <div class="res-card"><div class="rc-label">Defesa</div><div class="rc-val">13</div><div class="rc-sub">Valor Base</div></div>
+    <div class="res-card">
+      <div class="rc-label">Energia Amaldiçoada</div>
+      <div class="rc-val v">300 <span style="font-size:14px;color:var(--muted);font-weight:300">/ 300</span></div>
+      <div class="rc-sub">EA Atual · Máximo</div>
+      <div class="ea-bar-wrap">
+        <div class="ea-bar-track"><div class="ea-bar-fill" style="width:100%"></div></div>
+        <div class="ea-bar-labels">
+          <span style="font-family:var(--mono);font-size:7px;color:var(--muted)">0</span>
+          <span style="font-family:var(--mono);font-size:7px;color:var(--muted)">300</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ATRIBUTOS -->
+  <div class="vdiv"><span class="vdiv-text">Atributos</span></div>
+  <div class="stat-panel">
+    <div class="attr-block">
+      <div class="attr-row"><div class="attr-name">Força</div><div class="attr-track"><div class="attr-pip f"></div><div class="attr-pip f"></div><div class="attr-pip f"></div><div class="attr-pip"></div><div class="attr-pip"></div></div><div class="attr-num">3</div></div>
+      <div class="attr-row"><div class="attr-name">Agilidade</div><div class="attr-track"><div class="attr-pip f"></div><div class="attr-pip f"></div><div class="attr-pip f"></div><div class="attr-pip"></div><div class="attr-pip"></div></div><div class="attr-num">3</div></div>
+      <div class="attr-row"><div class="attr-name">Constituição</div><div class="attr-track"><div class="attr-pip f"></div><div class="attr-pip f"></div><div class="attr-pip f"></div><div class="attr-pip"></div><div class="attr-pip"></div></div><div class="attr-num">3</div></div>
+      <div class="attr-row"><div class="attr-name">Inteligência</div><div class="attr-track"><div class="attr-pip f"></div><div class="attr-pip f"></div><div class="attr-pip f"></div><div class="attr-pip"></div><div class="attr-pip"></div></div><div class="attr-num">3</div></div>
+      <div class="attr-row"><div class="attr-name">Presença</div><div class="attr-track"><div class="attr-pip f"></div><div class="attr-pip f"></div><div class="attr-pip f"></div><div class="attr-pip"></div><div class="attr-pip"></div></div><div class="attr-num">3</div></div>
+    </div>
+  </div>
+
+  <!-- TÉCNICA INATA -->
+  <div class="vdiv"><span class="vdiv-text">Técnica Inata — 無形 Mukei · Sem Forma</span></div>
+
+  <div class="tech-cabinet">
+    <div class="tc-tabs">
+      <div class="tc-tab on"  onclick="tcSwitch(0,this)"><span class="tc-tab-num">I</span><span class="tc-tab-label">Gitai</span></div>
+      <div class="tc-tab"     onclick="tcSwitch(1,this)"><span class="tc-tab-num">II</span><span class="tc-tab-label">Chūsei</span></div>
+      <div class="tc-tab"     onclick="tcSwitch(2,this)"><span class="tc-tab-num">III</span><span class="tc-tab-label">Sesshu</span></div>
+      <div class="tc-tab"     onclick="tcSwitch(3,this)"><span class="tc-tab-num">IV</span><span class="tc-tab-label">Saigen</span></div>
+      <div class="tc-tab"     onclick="tcSwitch(4,this)"><span class="tc-tab-num">V</span><span class="tc-tab-label">Mugen</span></div>
+    </div>
+
+    <div class="tc-panels">
+
+      <!-- I — Gitai -->
+      <div class="tc-panel on">
+        <div class="tc-panel-header">
+          <span class="tc-panel-dmg">Passiva</span>
+          <div class="tc-panel-name">擬態 Gitai — Simulação Passiva</div>
+          <div class="tc-panel-sub">Passiva permanente · sem ponto vital · sem órgão fixo</div>
+        </div>
+        <div class="tc-panel-desc">O organismo não possui estrutura definitiva — apenas imita a geometria de um corpo funcional com precisão suficiente para enganar o mundo. Não há ponto vital porque não há ponto fixo.</div>
+        <div class="tc-cards">
+          <div class="tc-card">
+            <div class="tc-card-id">GIT-01</div>
+            <div class="tc-card-name">Sem Estrutura Fixa</div>
+            <span class="tc-card-kanji">擬態 · o que parece carne é massa conveniente</span>
+            <div class="tc-card-sep"></div>
+            <div class="tc-card-desc">Golpes críticos, decapitação e destruição de órgãos causam dano normal, sem incapacitar. Danos <b style="color:var(--void3)">reduzidos em 10.</b> Ataques direcionados à mente ou alma não encontram substrato.</div>
+            <span class="tc-card-tag">Permanente · Sem Custo</span>
+          </div>
+          <div class="tc-card">
+            <div class="tc-card-id">GIT-02</div>
+            <div class="tc-card-name">Reconstituição</div>
+            <span class="tc-card-kanji">再構成 · massa deslocada retornando</span>
+            <div class="tc-card-sep"></div>
+            <div class="tc-card-desc">O organismo não cicatriza porque não há ferida: há massa deslocada que retorna. <b style="color:var(--void3)">Regeneração passiva de 6 HP por round,</b> insuprimível. Seus membros não sangram.</div>
+            <span class="tc-card-tag">Permanente · Insuprimível</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- II — Chūsei -->
+      <div class="tc-panel">
+        <div class="tc-panel-header">
+          <span class="tc-panel-dmg">Passiva</span>
+          <div class="tc-panel-name">中性 Chūsei — Neutro</div>
+          <div class="tc-panel-sub">Passiva permanente · ignora resistências · custo reduzido</div>
+        </div>
+        <div class="tc-panel-desc">Indiferença absoluta. Não distância, não frieza — ausência de posição. O organismo não julga o que absorve, o que imita, o que destrói. Essa neutralidade é o que torna o usuário ilegível.</div>
+        <div class="tc-cards">
+          <div class="tc-card">
+            <div class="tc-card-id">CHU-01</div>
+            <div class="tc-card-name">Ignora Tipo</div>
+            <span class="tc-card-kanji">中性 · sem forma para antecipar</span>
+            <div class="tc-card-sep"></div>
+            <div class="tc-card-desc">Todo dano causado <b style="color:var(--void3)">ignora resistências</b> baseadas em tipo ou tema de EA. O oponente não encontra ponto de apoio no choque de técnicas.</div>
+            <span class="tc-card-tag">Permanente · Ofensivo</span>
+          </div>
+          <div class="tc-card">
+            <div class="tc-card-id">CHU-02</div>
+            <div class="tc-card-name">Eficiência Amorfa</div>
+            <span class="tc-card-kanji">効率 · o vazio não desperdiça</span>
+            <div class="tc-card-sep"></div>
+            <div class="tc-card-desc">Custo de todas as ações <b style="color:var(--void3)">reduzido em 50%.</b> Regeneração passiva de <b style="color:var(--void3)">5 EA por round.</b></div>
+            <span class="tc-card-tag">Permanente · Econômico</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- III — Sesshu -->
+      <div class="tc-panel">
+        <div class="tc-panel-header">
+          <span class="tc-panel-dmg">Gatilho / Bônus</span>
+          <div class="tc-panel-name">摂取 Sesshu — Ingestão</div>
+          <div class="tc-panel-sub">Passiva permanente + gatilho · absorção de atributos</div>
+        </div>
+        <div class="tc-panel-desc">O que não possui forma pode assumir qualquer uma — incluindo a de outra coisa. Não como cópia, mas como incorporação real.</div>
+        <div class="tc-cards">
+          <div class="tc-card">
+            <div class="tc-card-id">SES-01</div>
+            <div class="tc-card-name">Absorção ao Matar</div>
+            <span class="tc-card-kanji">摂取 · ao participar da morte</span>
+            <div class="tc-card-sep"></div>
+            <div class="tc-card-desc">Ao participar da morte de uma maldição ou feiticeiro, um <b style="color:var(--void3)">atributo ou perícia absorvido permanentemente (+1 Atributo ou +3 Perícia).</b> Quando todos os atributos atingem 5, um é elevado a 6. Sem teto.</div>
+            <span class="tc-card-tag">Gatilho · Permanente</span>
+          </div>
+          <div class="tc-card">
+            <div class="tc-card-id">SES-02</div>
+            <div class="tc-card-name">Reconversão de Massa</div>
+            <span class="tc-card-kanji">再構成 · ação bônus</span>
+            <div class="tc-card-sep"></div>
+            <div class="tc-card-desc">Como <b style="color:var(--void3)">ação bônus,</b> EA pode ser convertida diretamente em massa, reconstituindo volume e função durante o combate.</div>
+            <span class="tc-card-tag">Ação Bônus · Combate</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- IV — Saigen -->
+      <div class="tc-panel">
+        <div class="tc-panel-header">
+          <span class="tc-panel-dmg">Passiva</span>
+          <div class="tc-panel-name">再現 Saigen — Reprodução</div>
+          <div class="tc-panel-sub">Passiva permanente · cópia por resultado, não por origem</div>
+        </div>
+        <div class="tc-panel-desc">O usuário não precisa copiar uma técnica — precisa entender o que ela faz. Uma vez que entende o resultado, seu corpo se reorganiza até produzir o mesmo efeito do jeito que conseguir. O processo interno é completamente diferente do original, mas o que sai no final é equivalente.</div>
+        <div class="tc-cards">
+          <div class="tc-card">
+            <div class="tc-card-id">SAI-01</div>
+            <div class="tc-card-name">Técnicas Sem Custo Corporal</div>
+            <span class="tc-card-kanji">再現 · sem estrutura fixa pra destruir</span>
+            <div class="tc-card-sep"></div>
+            <div class="tc-card-desc">Técnicas que destroem parte do corpo do usuário para funcionar <b style="color:var(--void3)">não têm esse custo aqui.</b> Fragmentos absorvidos pelo Sesshu são completados internamente.</div>
+            <span class="tc-card-tag">Permanente · Passivo</span>
+          </div>
+          <div class="tc-card">
+            <div class="tc-card-id">SAI-02</div>
+            <div class="tc-card-name">Limites de Reprodução</div>
+            <span class="tc-card-kanji">限界 · o que não pode ser copiado</span>
+            <div class="tc-card-sep"></div>
+            <div class="tc-card-desc">Domínios só podem ser reproduzidos após ver um completo ao menos uma vez. Técnicas únicas e intransferíveis (como Seis Olhos) são reproduzíveis <b style="color:rgba(240,100,100,.75)">temporariamente e com alto custo de EA.</b></div>
+            <span class="tc-card-tag red">Limitação</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- V — Mugen Tekio -->
+      <div class="tc-panel">
+        <div class="tc-panel-header">
+          <span class="tc-panel-dmg">Passiva · 3 Cargas</span>
+          <div class="tc-panel-name">無限適応 Mugen-Tekiō — Adaptação Sem Limite</div>
+          <div class="tc-panel-sub">Passiva permanente · recusa à morte · cargas recarregáveis</div>
+        </div>
+        <div class="tc-panel-desc">Enquanto existir qualquer fragmento de massa, a forma pode ser reassumida. A quarta queda ainda mata — mas exige que não reste fragmento algum.</div>
+        <div class="tc-cards">
+          <div class="tc-card">
+            <div class="tc-card-id">MUG-01</div>
+            <div class="tc-card-name">Recusa · 3 Cargas</div>
+            <span class="tc-card-kanji">拒否 · o organismo nega a morte</span>
+            <div class="tc-card-sep"></div>
+            <div class="tc-card-desc">Ao receber <b style="color:var(--void3)">dano letal,</b> gasta uma carga — o dano acontece, o HP se mantém. Ao receber <b style="color:rgba(240,100,100,.75)">morte instantânea,</b> gasta uma carga para sobreviver com HP em 50% do total. Cada recarga exige uma <b style="color:var(--void3)">ação bônus dedicada.</b></div>
+            <div class="charges-row">
+              <span class="charge-label">Cargas</span>
+              <div class="charge-pip full"></div>
+              <div class="charge-pip full"></div>
+              <div class="charge-pip full"></div>
+            </div>
+            <span class="tc-card-tag">3 Cargas · Ação Bônus pra Recarregar</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PERÍCIAS -->
+  <div class="vdiv"><span class="vdiv-text">Perícias</span></div>
+  <div class="skills-wrap">
+    <div class="skills-bar"><span class="skills-bar-txt">Proficiente · +5 no valor final e em todo dano usando EA</span></div>
+    <div class="sk-grid">
+      <div class="sk-group-head">Força</div>
+      <div class="sk-row pp"><span class="sk-row-name">Luta</span><span class="sk-row-val">+5</span></div>
+      <div class="sk-row pp"><span class="sk-row-name">Tankar</span><span class="sk-row-val">+5</span></div>
+
+      <div class="sk-group-head">Agilidade</div>
+      <div class="sk-row pp"><span class="sk-row-name">Esquiva</span><span class="sk-row-val">+5</span></div>
+      <div class="sk-row pp"><span class="sk-row-name">Iniciativa</span><span class="sk-row-val">+10</span></div>
+      <div class="sk-row"><span class="sk-row-name">Rastreamento</span><span class="sk-row-val">—</span></div>
+      <div class="sk-row pp"><span class="sk-row-name">Furtividade</span><span class="sk-row-val">+5</span></div>
+
+      <div class="sk-group-head">Inteligência</div>
+      <div class="sk-row pp"><span class="sk-row-name">Feitiçaria</span><span class="sk-row-val">+5</span></div>
+      <div class="sk-row"><span class="sk-row-name">Investigação</span><span class="sk-row-val">—</span></div>
+      <div class="sk-row"><span class="sk-row-name">História</span><span class="sk-row-val">—</span></div>
+      <div class="sk-row pp"><span class="sk-row-name">Ocultismo</span><span class="sk-row-val">+5</span></div>
+      <div class="sk-row"><span class="sk-row-name">Ofício</span><span class="sk-row-val">—</span></div>
+      <div class="sk-row pp"><span class="sk-row-name">Aprendizado</span><span class="sk-row-val">+5</span></div>
+
+      <div class="sk-group-head">Constituição</div>
+      <div class="sk-row"><span class="sk-row-name">Sobrevivência</span><span class="sk-row-val">—</span></div>
+      <div class="sk-row"><span class="sk-row-name">Medicina</span><span class="sk-row-val">—</span></div>
+      <div class="sk-row pp"><span class="sk-row-name">Disciplina</span><span class="sk-row-val">+5</span></div>
+      <div class="sk-row"><span class="sk-row-name">Fortitude</span><span class="sk-row-val">—</span></div>
+
+      <div class="sk-group-head">Presença</div>
+      <div class="sk-row"><span class="sk-row-name">Percepção</span><span class="sk-row-val">—</span></div>
+      <div class="sk-row"><span class="sk-row-name">Persuasão</span><span class="sk-row-val">—</span></div>
+      <div class="sk-row pp"><span class="sk-row-name">Intimidação</span><span class="sk-row-val">+5</span></div>
+      <div class="sk-row"><span class="sk-row-name">Enganação</span><span class="sk-row-val">—</span></div>
+      <div class="sk-row"><span class="sk-row-name">Etiqueta</span><span class="sk-row-val">—</span></div>
+      <div class="sk-row"><span class="sk-row-name">Religião</span><span class="sk-row-val">—</span></div>
+      <div class="sk-row pp"><span class="sk-row-name">Intuição</span><span class="sk-row-val">+5</span></div>
+    </div>
+  </div>
+
+  <!-- ITEM -->
+  <div class="vdiv"><span class="vdiv-text">Item Exclusivo</span></div>
+  <div class="item-card">
+    <div class="item-name">Uniforme Amorfo — Acessório Especial</div>
+    <div class="item-desc">Um uniforme que parece tecido comum mas se adapta junto com o corpo, fluindo como membrana viva ao redor da forma sempre mutável. O acessório que o acompanha pulsa com uma frequência irreconhecível — não é EA, não é matéria, é algo no meio dos dois. Permanece intacto mesmo quando o portador é decapitado ou fragmentado.</div>
+    <span class="item-stat">+2d4 de dano em TODOS os ataques · Permanente</span>
+  </div>
+
+  <!-- ORIGEM -->
+  <div class="vdiv"><span class="vdiv-text">Origem — A Entidade Sem Forma</span></div>
+  <div class="origin-card">
+    <div class="origin-head">
+      <div class="origin-name">Filho de Feiticeiro e Maldição Metamorfa</div>
+      <div class="origin-kanji">無形の存在 · A Existência Sem Forma · Ilegível Desde o Nascimento</div>
+    </div>
+    <div class="origin-body">
+      <div class="origin-desc">Saizo é uma entidade Amorfa, nascido como filho de um feiticeiro poderoso com uma maldição metamorfa que o enganou. Rapidamente foi abandonado ao nascer e deixado para viver uma vida humilde e simples — não foi torturado nem maltratado. Sua incapacidade de ser lido tanto mentalmente quanto espiritualmente o faz um desafio para ser confiado a qualquer pessoa ou instituição. Saizo não tem história, não tem títulos, não é conhecido e é ilegível psicológica e espiritualmente.</div>
+      <div class="origin-block">
+        <div class="origin-item">
+          <div class="origin-item-label">Energia Primordial</div>
+          <div class="origin-item-text">300 EA base estrutural, não aprendida. Faz parte do que ele é biologicamente — não uma técnica, mas a natureza do organismo.</div>
+        </div>
+        <div class="origin-item">
+          <div class="origin-item-label">Assinatura Energética</div>
+          <div class="origin-item-text">Boa, amigável e quase neutra pra positiva. Ninguém consegue identificar o quão forte ele é. A energia não corresponde à ameaça real.</div>
+        </div>
+        <div class="origin-item">
+          <div class="origin-item-label">Presença Social</div>
+          <div class="origin-item-text">Aparenta ser gente boa e agradável sem esforço. Atração passiva quase automática. Perfeito para qualquer pessoa, sem erro perceptível.</div>
+        </div>
+        <div class="origin-item">
+          <div class="origin-item-label">Corpo Aprimorado</div>
+          <div class="origin-item-text">Resistência base aumentada a impactos e cortes. Atributos de agilidade, força e constituição aprimorados pela natureza amorfa do organismo.</div>
+        </div>
+        <div class="origin-item">
+          <div class="origin-item-label">Objetivo Atual</div>
+          <div class="origin-item-text">Ficar mais forte. Evoluir. Ganhar poder e eventualmente destruir de forma absoluta todos os cinco líderes do Japão, impedindo-os de adquirir o cadáver divino.</div>
+        </div>
+        <div class="origin-item">
+          <div class="origin-item-label">Percepção Passiva</div>
+          <div class="origin-item-text">13 · Percebe mais do que aparenta. A leitura do ambiente é passiva e constante — não há expressão visível do processo.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DANO -->
+  <div class="vdiv"><span class="vdiv-text">Dano da Técnica</span></div>
+  <div class="stat-panel" style="text-align:center;padding:20px;">
+    <div style="font-family:var(--mono);font-size:9px;letter-spacing:4px;color:var(--muted);text-transform:uppercase;margin-bottom:10px;">Mukei · Dano Base</div>
+    <div style="font-family:var(--disp);font-size:36px;color:var(--void3);letter-spacing:2px;text-shadow:0 0 20px rgba(74,222,128,.3);">9d6 + 2d4 + 5</div>
+    <div style="font-family:var(--mono);font-size:8px;color:var(--muted);margin-top:8px;letter-spacing:2px;">+ item exclusivo · + proficiente · ignora resistências por tipo</div>
+  </div>
+
+  <div style="text-align:center;padding:24px 0 10px">
+    <div style="font-family:var(--mono);font-size:7px;letter-spacing:4px;color:rgba(22,163,74,.25);text-transform:uppercase;">// sem forma · sem rastro · sem assinatura //</div>
+  </div>
+
+</div>
+</div>
+
+<script>
+/* ── SLIME PARTICLES ── */
+(function(){
+  const c = document.getElementById('slime-canvas');
+  if(!c) return;
+  const ctx = c.getContext('2d');
+  let W, H, blobs = [];
+  function resize(){ W = c.width = window.innerWidth; H = c.height = window.innerHeight; }
+  window.addEventListener('resize', resize); resize();
+
+  function Blob(){
+    this.x = Math.random() * W;
+    this.y = H + 15;
+    this.r = 1 + Math.random() * 2.5;
+    this.vy = 0.08 + Math.random() * 0.22;
+    this.vx = (Math.random() - 0.5) * 0.15;
+    this.a = 0.02 + Math.random() * 0.09;
+    this.phase = Math.random() * Math.PI * 2;
+    this.ps = 0.003 + Math.random() * 0.008;
+    this.wobble = Math.random() * 0.5;
+  }
+  Blob.prototype.tick = function(){
+    this.y -= this.vy;
+    this.x += this.vx + Math.sin(this.phase) * this.wobble;
+    this.phase += this.ps;
+    if(this.y < -15) Object.assign(this, new Blob());
+  };
+  Blob.prototype.draw = function(){
+    const alpha = this.a * (0.5 + 0.5 * Math.sin(this.phase));
+    ctx.beginPath();
+    ctx.ellipse(this.x, this.y, this.r, this.r * (1 + 0.3 * Math.sin(this.phase * 2)), 0, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(22,163,74,${alpha})`;
+    ctx.fill();
+  };
+
+  for(let i = 0; i < 55; i++){
+    const b = new Blob();
+    b.y = Math.random() * H;
+    blobs.push(b);
+  }
+
+  function loop(){
+    ctx.clearRect(0, 0, W, H);
+    blobs.forEach(b => { b.tick(); b.draw(); });
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+/* ── TAB TRANSITION ── */
+function goTab(page, btn){
+  if(document.getElementById('page-' + page).classList.contains('on')) return;
+  const cv = document.getElementById('pt-canvas'), sc = document.getElementById('pt-scan');
+  const inc = document.getElementById('page-' + page), out = document.querySelector('.page.on');
+  const vh = window.innerHeight, vw = window.innerWidth, DUR = 500; let ts = null, done = false;
+  function ease(t){ return t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2; }
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('on')); btn.classList.add('on');
+  window.scrollTo(0, 0); cv.width = vw; cv.height = vh;
+  const ctx = cv.getContext('2d'); ctx.fillStyle = '#040a05'; ctx.fillRect(0, 0, vw, vh);
+  cv.style.display = 'block'; sc.style.display = 'block';
+  out.classList.remove('on'); inc.classList.add('on');
+  function frame(t){ if(done) return; if(!ts) ts = t; const raw = Math.min((t-ts)/DUR, 1), y = Math.round(ease(raw)*vh); ctx.clearRect(0,0,vw,y); sc.style.transform = `translateY(${y-2}px)`; if(raw < 1){ requestAnimationFrame(frame); return; } done = true; cv.style.display = 'none'; sc.style.display = 'none'; }
+  requestAnimationFrame(frame);
+}
+
+/* ── TECH CABINET ── */
+function tcSwitch(idx, tab){
+  const cabinet = tab.closest('.tech-cabinet');
+  const tabs = cabinet.querySelectorAll('.tc-tab');
+  const panels = cabinet.querySelectorAll('.tc-panel');
+  const current = cabinet.querySelector('.tc-panel.on');
+  const next = panels[idx];
+  if(current === next) return;
+  tabs.forEach(t => t.classList.remove('on')); tab.classList.add('on');
+  if(current){
+    current.classList.add('out'); current.classList.remove('on');
+    setTimeout(() => {
+      current.classList.remove('out'); current.style.display = 'none';
+      next.style.display = 'block'; void next.offsetWidth; next.classList.add('on');
+    }, 150);
+  } else { next.classList.add('on'); }
+}
+</script>
+</body>
+</html>
