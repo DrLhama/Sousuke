@@ -26,7 +26,8 @@
   --bebas: 'Bebas Neue', sans-serif;
 }
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-html, body { background: var(--bg); color: var(--ink); font-family: var(--serif); min-height:100vh; overflow-x:hidden; }
+html { overflow-x:hidden; }
+body { background: var(--bg); color: var(--ink); font-family: var(--serif); min-height:100vh; }
 
 body::before {
   content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
@@ -214,15 +215,54 @@ nav {
 
 /* ── WIDGETS WRAPPER (bottom-left, stacked) ── */
 #widgets {
-  position:fixed; bottom:24px; left:24px; z-index:300;
-  display:flex; flex-direction:column; gap:8px; align-items:flex-start;
+  position:fixed; bottom:0; left:0; z-index:300;
+  display:flex; flex-direction:column-reverse; align-items:flex-start; gap:0;
 }
 
 /* shared panel shell */
 #music-player, #calc-widget {
   background:rgba(7,5,1,.97); border:1px solid var(--border-hi);
-  backdrop-filter:blur(20px); box-shadow:0 0 40px rgba(180,130,10,.12),0 8px 32px rgba(0,0,0,.6);
+  backdrop-filter:blur(20px);
   font-family:var(--mono); width:260px;
+  box-shadow:0 0 40px rgba(180,130,10,.12),4px 0 20px rgba(0,0,0,.5);
+}
+
+/* ── COLLAPSED: show only a narrow vertical tab ── */
+#music-player.collapsed, #calc-widget.collapsed {
+  width:32px; overflow:hidden;
+}
+#music-player.collapsed .mp-body,
+#calc-widget.collapsed .cw-body {
+  display:none;
+}
+
+/* The header becomes the vertical tab when collapsed */
+#music-player.collapsed .mp-header,
+#calc-widget.collapsed .cw-header {
+  flex-direction:column;
+  padding:12px 0;
+  border-bottom:none;
+  height:130px;
+  justify-content:center;
+  gap:8px;
+  align-items:center;
+}
+/* Hide the arrow toggle when collapsed */
+#music-player.collapsed .mp-toggle,
+#calc-widget.collapsed .cw-toggle { display:none; }
+
+/* Rotate title text vertically */
+#music-player.collapsed .mp-title,
+#calc-widget.collapsed .cw-title {
+  transform:rotate(-90deg);
+  white-space:nowrap;
+  font-size:7px;
+  letter-spacing:3px;
+}
+/* Icon stays horizontal */
+#music-player.collapsed .mp-icon,
+#calc-widget.collapsed .cw-icon {
+  font-size:12px;
 }
 
 /* ── MUSIC PLAYER ── */
@@ -380,7 +420,7 @@ nav {
         </div>
         <div class="strip-item">
           <div class="strip-key">Classe</div>
-          <div class="strip-val sm" style="font-size:11px;letter-spacing:1px;">Feiticeiro</div>
+          <div class="strip-val sm" style="font-size:11px;letter-spacing:1px;">Alta</div>
         </div>
       </div>
     </div>
@@ -449,8 +489,8 @@ nav {
     <div class="sk-cols">
       <div class="sk-col">
         <div class="sk-col-head">Força</div>
-        <div class="sk-item pp"><span class="sk-n">Luta</span><span class="sk-v">+10 ★</span></div>
-        <div class="sk-item pp"><span class="sk-n">Tankar</span><span class="sk-v">+5</span></div>
+        <div class="sk-item pp"><span class="sk-n">Luta</span><span class="sk-v">+10 +3d20 ★</span></div>
+        <div class="sk-item pp"><span class="sk-n">Tankar</span><span class="sk-v">+15 +2d20 ★</span></div>
       </div>
       <div class="sk-col">
         <div class="sk-col-head">Agilidade</div>
@@ -473,7 +513,7 @@ nav {
         <div class="sk-item"><span class="sk-n">Sobrevivência</span><span class="sk-v">—</span></div>
         <div class="sk-item pp"><span class="sk-n">Medicina</span><span class="sk-v">+5</span></div>
         <div class="sk-item"><span class="sk-n">Disciplina</span><span class="sk-v">—</span></div>
-        <div class="sk-item pp"><span class="sk-n">Fortitude</span><span class="sk-v">+5</span></div>
+        <div class="sk-item pp"><span class="sk-n">Fortitude</span><span class="sk-v">+15 +2d20 ★</span></div>
       </div>
       <div class="sk-col">
         <div class="sk-col-head">Presença</div>
@@ -537,6 +577,10 @@ nav {
         <div class="tec-tab-icon">ク</div>
         <span>Créd.</span>
       </div>
+      <div class="tec-tab" onclick="tecSwitch(6,this)">
+        <div class="tec-tab-icon">康</div>
+        <span>Well.</span>
+      </div>
     </div>
     <div class="tec-body">
 
@@ -564,7 +608,7 @@ nav {
             <span class="tc-kana">万能対話 · fala com qualquer criatura</span>
             <div class="tc-sep"></div>
             <div class="tc-text">Consegue dialogar com toda e qualquer criatura, mesmo que por definição seja burra ou inapta. Eventualmente chega a resolução boa para ambos.</div>
-            <span class="tc-tag">Ativo · Ação</span>
+            <span class="tc-tag">Passiva · Permanente</span>
           </div>
           <div class="tc">
             <div class="tc-id">CAP-03</div>
@@ -735,19 +779,62 @@ nav {
         </div>
       </div>
 
+      <div class="tec-panel">
+        <div class="tec-head">
+          <div>
+            <div class="tec-head-name">Benefícios Wellness — 健康資産 · Kenkō Shisan</div>
+            <div class="tec-head-kana">Passiva Permanente · benefícios adquiridos fora do combate</div>
+          </div>
+          <span class="tec-badge">Sempre Ativo</span>
+        </div>
+        <div class="tec-desc">Hanzo investe sistematicamente na manutenção do próprio capital humano. Plano de saúde premium, academia de elite e décadas de artes marciais se traduzem em vantagens permanentes em campo — porque um bom capitalista nunca negligencia seu ativo mais valioso. <b style="color:var(--gold-hi)">Custo de manutenção: 1.000 ¥/mês.</b> Inadimplência suspende todos os benefícios imediatamente. Os custos Wellness não são desligados de maneira forçada após o pago. Enquanto Hanzo tiver a assinatura, ele funcionará com ou sem técnica.</div>
+        <div class="tec-cards">
+
+          <div class="tc">
+            <div class="tc-id">WEL-01</div>
+            <div class="tc-name">Artes Marciais</div>
+            <span class="tc-kana">武道 · JiuJitsu, Karatê, Kungfu, Capoeira</span>
+            <div class="tc-sep"></div>
+            <div class="tc-text">Conhecimento avançado em múltiplos estilos de combate corpo a corpo. Décadas de prática convertidas em instinto puro.</div>
+            <span class="tc-tag g">+3d20 em Luta</span>
+          </div>
+
+          <div class="tc">
+            <div class="tc-id">WEL-02</div>
+            <div class="tc-name">Gold Gym</div>
+            <span class="tc-kana">筋肉資本 · corpo é infraestrutura</span>
+            <div class="tc-sep"></div>
+            <div class="tc-text">Corpo aprimorado hipertroficamente através de treinamento intenso e sistemático. Praticamente um fisiculturista bronzeado — resistência e presença física inegáveis.</div>
+            <span class="tc-tag g">+2d20 · +10 Tankar e Fortitude</span>
+          </div>
+
+          <div class="tc">
+            <div class="tc-id">WEL-03</div>
+            <div class="tc-name">Plano de Saúde</div>
+            <span class="tc-kana">医療保険 · cobertura total, sem franquia</span>
+            <div class="tc-sep"></div>
+            <div class="tc-text">Regeneração acelerada ao sofrer danos. Se apagado, desmaiado ou morto, pode acionar a <b style="color:var(--gold-hi)">Urgência</b> — gasta 500 ¥ imediatamente e retorna à luta. Enquanto houver capital, Hanzo não fica fora do jogo.</div>
+            <span class="tc-tag g">+9d6 cura / turno</span>
+          </div>
+
+          <div class="tc">
+            <div class="tc-id">WEL-04</div>
+            <div class="tc-name">Urgência</div>
+            <span class="tc-kana">緊急入院 · 500 ¥ · imortalidade comprada</span>
+            <div class="tc-sep"></div>
+            <div class="tc-text">Acionada automaticamente ao ser eliminado. Custa 500 ¥ e restaura Hanzo à luta. Pode ser ativada repetidamente enquanto houver fundos — <b style="color:var(--gold-hi)">efetivamente imortal enquanto rico.</b></div>
+            <span class="tc-tag r">Custo: 500 ¥ / uso</span>
+          </div>
+
+        </div>
+        <div style="font-family:var(--mono);font-size:7px;color:var(--muted);margin-top:14px;letter-spacing:1px;border-left:2px solid var(--border);padding-left:10px;">
+          Todos os bônus são passivos e permanentes · Urgência consome Capital do estoque atual · sem limite de usos por combate<br>
+          <span style="color:rgba(240,160,50,.55);">⚠ Manutenção: 1.000 ¥ / mês · inadimplência suspende todos os benefícios</span>
+        </div>
+      </div>
+
     </div>
-  </div>
-
-  <div class="label">Dano</div>
-  <div style="border:1px solid var(--border-hi);background:var(--panel2);padding:24px;text-align:center;position:relative;overflow:hidden;">
-    <div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(180,130,10,.012) 8px,rgba(180,130,10,.012) 9px);pointer-events:none;"></div>
-    <div style="font-family:var(--mono);font-size:8px;letter-spacing:5px;color:var(--muted);text-transform:uppercase;margin-bottom:12px;">Dano Base · Item Exclusivo</div>
-    <div style="font-family:var(--bebas);font-size:48px;color:var(--gold-hi);letter-spacing:4px;text-shadow:0 0 30px rgba(220,180,20,.3),0 0 60px rgba(180,130,10,.15);">2d4</div>
-    <div style="font-family:var(--mono);font-size:8px;color:var(--muted);margin-top:10px;letter-spacing:2px;">permanente em todos os ataques · + proficiente com EA</div>
-    <div style="font-family:var(--serif);font-style:italic;font-size:12px;color:var(--gold-mid);margin-top:8px;">+ Capital gasto via Fluxo de Capital</div>
-  </div>
-
-  <div class="stamp">// a lábia é inigualável · o cálculo é impecável //</div>
+</div>
 </div>
 </div>
 
@@ -851,13 +938,14 @@ nav {
     </div>
   </div>
 </div>
-</div>
+
+</div><!-- /page-historia -->
 
 <!-- ── WIDGETS (bottom-left, stacked) ── -->
 <div id="widgets">
 
 <!-- MUSIC PLAYER -->
-<div id="music-player">
+<div id="music-player" class="collapsed">
   <div class="mp-header" onclick="mpToggle()">
     <span class="mp-icon">♪</span>
     <span class="mp-title">Player — Hanzo</span>
@@ -886,6 +974,11 @@ nav {
           <span class="mp-pl-name">Rain Over Me - Pitbull</span>
           <span class="mp-pl-dot"></span>
         </div>
+          <div class="mp-pl-item" onclick="mpLoad(3)">
+          <span class="mp-pl-num">04</span>
+          <span class="mp-pl-name">Alors on Danse - Stromae</span>
+          <span class="mp-pl-dot"></span>
+        </div>
       </div>
       <div class="mp-controls">
         <button class="mp-btn" onclick="mpPrev()" title="Anterior">&#9664;&#9664;</button>
@@ -901,7 +994,7 @@ nav {
 </div>
 
 <!-- CALCULATOR -->
-<div id="calc-widget">
+<div id="calc-widget" class="collapsed">
   <div class="cw-header" onclick="cwToggle()">
     <span class="cw-icon">◈</span>
     <span class="cw-title">Calculadora</span>
@@ -947,6 +1040,8 @@ const mpTracks = [
   { file:'audio/han1.mp3', name:'Poker Face — Lady Gaga' },
   { file:'audio/han2.mp3', name:'Gentleman - PSY' },
   { file:'audio/han3.mp3', name:'Rain Over Me - Pitbull' },
+  { file:'audio/han4.mp3', name:'Alors on Danse - Stromae' },
+
 ];
 /* ═══════════════════════════════════════ */
 let mpAudio = new Audio();
@@ -957,6 +1052,7 @@ function mpToggle(){
   mpOpen = !mpOpen;
   document.getElementById('mp-body').classList.toggle('open', mpOpen);
   document.getElementById('mp-tog').classList.toggle('open', mpOpen);
+  document.getElementById('music-player').classList.toggle('collapsed', !mpOpen);
 }
 
 function mpLoad(idx){
@@ -1017,14 +1113,12 @@ mpAudio.volume = 0.7;
   const tryPlay = () => {
     mpAudio.play().then(()=>{
       document.getElementById('mp-play-btn').innerHTML = '&#9646;&#9646;';
-      // Abre o player para mostrar que está tocando
-      if(!mpOpen){ mpOpen=true; document.getElementById('mp-body').classList.add('open'); document.getElementById('mp-tog').classList.add('open'); }
+      // não abre o player automaticamente — fica como tab vertical
     }).catch(()=>{
       // Navegador bloqueou autoplay — toca no primeiro clique/toque do usuário
       const unlockPlay = () => {
         mpAudio.play().then(()=>{
           document.getElementById('mp-play-btn').innerHTML = '&#9646;&#9646;';
-          if(!mpOpen){ mpOpen=true; document.getElementById('mp-body').classList.add('open'); document.getElementById('mp-tog').classList.add('open'); }
         }).catch(()=>{});
         document.removeEventListener('click', unlockPlay);
         document.removeEventListener('touchstart', unlockPlay);
@@ -1059,6 +1153,7 @@ function cwToggle(){
   cwOpen = !cwOpen;
   document.getElementById('cw-body').classList.toggle('open', cwOpen);
   document.getElementById('cw-tog').classList.toggle('open', cwOpen);
+  document.getElementById('calc-widget').classList.toggle('collapsed', !cwOpen);
 }
 
 function cwDisplay(){
