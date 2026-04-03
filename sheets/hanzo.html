@@ -987,7 +987,7 @@ nav {
       </div>
       <div class="mp-vol-row">
         <span class="mp-vol-label">VOL</span>
-        <input type="range" class="mp-vol-slider" id="mp-vol" min="0" max="1" step="0.05" value="0.7" oninput="mpVolume(this.value)">
+        <input type="range" class="mp-vol-slider" id="mp-vol" min="0" max="1" step="0.01" value="0.7" oninput="mpVolume(this.value)">
       </div>
     </div>
   </div>
@@ -1102,32 +1102,34 @@ mpAudio.volume = 0.7;
 
 /* ── AUTOPLAY han1 ao entrar ── */
 (function(){
-  // Carrega a faixa 0 (han1) imediatamente
   const t = mpTracks[0];
   mpAudio.src = t.file;
   mpAudio.volume = 0.7;
   document.getElementById('mp-name').textContent = t.name.toUpperCase();
   document.querySelectorAll('.mp-pl-item').forEach((el,i)=>el.classList.toggle('playing', i===0));
 
-  // Tenta autoplay direto
+  let unlocked = false;
+
   const tryPlay = () => {
     mpAudio.play().then(()=>{
+      unlocked = true;
       document.getElementById('mp-play-btn').innerHTML = '&#9646;&#9646;';
-      // não abre o player automaticamente — fica como tab vertical
     }).catch(()=>{
-      // Navegador bloqueou autoplay — toca no primeiro clique/toque do usuário
-      const unlockPlay = () => {
-        mpAudio.play().then(()=>{
-          document.getElementById('mp-play-btn').innerHTML = '&#9646;&#9646;';
-        }).catch(()=>{});
-        document.removeEventListener('click', unlockPlay);
-        document.removeEventListener('touchstart', unlockPlay);
-        document.removeEventListener('keydown', unlockPlay);
-      };
-      document.addEventListener('click', unlockPlay, {once:true});
-      document.addEventListener('touchstart', unlockPlay, {once:true});
-      document.addEventListener('keydown', unlockPlay, {once:true});
+      if(!unlocked) setupUnlock();
     });
+  };
+
+  const setupUnlock = () => {
+    const unlockPlay = () => {
+      if(unlocked) return;
+      mpAudio.play().then(()=>{
+        unlocked = true;
+        document.getElementById('mp-play-btn').innerHTML = '&#9646;&#9646;';
+      }).catch(()=>{});
+    };
+    document.addEventListener('click', unlockPlay, {capture:true, once:true});
+    document.addEventListener('touchstart', unlockPlay, {capture:true, once:true});
+    document.addEventListener('keydown', unlockPlay, {capture:true, once:true});
   };
 
   if(document.readyState === 'complete'){
