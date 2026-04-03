@@ -85,9 +85,7 @@ nav {
 
 .portrait-col {
   border-right:1px solid var(--border); position:relative; overflow:hidden;
-  background:linear-gradient(160deg,#110d00,#070501); min-height:280px;
-  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
-  align-self:stretch;
+  background:linear-gradient(160deg,#110d00,#070501);
 }
 .portrait-kanji { font-family:var(--bebas); font-size:96px; color:rgba(180,130,10,.1); line-height:1; user-select:none; text-shadow:0 0 60px rgba(180,130,10,.08); }
 .portrait-ruby { font-family:var(--mono); font-size:7px; letter-spacing:3px; color:var(--muted); text-transform:uppercase; }
@@ -343,8 +341,8 @@ nav {
   <div class="masthead">
     <div class="masthead-inner">
       <div class="portrait-col" id="portrait-col" style="align-self:stretch;">
-        <img src="membros/hanzo.png?v=2" alt="Hanzo" id="portrait-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;opacity:.85;display:block;" onerror="this.style.display='none';document.getElementById('portrait-fallback').style.display='flex';">
-        <div id="portrait-fallback" style="display:none;position:absolute;inset:0;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
+        <img src="membros/hanzo.png?v=2" alt="Hanzo" id="portrait-img" style="width:100%;height:100%;object-fit:cover;object-position:center top;opacity:.85;display:block;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div id="portrait-fallback" style="display:none;width:100%;height:100%;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:linear-gradient(160deg,#110d00,#070501);">
           <div class="portrait-kanji">半</div>
           <div class="portrait-ruby">Hanzo · 半蔵</div>
         </div>
