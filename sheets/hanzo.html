@@ -355,9 +355,85 @@ nav {
 .cw-btn.clr { color:rgba(240,100,80,.7); border-color:rgba(240,100,80,.2); }
 .cw-btn.clr:hover { color:rgba(240,130,110,.9); border-color:rgba(240,100,80,.5); background:rgba(200,60,60,.06); }
 .cw-btn.wide { grid-column:span 2; }
+
+/* ── LOCK SCREEN ── */
+#lock-screen {
+  position: fixed; inset: 0; z-index: 9999;
+  background: #070501;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  transition: opacity .8s ease, visibility .8s ease;
+}
+#lock-screen.unlocking { opacity: 0; visibility: hidden; pointer-events: none; }
+#lock-screen::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .022;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px;
+}
+#lock-screen::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 70% 70% at 50% 50%, transparent 30%, rgba(4,3,0,.88) 100%);
+}
+.lock-inner {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 0;
+  animation: lock-appear 1.2s ease both;
+}
+@keyframes lock-appear {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+.lock-rule-top { width:1px; height:60px; background:linear-gradient(180deg,transparent,rgba(180,130,10,.28)); margin-bottom:36px; }
+.lock-seal { font-family:var(--bebas); font-size:3.2rem; color:rgba(180,130,10,.12); line-height:1; margin-bottom:24px; letter-spacing:.08em; animation:seal-pulse 6s ease-in-out infinite; }
+@keyframes seal-pulse { 0%,100%{color:rgba(180,130,10,.10)} 50%{color:rgba(180,130,10,.24)} }
+.lock-title { font-family:var(--bebas); font-size:clamp(1.6rem,3.5vw,2.6rem); letter-spacing:.22em; color:rgba(210,170,30,.2); margin-bottom:6px; }
+.lock-subtitle { font-family:var(--mono); font-size:.46rem; letter-spacing:.55em; text-transform:uppercase; color:rgba(140,100,30,.22); margin-bottom:48px; }
+.lock-divider { width:180px; height:1px; background:linear-gradient(90deg,transparent,rgba(140,100,30,.2),transparent); margin-bottom:40px; }
+.lock-field { position:relative; width:260px; margin-bottom:18px; }
+.lock-label { font-family:var(--mono); font-size:.42rem; letter-spacing:.5em; text-transform:uppercase; color:rgba(120,90,30,.3); margin-bottom:10px; display:block; text-align:center; }
+.lock-input { width:100%; background:transparent; border:none; border-bottom:1px solid rgba(100,75,20,.22); padding:10px 14px; font-family:var(--mono); font-size:.9rem; letter-spacing:.3em; color:rgba(210,165,40,.55); text-align:center; outline:none; transition:border-color .3s,color .3s; caret-color:rgba(210,165,40,.4); }
+.lock-input::placeholder { color:rgba(100,75,20,.2); letter-spacing:.3em; }
+.lock-input:focus { border-color:rgba(180,130,10,.45); color:rgba(240,195,50,.75); }
+.lock-field::after { content:''; position:absolute; bottom:0; left:50%; right:50%; height:1px; background:rgba(200,155,20,.5); transition:left .3s,right .3s; }
+.lock-field:focus-within::after { left:0; right:0; }
+.lock-field.error .lock-input { animation:lock-shake .35s ease; border-color:rgba(180,60,60,.5); color:rgba(200,100,100,.7); }
+@keyframes lock-shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-6px)} 80%{transform:translateX(4px)} }
+.lock-error { font-family:var(--mono); font-size:.42rem; letter-spacing:.3em; text-transform:uppercase; color:rgba(200,80,80,.0); text-align:center; transition:color .3s; height:16px; margin-bottom:28px; }
+.lock-error.show { color:rgba(200,80,80,.55); }
+.lock-btn { font-family:var(--mono); font-size:.46rem; letter-spacing:.55em; text-transform:uppercase; color:rgba(140,100,30,.35); background:none; border:1px solid rgba(100,75,20,.18); padding:12px 36px; cursor:pointer; transition:border-color .3s,color .3s,background .3s; width:260px; }
+.lock-btn:hover { border-color:rgba(180,130,10,.4); color:rgba(210,165,40,.65); background:rgba(80,55,5,.06); }
+.lock-btn.success { border-color:rgba(180,130,10,.5); color:rgba(210,165,40,.8); background:rgba(80,55,5,.1); }
+.lock-rule-bottom { width:1px; height:60px; background:linear-gradient(180deg,rgba(140,100,30,.25),transparent); margin-top:44px; }
+.lock-dots { display:flex; gap:8px; margin-top:24px; }
+.lock-dot { width:4px; height:4px; border:1px solid rgba(100,75,20,.2); border-radius:50%; transition:background .3s,border-color .3s; }
+.lock-dot.filled { background:rgba(200,80,80,.4); border-color:rgba(200,80,80,.4); }
 </style>
 </head>
 <body>
+
+<!-- ── LOCK SCREEN ── -->
+<div id="lock-screen">
+  <div class="lock-inner">
+    <div class="lock-rule-top"></div>
+    <div class="lock-seal">半蔵</div>
+    <div class="lock-title">Hanzo Masayoshi</div>
+    <div class="lock-subtitle">Arquivo Classificado</div>
+    <div class="lock-divider"></div>
+    <label class="lock-label" for="lock-input">Código de Acesso</label>
+    <div class="lock-field" id="lock-field">
+      <input class="lock-input" id="lock-input" type="password" placeholder="· · · · · · · ·" autocomplete="off" spellcheck="false" maxlength="32"/>
+    </div>
+    <div class="lock-error" id="lock-error">Acesso negado</div>
+    <button class="lock-btn" id="lock-btn" onclick="tryUnlock()">▶ &nbsp; Entrar</button>
+    <div class="lock-dots" id="lock-dots">
+      <div class="lock-dot" id="dot-1"></div>
+      <div class="lock-dot" id="dot-2"></div>
+      <div class="lock-dot" id="dot-3"></div>
+    </div>
+    <div class="lock-rule-bottom"></div>
+  </div>
+</div>
 
 <canvas id="canvas"></canvas>
 <canvas id="pt"></canvas>
@@ -1293,6 +1369,109 @@ function tecSwitch(idx, tab){
     cur.classList.add('out'); cur.classList.remove('on');
     setTimeout(()=>{ cur.classList.remove('out'); cur.style.display='none'; nxt.style.display='block'; void nxt.offsetWidth; nxt.classList.add('on'); }, 160);
   } else { nxt.classList.add('on'); }
+}
+</script>
+
+<script>
+/* ── LOCK SCREEN ── */
+const ACCESS_HASH = 'fa3cfb3f1bb823aa9501f88f1f95f732ee6fef2c3a48be7f1d38037b216a549f'; /* sha256("1223") */
+const SESSION_KEY = 'hanzo_unlocked_v1';
+let failCount = 0;
+const MAX_FAILS = 3;
+
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+function revealContent() {
+  sessionStorage.setItem(SESSION_KEY, '1');
+  const ls = document.getElementById('lock-screen');
+  ls.classList.add('unlocking');
+  setTimeout(() => { ls.remove(); document.body.style.overflow = ''; }, 900);
+}
+
+(function devToolsGuard() {
+  setInterval(() => {
+    const w = window.outerWidth - window.innerWidth;
+    const h = window.outerHeight - window.innerHeight;
+    if ((w > 160 || h > 160) && !sessionStorage.getItem(SESSION_KEY)) {
+      const inp = document.getElementById('lock-input');
+      if (inp) { inp.value = ''; inp.blur(); }
+    }
+  }, 1000);
+})();
+
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('keydown', e => {
+  if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key.toUpperCase())) || (e.ctrlKey && e.key.toUpperCase() === 'U')) {
+    e.preventDefault(); return false;
+  }
+}, true);
+
+(function checkSession() {
+  if (sessionStorage.getItem(SESSION_KEY) === '1') {
+    document.getElementById('lock-screen').remove();
+    document.body.style.overflow = '';
+  } else {
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => { const i = document.getElementById('lock-input'); if(i) i.focus(); }, 600);
+  }
+})();
+
+document.getElementById('lock-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') tryUnlock();
+});
+
+async function tryUnlock() {
+  const input   = document.getElementById('lock-input');
+  const field   = document.getElementById('lock-field');
+  const errorEl = document.getElementById('lock-error');
+  const btn     = document.getElementById('lock-btn');
+  const val     = input.value;
+  if (!val.trim()) return;
+
+  const inputHash = await sha256(val);
+
+  if (inputHash === ACCESS_HASH) {
+    btn.classList.add('success');
+    btn.textContent = '✦  Acesso Concedido';
+    input.disabled = true;
+    setTimeout(() => revealContent(), 500);
+  } else {
+    failCount++;
+    const dot = document.getElementById('dot-' + failCount);
+    if (dot) dot.classList.add('filled');
+    field.classList.remove('error');
+    void field.offsetWidth;
+    field.classList.add('error');
+    errorEl.classList.add('show');
+    input.value = '';
+    input.focus();
+    setTimeout(() => field.classList.remove('error'), 400);
+
+    if (failCount >= MAX_FAILS) {
+      const LOCK_SECS = Math.min(30 * Math.pow(2, Math.floor((failCount - MAX_FAILS) / MAX_FAILS)), 300);
+      input.disabled = true; btn.disabled = true;
+      btn.style.opacity = '.35'; btn.style.cursor = 'not-allowed';
+      let remaining = LOCK_SECS;
+      const interval = setInterval(() => {
+        remaining--;
+        btn.textContent     = `⊘  Aguarde ${remaining}s`;
+        errorEl.textContent = `Muitas tentativas — bloqueado por ${remaining}s`;
+        if (remaining <= 0) {
+          clearInterval(interval);
+          input.disabled = false; btn.disabled = false;
+          btn.style.opacity = ''; btn.style.cursor = '';
+          btn.textContent = '▶   Entrar';
+          errorEl.textContent = 'Acesso negado';
+          errorEl.classList.remove('show');
+          document.querySelectorAll('.lock-dot').forEach(d => d.classList.remove('filled'));
+          input.focus();
+        }
+      }, 1000);
+    }
+  }
 }
 </script>
 </body>
