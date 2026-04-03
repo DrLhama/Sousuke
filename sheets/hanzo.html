@@ -343,8 +343,8 @@ nav {
 
   <div class="masthead">
     <div class="masthead-inner">
-      <div class="portrait-col" id="portrait-col">
-        <img src="membros/hanzo.png" alt="Hanzo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="portrait-col" id="portrait-col">,
+        <img src="membros/hanzo.png" alt="Hanzo" id="portrait-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;opacity:.85;display:block;" onerror="this.style.display='none';document.getElementById('portrait-fallback').style.display='flex';">
         <div id="portrait-fallback" style="display:none;position:absolute;inset:0;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
           <div class="portrait-kanji">半</div>
           <div class="portrait-ruby">Hanzo · 半蔵</div>
