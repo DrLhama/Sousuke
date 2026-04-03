@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hanzo Masayoshi — 資本家</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #070501;
+  --panel: #0d0a01;
+  --panel2: #120d02;
+  --border: rgba(180,130,10,0.25);
+  --border-hi: rgba(210,160,20,0.55);
+  --gold-dark: #8a6200;
+  --gold-mid: #c49010;
+  --gold: #dba820;
+  --gold-hi: #f2c840;
+  --gold-pale: #f8e090;
+  --ink: #f0e4c0;
+  --ink2: #c4ad78;
+  --muted: #7a6530;
+  --mono: 'Share Tech Mono', monospace;
+  --serif: 'Libre Baskerville', Georgia, serif;
+  --disp: 'DM Serif Display', Georgia, serif;
+  --bebas: 'Bebas Neue', sans-serif;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html, body { background: var(--bg); color: var(--ink); font-family: var(--serif); min-height:100vh; overflow-x:hidden; }
+
+body::before {
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background:
+    radial-gradient(ellipse 60% 40% at 15% 10%, rgba(140,100,0,.12) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 60% at 90% 85%, rgba(180,130,10,.07) 0%, transparent 50%),
+    radial-gradient(ellipse 80% 30% at 50% 50%, rgba(100,70,0,.05) 0%, transparent 60%);
+}
+body::after {
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.018;
+  background-image: repeating-linear-gradient(-45deg,transparent,transparent 3px,rgba(200,160,20,.8) 3px,rgba(200,160,20,.8) 4px);
+}
+
+#canvas { position:fixed; inset:0; z-index:1; pointer-events:none; }
+
+nav {
+  position:sticky; top:0; z-index:200;
+  display:flex; align-items:stretch;
+  background: rgba(7,5,1,.96);
+  border-bottom: 1px solid var(--border-hi);
+  backdrop-filter: blur(16px);
+}
+.nav-brand {
+  padding: 0 24px;
+  display:flex; align-items:center; gap:12px;
+  border-right: 1px solid var(--border);
+}
+.nav-brand-kanji { font-family:var(--bebas); font-size:22px; color:var(--gold); letter-spacing:3px; line-height:1; }
+.nav-brand-sub { font-family:var(--mono); font-size:7px; letter-spacing:4px; color:var(--muted); text-transform:uppercase; }
+.nav-tabs { display:flex; flex:1; }
+.nav-tab {
+  flex:1; padding:18px 0;
+  font-family:var(--mono); font-size:8.5px; letter-spacing:5px; text-transform:uppercase;
+  background:none; border:none; cursor:pointer; color:var(--muted); position:relative; transition:color .25s;
+}
+.nav-tab::after { content:''; position:absolute; bottom:0; left:20%; right:20%; height:2px; background:var(--gold); transform:scaleX(0); transition:transform .3s; }
+.nav-tab.on { color:var(--gold-hi); }
+.nav-tab.on::after { transform:scaleX(1); }
+.nav-tab:hover:not(.on) { color:var(--ink2); }
+
+.page { display:none; }
+.page.on { display:block; }
+.wrap { max-width:980px; margin:0 auto; padding:48px 28px 100px; position:relative; z-index:2; }
+
+.label {
+  font-family:var(--mono); font-size:7.5px; letter-spacing:7px; text-transform:uppercase;
+  color:var(--gold-mid); display:flex; align-items:center; gap:14px; margin:32px 0 14px;
+}
+.label::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,var(--border-hi),transparent); }
+.label:first-child { margin-top:0; }
+
+/* MASTHEAD */
+.masthead { position:relative; border:1px solid var(--border-hi); background:var(--panel); overflow:hidden; margin-bottom:4px; }
+.masthead-inner { display:grid; grid-template-columns:200px 1fr auto; align-items:stretch; }
+@media(max-width:640px){ .masthead-inner{grid-template-columns:1fr;} }
+
+.portrait-col {
+  border-right:1px solid var(--border); position:relative; overflow:hidden;
+  background:linear-gradient(160deg,#110d00,#070501); min-height:280px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+}
+.portrait-kanji { font-family:var(--bebas); font-size:96px; color:rgba(180,130,10,.1); line-height:1; user-select:none; text-shadow:0 0 60px rgba(180,130,10,.08); }
+.portrait-ruby { font-family:var(--mono); font-size:7px; letter-spacing:3px; color:var(--muted); text-transform:uppercase; }
+.portrait-col::after { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 80% 60% at 50% 100%,rgba(140,98,0,.18),transparent),radial-gradient(ellipse 60% 40% at 50% 0%,rgba(180,130,10,.08),transparent); pointer-events:none; }
+
+.info-col { padding:28px 32px; display:flex; flex-direction:column; justify-content:center; gap:0; }
+.codename { font-family:var(--mono); font-size:8px; letter-spacing:6px; color:var(--gold-mid); text-transform:uppercase; margin-bottom:10px; display:flex; align-items:center; gap:10px; }
+.codename::before { content:'◈'; color:var(--gold); font-size:10px; }
+.name { font-family:var(--bebas); font-size:clamp(38px,5vw,64px); letter-spacing:4px; color:var(--ink); line-height:1; margin-bottom:4px; text-shadow:0 2px 40px rgba(180,130,10,.15); }
+.name-kana { font-family:var(--disp); font-style:italic; font-size:13px; letter-spacing:3px; color:var(--gold); opacity:.75; margin-bottom:18px; }
+.epithet { font-family:var(--disp); font-style:italic; font-size:15px; line-height:1.8; color:var(--ink2); opacity:.8; border-left:2px solid var(--gold-dark); padding-left:16px; margin-bottom:20px; }
+.tag-row { display:flex; flex-wrap:wrap; gap:5px; }
+.tag { font-family:var(--mono); font-size:7px; letter-spacing:2px; text-transform:uppercase; padding:3px 10px; border:1px solid var(--border); color:var(--muted); background:rgba(180,130,10,.04); }
+.tag.hi { border-color:var(--border-hi); color:var(--gold-hi); background:rgba(180,130,10,.10); }
+
+.strip-col { width:90px; flex-shrink:0; border-left:1px solid var(--border); display:flex; flex-direction:column; }
+.strip-item { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:12px 8px; border-bottom:1px solid var(--border); text-align:center; gap:4px; }
+.strip-item:last-child { border-bottom:none; }
+.strip-val { font-family:var(--bebas); font-size:28px; color:var(--gold-hi); line-height:1; text-shadow:0 0 16px rgba(220,180,20,.3); }
+.strip-val.sm { font-size:15px; color:var(--ink2); }
+.strip-key { font-family:var(--mono); font-size:6.5px; letter-spacing:3px; color:var(--muted); text-transform:uppercase; }
+
+.ea-row { display:flex; align-items:center; gap:12px; padding:8px 16px; border-top:1px solid var(--border); background:rgba(180,130,10,.04); }
+.ea-track { flex:1; height:4px; background:rgba(180,130,10,.1); border:1px solid var(--border); position:relative; }
+.ea-fill { height:100%; width:100%; background:linear-gradient(90deg,var(--gold-dark),var(--gold),var(--gold-hi)); position:relative; }
+.ea-fill::after { content:''; position:absolute; right:-1px; top:-3px; bottom:-3px; width:2px; background:var(--gold-pale); box-shadow:0 0 10px var(--gold),0 0 20px rgba(240,200,40,.4); }
+.ea-label { font-family:var(--mono); font-size:8px; letter-spacing:2px; color:var(--muted); white-space:nowrap; }
+.ea-val { font-family:var(--bebas); font-size:18px; color:var(--gold-hi); letter-spacing:1px; }
+
+/* ATRIBUTOS */
+.attrs-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:1px; background:var(--border); border:1px solid var(--border-hi); }
+.attr-cell { background:var(--panel); padding:16px 12px; display:flex; flex-direction:column; align-items:center; gap:6px; position:relative; overflow:hidden; transition:background .2s; }
+.attr-cell:hover { background:var(--panel2); }
+.attr-cell::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--gold-dark),transparent); opacity:0; transition:opacity .2s; }
+.attr-cell:hover::before { opacity:1; }
+.attr-cell.hi { background:rgba(180,130,10,.06); }
+.attr-cell.hi::before { opacity:.6; }
+.attr-name { font-family:var(--mono); font-size:7px; letter-spacing:3px; color:var(--muted); text-transform:uppercase; }
+.attr-num { font-family:var(--bebas); font-size:40px; color:var(--ink); line-height:1; }
+.attr-cell.hi .attr-num { color:var(--gold-hi); text-shadow:0 0 20px rgba(220,180,20,.25); }
+.attr-bonus { font-family:var(--mono); font-size:7px; color:var(--gold-mid); letter-spacing:1px; }
+
+/* PERÍCIAS */
+.skills-shell { border:1px solid var(--border); background:var(--panel); overflow:hidden; }
+.skills-head { display:flex; align-items:center; justify-content:space-between; padding:7px 16px; background:rgba(180,130,10,.07); border-bottom:1px solid var(--border); }
+.skills-head-txt { font-family:var(--mono); font-size:7px; letter-spacing:4px; text-transform:uppercase; color:var(--gold-mid); }
+.sk-cols { display:grid; grid-template-columns:repeat(5,1fr); }
+.sk-col { border-right:1px solid var(--border); }
+.sk-col:last-child { border-right:none; }
+.sk-col-head { padding:5px 10px; background:rgba(180,130,10,.08); font-family:var(--mono); font-size:7px; letter-spacing:4px; text-transform:uppercase; color:var(--gold); border-bottom:1px solid var(--border); }
+.sk-item { display:flex; justify-content:space-between; align-items:center; padding:4px 10px; border-bottom:1px solid rgba(180,130,10,.05); transition:background .1s; }
+.sk-item:hover { background:rgba(180,130,10,.05); }
+.sk-item:last-child { border-bottom:none; }
+.sk-n { font-family:var(--serif); font-size:11px; color:var(--muted); }
+.sk-v { font-family:var(--mono); font-size:8px; color:var(--muted); }
+.sk-item.p .sk-n { color:var(--ink2); }
+.sk-item.p .sk-v { color:var(--gold-hi); }
+.sk-item.pp .sk-n { color:var(--ink); font-weight:700; }
+.sk-item.pp .sk-v { color:var(--gold-hi); font-weight:bold; font-size:9px; }
+
+/* ITEM */
+.item-shell { border:1px solid var(--border-hi); background:var(--panel2); display:grid; grid-template-columns:4px 1fr; overflow:hidden; }
+.item-accent { background:linear-gradient(180deg,var(--gold),var(--gold-dark)); }
+.item-body { padding:18px 22px; }
+.item-title { font-family:var(--bebas); font-size:18px; letter-spacing:3px; color:var(--ink); margin-bottom:6px; }
+.item-desc { font-family:var(--serif); font-size:13px; color:var(--ink2); line-height:1.75; opacity:.88; }
+.item-badge { display:inline-block; margin-top:12px; font-family:var(--mono); font-size:8px; letter-spacing:3px; padding:4px 14px; border:1px solid var(--border-hi); color:var(--gold-hi); background:rgba(180,130,10,.08); }
+
+/* TÉCNICAS */
+.tec-layout { display:grid; grid-template-columns:80px 1fr; border:1px solid var(--border); background:var(--panel); overflow:hidden; }
+.tec-tabs { display:flex; flex-direction:column; background:var(--panel2); border-right:1px solid var(--border); }
+.tec-tab { padding:14px 0; text-align:center; font-family:var(--mono); font-size:7px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); cursor:pointer; border-bottom:1px solid var(--border); display:flex; flex-direction:column; align-items:center; gap:4px; transition:all .2s; user-select:none; }
+.tec-tab:last-child { border-bottom:none; }
+.tec-tab-icon { font-size:18px; font-family:var(--bebas); color:inherit; line-height:1; }
+.tec-tab:hover:not(.on) { background:rgba(180,130,10,.06); color:var(--ink2); }
+.tec-tab.on { background:rgba(180,130,10,.12); color:var(--gold-hi); border-right:3px solid var(--gold); margin-right:-1px; }
+.tec-body { min-width:0; }
+.tec-panel { display:none; padding:24px; opacity:0; transition:opacity .2s; }
+.tec-panel.on { display:block; opacity:1; }
+.tec-panel.out { display:block; opacity:0; }
+.tec-head { display:flex; align-items:baseline; flex-wrap:wrap; gap:10px; padding-bottom:14px; margin-bottom:16px; border-bottom:1px solid var(--border); }
+.tec-head-name { font-family:var(--bebas); font-size:20px; letter-spacing:3px; color:var(--ink); }
+.tec-head-kana { font-family:var(--disp); font-style:italic; font-size:12px; color:var(--gold); }
+.tec-badge { margin-left:auto; font-family:var(--mono); font-size:8px; letter-spacing:2px; padding:4px 12px; border:1px solid var(--border-hi); color:var(--gold-hi); background:rgba(180,130,10,.08); white-space:nowrap; }
+.tec-desc { font-family:var(--serif); font-size:13px; color:var(--ink2); line-height:1.85; margin-bottom:16px; opacity:.92; padding:12px 16px; border-left:2px solid var(--gold-dark); background:rgba(180,130,10,.04); }
+.tec-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:8px; }
+.tc { background:var(--panel2); border:1px solid var(--border); padding:12px 14px; position:relative; overflow:hidden; }
+.tc::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,var(--gold-dark),transparent); opacity:.6; }
+.tc-id { font-family:var(--mono); font-size:7px; letter-spacing:3px; color:rgba(180,130,10,.35); margin-bottom:4px; }
+.tc-name { font-family:var(--bebas); font-size:14px; letter-spacing:2px; color:var(--ink); margin-bottom:2px; }
+.tc-kana { font-family:var(--disp); font-style:italic; font-size:11px; color:var(--gold); opacity:.7; margin-bottom:8px; display:block; }
+.tc-sep { height:1px; background:linear-gradient(90deg,var(--border),transparent); margin-bottom:8px; }
+.tc-text { font-family:var(--serif); font-size:12.5px; color:var(--ink2); line-height:1.78; }
+.tc-tag { display:inline-block; margin-top:8px; font-family:var(--mono); font-size:7px; letter-spacing:2px; padding:2px 9px; border:1px solid var(--border); color:var(--gold); text-transform:uppercase; }
+.tc-tag.r { border-color:rgba(200,60,60,.3); color:rgba(240,110,110,.7); }
+.tc-tag.g { border-color:rgba(60,180,80,.3); color:rgba(90,210,110,.7); }
+
+.ptable { width:100%; border-collapse:collapse; }
+.ptable th { font-family:var(--mono); font-size:7px; letter-spacing:4px; text-transform:uppercase; color:var(--gold); padding:7px 12px; border-bottom:1px solid var(--border-hi); text-align:left; background:rgba(180,130,10,.07); }
+.ptable td { padding:6px 12px; border-bottom:1px solid rgba(180,130,10,.06); font-family:var(--serif); font-size:12.5px; color:var(--ink2); }
+.ptable tr:hover td { background:rgba(180,130,10,.04); }
+.ptable .cost { font-family:var(--mono); font-size:10px; color:var(--gold-hi); text-align:right; white-space:nowrap; }
+.ptable .fx { color:var(--ink); font-style:italic; }
+
+/* LORE */
+.lore-wrap { border:1px solid var(--border); background:var(--panel); overflow:hidden; }
+.lore-entry { display:grid; grid-template-columns:56px 1fr; border-bottom:1px solid var(--border); }
+.lore-entry:last-child { border-bottom:none; }
+.lore-num { padding:22px 12px; font-family:var(--bebas); font-size:32px; color:rgba(180,130,10,.18); border-right:1px solid var(--border); text-align:center; line-height:1; display:flex; align-items:flex-start; justify-content:center; padding-top:24px; }
+.lore-content { padding:22px 24px; }
+.lore-title { font-family:var(--bebas); font-size:17px; letter-spacing:3px; color:var(--gold-hi); margin-bottom:8px; }
+.lore-text { font-family:var(--serif); font-size:13px; color:var(--ink2); line-height:1.85; opacity:.9; }
+.lore-note { font-family:var(--mono); font-size:8px; color:rgba(180,130,10,.45); margin-top:8px; letter-spacing:2px; font-style:italic; }
+
+.profile-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:1px; background:var(--border); border:1px solid var(--border); }
+.profile-cell { background:var(--panel); padding:16px 18px; }
+.profile-key { font-family:var(--mono); font-size:7px; letter-spacing:4px; text-transform:uppercase; color:var(--gold-mid); margin-bottom:7px; }
+.profile-val { font-family:var(--serif); font-size:13px; color:var(--ink2); line-height:1.75; }
+
+.stamp { text-align:center; padding:32px 0 8px; font-family:var(--mono); font-size:7px; letter-spacing:5px; color:rgba(180,130,10,.2); text-transform:uppercase; }
+
+#pt { position:fixed; inset:0; z-index:500; pointer-events:none; display:none; }
+#pt-line { position:fixed; left:0; right:0; height:2px; z-index:501; pointer-events:none; display:none; top:0; background:linear-gradient(90deg,transparent,var(--gold-dark) 15%,var(--gold-hi) 50%,var(--gold-dark) 85%,transparent); box-shadow:0 0 12px var(--gold),0 0 28px rgba(200,160,20,.35); }
+
+/* ── WIDGETS WRAPPER (bottom-left, stacked) ── */
+#widgets {
+  position:fixed; bottom:24px; left:24px; z-index:300;
+  display:flex; flex-direction:column; gap:8px; align-items:flex-start;
+}
+
+/* shared panel shell */
+#music-player, #calc-widget {
+  background:rgba(7,5,1,.97); border:1px solid var(--border-hi);
+  backdrop-filter:blur(20px); box-shadow:0 0 40px rgba(180,130,10,.12),0 8px 32px rgba(0,0,0,.6);
+  font-family:var(--mono); width:260px;
+}
+
+/* ── MUSIC PLAYER ── */
+.mp-header {
+  display:flex; align-items:center; gap:10px; padding:11px 16px;
+  background:rgba(180,130,10,.07); border-bottom:1px solid var(--border);
+  cursor:pointer; user-select:none;
+}
+.mp-header:hover { background:rgba(180,130,10,.12); }
+.mp-icon { font-size:14px; color:var(--gold-hi); }
+.mp-title { font-size:7.5px; letter-spacing:4px; text-transform:uppercase; color:var(--gold); flex:1; }
+.mp-toggle { font-size:8px; color:var(--muted); letter-spacing:2px; transition:transform .3s; }
+.mp-toggle.open { transform:rotate(180deg); }
+.mp-body { overflow:hidden; max-height:0; transition:max-height .4s cubic-bezier(.4,0,.2,1); }
+.mp-body.open { max-height:340px; }
+.mp-inner { padding:18px 16px 16px; }
+
+.mp-track-name {
+  font-size:9.5px; letter-spacing:3px; color:var(--gold-hi); text-transform:uppercase;
+  margin-bottom:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+
+.mp-progress-wrap { margin-bottom:14px; cursor:pointer; }
+.mp-progress-bg { height:3px; background:rgba(180,130,10,.12); border:1px solid var(--border); position:relative; }
+.mp-progress-fill { height:100%; background:linear-gradient(90deg,var(--gold-dark),var(--gold-hi)); width:0%; transition:width .4s linear; pointer-events:none; }
+.mp-time { display:flex; justify-content:space-between; font-size:7px; color:var(--muted); margin-top:5px; letter-spacing:1px; }
+
+.mp-playlist { margin-bottom:14px; }
+.mp-pl-item {
+  display:flex; align-items:center; gap:8px; padding:7px 8px;
+  border-bottom:1px solid rgba(180,130,10,.05); cursor:pointer; transition:background .15s;
+}
+.mp-pl-item:last-child { border-bottom:none; }
+.mp-pl-item:hover { background:rgba(180,130,10,.07); }
+.mp-pl-item.playing { background:rgba(180,130,10,.1); }
+.mp-pl-num { font-size:7px; color:rgba(180,130,10,.35); width:14px; text-align:center; }
+.mp-pl-name { font-size:8.5px; color:var(--ink2); flex:1; }
+.mp-pl-item.playing .mp-pl-name { color:var(--gold-hi); }
+.mp-pl-dot { width:5px; height:5px; border-radius:50%; background:var(--gold); box-shadow:0 0 6px var(--gold); display:none; }
+.mp-pl-item.playing .mp-pl-dot { display:block; }
+
+.mp-controls { display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:12px; }
+.mp-btn {
+  background:none; border:1px solid var(--border); color:var(--muted); cursor:pointer;
+  width:30px; height:30px; display:flex; align-items:center; justify-content:center;
+  font-size:11px; transition:all .2s;
+}
+.mp-btn:hover { border-color:var(--border-hi); color:var(--gold-hi); background:rgba(180,130,10,.08); }
+.mp-btn.play { width:38px; height:38px; border-color:var(--gold-dark); color:var(--gold); font-size:14px; }
+.mp-btn.play:hover { border-color:var(--gold-hi); color:var(--gold-hi); box-shadow:0 0 12px rgba(180,130,10,.25); }
+.mp-vol-row { display:flex; align-items:center; gap:10px; }
+.mp-vol-label { font-size:7px; color:var(--muted); letter-spacing:2px; }
+.mp-vol-slider { flex:1; -webkit-appearance:none; appearance:none; height:3px; background:rgba(180,130,10,.12); border:1px solid var(--border); outline:none; cursor:pointer; }
+.mp-vol-slider::-webkit-slider-thumb { -webkit-appearance:none; width:10px; height:10px; background:var(--gold); cursor:pointer; }
+
+/* ── CALCULATOR ── */
+.cw-header {
+  display:flex; align-items:center; gap:10px; padding:11px 16px;
+  background:rgba(180,130,10,.07); border-bottom:1px solid var(--border);
+  cursor:pointer; user-select:none;
+}
+.cw-header:hover { background:rgba(180,130,10,.12); }
+.cw-icon { font-size:14px; color:var(--gold-hi); }
+.cw-title { font-size:7.5px; letter-spacing:4px; text-transform:uppercase; color:var(--gold); flex:1; }
+.cw-toggle { font-size:8px; color:var(--muted); letter-spacing:2px; transition:transform .3s; }
+.cw-toggle.open { transform:rotate(180deg); }
+.cw-body { overflow:hidden; max-height:0; transition:max-height .4s cubic-bezier(.4,0,.2,1); }
+.cw-body.open { max-height:420px; }
+.cw-inner { padding:16px; }
+
+.cw-display {
+  background:var(--panel2); border:1px solid var(--border); padding:10px 14px;
+  margin-bottom:12px; text-align:right; min-height:58px;
+}
+.cw-expr { font-size:8px; letter-spacing:1px; color:var(--muted); min-height:13px; word-break:break-all; }
+.cw-result { font-family:var(--bebas); font-size:30px; color:var(--gold-hi); line-height:1; letter-spacing:2px; word-break:break-all; }
+
+.cw-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:5px; }
+.cw-btn {
+  background:var(--panel2); border:1px solid var(--border); color:var(--ink2);
+  font-family:var(--mono); font-size:11px; letter-spacing:1px; padding:10px 4px;
+  cursor:pointer; transition:all .15s; text-align:center;
+}
+.cw-btn:hover { border-color:var(--border-hi); color:var(--gold-hi); background:rgba(180,130,10,.08); }
+.cw-btn:active { background:rgba(180,130,10,.15); }
+.cw-btn.op { color:var(--gold); border-color:var(--gold-dark); }
+.cw-btn.op:hover { border-color:var(--gold-hi); color:var(--gold-hi); background:rgba(180,130,10,.12); }
+.cw-btn.eq { background:rgba(180,130,10,.1); border-color:var(--gold-dark); color:var(--gold-hi); grid-column:span 2; }
+.cw-btn.eq:hover { background:rgba(180,130,10,.2); border-color:var(--gold-hi); box-shadow:0 0 12px rgba(180,130,10,.2); }
+.cw-btn.clr { color:rgba(240,100,80,.7); border-color:rgba(240,100,80,.2); }
+.cw-btn.clr:hover { color:rgba(240,130,110,.9); border-color:rgba(240,100,80,.5); background:rgba(200,60,60,.06); }
+.cw-btn.wide { grid-column:span 2; }
+</style>
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+<canvas id="pt"></canvas>
+<div id="pt-line"></div>
+
+<nav>
+  <div class="nav-brand">
+    <div>
+      <div class="nav-brand-kanji">資本家</div>
+      <div class="nav-brand-sub">Hanzo · Masayoshi</div>
+    </div>
+  </div>
+  <div class="nav-tabs">
+    <button class="nav-tab on" onclick="goTab('ficha',this)">Ficha</button>
+    <button class="nav-tab" onclick="goTab('tecnicas',this)">Técnicas</button>
+    <button class="nav-tab" onclick="goTab('historia',this)">História</button>
+  </div>
+</nav>
+
+<!-- FICHA -->
+<div class="page on" id="page-ficha">
+<div class="wrap">
+
+  <div class="masthead">
+    <div class="masthead-inner">
+      <div class="portrait-col">
+        <img src="membros/hanzo.png" alt="Hanzo" style="width:100%;height:100%;object-fit:cover;object-position:center top;position:absolute;inset:0;opacity:.85;">
+      </div>
+      <div class="info-col">
+        <div class="codename">Feiticeiro · Escola de Kyoto · Clã Masayoshi</div>
+        <div class="name">Hanzo Masayoshi</div>
+        <div class="name-kana">資本家 · O Capitalista · 23 anos · Grau Indefinido</div>
+        <div class="epithet">
+          "Caloroso, persuasivo, gente finíssima.<br>
+          A frieza do cálculo escondida sob sorriso genuíno."
+        </div>
+        <div class="tag-row">
+          <span class="tag hi">Neutro Declarado</span>
+          <span class="tag hi">Nível 1 · Máx 200</span>
+          <span class="tag">Alto · Fibrado</span>
+          <span class="tag">Cabelos Prateados</span>
+          <span class="tag hi">Infraestrutura</span>
+        </div>
+      </div>
+      <div class="strip-col">
+        <div class="strip-item">
+          <div class="strip-key">Vida</div>
+          <div class="strip-val">25</div>
+        </div>
+        <div class="strip-item">
+          <div class="strip-key">Defesa</div>
+          <div class="strip-val">12</div>
+        </div>
+        <div class="strip-item">
+          <div class="strip-key">Percepção</div>
+          <div class="strip-val sm">13</div>
+        </div>
+        <div class="strip-item">
+          <div class="strip-key">Classe</div>
+          <div class="strip-val sm" style="font-size:11px;letter-spacing:1px;">Feiticeiro</div>
+        </div>
+      </div>
+    </div>
+    <div class="ea-row">
+      <span class="ea-label">Energia Amaldiçoada</span>
+      <div class="ea-track"><div class="ea-fill"></div></div>
+      <span class="ea-val">150 / 150</span>
+    </div>
+  </div>
+
+  <div class="label">Capital</div>
+  <div style="border:1px solid var(--border-hi);background:var(--panel2);display:flex;align-items:center;justify-content:space-between;padding:14px 24px;gap:24px;position:relative;overflow:hidden;">
+    <div style="position:absolute;inset:0;background:repeating-linear-gradient(-60deg,transparent,transparent 12px,rgba(180,130,10,.015) 12px,rgba(180,130,10,.015) 13px);pointer-events:none;"></div>
+    <div>
+      <div style="font-family:var(--mono);font-size:7px;letter-spacing:5px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Capital Disponível</div>
+      <div style="font-family:var(--bebas);font-size:42px;color:var(--gold-hi);letter-spacing:4px;line-height:1;text-shadow:0 0 30px rgba(220,180,20,.25);">1.000 ¥</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-family:var(--mono);font-size:7px;letter-spacing:4px;color:var(--muted);margin-bottom:6px;">XP = Capital ÷ 5</div>
+      <div style="font-family:var(--serif);font-style:italic;font-size:12px;color:var(--ink2);">Não ganha XP naturalmente<br>Nível máximo: <span style="color:var(--gold-hi)">200</span></div>
+    </div>
+    <div style="text-align:right;">
+      <div style="font-family:var(--mono);font-size:7px;letter-spacing:4px;color:var(--muted);margin-bottom:4px;">Nível Atual</div>
+      <div style="font-family:var(--bebas);font-size:52px;color:var(--gold);letter-spacing:2px;line-height:1;">1</div>
+    </div>
+  </div>
+
+  <div class="label">Atributos</div>
+  <div style="font-family:var(--mono);font-size:7px;letter-spacing:3px;color:var(--muted);margin-bottom:8px;padding-left:2px;">
+    ★ Inclui bônus de Origem — <span style="color:var(--gold)">INT +2 · PRE +2</span> (passiva automática do Capitalista)
+  </div>
+  <div class="attrs-grid">
+    <div class="attr-cell">
+      <div class="attr-name">Força</div>
+      <div class="attr-num">1</div>
+      <div class="attr-bonus">base</div>
+    </div>
+    <div class="attr-cell">
+      <div class="attr-name">Agilidade</div>
+      <div class="attr-num">2</div>
+      <div class="attr-bonus">base</div>
+    </div>
+    <div class="attr-cell">
+      <div class="attr-name">Constituição</div>
+      <div class="attr-num">1</div>
+      <div class="attr-bonus">base</div>
+    </div>
+    <div class="attr-cell hi">
+      <div class="attr-name">Inteligência</div>
+      <div class="attr-num">5</div>
+      <div class="attr-bonus">3 base + 2 ★</div>
+    </div>
+    <div class="attr-cell hi">
+      <div class="attr-name">Presença</div>
+      <div class="attr-num">3</div>
+      <div class="attr-bonus">1 base + 2 ★</div>
+    </div>
+  </div>
+
+  <div class="label">Perícias</div>
+  <div class="skills-shell">
+    <div class="skills-head">
+      <span class="skills-head-txt">Proficiente · +5 no valor final e em todo dano usando EA</span>
+      <span style="font-family:var(--mono);font-size:7px;letter-spacing:3px;color:var(--gold-mid);">★ inclui bônus de origem</span>
+    </div>
+    <div class="sk-cols">
+      <div class="sk-col">
+        <div class="sk-col-head">Força</div>
+        <div class="sk-item pp"><span class="sk-n">Luta</span><span class="sk-v">+10 ★</span></div>
+        <div class="sk-item pp"><span class="sk-n">Tankar</span><span class="sk-v">+5</span></div>
+      </div>
+      <div class="sk-col">
+        <div class="sk-col-head">Agilidade</div>
+        <div class="sk-item pp"><span class="sk-n">Esquiva</span><span class="sk-v">+5</span></div>
+        <div class="sk-item pp"><span class="sk-n">Iniciativa</span><span class="sk-v">+10</span></div>
+        <div class="sk-item"><span class="sk-n">Rastreamento</span><span class="sk-v">—</span></div>
+        <div class="sk-item"><span class="sk-n">Furtividade</span><span class="sk-v">—</span></div>
+      </div>
+      <div class="sk-col">
+        <div class="sk-col-head">Inteligência</div>
+        <div class="sk-item pp"><span class="sk-n">Feitiçaria</span><span class="sk-v">+5</span></div>
+        <div class="sk-item"><span class="sk-n">Investigação</span><span class="sk-v">—</span></div>
+        <div class="sk-item"><span class="sk-n">História</span><span class="sk-v">—</span></div>
+        <div class="sk-item"><span class="sk-n">Ocultismo</span><span class="sk-v">—</span></div>
+        <div class="sk-item"><span class="sk-n">Ofício</span><span class="sk-v">—</span></div>
+        <div class="sk-item pp"><span class="sk-n">Aprendizado</span><span class="sk-v">+5</span></div>
+      </div>
+      <div class="sk-col">
+        <div class="sk-col-head">Constituição</div>
+        <div class="sk-item"><span class="sk-n">Sobrevivência</span><span class="sk-v">—</span></div>
+        <div class="sk-item pp"><span class="sk-n">Medicina</span><span class="sk-v">+5</span></div>
+        <div class="sk-item"><span class="sk-n">Disciplina</span><span class="sk-v">—</span></div>
+        <div class="sk-item pp"><span class="sk-n">Fortitude</span><span class="sk-v">+5</span></div>
+      </div>
+      <div class="sk-col">
+        <div class="sk-col-head">Presença</div>
+        <div class="sk-item"><span class="sk-n">Percepção</span><span class="sk-v">—</span></div>
+        <div class="sk-item pp"><span class="sk-n">Persuasão</span><span class="sk-v">+10 ★</span></div>
+        <div class="sk-item"><span class="sk-n">Intimidação</span><span class="sk-v">—</span></div>
+        <div class="sk-item"><span class="sk-n">Enganação</span><span class="sk-v">—</span></div>
+        <div class="sk-item pp"><span class="sk-n">Etiqueta</span><span class="sk-v">+5</span></div>
+        <div class="sk-item"><span class="sk-n">Religião</span><span class="sk-v">—</span></div>
+        <div class="sk-item pp"><span class="sk-n">Intuição</span><span class="sk-v">+5</span></div>
+      </div>
+    </div>
+  </div>
+  <div style="font-family:var(--mono);font-size:7px;letter-spacing:2px;color:rgba(180,130,10,.4);margin-top:6px;padding-left:2px;">
+    ★ Luta: +5 origem + +5 prof. = +10 &nbsp;·&nbsp; Persuasão: +5 origem + +5 prof. = +10
+  </div>
+
+  <div class="label">Item Exclusivo</div>
+  <div class="item-shell">
+    <div class="item-accent"></div>
+    <div class="item-body">
+      <div class="item-title">Uniforme com Acessório Especial</div>
+      <div class="item-desc">Um uniforme de corte impecável, aparentemente mundano. O acessório que o acompanha ressoa com algo que não é apenas matéria — capital investido em forma permanente. Não pode ser removido enquanto o contrato estiver ativo.</div>
+      <div class="item-badge">+2d4 em TODOS os ataques · Permanente</div>
+    </div>
+  </div>
+
+  <div class="stamp">// tudo tem um valor · tudo tem um preço · ele sempre sabe qual é //</div>
+</div>
+</div>
+
+<!-- TÉCNICAS -->
+<div class="page" id="page-tecnicas">
+<div class="wrap">
+
+  <div class="label">Técnicas — 資本家 · Shihonka</div>
+
+  <div class="tec-layout">
+    <div class="tec-tabs">
+      <div class="tec-tab on" onclick="tecSwitch(0,this)">
+        <div class="tec-tab-icon">資</div>
+        <span>Passiva</span>
+      </div>
+      <div class="tec-tab" onclick="tecSwitch(1,this)">
+        <div class="tec-tab-icon">流</div>
+        <span>Fluxo</span>
+      </div>
+      <div class="tec-tab" onclick="tecSwitch(2,this)">
+        <div class="tec-tab-icon">融</div>
+        <span>Juros</span>
+      </div>
+      <div class="tec-tab" onclick="tecSwitch(3,this)">
+        <div class="tec-tab-icon">損</div>
+        <span>Stop</span>
+      </div>
+      <div class="tec-tab" onclick="tecSwitch(4,this)">
+        <div class="tec-tab-icon">独</div>
+        <span>Monop.</span>
+      </div>
+      <div class="tec-tab" onclick="tecSwitch(5,this)">
+        <div class="tec-tab-icon">ク</div>
+        <span>Créd.</span>
+      </div>
+    </div>
+    <div class="tec-body">
+
+      <div class="tec-panel on">
+        <div class="tec-head">
+          <div>
+            <div class="tec-head-name">O Capitalista — 資本家 · Shihonka</div>
+            <div class="tec-head-kana">Técnica Inata · Passiva Permanente</div>
+          </div>
+          <span class="tec-badge">Sempre Ativa</span>
+        </div>
+        <div class="tec-desc">Tudo ao redor do usuário é percebido com valores e preços, escalando com a complexidade e estrutura de cada coisa. Facilidade e sorte extrema em encontrar dinheiro — sua lábia é inigualável.</div>
+        <div class="tec-cards">
+          <div class="tc">
+            <div class="tc-id">CAP-01</div>
+            <div class="tc-name">Percepção de Valor</div>
+            <span class="tc-kana">価値認識 · enxerga o preço de tudo</span>
+            <div class="tc-sep"></div>
+            <div class="tc-text">Qualquer coisa observada é automaticamente precificada. Informação constante, passiva e impossível de desligar.</div>
+            <span class="tc-tag">Passiva · Permanente</span>
+          </div>
+          <div class="tc">
+            <div class="tc-id">CAP-02</div>
+            <div class="tc-name">Diálogo Universal</div>
+            <span class="tc-kana">万能対話 · fala com qualquer criatura</span>
+            <div class="tc-sep"></div>
+            <div class="tc-text">Consegue dialogar com toda e qualquer criatura, mesmo que por definição seja burra ou inapta. Eventualmente chega a resolução boa para ambos.</div>
+            <span class="tc-tag">Ativo · Ação</span>
+          </div>
+          <div class="tc">
+            <div class="tc-id">CAP-03</div>
+            <div class="tc-name">Bônus de Origem</div>
+            <span class="tc-kana">起源補正 · a mentalidade aguçada</span>
+            <div class="tc-sep"></div>
+            <div class="tc-text"><b style="color:var(--gold-hi)">+2 INT · +2 PRE</b> automáticos. <b style="color:var(--gold-hi)">+5 Luta</b> (comprou previamente só pra se garantir). <b style="color:var(--gold-hi)">+5 Persuasão</b>. EA estoque aumentado.</div>
+            <span class="tc-tag">Passiva · Aplicado na Ficha</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tec-panel">
+        <div class="tec-head">
+          <div>
+            <div class="tec-head-name">Fluxo de Capital — 資本流動 · Shihon Ryūdō</div>
+            <div class="tec-head-kana">Ação Livre ou Reação · dura até o fim do combate</div>
+          </div>
+          <span class="tec-badge">Ação Livre / Reação</span>
+        </div>
+        <div class="tec-desc">O Universo FAVORECE o filantropismo. Tudo que pode ser idealizado pode ser comprado pelo preço certo — desde ações e dano até criação de locais permanentes. Tudo tem um preço.</div>
+        <div style="font-family:var(--mono);font-size:7px;letter-spacing:4px;color:var(--gold-mid);text-transform:uppercase;margin-bottom:8px;">Tabela de Preços</div>
+        <table class="ptable">
+          <thead><tr><th>Compra</th><th>Efeito</th><th style="text-align:right">¥ Custo</th></tr></thead>
+          <tbody>
+            <tr><td>+1d4 dano</td><td class="fx">Próximo ataques</td><td class="cost">50</td></tr>
+            <tr><td>+1d6 dano</td><td class="fx">Próximo ataques</td><td class="cost">100</td></tr>
+            <tr><td>+1d8 dano</td><td class="fx">Próximo ataques</td><td class="cost">150</td></tr>
+            <tr><td>+1d10 dano</td><td class="fx">Próximo ataques</td><td class="cost">200</td></tr>
+            <tr><td>Ataque Extra</td><td class="fx">+1 ataque no turno</td><td class="cost">300</td></tr>
+            <tr><td>Ação Bônus</td><td class="fx">Ação bônus extra</td><td class="cost">250</td></tr>
+            <tr><td>Movimento Extra</td><td class="fx">Dobra o movimento</td><td class="cost">150</td></tr>
+            <tr><td>Reação Extra</td><td class="fx">+1 reação</td><td class="cost">200</td></tr>
+            <tr><td>+1 Perícia</td><td class="fx">Qualquer teste</td><td class="cost">100</td></tr>
+            <tr><td>+1 Atributo</td><td class="fx">Temporário</td><td class="cost">300</td></tr>
+            <tr><td>Cura</td><td class="fx">9d6+2d4+5 HP</td><td class="cost">150</td></tr>
+            <tr><td>Escudo</td><td class="fx">Absorve dano 1:1</td><td class="cost">1:1</td></tr>
+            <tr><td>Criação de Local</td><td class="fx">Local perm. + staff + lucros</td><td class="cost">5.000+</td></tr>
+            <tr><td>Outra Coisa</td><td class="fx">A critério do Mestre</td><td class="cost">???</td></tr>
+          </tbody>
+        </table>
+        <div style="font-family:var(--mono);font-size:7px;color:var(--muted);margin-top:8px;letter-spacing:1px;border-left:2px solid var(--border);padding-left:10px;">
+          Ações: máx +5 cada · duram todo combate &nbsp;·&nbsp; Danos: apenas próximo golpe
+        </div>
+      </div>
+
+      <div class="tec-panel">
+        <div class="tec-head">
+          <div>
+            <div class="tec-head-name">Empréstimo com Juros — 融資 · Yūshi</div>
+            <div class="tec-head-kana">Reação ou Ação Bônus · retorno dobrado ao acertar</div>
+          </div>
+          <span class="tec-badge">Reação / Ação Bônus</span>
+        </div>
+        <div class="tec-desc">Investe Capital em qualquer ação ou alvo, declarando o resultado esperado. Ao acertar a aposta, recebe o dobro do valor apostado. Sem limite de valor.</div>
+        <div class="tec-cards">
+          <div class="tc">
+            <div class="tc-id">YUS-01</div>
+            <div class="tc-name">Aposta Declarada</div>
+            <span class="tc-kana">賭け · capital no resultado</span>
+            <div class="tc-sep"></div>
+            <div class="tc-text">Investe qualquer valor declarando o resultado esperado. Ex: "Meu aliado acertará seu próximo golpe — aposto 500."</div>
+            <span class="tc-tag">Sem Limite</span>
+          </div>
+          <div class="tc">
+            <div class="tc-id">YUS-02</div>
+            <div class="tc-name">Retorno Dobrado</div>
+            <span class="tc-kana">倍返し · 500→1.000→2.000</span>
+            <div class="tc-sep"></div>
+            <div class="tc-text">Ao acertar: recebe exatamente o dobro apostado. O Universo recompensa quem sabe para onde apostar.</div>
+            <span class="tc-tag g">×2 Capital</span>
+          </div>
+          <div class="tc">
+            <div class="tc-id">YUS-03</div>
+            <div class="tc-name">Condição de Uso</div>
+            <span class="tc-kana">条件 · a palavra tem valor</span>
+            <div class="tc-sep"></div>
+            <div class="tc-text">Bloqueado se endividado. Não pode combinar com Crédito enquanto há dívida ativa.</div>
+            <span class="tc-tag r">Bloqueado em Dívida</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tec-panel">
+        <div class="tec-head">
+          <div>
+            <div class="tec-head-name">Stop Loss — 損切り · Songiri</div>
+            <div class="tec-head-kana">Reação · ativação automática ao receber dano acima do limite</div>
+          </div>
+          <span class="tec-badge">Reação · Auto</span>
+        </div>
+        <div class="tec-desc">Ao receber dano acima de um limite, o Capitalista converte automaticamente o excesso em Capital. Prejuízo virou investimento.</div>
+        <div class="tec-cards">
+          <div class="tc">
+            <div class="tc-id">SON-01</div>
+            <div class="tc-name">Conversão de Dano</div>
+            <span class="tc-kana">損→益 · dano é retorno</span>
+            <div class="tc-sep"></div>
+            <div class="tc-text">Dano recebido acima do limite de vida é convertido em Capital. Quanto mais forte o golpe inimigo, mais recursos Hanzo acumula. O golpe gera seu dano exato como Capital, e Hanzo fica com 1 de HP</div>
+            <span class="tc-tag">Reação · Automático</span>
+          </div>
+          <div class="tc">
+            <div class="tc-id">SON-02</div>
+            <div class="tc-name">Custo Operacional</div>
+            <span class="tc-kana">運用コスト · derrota é aprendizado pago</span>
+            <div class="tc-sep"></div>
+            <div class="tc-text">Para Hanzo, levar dano não é fraqueza — é custo operacional. Todo custo pode ser transformado em capital futuro.</div>
+            <span class="tc-tag">Filosofia · Passiva</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tec-panel">
+        <div class="tec-head">
+          <div>
+            <div class="tec-head-name">Monopólio — 独占市場 · Dokusen Shijō</div>
+            <div class="tec-head-kana">Ação · 1d4 rodadas de duração</div>
+          </div>
+          <span class="tec-badge">Ação · 1d4</span>
+        </div>
+        <div class="tec-desc">Declara monopólio sobre um elemento do combate — cura, velocidade, dano, etc. Apenas ele pode usar aquele recurso na área. Inimigos que tentarem são taxados: +9d6 de Capital por infração.</div>
+        <div class="tec-cards">
+          <div class="tc">
+            <div class="tc-id">DOK-01</div>
+            <div class="tc-name">Declaração</div>
+            <span class="tc-kana">独占 · este recurso é meu</span>
+            <div class="tc-sep"></div>
+            <div class="tc-text">Posse exclusiva sobre: cura, velocidade, dano elemental, EA, ou qualquer recurso de combate. Ninguém mais acessa livremente.</div>
+            <span class="tc-tag">Ação · 1d4 Rodadas</span>
+          </div>
+          <div class="tc">
+            <div class="tc-id">DOK-02</div>
+            <div class="tc-name">Tributação</div>
+            <span class="tc-kana">課税 · quem usar, paga</span>
+            <div class="tc-sep"></div>
+            <div class="tc-text">Inimigos que tentarem usar o recurso monopolizado são taxados: <b style="color:var(--gold-hi)">+9d6 de Capital por infração.</b></div>
+            <span class="tc-tag g">+9d6 Capital / uso</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tec-panel">
+        <div class="tec-head">
+          <div>
+            <div class="tec-head-name">Crédito — クレジット · Kurejitto</div>
+            <div class="tec-head-kana">Compra agora, paga pós-combate · limite 200 ¥</div>
+          </div>
+          <span class="tec-badge">Limite 200 ¥</span>
+        </div>
+        <div class="tec-desc">Usa qualquer ação sem custo imediato — o valor é registrado e cobrado integralmente após o combate. Pode deixar o Capitalista endividado, bloqueando compras futuras.</div>
+        <div class="tec-cards">
+          <div class="tc">
+            <div class="tc-id">KUR-01</div>
+            <div class="tc-name">Crédito Emergencial</div>
+            <span class="tc-kana">緊急融資 · agora, sem custo</span>
+            <div class="tc-sep"></div>
+            <div class="tc-text">Ativa qualquer habilidade do Fluxo de Capital sem pagar imediatamente. Limite de 200 ¥ em crédito simultâneo. Cobrado no fim do combate.</div>
+            <span class="tc-tag">Limite: 200 ¥</span>
+          </div>
+          <div class="tc">
+            <div class="tc-id">KUR-02</div>
+            <div class="tc-name">Estado de Dívida</div>
+            <span class="tc-kana">債務 · a palavra tem peso</span>
+            <div class="tc-sep"></div>
+            <div class="tc-text">Endividado: não pode usar Crédito nem Empréstimo com Juros. A credibilidade do Capitalista é seu ativo mais valioso.</div>
+            <span class="tc-tag r">Bloqueado em Dívida</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="label">Dano</div>
+  <div style="border:1px solid var(--border-hi);background:var(--panel2);padding:24px;text-align:center;position:relative;overflow:hidden;">
+    <div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(180,130,10,.012) 8px,rgba(180,130,10,.012) 9px);pointer-events:none;"></div>
+    <div style="font-family:var(--mono);font-size:8px;letter-spacing:5px;color:var(--muted);text-transform:uppercase;margin-bottom:12px;">Dano Base · Item Exclusivo</div>
+    <div style="font-family:var(--bebas);font-size:48px;color:var(--gold-hi);letter-spacing:4px;text-shadow:0 0 30px rgba(220,180,20,.3),0 0 60px rgba(180,130,10,.15);">2d4</div>
+    <div style="font-family:var(--mono);font-size:8px;color:var(--muted);margin-top:10px;letter-spacing:2px;">permanente em todos os ataques · + proficiente com EA</div>
+    <div style="font-family:var(--serif);font-style:italic;font-size:12px;color:var(--gold-mid);margin-top:8px;">+ Capital gasto via Fluxo de Capital</div>
+  </div>
+
+  <div class="stamp">// a lábia é inigualável · o cálculo é impecável //</div>
+</div>
+</div>
+
+<!-- HISTÓRIA -->
+<div class="page" id="page-historia">
+<div class="wrap">
+
+  <div class="label">Linha do Tempo</div>
+  <div class="lore-wrap">
+    <div class="lore-entry">
+      <div class="lore-num">I</div>
+      <div class="lore-content">
+        <div class="lore-title">Sem Nome · Sem Herança</div>
+        <div class="lore-text">Hanzo Masayoshi nasceu sem nome e sem herança — apenas uma técnica que já existia nele antes de ter palavras para descrevê-la. Filho de uma família pobre do interior, cresceu entendendo que o mundo do jujutsu era governado por sangue antigo e prestígio herdado.</div>
+        <div class="lore-note">// decidiu construir o único ativo que ninguém poderia lhe tomar: valor //</div>
+      </div>
+    </div>
+    <div class="lore-entry">
+      <div class="lore-num">II</div>
+      <div class="lore-content">
+        <div class="lore-title">O Acúmulo — 5 aos 23 Anos</div>
+        <div class="lore-text">Cada missão, cada contrato, cada relação foi arquitetada com precisão fria. Não havia sentimentalismo no processo — havia acúmulo. Quando o sobrenome Masayoshi foi cunhado, não era uma declaração de chegada; era uma fundação.</div>
+        <div class="lore-note">// a fama veio como consequência inevitável //</div>
+      </div>
+    </div>
+    <div class="lore-entry">
+      <div class="lore-num">III</div>
+      <div class="lore-content">
+        <div class="lore-title">Os Grandes Clãs — Relações Calculadas</div>
+        <div class="lore-text">Apertou a mão de Takero Zenin e deixou o homem com a sensação de que havia feito um bom negócio. Sentou à mesa com Lys Gojo e soube exatamente quando ceder. Tratou com Maki Kamo e Yoru Okkotsu com o mesmo calibre — respeito calculado, nunca deferência.</div>
+        <div class="lore-note">// para os grandes clãs, ele não é aliado nem inimigo: é infraestrutura //</div>
+      </div>
+    </div>
+    <div class="lore-entry">
+      <div class="lore-num">IV</div>
+      <div class="lore-content">
+        <div class="lore-title">Ryomen Sukuna — O Negócio Não Formalizado</div>
+        <div class="lore-text">Tentou, por completude, aproximar-se de Ryomen Sukuna. O Rei das Pragas demonstrou interesse zero em acordos — e fascínio irrecusável por gastronomia. Hanzo não insistiu. Abriu restaurantes. Sukuna come. O vínculo jamais foi formalizado, e talvez seja mais útil assim.</div>
+        <div class="lore-note">// para tubarões brancos, ele é o peixe que limpa seus dentes //</div>
+      </div>
+    </div>
+    <div class="lore-entry">
+      <div class="lore-num">V</div>
+      <div class="lore-content">
+        <div class="lore-title">Neutralidade — Uma Postura, Não Uma Omissão</div>
+        <div class="lore-text">Pronunciou-se inúmeras vezes contra disputas políticas e o Corpo Divino — não como omissão, mas como postura. Não amado, raramente questionado, sempre necessário. O monopólio que construiu não se sustenta pela força, mas pela utilidade — e pela consciência coletiva de que rompê-lo custaria mais do que mantê-lo.</div>
+        <div class="lore-note">// rompê-lo custaria mais do que mantê-lo //</div>
+      </div>
+    </div>
+    <div class="lore-entry">
+      <div class="lore-num">VI</div>
+      <div class="lore-content">
+        <div class="lore-title">A Escola Jujutsu — Investimento de Longo Prazo</div>
+        <div class="lore-text">Hanzo se move em direção à Escola Jujutsu. Não é recrutamento. Não é matrícula. É investimento de longo prazo — e ele é transparente sobre isso, o que, paradoxalmente, o torna mais confiável do que a maioria. Condição simples: escola neutra, ele trabalha. Não como aluno. Como contratado.</div>
+        <div class="lore-note">// a escola ganha um ativo · Hanzo ganha posição //</div>
+      </div>
+    </div>
+    <div class="lore-entry">
+      <div class="lore-num">VII</div>
+      <div class="lore-content">
+        <div class="lore-title">Tengen — A Última Peça</div>
+        <div class="lore-text">Todos os pilares reais ou simbólicos do mundo do jujutsu já foram tocados, mapeados, convertidos em algum tipo de relação. Tengen é a última — e a mais singular. Uma entidade que transcende a política. O que se oferece a algo assim? Que moeda é aceita? Hanzo ainda não sabe. Mas está a caminho.</div>
+        <div class="lore-note">// a pergunta em aberto mais valiosa do tabuleiro //</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="label">Perfil Psicológico</div>
+  <div class="profile-grid">
+    <div class="profile-cell">
+      <div class="profile-key">Maior Medo</div>
+      <div class="profile-val">Indefinido. Ainda não encontrou nada que valha o custo do medo.</div>
+    </div>
+    <div class="profile-cell">
+      <div class="profile-key">Maior Desejo</div>
+      <div class="profile-val">Indefinido. O próximo passo sempre parece mais interessante que qualquer destino final.</div>
+    </div>
+    <div class="profile-cell">
+      <div class="profile-key">Algo Imperdoável</div>
+      <div class="profile-val">Indefinido. Hanzo acredita que tudo pode ser negociado. Inclusive o perdão.</div>
+    </div>
+    <div class="profile-cell">
+      <div class="profile-key">Posição Pública</div>
+      <div class="profile-val">Neutro declarado. Transparente sobre intenções — o que o torna mais confiável que a maioria.</div>
+    </div>
+    <div class="profile-cell">
+      <div class="profile-key">Como os Outros Veem</div>
+      <div class="profile-val">Para os clãs: infraestrutura. Para desconhecidos: gente boa. Para quem o conhece: necessário.</div>
+    </div>
+    <div class="profile-cell">
+      <div class="profile-key">Traços</div>
+      <div class="profile-val">Caloroso · Persuasivo · Gente finíssima. Frieza do cálculo, sorriso genuíno.</div>
+    </div>
+  </div>
+
+  <div style="padding:32px 0;text-align:center;">
+    <div style="font-family:var(--disp);font-style:italic;font-size:16px;color:rgba(180,130,10,.32);letter-spacing:1px;line-height:1.8;">
+      "O monopólio que construiu não se sustenta pela força,<br>
+      mas pela utilidade — e pela consciência coletiva<br>
+      de que rompê-lo custaria mais do que mantê-lo."
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ── WIDGETS (bottom-left, stacked) ── -->
+<div id="widgets">
+
+<!-- MUSIC PLAYER -->
+<div id="music-player">
+  <div class="mp-header" onclick="mpToggle()">
+    <span class="mp-icon">♪</span>
+    <span class="mp-title">Player — Hanzo</span>
+    <span class="mp-toggle" id="mp-tog">▲</span>
+  </div>
+  <div class="mp-body" id="mp-body">
+    <div class="mp-inner">
+      <div class="mp-track-name" id="mp-name">HAN 1</div>
+      <div class="mp-progress-wrap" onclick="mpSeek(event)">
+        <div class="mp-progress-bg"><div class="mp-progress-fill" id="mp-bar"></div></div>
+        <div class="mp-time"><span id="mp-cur">0:00</span><span id="mp-dur">0:00</span></div>
+      </div>
+      <div class="mp-playlist" id="mp-playlist">
+        <div class="mp-pl-item playing" onclick="mpLoad(0)">
+          <span class="mp-pl-num">01</span>
+          <span class="mp-pl-name">Poker Face — Lady Gaga</span>
+          <span class="mp-pl-dot"></span>
+        </div>
+        <div class="mp-pl-item" onclick="mpLoad(1)">
+          <span class="mp-pl-num">02</span>
+          <span class="mp-pl-name">Gentleman - PSY</span>
+          <span class="mp-pl-dot"></span>
+        </div>
+        <div class="mp-pl-item" onclick="mpLoad(2)">
+          <span class="mp-pl-num">03</span>
+          <span class="mp-pl-name">Rain Over Me - Pitbull</span>
+          <span class="mp-pl-dot"></span>
+        </div>
+      </div>
+      <div class="mp-controls">
+        <button class="mp-btn" onclick="mpPrev()" title="Anterior">&#9664;&#9664;</button>
+        <button class="mp-btn play" id="mp-play-btn" onclick="mpPlayPause()">&#9654;</button>
+        <button class="mp-btn" onclick="mpNext()" title="Próximo">&#9654;&#9654;</button>
+      </div>
+      <div class="mp-vol-row">
+        <span class="mp-vol-label">VOL</span>
+        <input type="range" class="mp-vol-slider" id="mp-vol" min="0" max="1" step="0.05" value="0.7" oninput="mpVolume(this.value)">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CALCULATOR -->
+<div id="calc-widget">
+  <div class="cw-header" onclick="cwToggle()">
+    <span class="cw-icon">◈</span>
+    <span class="cw-title">Calculadora</span>
+    <span class="cw-toggle" id="cw-tog">▲</span>
+  </div>
+  <div class="cw-body" id="cw-body">
+    <div class="cw-inner">
+      <div class="cw-display">
+        <div class="cw-expr" id="cw-expr"></div>
+        <div class="cw-result" id="cw-res">0</div>
+      </div>
+      <div class="cw-grid">
+        <button class="cw-btn clr" onclick="cwClear()">C</button>
+        <button class="cw-btn clr" onclick="cwDel()">⌫</button>
+        <button class="cw-btn op" onclick="cwIn('%')">%</button>
+        <button class="cw-btn op" onclick="cwIn('/')">÷</button>
+        <button class="cw-btn" onclick="cwIn('7')">7</button>
+        <button class="cw-btn" onclick="cwIn('8')">8</button>
+        <button class="cw-btn" onclick="cwIn('9')">9</button>
+        <button class="cw-btn op" onclick="cwIn('*')">×</button>
+        <button class="cw-btn" onclick="cwIn('4')">4</button>
+        <button class="cw-btn" onclick="cwIn('5')">5</button>
+        <button class="cw-btn" onclick="cwIn('6')">6</button>
+        <button class="cw-btn op" onclick="cwIn('-')">−</button>
+        <button class="cw-btn" onclick="cwIn('1')">1</button>
+        <button class="cw-btn" onclick="cwIn('2')">2</button>
+        <button class="cw-btn" onclick="cwIn('3')">3</button>
+        <button class="cw-btn op" onclick="cwIn('+')">+</button>
+        <button class="cw-btn wide" onclick="cwIn('0')">0</button>
+        <button class="cw-btn" onclick="cwIn('.')">.</button>
+        <button class="cw-btn eq" onclick="cwCalc()">=</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /#widgets -->
+
+<script>
+/* ── MUSIC PLAYER ── */
+/* ═══ PLAYLIST — edite os nomes aqui ═══ */
+const mpTracks = [
+  { file:'audio/han1.mp3', name:'Poker Face — Lady Gaga' },
+  { file:'audio/han2.mp3', name:'Gentleman - PSY' },
+  { file:'audio/han3.mp3', name:'Rain Over Me - Pitbull' },
+];
+/* ═══════════════════════════════════════ */
+let mpAudio = new Audio();
+let mpIdx = 0;
+let mpOpen = false;
+
+function mpToggle(){
+  mpOpen = !mpOpen;
+  document.getElementById('mp-body').classList.toggle('open', mpOpen);
+  document.getElementById('mp-tog').classList.toggle('open', mpOpen);
+}
+
+function mpLoad(idx){
+  mpIdx = idx;
+  const t = mpTracks[idx];
+  mpAudio.src = t.file;
+  document.getElementById('mp-name').textContent = t.name.toUpperCase();
+  document.querySelectorAll('.mp-pl-item').forEach((el,i)=>el.classList.toggle('playing', i===idx));
+  mpAudio.play().catch(()=>{});
+  document.getElementById('mp-play-btn').innerHTML = '&#9646;&#9646;';
+}
+
+function mpPlayPause(){
+  if(mpAudio.src === '' || mpAudio.src === window.location.href){
+    mpLoad(mpIdx); return;
+  }
+  if(mpAudio.paused){
+    mpAudio.play().catch(()=>{});
+    document.getElementById('mp-play-btn').innerHTML = '&#9646;&#9646;';
+  } else {
+    mpAudio.pause();
+    document.getElementById('mp-play-btn').innerHTML = '&#9654;';
+  }
+}
+
+function mpPrev(){ mpLoad((mpIdx - 1 + mpTracks.length) % mpTracks.length); }
+function mpNext(){ mpLoad((mpIdx + 1) % mpTracks.length); }
+
+function mpVolume(v){ mpAudio.volume = v; }
+
+function mpFmtTime(s){
+  if(isNaN(s)) return '0:00';
+  const m = Math.floor(s/60), sec = Math.floor(s%60);
+  return m+':'+(sec<10?'0':'')+sec;
+}
+
+mpAudio.addEventListener('timeupdate',()=>{
+  const pct = mpAudio.duration ? (mpAudio.currentTime/mpAudio.duration)*100 : 0;
+  document.getElementById('mp-bar').style.width = pct+'%';
+  document.getElementById('mp-cur').textContent = mpFmtTime(mpAudio.currentTime);
+  document.getElementById('mp-dur').textContent = mpFmtTime(mpAudio.duration);
+});
+mpAudio.addEventListener('ended',()=>mpNext());
+mpAudio.addEventListener('pause',()=>{ document.getElementById('mp-play-btn').innerHTML='&#9654;'; });
+mpAudio.addEventListener('play',()=>{ document.getElementById('mp-play-btn').innerHTML='&#9646;&#9646;'; });
+mpAudio.volume = 0.7;
+
+function mpSeek(e){
+  if(!mpAudio.duration) return;
+  const rect = e.currentTarget.getBoundingClientRect();
+  const pct = (e.clientX - rect.left) / rect.width;
+  mpAudio.currentTime = pct * mpAudio.duration;
+}
+
+/* ── CALCULATOR ── */
+let cwExpr = '';
+let cwNewNum = false;
+let cwOpen = false;
+
+function cwToggle(){
+  cwOpen = !cwOpen;
+  document.getElementById('cw-body').classList.toggle('open', cwOpen);
+  document.getElementById('cw-tog').classList.toggle('open', cwOpen);
+}
+
+function cwDisplay(){
+  const res = document.getElementById('cw-res');
+  res.textContent = cwExpr || '0';
+  document.getElementById('cw-expr').textContent = '';
+}
+
+function cwIn(v){
+  if(cwNewNum && '0123456789.'.includes(v)){ cwExpr = ''; cwNewNum = false; }
+  if(cwNewNum && '+-*/%'.includes(v)){ cwNewNum = false; }
+  if(v === '.' && cwExpr.split(/[\+\-\*\/]/).pop().includes('.')) return;
+  cwExpr += v;
+  document.getElementById('cw-res').textContent = cwExpr;
+  document.getElementById('cw-expr').textContent = '';
+}
+
+function cwClear(){ cwExpr=''; cwNewNum=false; cwDisplay(); }
+
+function cwDel(){
+  cwExpr = cwExpr.slice(0,-1);
+  document.getElementById('cw-res').textContent = cwExpr || '0';
+}
+
+function cwCalc(){
+  try {
+    const safe = cwExpr.replace(/[^0-9\+\-\*\/\.\%\(\)]/g,'');
+    if(!safe){ cwDisplay(); return; }
+    let result = Function('"use strict"; return ('+safe+')')();
+    result = Math.round(result * 1e10) / 1e10;
+    document.getElementById('cw-expr').textContent = cwExpr + ' =';
+    document.getElementById('cw-res').textContent = result;
+    cwExpr = String(result);
+    cwNewNum = true;
+  } catch(e){
+    document.getElementById('cw-res').textContent = 'ERRO';
+    document.getElementById('cw-expr').textContent = '';
+    cwExpr=''; cwNewNum=false;
+  }
+}
+
+document.addEventListener('keydown', function(e){
+  const tag = document.activeElement.tagName;
+  if(tag==='INPUT'||tag==='TEXTAREA') return;
+  if(!cwOpen) return;
+  if('0123456789'.includes(e.key)) cwIn(e.key);
+  else if(['+','-','*','/','%','.'].includes(e.key)) cwIn(e.key);
+  else if(e.key==='Enter'||e.key==='=') cwCalc();
+  else if(e.key==='Backspace') cwDel();
+  else if(e.key==='Escape') cwClear();
+});
+</script>
+
+<script>
+(function(){
+  const c = document.getElementById('canvas');
+  if(!c) return;
+  const ctx = c.getContext('2d');
+  let W, H, pts = [];
+  function resize(){ W = c.width = innerWidth; H = c.height = innerHeight; }
+  addEventListener('resize', resize); resize();
+
+  class P {
+    constructor(fromBottom){
+      this.x = Math.random() * W;
+      this.y = fromBottom ? H + 10 : Math.random() * H;
+      this.r = 0.6 + Math.random() * 2.8;
+      this.vy = -(0.05 + Math.random() * 0.2);
+      this.vx = (Math.random()-.5) * 0.1;
+      this.alpha = 0.01 + Math.random() * 0.08;
+      this.ph = Math.random() * Math.PI * 2;
+      this.spd = 0.002 + Math.random() * 0.007;
+      this.kind = Math.random();
+    }
+    tick(){
+      this.y += this.vy; this.x += this.vx + Math.sin(this.ph) * 0.3; this.ph += this.spd;
+      if(this.y < -16) Object.assign(this, new P(true));
+    }
+    draw(){
+      const a = this.alpha * (0.5 + 0.5*Math.sin(this.ph));
+      if(this.kind < 0.5){
+        const sq = 0.35 + 0.3*Math.abs(Math.sin(this.ph*0.7));
+        ctx.beginPath(); ctx.ellipse(this.x,this.y,this.r,this.r*sq,0,0,Math.PI*2);
+        ctx.fillStyle=`rgba(210,160,20,${a})`; ctx.fill();
+        ctx.beginPath(); ctx.ellipse(this.x-this.r*.25,this.y-this.r*sq*.25,this.r*.35,this.r*sq*.25,0,0,Math.PI*2);
+        ctx.fillStyle=`rgba(255,230,120,${a*.5})`; ctx.fill();
+      } else if(this.kind < 0.75){
+        const s=this.r*.9; ctx.save(); ctx.translate(this.x,this.y); ctx.rotate(this.ph*.4);
+        ctx.beginPath(); ctx.moveTo(0,-s*1.6); ctx.lineTo(s*.38,-s*.38); ctx.lineTo(s*1.6,0);
+        ctx.lineTo(s*.38,s*.38); ctx.lineTo(0,s*1.6); ctx.lineTo(-s*.38,s*.38);
+        ctx.lineTo(-s*1.6,0); ctx.lineTo(-s*.38,-s*.38); ctx.closePath();
+        ctx.fillStyle=`rgba(240,195,50,${a*.65})`; ctx.fill(); ctx.restore();
+      } else {
+        ctx.beginPath(); ctx.arc(this.x,this.y,this.r*.4,0,Math.PI*2);
+        ctx.fillStyle=`rgba(255,235,140,${a*1.3})`; ctx.fill();
+      }
+    }
+  }
+
+  for(let i=0;i<70;i++) pts.push(new P());
+  (function loop(){ ctx.clearRect(0,0,W,H); pts.forEach(p=>{p.tick();p.draw();}); requestAnimationFrame(loop); })();
+})();
+
+function goTab(id, btn){
+  const target = document.getElementById('page-'+id);
+  if(target.classList.contains('on')) return;
+  const ptc=document.getElementById('pt'), ptl=document.getElementById('pt-line');
+  const out=document.querySelector('.page.on');
+  const vh=innerHeight, vw=innerWidth, DUR=480; let ts=null, done=false;
+  document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('on')); btn.classList.add('on');
+  scrollTo(0,0); ptc.width=vw; ptc.height=vh;
+  const ctx=ptc.getContext('2d'); ctx.fillStyle='#070501'; ctx.fillRect(0,0,vw,vh);
+  ptc.style.display='block'; ptl.style.display='block';
+  out.classList.remove('on'); target.classList.add('on');
+  function ease(t){ return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2; }
+  function frame(t){
+    if(done) return; if(!ts) ts=t;
+    const raw=Math.min((t-ts)/DUR,1), y=Math.round(ease(raw)*vh);
+    ctx.clearRect(0,0,vw,y); ptl.style.transform=`translateY(${y-1}px)`;
+    if(raw<1){ requestAnimationFrame(frame); return; }
+    done=true; ptc.style.display='none'; ptl.style.display='none';
+  }
+  requestAnimationFrame(frame);
+}
+
+function tecSwitch(idx, tab){
+  const cabinet=tab.closest('.tec-layout');
+  const tabs=cabinet.querySelectorAll('.tec-tab');
+  const panels=cabinet.querySelectorAll('.tec-panel');
+  const cur=cabinet.querySelector('.tec-panel.on');
+  const nxt=panels[idx];
+  if(cur===nxt) return;
+  tabs.forEach(t=>t.classList.remove('on')); tab.classList.add('on');
+  if(cur){
+    cur.classList.add('out'); cur.classList.remove('on');
+    setTimeout(()=>{ cur.classList.remove('out'); cur.style.display='none'; nxt.style.display='block'; void nxt.offsetWidth; nxt.classList.add('on'); }, 160);
+  } else { nxt.classList.add('on'); }
+}
+</script>
+</body>
+</html>

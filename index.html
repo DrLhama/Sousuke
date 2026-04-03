@@ -509,6 +509,96 @@ main {
 .saizo-card:hover::before { border-color: rgba(22,163,74,.6); }
 .saizo-card:hover::after  { border-color: rgba(22,163,74,.6); }
 
+/* ── HANZO — estilos específicos ── */
+.char-card.hanzo-card { background: #06050000; background: #070501; }
+.char-card.hanzo-card:hover { background: #0d0a01; }
+
+/* Moedas de ouro subindo */
+.hanzo-coin {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, rgba(255,230,100,.9), rgba(200,150,10,.7) 60%, rgba(140,90,0,.4));
+  box-shadow: 0 0 5px rgba(220,170,20,.35), inset 0 1px 1px rgba(255,240,150,.5);
+  animation: hcoin var(--d, 9s) ease-in-out infinite var(--dl, 0s);
+  opacity: 0;
+}
+@keyframes hcoin {
+  0%          { bottom: -8px; opacity: 0; transform: scale(.7) rotate(0deg) translateX(0px); }
+  8%          { opacity: 1; }
+  50%         { transform: scale(1) rotate(180deg) translateX(var(--sway, 8px)); }
+  85%         { bottom: 105%; opacity: .35; }
+  100%        { bottom: 105%; opacity: 0; transform: scale(.8) rotate(320deg) translateX(0px); }
+}
+
+/* Faíscas douradas */
+.hanzo-spark {
+  position: absolute;
+  width: 1px; height: 1px;
+  border-radius: 50%;
+  background: rgba(255,220,80,.9);
+  box-shadow: 0 0 4px 1px rgba(255,200,40,.6);
+  animation: hspark var(--d, 6s) ease-in infinite var(--dl, 0s);
+  opacity: 0;
+}
+@keyframes hspark {
+  0%   { bottom: 0; opacity: 0; transform: scale(0); }
+  5%   { opacity: 1; transform: scale(1); }
+  60%  { opacity: .7; }
+  90%  { bottom: 80%; opacity: 0; transform: scale(.3) translateX(var(--sway, 4px)); }
+  100% { bottom: 80%; opacity: 0; }
+}
+
+/* Kanji do Hanzo — ouro pulsante */
+.hanzo-card .card-kanji {
+  animation: hkanji 11s ease-in-out infinite;
+  opacity: .07;
+  color: rgba(200,155,20,.95);
+  text-shadow: 0 0 40px rgba(200,155,20,.2);
+}
+@keyframes hkanji {
+  0%,100% { opacity: .05; transform: scale(1); }
+  50%     { opacity: .14; transform: scale(1.02); text-shadow: 0 0 60px rgba(220,170,20,.3); }
+}
+
+/* Nome — glow de ouro */
+.hanzo-card .card-name {
+  animation: hname 11s ease-in-out infinite;
+}
+@keyframes hname {
+  0%,100% { text-shadow: none; }
+  50%     { text-shadow: 0 0 50px rgba(200,155,20,.45), 0 0 12px rgba(240,190,40,.2); }
+}
+
+/* Accent bar dourada */
+.hanzo-card .card-accent {
+  background: linear-gradient(90deg, transparent, rgba(140,98,0,.5), rgba(200,150,10,.75), rgba(240,195,50,.9), rgba(200,150,10,.75), rgba(140,98,0,.5), transparent);
+  animation: haccent 11s ease-in-out infinite;
+}
+@keyframes haccent { 0%,100%{opacity:.2} 50%{opacity:.85} }
+
+.hanzo-card .card-tag     { border-color: rgba(180,130,10,.22); color: rgba(240,195,50,.45); }
+.hanzo-card .card-epithet { color: rgba(200,165,60,.3); }
+.hanzo-card .card-num     { color: rgba(180,140,40,.38); }
+.hanzo-card .card-jp      { color: rgba(160,120,30,.3); }
+
+/* Cantos — estilo cofre/moeda */
+.hanzo-card::before {
+  content: ''; position: absolute; top: 12px; left: 12px;
+  width: 14px; height: 14px;
+  border-top: 1px solid rgba(180,130,10,.25);
+  border-left: 1px solid rgba(180,130,10,.25);
+  transition: border-color .3s;
+}
+.hanzo-card::after {
+  content: ''; position: absolute; bottom: 12px; right: 12px;
+  width: 14px; height: 14px;
+  border-bottom: 1px solid rgba(180,130,10,.25);
+  border-right:  1px solid rgba(180,130,10,.25);
+  transition: border-color .3s;
+}
+.hanzo-card:hover::before { border-color: rgba(240,195,50,.65); }
+.hanzo-card:hover::after  { border-color: rgba(240,195,50,.65); }
+
 .char-card.add-card {
   --card-color: rgba(80,80,80,.3);
   border: 1px dashed rgba(60,60,40,.2);
@@ -878,6 +968,20 @@ const ROSTER = [
     special: 'saizo-card',
   },
 
+  {
+    id:      'hanzo',
+    name:    'HANZO',
+    font:    'bebas',
+    jp:      '資本家 · Shihonka · O Homem Que O Dinheiro Obedece',
+    num:     'Civil Registrado · Sem Grau',
+    tags:    ['Capitalista', 'Neutro Declarado', 'Clã Masayoshi', 'Infraestrutura', 'Monopólio'],
+    epithet: '"Não compra fidelidade. Compra necessidade.\nA diferença é que a segunda não expira."',
+    kanji:   '金',
+    color:   'rgba(210,165,20,.82)',
+    glow:    'radial-gradient(ellipse at 50% 70%, rgba(140,100,0,.22) 0%, transparent 65%)',
+    special: 'hanzo-card',
+  },
+
   /* ── TEMPLATE — descomente e edite para adicionar um personagem ──
   {
     id:      'seupersonagem',
@@ -962,12 +1066,28 @@ function renderRoster() {
         </svg>
       </div>` : '';
 
+    const hanzoHTML = char.special === 'hanzo-card' ? `
+      <div class="card-veins" style="pointer-events:none;overflow:hidden;position:absolute;inset:0;">
+        <div class="hanzo-coin" style="left:10%;width:5px;height:5px;--d:9s;--dl:0s;--sway:6px"></div>
+        <div class="hanzo-coin" style="left:22%;width:4px;height:4px;--d:12s;--dl:1.8s;--sway:-8px"></div>
+        <div class="hanzo-coin" style="left:38%;width:6px;height:6px;--d:10s;--dl:3.5s;--sway:5px"></div>
+        <div class="hanzo-coin" style="left:55%;width:4px;height:4px;--d:8s;--dl:0.7s;--sway:-6px"></div>
+        <div class="hanzo-coin" style="left:70%;width:5px;height:5px;--d:11s;--dl:5s;--sway:7px"></div>
+        <div class="hanzo-coin" style="left:85%;width:3px;height:3px;--d:9.5s;--dl:2.3s;--sway:-5px"></div>
+        <div class="hanzo-spark" style="left:18%;--d:5s;--dl:0.4s;--sway:3px"></div>
+        <div class="hanzo-spark" style="left:33%;--d:6.5s;--dl:1.9s;--sway:-4px"></div>
+        <div class="hanzo-spark" style="left:50%;--d:4.8s;--dl:0.9s;--sway:2px"></div>
+        <div class="hanzo-spark" style="left:65%;--d:7s;--dl:3.1s;--sway:-3px"></div>
+        <div class="hanzo-spark" style="left:80%;--d:5.5s;--dl:1.5s;--sway:4px"></div>
+      </div>` : '';
+
     a.innerHTML = `
       ${dripsHTML}
       ${char.special === 'sousuke-card' ? veinsHTML : ''}
       ${char.special === 'yagami-card'  ? scanLinesHTML : ''}
       ${char.special === 'kaito-card'   ? geoLinesHTML : ''}
       ${char.special === 'saizo-card'   ? saizoHTML : ''}
+      ${char.special === 'hanzo-card'   ? hanzoHTML : ''}
       <div class="card-accent"></div>
       <div class="card-kanji">${char.kanji}</div>
       <div class="card-num">${char.num}</div>
