@@ -625,284 +625,428 @@ nav {
 <div class="page" id="page-tecnicas">
 <div class="wrap">
 
-  <div class="label">Técnicas — 資本家 · Shihonka</div>
+  <div class="label">Técnicas — 近江商人 · Ōmi-shōnin · O Código do Mercador</div>
+
+  <div style="font-family:var(--serif);font-style:italic;font-size:12px;color:var(--muted);line-height:1.8;padding:10px 16px;border-left:2px solid var(--gold-dark);margin-bottom:20px;background:rgba(180,130,10,.03);">
+    Na Era Heian, mercadores não tinham nome na hierarquia. Guerreiros matavam. Monges rezavam. Nobres governavam. O Akindo vendia — e era desprezado por isso.<br>
+    Hanzo não pede lugar na pirâmide. Ele é a base invisível que a sustenta.
+  </div>
 
   <div class="tec-layout">
     <div class="tec-tabs">
       <div class="tec-tab on" onclick="tecSwitch(0,this)">
-        <div class="tec-tab-icon">資</div>
-        <span>Passiva</span>
+        <div class="tec-tab-icon">足</div>
+        <span>I</span>
       </div>
       <div class="tec-tab" onclick="tecSwitch(1,this)">
-        <div class="tec-tab-icon">流</div>
-        <span>Fluxo</span>
+        <div class="tec-tab-icon">三</div>
+        <span>II</span>
       </div>
       <div class="tec-tab" onclick="tecSwitch(2,this)">
-        <div class="tec-tab-icon">融</div>
-        <span>Juros</span>
+        <div class="tec-tab-icon">損</div>
+        <span>III</span>
       </div>
       <div class="tec-tab" onclick="tecSwitch(3,this)">
-        <div class="tec-tab-icon">損</div>
-        <span>Stop</span>
+        <div class="tec-tab-icon">繁</div>
+        <span>IV</span>
       </div>
       <div class="tec-tab" onclick="tecSwitch(4,this)">
-        <div class="tec-tab-icon">独</div>
-        <span>Monop.</span>
-      </div>
-      <div class="tec-tab" onclick="tecSwitch(5,this)">
-        <div class="tec-tab-icon">ク</div>
-        <span>Créd.</span>
-      </div>
-      <div class="tec-tab" onclick="tecSwitch(6,this)">
-        <div class="tec-tab-icon">康</div>
-        <span>Well.</span>
+        <div class="tec-tab-icon">暖</div>
+        <span>V</span>
       </div>
     </div>
     <div class="tec-body">
 
+      <!-- FASE I: ASHIGARUI -->
       <div class="tec-panel on">
         <div class="tec-head">
           <div>
-            <div class="tec-head-name">O Capitalista — 資本家 · Shihonka</div>
-            <div class="tec-head-kana">Técnica Inata · Passiva Permanente</div>
+            <div class="tec-head-name">Ashigarui — 足軽 · Mobilidade &amp; Acumulação</div>
+            <div class="tec-head-kana">Passiva Permanente · Técnica Inata · sempre ativa, não pode ser desligada</div>
           </div>
           <span class="tec-badge">Sempre Ativa</span>
         </div>
-        <div class="tec-desc">Tudo ao redor do usuário é percebido com valores e preços, escalando com a complexidade e estrutura de cada coisa. Facilidade e sorte extrema em encontrar dinheiro — sua lábia é inigualável.</div>
+        <div class="tec-desc">O mercador Ōmi saía de casa antes do amanhecer e ia até onde o dinheiro estava — nunca esperava o cliente chegar. Hanzo não para de acumular. Cada observação vira dado financeiro. Cada golpe recebido vira capital. A máquina nunca para.</div>
         <div class="tec-cards">
           <div class="tc">
-            <div class="tc-id">CAP-01</div>
-            <div class="tc-name">Percepção de Valor</div>
-            <span class="tc-kana">価値認識 · enxerga o preço de tudo</span>
+            <div class="tc-id">ASH-01</div>
+            <div class="tc-name">Precificação Automática</div>
+            <span class="tc-kana">価値認識 · tudo tem um preço</span>
             <div class="tc-sep"></div>
-            <div class="tc-text">Qualquer coisa observada é automaticamente precificada. Informação constante, passiva e impossível de desligar.</div>
+            <div class="tc-text">Qualquer coisa observada é automaticamente precificada — pessoas, ambientes, maldições, situações. Informação constante e passiva. Ele sabe o valor de algo, não seus pontos fracos.</div>
             <span class="tc-tag">Passiva · Permanente</span>
           </div>
           <div class="tc">
-            <div class="tc-id">CAP-02</div>
-            <div class="tc-name">Diálogo Universal</div>
-            <span class="tc-kana">万能対話 · fala com qualquer criatura</span>
+            <div class="tc-id">ASH-02</div>
+            <div class="tc-name">Stop Loss</div>
+            <span class="tc-kana">損切り · prejuízo é custo operacional</span>
             <div class="tc-sep"></div>
-            <div class="tc-text">Consegue dialogar com toda e qualquer criatura, mesmo que por definição seja burra ou inapta. Eventualmente chega a resolução boa para ambos.</div>
-            <span class="tc-tag">Passiva · Permanente</span>
+            <div class="tc-text">Dano recebido acima de um limiar fixo por rodada é convertido <b style="color:var(--gold-hi)">integralmente</b> em Capital. Quanto mais forte o golpe inimigo, mais Hanzo acumula. Atacar forte é alimentá-lo.</div>
+            <span class="tc-tag">Reação · Automático</span>
           </div>
           <div class="tc">
-            <div class="tc-id">CAP-03</div>
-            <div class="tc-name">Bônus de Origem</div>
-            <span class="tc-kana">起源補正 · a mentalidade aguçada</span>
+            <div class="tc-id">ASH-03</div>
+            <div class="tc-name">Mentalidade Aguçada</div>
+            <span class="tc-kana">起源補正 · décadas de investimento em si mesmo</span>
             <div class="tc-sep"></div>
-            <div class="tc-text"><b style="color:var(--gold-hi)">+2 INT · +2 PRE</b> automáticos. <b style="color:var(--gold-hi)">+5 Luta</b> (comprou previamente só pra se garantir). <b style="color:var(--gold-hi)">+5 Persuasão</b>. EA estoque aumentado.</div>
+            <div class="tc-text"><b style="color:var(--gold-hi)">+2 INT · +2 PRE</b> permanentes. <b style="color:var(--gold-hi)">+5 Luta · +5 Persuasão</b>. EA estoque aumentado. Consequência de anos de formação — não é técnica ativável, é quem ele é.</div>
             <span class="tc-tag">Passiva · Aplicado na Ficha</span>
           </div>
         </div>
       </div>
 
+      <!-- FASE II: SANPŌ-YOSHI -->
       <div class="tec-panel">
         <div class="tec-head">
           <div>
-            <div class="tec-head-name">Fluxo de Capital — 資本流動 · Shihon Ryūdō</div>
+            <div class="tec-head-name">Sanpō-yoshi — 三方よし · Circulação &amp; O Acordo</div>
             <div class="tec-head-kana">Ação Livre ou Reação · dura até o fim do combate</div>
           </div>
           <span class="tec-badge">Ação Livre / Reação</span>
         </div>
-        <div class="tec-desc">O Universo FAVORECE o filantropismo. Tudo que pode ser idealizado pode ser comprado pelo preço certo — desde ações e dano até criação de locais permanentes. Tudo tem um preço.</div>
-        <div style="font-family:var(--mono);font-size:7px;letter-spacing:4px;color:var(--gold-mid);text-transform:uppercase;margin-bottom:8px;">Tabela de Preços</div>
+        <div class="tec-desc">Bom para o vendedor, bom para o comprador, bom para a sociedade. O Universo FAVORECE o filantropismo — tudo que pode ser idealizado pode ser comprado pelo preço certo. Não há tabela fixa: o preço é o que o mercado aceita no momento. Hanzo e o Mestre negociam em tempo real.</div>
+
+        <div style="font-family:var(--mono);font-size:7px;letter-spacing:4px;color:var(--gold-mid);text-transform:uppercase;margin-bottom:8px;">Referência de Preços · não são limites, são âncoras</div>
         <table class="ptable">
-          <thead><tr><th>Compra</th><th>Efeito</th><th style="text-align:right">¥ Custo</th></tr></thead>
+          <thead><tr><th>Compra</th><th>Efeito</th><th style="text-align:right">¥ Referência</th></tr></thead>
           <tbody>
-            <tr><td>+1d4 dano</td><td class="fx">Próximos ataques</td><td class="cost">50</td></tr>
-            <tr><td>+1d6 dano</td><td class="fx">Próximos ataques</td><td class="cost">70</td></tr>
-            <tr><td>+1d8 dano</td><td class="fx">Próximos ataques</td><td class="cost">90</td></tr>
-            <tr><td>+1d10 dano</td><td class="fx">Próximos ataques</td><td class="cost">110</td></tr>
-            <tr><td>Vida Extra Temporária</td><td class="fx">Até o Fim do Combate (Até o Dobro do Max Atual)</td><td class="cost">1:1</td></tr>
-            <tr><td>Ataque Extra</td><td class="fx">+1 ataque no turno</td><td class="cost">300</td></tr>
-            <tr><td>Ação Bônus</td><td class="fx">Ação bônus extra</td><td class="cost">250</td></tr>
-            <tr><td>Movimento Extra</td><td class="fx">Dobra o movimento</td><td class="cost">150</td></tr>
-            <tr><td>Reação Extra</td><td class="fx">+1 reação</td><td class="cost">200</td></tr>
-            <tr><td>+1 Perícia</td><td class="fx">Qualquer teste</td><td class="cost">100</td></tr>
-            <tr><td>+1 Atributo</td><td class="fx">Temporário</td><td class="cost">300</td></tr>
+            <tr><td>+1d4 dano</td><td class="fx">Todo o combate · apenas melee</td><td class="cost">50</td></tr>
+            <tr><td>+1d6 dano</td><td class="fx">Todo o combate · apenas melee</td><td class="cost">70</td></tr>
+            <tr><td>+1d8 dano</td><td class="fx">Todo o combate · apenas melee</td><td class="cost">90</td></tr>
+            <tr><td>+1d10 dano</td><td class="fx">Todo o combate · apenas melee</td><td class="cost">110</td></tr>
+            <tr><td>Vida Extra Temporária</td><td class="fx">Até o dobro do máx atual · até fim do combate</td><td class="cost">1:1</td></tr>
+            <tr><td>Ataque Extra</td><td class="fx">+1 ataque no turno · máx +5</td><td class="cost">300</td></tr>
+            <tr><td>Ação Bônus Extra</td><td class="fx">+1 ação bônus · máx +5</td><td class="cost">250</td></tr>
+            <tr><td>Reação Extra</td><td class="fx">+1 reação · máx +5</td><td class="cost">200</td></tr>
+            <tr><td>+3 Perícias</td><td class="fx">Teste Específico</td><td class="cost">100</td></tr>
+            <tr><td>+1 Atributo</td><td class="fx">Qualquer Teste</td><td class="cost">300</td></tr>
             <tr><td>Cura</td><td class="fx">9d6+2d4+5 HP</td><td class="cost">150</td></tr>
             <tr><td>Escudo</td><td class="fx">Absorve até metade do dano</td><td class="cost">1:1</td></tr>
-            <tr><td>Criação de Local</td><td class="fx">Local perm. + staff + lucros</td><td class="cost">5.000+</td></tr>
-            <tr><td>Outra Coisa</td><td class="fx">A critério do Mestre</td><td class="cost">???</td></tr>
+            <tr><td>Criação de Local</td><td class="fx">Local permanente + staff + lucros recorrentes</td><td class="cost">5.000+</td></tr>
+            <tr><td>Qualquer outra coisa</td><td class="fx">Se tiver equivalente comercial real · Mestre arbitra</td><td class="cost">negociado</td></tr>
           </tbody>
         </table>
-        <div style="font-family:var(--mono);font-size:7px;color:var(--muted);margin-top:8px;letter-spacing:1px;border-left:2px solid var(--border);padding-left:10px;">
-          Ações: máx +5 cada · duram todo combate &nbsp;·&nbsp; Danos: Combate todo, apenas melee. &nbsp;·&nbsp; Vida Temporária: 50¥ para cada 5 de HP
+
+        <!-- CALCULADORA DE COMPRAS -->
+        <div style="margin-top:20px;">
+          <div style="font-family:var(--mono);font-size:7px;letter-spacing:4px;color:var(--gold-mid);text-transform:uppercase;margin-bottom:10px;">Calculadora · 計算機 · anote seus gastos</div>
+          <div id="san-calc" style="background:var(--panel2);border:1px solid var(--border-hi);padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+
+            <!-- linha: +1d4 dano -->
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 8px;border:1px solid var(--border);background:rgba(180,130,10,.03);">
+              <span style="font-family:var(--serif);font-size:12px;color:var(--ink2);">+1d4 dano</span>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <button onclick="calcAdj('d4',-1)" style="width:20px;height:20px;background:rgba(180,130,10,.1);border:1px solid var(--border);color:var(--gold);font-size:13px;cursor:pointer;line-height:1;">−</button>
+                <span id="q-d4" style="font-family:var(--mono);font-size:12px;color:var(--gold-hi);min-width:16px;text-align:center;">0</span>
+                <button onclick="calcAdj('d4',1)" style="width:20px;height:20px;background:rgba(180,130,10,.1);border:1px solid var(--border);color:var(--gold);font-size:13px;cursor:pointer;line-height:1;">+</button>
+                <span style="font-family:var(--mono);font-size:9px;color:var(--muted);min-width:36px;text-align:right;">×50 ¥</span>
+              </div>
+            </div>
+
+            <!-- linha: +1d6 dano -->
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 8px;border:1px solid var(--border);background:rgba(180,130,10,.03);">
+              <span style="font-family:var(--serif);font-size:12px;color:var(--ink2);">+1d6 dano</span>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <button onclick="calcAdj('d6',-1)" style="width:20px;height:20px;background:rgba(180,130,10,.1);border:1px solid var(--border);color:var(--gold);font-size:13px;cursor:pointer;line-height:1;">−</button>
+                <span id="q-d6" style="font-family:var(--mono);font-size:12px;color:var(--gold-hi);min-width:16px;text-align:center;">0</span>
+                <button onclick="calcAdj('d6',1)" style="width:20px;height:20px;background:rgba(180,130,10,.1);border:1px solid var(--border);color:var(--gold);font-size:13px;cursor:pointer;line-height:1;">+</button>
+                <span style="font-family:var(--mono);font-size:9px;color:var(--muted);min-width:36px;text-align:right;">×70 ¥</span>
+              </div>
+            </div>
+
+            <!-- linha: +1d8 dano -->
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 8px;border:1px solid var(--border);background:rgba(180,130,10,.03);">
+              <span style="font-family:var(--serif);font-size:12px;color:var(--ink2);">+1d8 dano</span>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <button onclick="calcAdj('d8',-1)" style="width:20px;height:20px;background:rgba(180,130,10,.1);border:1px solid var(--border);color:var(--gold);font-size:13px;cursor:pointer;line-height:1;">−</button>
+                <span id="q-d8" style="font-family:var(--mono);font-size:12px;color:var(--gold-hi);min-width:16px;text-align:center;">0</span>
+                <button onclick="calcAdj('d8',1)" style="width:20px;height:20px;background:rgba(180,130,10,.1);border:1px solid var(--border);color:var(--gold);font-size:13px;cursor:pointer;line-height:1;">+</button>
+                <span style="font-family:var(--mono);font-size:9px;color:var(--muted);min-width:36px;text-align:right;">×90 ¥</span>
+              </div>
+            </div>
+
+            <!-- linha: +1d10 dano -->
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 8px;border:1px solid var(--border);background:rgba(180,130,10,.03);">
+              <span style="font-family:var(--serif);font-size:12px;color:var(--ink2);">+1d10 dano</span>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <button onclick="calcAdj('d10',-1)" style="width:20px;height:20px;background:rgba(180,130,10,.1);border:1px solid var(--border);color:var(--gold);font-size:13px;cursor:pointer;line-height:1;">−</button>
+                <span id="q-d10" style="font-family:var(--mono);font-size:12px;color:var(--gold-hi);min-width:16px;text-align:center;">0</span>
+                <button onclick="calcAdj('d10',1)" style="width:20px;height:20px;background:rgba(180,130,10,.1);border:1px solid var(--border);color:var(--gold);font-size:13px;cursor:pointer;line-height:1;">+</button>
+                <span style="font-family:var(--mono);font-size:9px;color:var(--muted);min-width:36px;text-align:right;">×110 ¥</span>
+              </div>
+            </div>
+
+            <!-- linha: Ataque Extra -->
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 8px;border:1px solid var(--border);background:rgba(180,130,10,.03);">
+              <span style="font-family:var(--serif);font-size:12px;color:var(--ink2);">Ataque Extra</span>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <button onclick="calcAdj('atk',-1)" style="width:20px;height:20px;background:rgba(180,130,10,.1);border:1px solid var(--border);color:var(--gold);font-size:13px;cursor:pointer;line-height:1;">−</button>
+                <span id="q-atk" style="font-family:var(--mono);font-size:12px;color:var(--gold-hi);min-width:16px;text-align:center;">0</span>
+                <button onclick="calcAdj('atk',1)" style="width:20px;height:20px;background:rgba(180,130,10,.1);border:1px solid var(--border);color:var(--gold);font-size:13px;cursor:pointer;line-height:1;">+</button>
+                <span style="font-family:var(--mono);font-size:9px;color:var(--muted);min-width:36px;text-align:right;">×300 ¥</span>
+              </div>
+            </div>
+
+            <!-- linha: Ação Bônus Extra -->
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 8px;border:1px solid var(--border);background:rgba(180,130,10,.03);">
+              <span style="font-family:var(--serif);font-size:12px;color:var(--ink2);">Ação Bônus Extra</span>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <button onclick="calcAdj('bonus',-1)" style="width:20px;height:20px;background:rgba(180,130,10,.1);border:1px solid var(--border);color:var(--gold);font-size:13px;cursor:pointer;line-height:1;">−</button>
+                <span id="q-bonus" style="font-family:var(--mono);font-size:12px;color:var(--gold-hi);min-width:16px;text-align:center;">0</span>
+                <button onclick="calcAdj('bonus',1)" style="width:20px;height:20px;background:rgba(180,130,10,.1);border:1px solid var(--border);color:var(--gold);font-size:13px;cursor:pointer;line-height:1;">+</button>
+                <span style="font-family:var(--mono);font-size:9px;color:var(--muted);min-width:36px;text-align:right;">×250 ¥</span>
+              </div>
+            </div>
+
+            <!-- linha: Reação Extra -->
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 8px;border:1px solid var(--border);background:rgba(180,130,10,.03);">
+              <span style="font-family:var(--serif);font-size:12px;color:var(--ink2);">Reação Extra</span>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <button onclick="calcAdj('react',-1)" style="width:20px;height:20px;background:rgba(180,130,10,.1);border:1px solid var(--border);color:var(--gold);font-size:13px;cursor:pointer;line-height:1;">−</button>
+                <span id="q-react" style="font-family:var(--mono);font-size:12px;color:var(--gold-hi);min-width:16px;text-align:center;">0</span>
+                <button onclick="calcAdj('react',1)" style="width:20px;height:20px;background:rgba(180,130,10,.1);border:1px solid var(--border);color:var(--gold);font-size:13px;cursor:pointer;line-height:1;">+</button>
+                <span style="font-family:var(--mono);font-size:9px;color:var(--muted);min-width:36px;text-align:right;">×200 ¥</span>
+              </div>
+            </div>
+
+            <!-- linha: +1 Perícia -->
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 8px;border:1px solid var(--border);background:rgba(180,130,10,.03);">
+              <span style="font-family:var(--serif);font-size:12px;color:var(--ink2);">+1 Perícia</span>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <button onclick="calcAdj('per',-1)" style="width:20px;height:20px;background:rgba(180,130,10,.1);border:1px solid var(--border);color:var(--gold);font-size:13px;cursor:pointer;line-height:1;">−</button>
+                <span id="q-per" style="font-family:var(--mono);font-size:12px;color:var(--gold-hi);min-width:16px;text-align:center;">0</span>
+                <button onclick="calcAdj('per',1)" style="width:20px;height:20px;background:rgba(180,130,10,.1);border:1px solid var(--border);color:var(--gold);font-size:13px;cursor:pointer;line-height:1;">+</button>
+                <span style="font-family:var(--mono);font-size:9px;color:var(--muted);min-width:36px;text-align:right;">×100 ¥</span>
+              </div>
+            </div>
+
+            <!-- linha: +1 Atributo -->
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 8px;border:1px solid var(--border);background:rgba(180,130,10,.03);">
+              <span style="font-family:var(--serif);font-size:12px;color:var(--ink2);">+1 Atributo</span>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <button onclick="calcAdj('atr',-1)" style="width:20px;height:20px;background:rgba(180,130,10,.1);border:1px solid var(--border);color:var(--gold);font-size:13px;cursor:pointer;line-height:1;">−</button>
+                <span id="q-atr" style="font-family:var(--mono);font-size:12px;color:var(--gold-hi);min-width:16px;text-align:center;">0</span>
+                <button onclick="calcAdj('atr',1)" style="width:20px;height:20px;background:rgba(180,130,10,.1);border:1px solid var(--border);color:var(--gold);font-size:13px;cursor:pointer;line-height:1;">+</button>
+                <span style="font-family:var(--mono);font-size:9px;color:var(--muted);min-width:36px;text-align:right;">×300 ¥</span>
+              </div>
+            </div>
+
+            <!-- linha: Cura -->
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 8px;border:1px solid var(--border);background:rgba(180,130,10,.03);">
+              <span style="font-family:var(--serif);font-size:12px;color:var(--ink2);">Cura</span>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <button onclick="calcAdj('cura',-1)" style="width:20px;height:20px;background:rgba(180,130,10,.1);border:1px solid var(--border);color:var(--gold);font-size:13px;cursor:pointer;line-height:1;">−</button>
+                <span id="q-cura" style="font-family:var(--mono);font-size:12px;color:var(--gold-hi);min-width:16px;text-align:center;">0</span>
+                <button onclick="calcAdj('cura',1)" style="width:20px;height:20px;background:rgba(180,130,10,.1);border:1px solid var(--border);color:var(--gold);font-size:13px;cursor:pointer;line-height:1;">+</button>
+                <span style="font-family:var(--mono);font-size:9px;color:var(--muted);min-width:36px;text-align:right;">×150 ¥</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- TOTAL + RESET -->
+          <div style="margin-top:1px;background:rgba(180,130,10,.08);border:1px solid var(--border-hi);border-top:none;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+            <div>
+              <span style="font-family:var(--mono);font-size:7px;letter-spacing:4px;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:2px;">Total a descontar</span>
+              <span id="calc-total" style="font-family:var(--bebas);font-size:30px;color:var(--gold-hi);letter-spacing:2px;text-shadow:0 0 20px rgba(220,180,20,.3);">0 ¥</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end;">
+              <div style="font-family:var(--mono);font-size:7.5px;color:var(--muted);letter-spacing:1px;" id="calc-breakdown"></div>
+              <button onclick="calcReset()" style="font-family:var(--mono);font-size:7px;letter-spacing:4px;text-transform:uppercase;padding:7px 16px;background:rgba(180,130,10,.1);border:1px solid var(--border-hi);color:var(--gold);cursor:pointer;transition:all .2s;" onmouseover="this.style.background='rgba(180,130,10,.22)'" onmouseout="this.style.background='rgba(180,130,10,.1)'">⟳ Reset</button>
+            </div>
+          </div>
+        </div>
+
+        <script>
+        (function(){
+          const items = {
+            d4:   { label:'+1d4',  cost:50  },
+            d6:   { label:'+1d6',  cost:70  },
+            d8:   { label:'+1d8',  cost:90  },
+            d10:  { label:'+1d10', cost:110 },
+            atk:  { label:'Ataque Extra', cost:300 },
+            bonus:{ label:'Ação Bônus',   cost:250 },
+            react:{ label:'Reação Extra', cost:200 },
+            per:  { label:'+3 Perícias',   cost:100 },
+            atr:  { label:'+1 Atributo',  cost:300 },
+            cura: { label:'Cura',         cost:150 },
+          };
+          const qty = {};
+          for(const k in items) qty[k] = 0;
+
+          function render(){
+            let total = 0;
+            const parts = [];
+            for(const k in items){
+              if(qty[k] > 0){
+                const sub = qty[k] * items[k].cost;
+                total += sub;
+                parts.push(items[k].label + ' ×' + qty[k] + ' = ' + sub + ' ¥');
+              }
+            }
+            document.getElementById('calc-total').textContent = total.toLocaleString('pt-BR') + ' ¥';
+            document.getElementById('calc-total').style.color = total > 0 ? 'var(--gold-hi)' : 'var(--muted)';
+            document.getElementById('calc-breakdown').innerHTML = parts.join('<br>');
+          }
+
+          window.calcAdj = function(key, delta){
+            qty[key] = Math.max(0, qty[key] + delta);
+            document.getElementById('q-'+key).textContent = qty[key];
+            render();
+          };
+
+          window.calcReset = function(){
+            for(const k in qty){ qty[k] = 0; document.getElementById('q-'+k).textContent = '0'; }
+            render();
+          };
+
+          render();
+        })();
+        </script>
+
+        <div style="margin-top:16px;">
+          <div style="font-family:var(--mono);font-size:7px;letter-spacing:4px;color:var(--gold-mid);text-transform:uppercase;margin-bottom:8px;">Crédito — クレジット · Compra agora, paga depois</div>
+          <div class="tec-cards">
+            <div class="tc">
+              <div class="tc-id">SAN-01</div>
+              <div class="tc-name">Crédito Emergencial</div>
+              <span class="tc-kana">緊急融資 · agora, sem custo imediato</span>
+              <div class="tc-sep"></div>
+              <div class="tc-text">Ativa qualquer compra do Sanpō-yoshi sem pagar imediatamente. Limite de <b style="color:var(--gold-hi)">200 ¥</b> em crédito simultâneo. Cobrado integralmente ao fim do combate.</div>
+              <span class="tc-tag">Limite: 200 ¥</span>
+            </div>
+            <div class="tc">
+              <div class="tc-id">SAN-02</div>
+              <div class="tc-name">Estado de Dívida</div>
+              <span class="tc-kana">債務 · credibilidade é o ativo mais valioso</span>
+              <div class="tc-sep"></div>
+              <div class="tc-text">Endividado: Crédito trava e Empréstimo com Juros bloqueia. Compras à vista continuam normalmente. A palavra de Hanzo tem peso — dívida não honrada corrói isso.</div>
+              <span class="tc-tag r">Bloqueado em Dívida</span>
+            </div>
+          </div>
         </div>
       </div>
 
+      <!-- FASE III: GENSON -->
       <div class="tec-panel">
         <div class="tec-head">
           <div>
-            <div class="tec-head-name">Empréstimo com Juros — 融資 · Yūshi</div>
-            <div class="tec-head-kana">Reação ou Ação Bônus · retorno dobrado ao acertar</div>
+            <div class="tec-head-name">Genson &amp; Valorização — 現損 · Absorver e Multiplicar</div>
+            <div class="tec-head-kana">Reação ou Ação Bônus · dois modos de uso</div>
           </div>
           <span class="tec-badge">Reação / Ação Bônus</span>
         </div>
-        <div class="tec-desc">Investe Capital em qualquer ação ou alvo, declarando o resultado esperado. Ao acertar a aposta, recebe o dobro do valor apostado. Sem limite de valor.</div>
+        <div class="tec-desc">O mercador Ōmi aceitava prejuízo no curto prazo para preservar a relação e o nome. Hanzo foi além: aprendeu a fazer o capital trabalhar sozinho. Dois modos — apostar no resultado certo, ou declarar que um recurso é seu.</div>
         <div class="tec-cards">
           <div class="tc">
-            <div class="tc-id">YUS-01</div>
-            <div class="tc-name">Aposta Declarada</div>
-            <span class="tc-kana">賭け · capital no resultado</span>
+            <div class="tc-id">GEN-01</div>
+            <div class="tc-name">Empréstimo com Juros</div>
+            <span class="tc-kana">融資 · o universo recompensa quem sabe apostar</span>
             <div class="tc-sep"></div>
-            <div class="tc-text">Investe qualquer valor declarando o resultado esperado. Ex: "Meu aliado acertará seu próximo golpe — aposto 500."</div>
-            <span class="tc-tag">Sem Limite</span>
+            <div class="tc-text">Declara um resultado esperado e aposta qualquer valor nele — sem limite. Ex: <i>"Meu aliado acertará o próximo golpe — aposto 500."</i> Ao acertar, recebe <b style="color:var(--gold-hi)">o dobro apostado</b>. Deve ser declarado antes do resultado. Bloqueado em dívida ativa.</div>
+            <span class="tc-tag g">×2 Capital · Sem Limite</span>
           </div>
           <div class="tc">
-            <div class="tc-id">YUS-02</div>
-            <div class="tc-name">Retorno Dobrado</div>
-            <span class="tc-kana">倍返し · 500→1.000→2.000</span>
+            <div class="tc-id">GEN-02</div>
+            <div class="tc-name">Monopólio</div>
+            <span class="tc-kana">独占市場 · este recurso é meu</span>
             <div class="tc-sep"></div>
-            <div class="tc-text">Ao acertar: recebe exatamente o dobro apostado. O Universo recompensa quem sabe para onde apostar.</div>
-            <span class="tc-tag g">×2 Capital</span>
-          </div>
-          <div class="tc">
-            <div class="tc-id">YUS-03</div>
-            <div class="tc-name">Condição de Uso</div>
-            <span class="tc-kana">条件 · a palavra tem valor</span>
-            <div class="tc-sep"></div>
-            <div class="tc-text">Bloqueado se endividado. Não pode combinar com Crédito enquanto há dívida ativa.</div>
-            <span class="tc-tag r">Bloqueado em Dívida</span>
+            <div class="tc-text">Declara posse exclusiva sobre um recurso de combate por <b style="color:var(--gold-hi)">1d4 rodadas</b>: cura, velocidade, dano elemental, EA, qualquer recurso concreto. Aliados usam livremente. Inimigos que usarem são taxados em <b style="color:var(--gold-hi)">9d6 Capital por infração</b>. Pode declarar monopólios adicionais gastando uma ação cada — empilhável em recursos diferentes.</div>
+            <span class="tc-tag g">+9d6 Capital / infração</span>
           </div>
         </div>
       </div>
 
+      <!-- FASE IV: SHŌBAI HANJŌ -->
       <div class="tec-panel">
         <div class="tec-head">
           <div>
-            <div class="tec-head-name">Stop Loss — 損切り · Songiri</div>
-            <div class="tec-head-kana">Reação · ativação automática ao receber dano acima do limite</div>
-          </div>
-          <span class="tec-badge">Reação · Auto</span>
-        </div>
-        <div class="tec-desc">Ao receber dano acima de um limite, o Capitalista converte automaticamente o excesso em Capital. Prejuízo virou investimento.</div>
-        <div class="tec-cards">
-          <div class="tc">
-            <div class="tc-id">SON-01</div>
-            <div class="tc-name">Conversão de Dano</div>
-            <span class="tc-kana">損→益 · dano é retorno</span>
-            <div class="tc-sep"></div>
-            <div class="tc-text">Dano recebido acima do limite de vida é convertido em Capital. Quanto mais forte o golpe inimigo, mais recursos Hanzo acumula. O golpe gera seu dano exato como Capital, mesmo que passe de seu HP.</div>
-            <span class="tc-tag">Reação · Automático</span>
-          </div>
-          <div class="tc">
-            <div class="tc-id">SON-02</div>
-            <div class="tc-name">Custo Operacional</div>
-            <span class="tc-kana">運用コスト · derrota é aprendizado pago</span>
-            <div class="tc-sep"></div>
-            <div class="tc-text">Para Hanzo, levar dano não é fraqueza — é custo operacional. Todo custo pode ser transformado em capital futuro.</div>
-            <span class="tc-tag">Filosofia · Passiva</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="tec-panel">
-        <div class="tec-head">
-          <div>
-            <div class="tec-head-name">Monopólio — 独占市場 · Dokusen Shijō</div>
-            <div class="tec-head-kana">Ação · 1d4 rodadas de duração</div>
-          </div>
-          <span class="tec-badge">Ação · 1d4</span>
-        </div>
-        <div class="tec-desc">Declara monopólio sobre um elemento do combate — cura, velocidade, dano, etc. Apenas ele pode usar aquele recurso na área. Inimigos que tentarem são taxados: +9d6 de Capital por infração.</div>
-        <div class="tec-cards">
-          <div class="tc">
-            <div class="tc-id">DOK-01</div>
-            <div class="tc-name">Declaração</div>
-            <span class="tc-kana">独占 · este recurso é meu</span>
-            <div class="tc-sep"></div>
-            <div class="tc-text">Posse exclusiva sobre: cura, velocidade, dano elemental, EA, ou qualquer recurso de combate. Ninguém mais acessa livremente.</div>
-            <span class="tc-tag">Ação · 1d4 Rodadas</span>
-          </div>
-          <div class="tc">
-            <div class="tc-id">DOK-02</div>
-            <div class="tc-name">Tributação</div>
-            <span class="tc-kana">課税 · quem usar, paga</span>
-            <div class="tc-sep"></div>
-            <div class="tc-text">Inimigos que tentarem usar o recurso monopolizado são taxados: <b style="color:var(--gold-hi)">+9d6 de Capital por infração.</b></div>
-            <span class="tc-tag g">+9d6 Capital / uso</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="tec-panel">
-        <div class="tec-head">
-          <div>
-            <div class="tec-head-name">Crédito — クレジット · Kurejitto</div>
-            <div class="tec-head-kana">Compra agora, paga pós-combate · limite 200 ¥</div>
-          </div>
-          <span class="tec-badge">Limite 200 ¥</span>
-        </div>
-        <div class="tec-desc">Usa qualquer ação sem custo imediato — o valor é registrado e cobrado integralmente após o combate. Pode deixar o Capitalista endividado, bloqueando compras futuras.</div>
-        <div class="tec-cards">
-          <div class="tc">
-            <div class="tc-id">KUR-01</div>
-            <div class="tc-name">Crédito Emergencial</div>
-            <span class="tc-kana">緊急融資 · agora, sem custo</span>
-            <div class="tc-sep"></div>
-            <div class="tc-text">Ativa qualquer habilidade do Fluxo de Capital sem pagar imediatamente. Limite de 200 ¥ em crédito simultâneo. Cobrado no fim do combate.</div>
-            <span class="tc-tag">Limite: 200 ¥</span>
-          </div>
-          <div class="tc">
-            <div class="tc-id">KUR-02</div>
-            <div class="tc-name">Estado de Dívida</div>
-            <span class="tc-kana">債務 · a palavra tem peso</span>
-            <div class="tc-sep"></div>
-            <div class="tc-text">Endividado: não pode usar Crédito nem Empréstimo com Juros. A credibilidade do Capitalista é seu ativo mais valioso.</div>
-            <span class="tc-tag r">Bloqueado em Dívida</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="tec-panel">
-        <div class="tec-head">
-          <div>
-            <div class="tec-head-name">Benefícios Wellness — 健康資産 · Kenkō Shisan</div>
-            <div class="tec-head-kana">Passiva Permanente · benefícios adquiridos fora do combate</div>
+            <div class="tec-head-name">Shōbai Hanjō — 商売繁盛 · Reinvestimento</div>
+            <div class="tec-head-kana">Passiva Permanente · custo mensal de manutenção</div>
           </div>
           <span class="tec-badge">Sempre Ativo</span>
         </div>
-        <div class="tec-desc">Hanzo investe sistematicamente na manutenção do próprio capital humano. Plano de saúde premium, academia de elite e décadas de artes marciais se traduzem em vantagens permanentes em campo — porque um bom capitalista nunca negligencia seu ativo mais valioso. <b style="color:var(--gold-hi)">Custo de manutenção: 1.000 ¥/mês.</b> Inadimplência suspende todos os benefícios imediatamente. Os custos Wellness não são desligados de maneira forçada após o pago. Enquanto Hanzo tiver a assinatura, ele funcionará com ou sem técnica.</div>
+        <div class="tec-desc">Um bom capitalista nunca negligencia seu ativo mais valioso. Hanzo reinveste sistematicamente no próprio corpo como infraestrutura — academia de elite, artes marciais de décadas, plano de saúde premium. O negócio que prospera é o que se torna indispensável. <b style="color:var(--gold-hi)">Manutenção: 1.000 ¥/mês.</b> Inadimplência suspende tudo imediatamente e sem exceção.</div>
         <div class="tec-cards">
 
           <div class="tc">
-            <div class="tc-id">WEL-01</div>
+            <div class="tc-id">HAJ-01</div>
             <div class="tc-name">Artes Marciais</div>
             <span class="tc-kana">武道 · JiuJitsu, Karatê, Kungfu, Capoeira</span>
             <div class="tc-sep"></div>
-            <div class="tc-text">Conhecimento avançado em múltiplos estilos de combate corpo a corpo. Décadas de prática convertidas em instinto puro.</div>
+            <div class="tc-text">Décadas de prática em múltiplos estilos convertidas em instinto puro. Não é talento — é capital humano acumulado com disciplina.</div>
             <span class="tc-tag g">+3d20 em Luta</span>
           </div>
 
           <div class="tc">
-            <div class="tc-id">WEL-02</div>
+            <div class="tc-id">HAJ-02</div>
             <div class="tc-name">Gold Gym</div>
             <span class="tc-kana">筋肉資本 · corpo é infraestrutura</span>
             <div class="tc-sep"></div>
-            <div class="tc-text">Corpo aprimorado hipertroficamente através de treinamento intenso e sistemático. Praticamente um fisiculturista bronzeado — resistência e presença física inegáveis.</div>
+            <div class="tc-text">Corpo hipertrofiado sistematicamente. Fisiculturista bronzeado com presença física inegável. Os bônus são fixos — não escalam com capital.</div>
             <span class="tc-tag g">+2d20 · +10 Tankar e Fortitude</span>
           </div>
 
           <div class="tc">
-            <div class="tc-id">WEL-03</div>
+            <div class="tc-id">HAJ-03</div>
             <div class="tc-name">Plano de Saúde</div>
             <span class="tc-kana">医療保険 · cobertura total, sem franquia</span>
             <div class="tc-sep"></div>
-            <div class="tc-text">Se apagado, desmaiado ou morto, pode acionar a <b style="color:var(--gold-hi)">Urgência</b> — gasta 500 ¥ imediatamente e retorna à luta. Enquanto houver capital, Hanzo não fica fora do jogo.</div>
-            <span class="tc-tag g">Ativável a Vontade</span>
+            <div class="tc-text">Se apagado, desmaiado ou morto, aciona <b style="color:var(--gold-hi)">Urgência</b> — retorna ao combate. Custo: <b style="color:var(--gold-hi)">proporcional ao capital atual no momento do acionamento</b> (quanto mais rico, mais caro; quanto mais no limite, mais barato). Não cura HP ao retornar — recuperação continua custando via Sanpō-yoshi. Sem limite de usos.</div>
+            <span class="tc-tag g">Ativável a Vontade · Custo Proporcional</span>
           </div>
 
         </div>
         <div style="font-family:var(--mono);font-size:7px;color:var(--muted);margin-top:14px;letter-spacing:1px;border-left:2px solid var(--border);padding-left:10px;">
-          Todos os bônus são passivos e permanentes · Urgência consome Capital do estoque atual · sem limite de usos por combate<br>
+          Todos os bônus são passivos e permanentes · Urgência deve ser acionada conscientemente<br>
           <span style="color:rgba(240,160,50,.55);">⚠ Manutenção: 1.000 ¥ / mês · inadimplência suspende todos os benefícios</span>
         </div>
       </div>
 
+<!-- FASE V: NOREN -->
+      <div class="tec-panel">
+        <div class="tec-head">
+          <div>
+            <div class="tec-head-name">Noren — 暖簾 · O Legado</div>
+            <div class="tec-head-kana">Ação · pode ser ativada em qualquer momento do combate</div>
+          </div>
+          <span class="tec-badge">Ação · A Qualquer Momento</span>
+        </div>
+        <div class="tec-desc">A cortina Noren representa o nome que fica depois que você foi embora. Hanzo não precisa destruir — ele precisa que o mundo saiba que passou por ali. Em qualquer momento do combate que decidir, o tempo congela. Só ele e o(s) alvo(s) escolhidos existem naquele instante. Ele declara a oferta.</div>
+        <div class="tec-cards">
+          <div class="tc">
+            <div class="tc-id">NOR-01</div>
+            <div class="tc-name">Tempo Parado</div>
+            <span class="tc-kana">時止め · só nós dois agora</span>
+            <div class="tc-sep"></div>
+            <div class="tc-text">Em qualquer momento do combate, Hanzo congela o tempo para si e para o(s) alvo(s) escolhido(s). Nenhuma ação externa interfere. Ele declara a oferta — condições, renda, duração. A proposta é sempre <b style="color:var(--gold-hi)">ouvida e compreendida</b>, independente de barreira de linguagem, estado mental ou hostilidade.</div>
+            <span class="tc-tag">Ação · Sem Custo</span>
+          </div>
+          <div class="tc">
+            <div class="tc-id">NOR-02</div>
+            <div class="tc-name">O Contrato</div>
+            <span class="tc-kana">契約 · liberdade total, renda garantida</span>
+            <div class="tc-sep"></div>
+            <div class="tc-text">Se aceitarem: o combate encerra para aquele alvo. Liberdade total de movimento e vida — mas uma renda diária é repassada a Hanzo por período determinado na oferta. O Universo garante o contrato. Quebra tem custo.<br><br>Se negarem: o combate continua. Sem penalidade para Hanzo. Eles apenas sabem o que recusaram.</div>
+            <span class="tc-tag g">Contrato Ativo · Universo Garante</span>
+          </div>
+          <div class="tc">
+            <div class="tc-id">NOR-03</div>
+            <div class="tc-name">Portfólio</div>
+            <span class="tc-kana">暖簾を守る · o nome dura mais que o combate</span>
+            <div class="tc-sep"></div>
+            <div class="tc-text">Ao fim do combate, todo alvo — aceite ou não, aliado ou inimigo — que cruzou o caminho de Hanzo e teve desfecho registrado entra no Portfólio. O peso é proporcional à relevância do alvo. Facilita acordos futuros de forma passiva e permanente, independente de com quem Hanzo negocia.</div>
+            <span class="tc-tag g">Narrativo · Permanente · Cresce com o Tempo</span>
+          </div>
+        </div>
+        <div style="font-family:var(--mono);font-size:7px;color:var(--muted);margin-top:14px;letter-spacing:1px;border-left:2px solid var(--border);padding-left:10px;">
+          Tempo parado não pode ser usado para ataques ou compras · apenas a oferta · não empilha contratos no mesmo alvo
+        </div>
+      </div>
     </div>
-</div>
+  </div>
+  <div class="stamp">// ashigarui · sanpō-yoshi · genson · shōbai hanjō · noren · o ciclo que nunca para //</div>
+
 </div>
 </div>
 
